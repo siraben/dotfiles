@@ -17,12 +17,12 @@
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
  '(ansi-color-names-vector
-   ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
+   ["#073642" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#657b83"])
  '(display-battery-mode t)
  '(display-time-mode t)
  '(package-selected-packages
    (quote
-    (use-package undo-tree flycheck writeroom-mode auto-complete rainbow-delimiters solarized-theme paredit markdown-mode csv-mode chess aggressive-indent 2048-game)))
+    (undo-tree flycheck writeroom-mode auto-complete rainbow-delimiters solarized-theme paredit markdown-mode csv-mode chess aggressive-indent 2048-game)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(scroll-bar-mode nil))
 (custom-set-faces
