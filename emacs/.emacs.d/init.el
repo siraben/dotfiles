@@ -22,7 +22,7 @@
  '(display-time-mode t)
  '(package-selected-packages
    (quote
-    (undo-tree flycheck writeroom-mode auto-complete rainbow-delimiters solarized-theme paredit markdown-mode csv-mode aggressive-indent 2048-game)))
+    (magit perspective undo-tree flycheck writeroom-mode auto-complete rainbow-delimiters solarized-theme paredit markdown-mode csv-mode aggressive-indent 2048-game)))
  '(scroll-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -60,12 +60,12 @@
 
 
 (defun ben/apply-solarized-theme ()
+  (interactive)
   (setq solarized-use-variable-pitch nil)
-  (setq solarized-high-contrast-mode-line t)
+  ;; (setq solarized-high-contrast-mode-line t)
   (load-theme 'solarized-dark t))
 
 (ben/apply-solarized-theme)
-
 
 
 (setq ben/default-font "Hack")
