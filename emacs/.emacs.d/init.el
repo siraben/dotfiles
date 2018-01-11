@@ -22,7 +22,7 @@
  '(display-time-mode t)
  '(package-selected-packages
    (quote
-    (magit perspective undo-tree flycheck writeroom-mode auto-complete rainbow-delimiters solarized-theme paredit markdown-mode csv-mode aggressive-indent 2048-game)))
+    (pdf-tools magit perspective undo-tree flycheck writeroom-mode auto-complete rainbow-delimiters solarized-theme paredit markdown-mode csv-mode aggressive-indent 2048-game)))
  '(scroll-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
