@@ -22,8 +22,7 @@
  '(display-time-mode t)
  '(package-selected-packages
    (quote
-    (undo-tree flycheck writeroom-mode auto-complete rainbow-delimiters solarized-theme paredit markdown-mode csv-mode chess aggressive-indent 2048-game)))
- '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
+    (undo-tree flycheck writeroom-mode auto-complete rainbow-delimiters solarized-theme paredit markdown-mode csv-mode aggressive-indent 2048-game)))
  '(scroll-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -51,17 +50,18 @@
 
 
 ;; OS Specific Settings
-(if (eq system-type 'darwin)
-    (progn (setq scheme-program-name "/usr/local/bin/chez")
-	   (setq ben/default-font-size 13))
-  
-  (progn (setq scheme-program-name "/usr/bin/mit-scheme")
-	 (setq ben/default-font-size 11)))
+(cond ((eq system-type 'darwin)
+       (progn (setq scheme-program-name "/usr/local/bin/chez")
+	      (setq ben/default-font-size 13)))
+      
+      ((eq system-type 'gnu/linux)
+       (progn (setq scheme-program-name "/usr/bin/mit-scheme")
+	      (setq ben/default-font-size 11))))
 
 
 (defun ben/apply-solarized-theme ()
   (setq solarized-use-variable-pitch nil)
-  ;; (setq solarized-high-contrast-mode-line t)
+  (setq solarized-high-contrast-mode-line t)
   (load-theme 'solarized-dark t))
 
 (ben/apply-solarized-theme)
