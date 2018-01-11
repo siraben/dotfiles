@@ -22,7 +22,7 @@
  '(display-time-mode t)
  '(package-selected-packages
    (quote
-    (flycheck writeroom-mode auto-complete rainbow-delimiters solarized-theme paredit markdown-mode csv-mode chess aggressive-indent 2048-game)))
+    (use-package undo-tree flycheck writeroom-mode auto-complete rainbow-delimiters solarized-theme paredit markdown-mode csv-mode chess aggressive-indent 2048-game)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(scroll-bar-mode nil))
 (custom-set-faces
