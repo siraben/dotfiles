@@ -31,7 +31,6 @@
  ;; If there is more than one, they won't work right.
  )
 
-
 ;; list the packages you want
 (setq package-list package-selected-packages)
 
@@ -47,15 +46,18 @@
   (unless (package-installed-p package)
     (package-install package)))
 
-
+;; Spell Checking
+(setq ispell-dictionary "en_US")
 
 ;; OS Specific Settings
 (cond ((eq system-type 'darwin)
        (progn (setq scheme-program-name "/usr/local/bin/chez")
+	      (setq ispell-program-name "/usr/local/bin/aspell")
 	      (setq ben/default-font-size 13)))
       
       ((eq system-type 'gnu/linux)
        (progn (setq scheme-program-name "/usr/bin/mit-scheme")
+	      (setq ispell-program-name "/usr/bin/aspell")
 	      (setq ben/default-font-size 11))))
 
 
@@ -114,12 +116,6 @@ other, future frames."
 
 (ben/reset-font-size)
 
-
-;; Spell Checking
-(setq
- ispell-program-name "/usr/local/bin/aspell"
- ispell-dictionary "en_US")
-
 (defun ben/my-lisp-hook ()
   (paredit-mode 1)
   (aggressive-indent-mode 1)
@@ -134,8 +130,9 @@ other, future frames."
 					 (undo-tree-mode 1)
 					 (writeroom-mode 1))))
 
-(add-hook 'org-mode-hook #'(lambda () (progn (visual-line-mode 1)
-					     (undo-tree-mode 1))))
+(add-hook 'org-mode-hook #'(lambda ()
+			     (progn (visual-line-mode 1)
+				    (undo-tree-mode 1))))
 
 (add-hook 'emacs-lisp-mode-hook #'(lambda () (ben/my-lisp-hook)))
 
