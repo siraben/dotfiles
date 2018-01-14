@@ -22,7 +22,7 @@
  '(display-time-mode t)
  '(package-selected-packages
    (quote
-    (exec-path-from-shell neotree memory-usage pdf-tools magit perspective undo-tree flycheck writeroom-mode auto-complete rainbow-delimiters solarized-theme paredit markdown-mode csv-mode aggressive-indent 2048-game)))
+    (smooth-scrolling exec-path-from-shell neotree memory-usage pdf-tools magit perspective undo-tree flycheck writeroom-mode auto-complete rainbow-delimiters solarized-theme paredit markdown-mode csv-mode aggressive-indent 2048-game)))
  '(scroll-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -121,7 +121,8 @@ other, future frames."
   (aggressive-indent-mode 1)
   (rainbow-delimiters-mode 1)
   (undo-tree-mode 1)
-  (auto-complete-mode 1))
+  (auto-complete-mode 1)
+  (show-paren-mode 1))
 
 (add-hook 'scheme-mode-hook #'(lambda () (ben/my-lisp-hook)))
 
@@ -136,3 +137,4 @@ other, future frames."
 
 (add-hook 'emacs-lisp-mode-hook #'(lambda () (ben/my-lisp-hook)))
 
+(add-hook 'after-init (smooth-scrolling-mode 1))
