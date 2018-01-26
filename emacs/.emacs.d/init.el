@@ -1,132 +1,52 @@
 (require 'package)
-(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-                    (not (gnutls-available-p))))
-       (proto (if no-ssl "http" "https")))
-  ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
-  (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
-  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
-  (when (< emacs-major-version 24)
-    ;; For important compatibility libraries like cl-lib
-    (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
-
-;; activate all the packages (in particular autoloads)
+(add-to-list 'package-archives (cons "melpa"  "https://melpa.org/packages/") t)
 (package-initialize)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector
-   [default default default italic underline success warning error])
- '(ansi-color-names-vector
-   ["#073642" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#657b83"])
- '(display-battery-mode t)
- '(display-time-mode t)
- '(line-number-mode nil)
- '(package-selected-packages
-   '(htmlize gnuplot gnuplot-mode emms guide-key free-keys smooth-scrolling exec-path-from-shell neotree memory-usage pdf-tools magit perspective undo-tree flycheck writeroom-mode auto-complete rainbow-delimiters paredit markdown-mode csv-mode aggressive-indent 2048-game))
- '(scroll-bar-mode nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 
-;; List desired packages
-(setq package-list package-selected-packages)
+(require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el")
+(cask-initialize)
 
-(unless package-archive-contents
-  (package-refresh-contents))
+(require 'pallet)
+(require 'use-package)
 
-;; Install missing packages
-(dolist (package package-list)
-  (unless (package-installed-p package)
-    (package-install package)))
+(setq initial-scratch-message (format ";; Scratch buffer created on %s\n"
+              (shell-command-to-string "date '+%A, %B %d %Y at %R'")))
 
-;; Spell checking langauge
-(setq ispell-dictionary "en_US")
+(setq use-package-always-ensure t)
+(setq use-package-verbose t)
+
+(use-package auto-compile
+  :config (auto-compile-on-load-mode))
+(setq load-prefer-newer t)
+
+(pallet-mode t)
 
 
-;; Active Babel languages
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((gnuplot . t)
-   (calc . t)
-   (python . t)
-   (scheme . t)))
-;; Add additional languages with '((language . t)))
+(defun ben/apply-solarized-theme ()
+  (interactive)
+  (setq solarized-use-variable-pitch nil)
+  ;; (setq solarized-height-plus-1 1.0)
+  ;; (setq solarized-height-plus-2 1.0)
+  ;; (setq solarized-height-plus-3 1.0)
+  ;; (setq solarized-height-plus-4 1.0)
+  (load-theme 'solarized-dark t))
 
-;; OS Specific Settings
+
+(use-package solarized-theme
+  :config (ben/apply-solarized-theme))
+(use-package exec-path-from-shell)
+
 (cond ((eq system-type 'darwin)
        (progn (setq scheme-program-name "/usr/local/bin/chez")
 	      (setq ispell-program-name "/usr/local/bin/aspell")
 	      (setq ben/default-font-size 13)
 	      (setq system-uses-terminfo nil)
-	      (setq gnuplot-program "/usr/local/bin/gnuplot")
-	      (setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2017/bin/x86_64-darwin"))
-	      (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
-	      (add-to-list 'exec-path "/usr/local/bin")))
+	      (exec-path-from-shell-initialize)))
       
       ((eq system-type 'gnu/linux)
        (progn (setq scheme-program-name "/usr/bin/mit-scheme")
               (setq ispell-program-name "/usr/bin/aspell")
               (setq ben/default-font-size 11))))
-
-;; In case the editor doesn't have a box style cursor.
-(setq-default cursor-type 'box)
-
-(require 'emms-setup)
-(require 'emms-player-mplayer)
-(emms-standard)
-(emms-default-players)
-(define-emms-simple-player mplayer '(file url)
-  (regexp-opt '(".ogg" ".mp3" ".wav" ".mpg" ".mpeg" ".wmv" ".wma"
-		".mov" ".avi" ".divx" ".ogm" ".asf" ".mkv" "http://" "mms://"
-		".rm" ".rmvb" ".mp4" ".flac" ".vob" ".m4a" ".flv" ".ogv" ".pls"))
-  "mplayer" "-slave" "-quiet" "-really-quiet" "-fullscreen")
-
-;;** EMMS
-;; Autoload the id3-browser and bind it to F7.
-;; You can change this to your favorite EMMS interface.
-(autoload 'emms-smart-browse "emms-browser.el" "Browse with EMMS" t)
-(global-set-key [(f7)] 'emms-smart-browse)
-
-(with-eval-after-load 'emms
-  (emms-standard) ;; or (emms-devel) if you want all features
-  (setq emms-source-file-default-directory "~/Music"
-        emms-info-asynchronously t
-        emms-show-format "♪ %s")
-
-  ;; Might want to check `emms-info-functions',
-  ;; `emms-info-libtag-program-name',
-  ;; `emms-source-file-directory-tree-function'
-  ;; as well.
-
-  ;; Determine which player to use.
-  ;; If you don't have strong preferences or don't have
-  ;; exotic files from the past (wma) `emms-default-players`
-  ;; is probably all you need.
-  (if (executable-find "mplayer")
-      (setq emms-player-list '(emms-player-mplayer))
-    (emms-default-players))
-
-  ;; For libre.fm see `emms-librefm-scrobbler-username' and
-  ;; `emms-librefm-scrobbler-password'.
-  ;; Future versions will use .authoinfo.gpg.
-  )
-
-
-
-(defun ben/apply-solarized-theme ()
-  "Apply the dark solarized theme and don't allow the use of non-fix width fonts."
-  (interactive)
-  (setq solarized-use-variable-pitch nil)
-  ;; (setq solarized-high-contrast-mode-line t)
-  (load-theme 'solarized-dark t))
-
-(ben/apply-solarized-theme)
 
 
 (setq ben/default-font "Hack")
@@ -175,30 +95,151 @@ other, future frames."
 
 (ben/reset-font-size)
 
-(defun ben/my-lisp-mode ()
-  "Activates modes that greatly help with editing Lisp code."
+(when window-system
+  (scroll-bar-mode -1))
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (gnuplot . t)
+   (calc . t)
+   (python . t)
+   (scheme . t)))
+
+
+
+(use-package paredit)
+
+(use-package rainbow-delimiters)
+
+(use-package undo-tree)
+
+(use-package aggressive-indent)
+
+
+(setq lispy-mode-hooks
+      '(clojure-mode-hook
+        emacs-lisp-mode-hook
+        lisp-mode-hook
+        scheme-mode-hook))
+
+(dolist (hook lispy-mode-hooks)
+  (add-hook hook (lambda ()
+                   (progn (setq show-paren-style 'mixed)
+			  (paredit-mode)
+			  (rainbow-delimiters-mode)
+			  (aggressive-indent-mode)
+			  (show-paren-mode)
+			  (company-mode)
+			  (undo-tree-mode)
+			  (linum-mode)))))
+
+(add-hook 'inferior-scheme-mode-hook
+	  (lambda ()
+	    (progn (paredit-mode)
+		   (aggressive-indent-mode)
+		   (rainbow-delimiters-mode)
+		   (show-paren-mode))))
+
+(setq show-paren-style 'expression)
+
+(use-package pdf-tools
+  :defer t)
+
+
+(use-package helm
+  :defer t
+  :init (progn (global-set-key (kbd "M-x") #'helm-M-x)
+	       (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
+	       (global-set-key (kbd "C-x C-f") #'helm-find-files)))
+
+(use-package company
+  :defer t 
+  :config (global-company-mode))
+
+(use-package writeroom-mode
+  :defer t)
+
+(use-package markdown-mode
+  :defer t)
+
+(use-package org-bullets
+  :defer t)
+
+(use-package company
+  :defer t
+  :config (global-company-mode))
+
+
+(use-package smooth-scrolling
+  :config (smooth-scrolling-mode))
+
+
+(defun ben/insert-time ()
   (interactive)
-  (paredit-mode 1)
-  (aggressive-indent-mode 1)
-  (rainbow-delimiters-mode 1)
-  (undo-tree-mode 1)
-  (auto-complete-mode 1)
-  (show-paren-mode 1))
+  "Inserts the date and time into the current buffer."
+  (shell-command "date '+%A, %B %d %Y at %R'" 1))
 
-(add-hook 'scheme-mode-hook #'(lambda () (ben/my-lisp-mode)))
+(defun ben/new-diary-entry ()
+  "Creates a new buffer with a new diary entry with org mode activated
+and a time stamp added."
+  (interactive)
+  (pop-to-buffer (symbol-name (gensym)))
+  (org-mode)
+  (insert "* ")
+  (ben/insert-time)
+  (end-of-buffer))
 
-(add-hook 'markdown-mode-hook #'(lambda ()
-				  (progn (visual-line-mode 1)
-					 (undo-tree-mode 1)
-					 (writeroom-mode 1))))
+(define-key global-map (kbd "M-T") 'ben/insert-time)
 
-(add-hook 'org-mode-hook #'(lambda ()
-			     (progn (visual-line-mode 1)
-				    (undo-tree-mode 1)
-				    (flyspell-mode 1))))
 
-(add-hook 'emacs-lisp-mode-hook #'(lambda () (ben/my-lisp-mode)))
+(setq-default cursor-type 'box)
+(display-battery-mode t)
+(display-time-mode t)
+(setq inhibit-startup-screen t)
+(setq line-number-mode t)
+(setq auto-save-interval 100)
 
-(add-hook 'after-init (smooth-scrolling-mode 1))
 
+(use-package emms
+  :defer t
+  :config (progn (require 'emms-setup)
+		 (require 'emms-player-mplayer)
+		 (emms-standard)
+		 (emms-default-players)
+		 (define-emms-simple-player mplayer '(file url)
+		   (regexp-opt '(".ogg" ".mp3" ".wav" ".mpg" ".mpeg" ".wmv" ".wma"
+				 ".mov" ".avi" ".divx" ".ogm" ".asf" ".mkv" "http://" "mms://"
+				 ".rm" ".rmvb" ".mp4" ".flac" ".vob" ".m4a" ".flv" ".ogv" ".pls"))
+		   "mplayer" "-slave" "-quiet" "-really-quiet" "-fullscreen")
+
+		 ;;** EMMS
+		 ;; Autoload the id3-browser and bind it to F7.
+		 ;; You can change this to your favorite EMMS interface.
+		 (autoload 'emms-smart-browse "emms-browser.el" "Browse with EMMS" t)
+		 (global-set-key [(f7)] 'emms-smart-browse)
+
+		 (with-eval-after-load 'emms
+		   (emms-standard) ;; or (emms-devel) if you want all features
+		   (setq emms-source-file-default-directory "~/Music"
+			 emms-info-asynchronously t
+			 emms-show-format "♪ %s")
+
+		   ;; Might want to check `emms-info-functions',
+		   ;; `emms-info-libtag-program-name',
+		   ;; `emms-source-file-directory-tree-function'
+		   ;; as well.
+
+		   ;; Determine which player to use.
+		   ;; If you don't have strong preferences or don't have
+		   ;; exotic files from the past (wma) `emms-default-players`
+		   ;; is probably all you need.
+		   (if (executable-find "mplayer")
+		       (setq emms-player-list '(emms-player-mplayer))
+		     (emms-default-players))
+
+		   ;; For libre.fm see `emms-librefm-scrobbler-username' and
+		   ;; `emms-librefm-scrobbler-password'.
+		   ;; Future versions will use .authoinfo.gpg.
+		   )))
 
