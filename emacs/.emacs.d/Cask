@@ -18,6 +18,7 @@
 (depends-on "helm")
 (depends-on "htmlize")
 (depends-on "idle-highlight-mode")
+(depends-on "linum-relative")
 (depends-on "magit")
 (depends-on "markdown-mode")
 (depends-on "multiple-cursors")
