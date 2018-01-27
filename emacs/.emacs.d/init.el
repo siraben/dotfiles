@@ -15,27 +15,33 @@
               (setq ben/default-font-size 11)
 	      (setq cask-path "~/.cask/cask.el"))))
 
-(if (not (file-exists-p cask-path))
-    (user-error "Cask is not installed! Get it at https://github.com/cask/cask"))
+(unless (file-exists-p cask-path)
+  (user-error "Cask is not installed! Get it at https://github.com/cask/cask"))
 
 (require 'cask cask-path)
 
 (cask-initialize)
 
-(require 'pallet)
+(unless (package-installed-p 'use-package)
+  (progn (package-refresh-contents)
+	 (package-install 'use-package)))
+
 (require 'use-package)
 
+(use-package pallet
+  :ensure pallet
+  :config (pallet-mode t))
+
 (setq initial-scratch-message (format ";; Scratch buffer created on %s\n"
-              (shell-command-to-string "date '+%A, %B %d %Y at %R'")))
+				      (shell-command-to-string "date '+%A, %B %d %Y at %R'")))
 
 (setq use-package-always-ensure t)
 (setq use-package-verbose t)
 
 (use-package auto-compile
   :config (auto-compile-on-load-mode))
-(setq load-prefer-newer t)
 
-(pallet-mode t)
+(setq load-prefer-newer t)
 
 
 (defun ben/apply-solarized-theme ()
