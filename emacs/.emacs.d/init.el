@@ -2,8 +2,24 @@
 (add-to-list 'package-archives (cons "melpa"  "https://melpa.org/packages/") t)
 (package-initialize)
 
+(cond ((eq system-type 'darwin)
+       (progn (setq scheme-program-name "/usr/local/bin/chez")
+	      (setq ispell-program-name "/usr/local/bin/aspell")
+	      (setq ben/default-font-size 14)
+	      (setq system-uses-terminfo nil)
+	      (setq cask-path "/usr/local/share/emacs/site-lisp/cask/cask.el")))
+      
+      ((eq system-type 'gnu/linux)
+       (progn (setq scheme-program-name "/usr/bin/mit-scheme")
+              (setq ispell-program-name "/usr/bin/aspell")
+              (setq ben/default-font-size 11)
+	      (setq cask-path "~/.cask/cask.el"))))
 
-(require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el")
+(if (not (file-exists-p cask-path))
+    (user-error "Cask is not installed! Get it at https://github.com/cask/cask"))
+
+(require 'cask cask-path)
+
 (cask-initialize)
 
 (require 'pallet)
@@ -32,14 +48,16 @@
   (load-theme 'solarized-dark t))
 
 
-(use-package solarized-theme
+(use-package solarized-theme 
   :config (ben/apply-solarized-theme))
-(use-package exec-path-from-shell)
+
+(use-package exec-path-from-shell
+  :config (exec-path-from-shell-initialize))
 
 (cond ((eq system-type 'darwin)
        (progn (setq scheme-program-name "/usr/local/bin/chez")
 	      (setq ispell-program-name "/usr/local/bin/aspell")
-	      (setq ben/default-font-size 13)
+	      (setq ben/default-font-size 14)
 	      (setq system-uses-terminfo nil)
 	      (exec-path-from-shell-initialize)))
       
@@ -157,14 +175,12 @@ other, future frames."
   :defer t 
   :config (global-company-mode))
 
-(use-package writeroom-mode
-  :defer t)
+(use-package writeroom-mode)
 
 (use-package markdown-mode
   :defer t)
 
-(use-package org-bullets
-  :defer t)
+(use-package org-bullets)
 
 (use-package company
   :defer t
@@ -174,6 +190,8 @@ other, future frames."
 (use-package smooth-scrolling
   :config (smooth-scrolling-mode))
 
+(use-package magit
+  :defer t)
 
 (defun ben/insert-time ()
   (interactive)
