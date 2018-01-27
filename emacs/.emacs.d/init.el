@@ -225,7 +225,9 @@ and a time stamp added."
 	 (setq inhibit-startup-screen t)
 	 (setq line-number-mode t)
 	 (setq auto-save-interval 100)
-	 (setq gc-cons-threshold 20000000)))
+	 (setq gc-cons-threshold 20000000)
+	 (menu-bar-mode -1)
+	 (tool-bar-mode -1)))
 
 (add-hook 'after-init-hook
 	  #'ben/essential-settings)
@@ -266,3 +268,17 @@ and a time stamp added."
 		   (if (executable-find "mplayer")
 		       (setq emms-player-list '(emms-player-mplayer))
 		     (emms-default-players)))))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (emms magit smooth-scrolling org-bullets markdown-mode writeroom-mode company helm pdf-tools aggressive-indent undo-tree rainbow-delimiters paredit exec-path-from-shell solarized-theme auto-compile pallet use-package))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
