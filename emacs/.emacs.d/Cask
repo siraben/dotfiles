@@ -2,6 +2,7 @@
 (source melpa)
 
 (depends-on "aggressive-indent")
+(depends-on "auto-compile")
 (depends-on "benchmark-init")
 (depends-on "bind-key")
 (depends-on "cask")

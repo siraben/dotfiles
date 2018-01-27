@@ -28,21 +28,18 @@
 
 (require 'use-package)
 
+(setq use-package-always-ensure t)
+(setq use-package-verbose t)
+(setq load-prefer-newer t)
+
 (use-package pallet
-  :ensure pallet
   :config (pallet-mode t))
 
 (setq initial-scratch-message (format ";; Scratch buffer created on %s\n"
 				      (shell-command-to-string "date '+%A, %B %d %Y at %R'")))
 
-(setq use-package-always-ensure t)
-(setq use-package-verbose t)
-
-(use-package auto-compile
+(use-package auto-compile  
   :config (auto-compile-on-load-mode))
-
-(setq load-prefer-newer t)
-
 
 (defun ben/apply-solarized-theme ()
   (interactive)
@@ -58,6 +55,7 @@
   :config (ben/apply-solarized-theme))
 
 (use-package exec-path-from-shell
+  :defer t
   :config (exec-path-from-shell-initialize))
 
 (cond ((eq system-type 'darwin)
@@ -170,12 +168,14 @@ other, future frames."
 (use-package pdf-tools
   :defer t)
 
-
 (use-package helm
   :defer t
-  :init (progn (global-set-key (kbd "M-x") #'helm-M-x)
-	       (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-	       (global-set-key (kbd "C-x C-f") #'helm-find-files)))
+  :bind (("M-x" . #'helm-M-x)
+         ("C-x r b" . #'helm-filtered-bookmarks)
+         ("C-x b" . #'helm-buffers-list)
+	 ("C-x C-f" . #'helm-find-files))
+  :config (helm-mode 1))
+
 
 (use-package company
   :defer t 
@@ -217,13 +217,18 @@ and a time stamp added."
 (define-key global-map (kbd "M-T") 'ben/insert-time)
 
 
-(setq-default cursor-type 'box)
-(display-battery-mode t)
-(display-time-mode t)
-(setq inhibit-startup-screen t)
-(setq line-number-mode t)
-(setq auto-save-interval 100)
+(defun ben/essential-settings ()
+  "Modifies a bunch of settings to make emacs nice."
+  (progn (setq-default cursor-type 'box)
+	 (display-battery-mode t)
+	 (display-time-mode t)
+	 (setq inhibit-startup-screen t)
+	 (setq line-number-mode t)
+	 (setq auto-save-interval 100)
+	 (setq gc-cons-threshold 20000000)))
 
+(add-hook 'after-init-hook
+	  #'ben/essential-settings)
 
 (use-package emms
   :defer t
@@ -260,10 +265,4 @@ and a time stamp added."
 		   ;; is probably all you need.
 		   (if (executable-find "mplayer")
 		       (setq emms-player-list '(emms-player-mplayer))
-		     (emms-default-players))
-
-		   ;; For libre.fm see `emms-librefm-scrobbler-username' and
-		   ;; `emms-librefm-scrobbler-password'.
-		   ;; Future versions will use .authoinfo.gpg.
-		   )))
-
+		     (emms-default-players)))))
