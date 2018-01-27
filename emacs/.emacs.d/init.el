@@ -1,5 +1,5 @@
 (require 'package)
-(add-to-list 'package-archives (cons "melpa"  "https://melpa.org/packages/") t)
+(add-to-list 'package-archives (cons "melpa" "https://melpa.org/packages/") t)
 (package-initialize)
 
 (cond ((eq system-type 'darwin)
@@ -57,18 +57,6 @@
 (use-package exec-path-from-shell
   :defer t
   :config (exec-path-from-shell-initialize))
-
-(cond ((eq system-type 'darwin)
-       (progn (setq scheme-program-name "/usr/local/bin/chez")
-	      (setq ispell-program-name "/usr/local/bin/aspell")
-	      (setq ben/default-font-size 14)
-	      (setq system-uses-terminfo nil)
-	      (exec-path-from-shell-initialize)))
-      
-      ((eq system-type 'gnu/linux)
-       (progn (setq scheme-program-name "/usr/bin/mit-scheme")
-              (setq ispell-program-name "/usr/bin/aspell")
-              (setq ben/default-font-size 11))))
 
 
 (setq ben/default-font "Hack")
@@ -173,7 +161,8 @@ other, future frames."
   :bind (("M-x" . #'helm-M-x)
          ("C-x r b" . #'helm-filtered-bookmarks)
          ("C-x b" . #'helm-buffers-list)
-	 ("C-x C-f" . #'helm-find-files))
+	 ("C-x C-f" . #'helm-find-files)
+	 ("C-h a" . #'helm-apropos))
   :config (helm-mode 1))
 
 
@@ -187,10 +176,6 @@ other, future frames."
   :defer t)
 
 (use-package org-bullets)
-
-(use-package company
-  :defer t
-  :config (global-company-mode))
 
 
 (use-package smooth-scrolling
@@ -208,7 +193,7 @@ other, future frames."
   "Creates a new buffer with a new diary entry with org mode activated
 and a time stamp added."
   (interactive)
-  (pop-to-buffer (symbol-name (gensym)))
+  (pop-to-buffer (generate-new-buffer-name "diary-"))
   (org-mode)
   (insert "* ")
   (ben/insert-time)
@@ -218,7 +203,7 @@ and a time stamp added."
 
 
 (defun ben/essential-settings ()
-  "Modifies a bunch of settings to make emacs nice."
+  "Modifies a bunch of settings to make Emacs nicer."
   (progn (setq-default cursor-type 'box)
 	 (display-battery-mode t)
 	 (display-time-mode t)
@@ -268,17 +253,4 @@ and a time stamp added."
 		   (if (executable-find "mplayer")
 		       (setq emms-player-list '(emms-player-mplayer))
 		     (emms-default-players)))))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (emms magit smooth-scrolling org-bullets markdown-mode writeroom-mode company helm pdf-tools aggressive-indent undo-tree rainbow-delimiters paredit exec-path-from-shell solarized-theme auto-compile pallet use-package))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
