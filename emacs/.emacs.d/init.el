@@ -35,8 +35,7 @@
 (use-package pallet
   :config (pallet-mode t))
 
-(setq initial-scratch-message (format ";; Scratch buffer created on %s\n"
-				      (shell-command-to-string "date '+%A, %B %d %Y at %R'")))
+
 
 (use-package auto-compile  
   :config (auto-compile-on-load-mode))
@@ -54,9 +53,7 @@
 (use-package solarized-theme 
   :config (ben/apply-solarized-theme))
 
-(use-package exec-path-from-shell
-  :defer t
-  :config (exec-path-from-shell-initialize))
+(use-package exec-path-from-shell)
 
 
 (setq ben/default-font "Hack")
@@ -103,8 +100,6 @@ other, future frames."
 (define-key global-map (kbd "C-=") 'ben/reset-font-size)
 (define-key global-map (kbd "C--") 'ben/decrease-font-size)
 
-(ben/reset-font-size)
-
 (when window-system
   (scroll-bar-mode -1))
 
@@ -116,16 +111,14 @@ other, future frames."
    (python . t)
    (scheme . t)))
 
-
-
 (use-package paredit)
 
 (use-package rainbow-delimiters)
 
-(use-package undo-tree)
+(use-package undo-tree
+  :config (global-undo-tree-mode))
 
 (use-package aggressive-indent)
-
 
 (setq lispy-mode-hooks
       '(clojure-mode-hook
@@ -140,8 +133,7 @@ other, future frames."
 			  (rainbow-delimiters-mode)
 			  (aggressive-indent-mode)
 			  (show-paren-mode)
-			  (company-mode)
-			  (undo-tree-mode)
+			  (company-mode)			  
 			  (linum-mode)))))
 
 (add-hook 'inferior-scheme-mode-hook
@@ -165,7 +157,6 @@ other, future frames."
 	 ("C-h a" . #'helm-apropos))
   :config (helm-mode 1))
 
-
 (use-package company
   :defer t 
   :config (global-company-mode))
@@ -175,8 +166,8 @@ other, future frames."
 (use-package markdown-mode
   :defer t)
 
-(use-package org-bullets)
-
+(use-package org-bullets
+  :defer t)
 
 (use-package smooth-scrolling
   :config (smooth-scrolling-mode))
@@ -189,6 +180,8 @@ other, future frames."
   "Inserts the date and time into the current buffer."
   (shell-command "date '+%A, %B %d %Y at %R'" 1))
 
+(setq initial-scratch-message (format ";; Scratch buffer created on %s\n"
+				      (shell-command-to-string "date '+%A, %B %d %Y at %R'")))
 (defun ben/new-diary-entry ()
   "Creates a new buffer with a new diary entry with org mode activated
 and a time stamp added."
@@ -201,21 +194,37 @@ and a time stamp added."
 
 (define-key global-map (kbd "M-T") 'ben/insert-time)
 
-
 (defun ben/essential-settings ()
   "Modifies a bunch of settings to make Emacs nicer."
-  (progn (setq-default cursor-type 'box)
+  (progn (display-time-mode t)
 	 (display-battery-mode t)
-	 (display-time-mode t)
+	 (setq-default cursor-type 'box)
 	 (setq inhibit-startup-screen t)
 	 (setq line-number-mode t)
 	 (setq auto-save-interval 100)
 	 (setq gc-cons-threshold 20000000)
+	 (setq backup-directory-alist
+	       `(("." . ,(concat user-emacs-directory "backups"))))
+	 (setq writeroom-mode-line t)
 	 (menu-bar-mode -1)
-	 (tool-bar-mode -1)))
+	 (tool-bar-mode -1)
+	 (ben/reset-font-size) 
+	 (exec-path-from-shell-initialize)))
 
 (add-hook 'after-init-hook
 	  #'ben/essential-settings)
+
+(defun ben/enable-writing-settings ()
+  "Enables auto-fill mode, spell checking and disables company mode. Although it looks like
+hard wrapping will warp the text on org-export, it actually doesn't!"
+  (progn (auto-fill-mode 1)
+	 (flyspell-mode 1)
+	 (company-mode -1)))
+
+(add-hook 'markdown-mode-hook (progn (ben/enable-writing-settings)
+				     (writeroom-mode 1)))
+
+(add-hook 'org-mode-hook #'ben/enable-writing-settings)
 
 (use-package emms
   :defer t
