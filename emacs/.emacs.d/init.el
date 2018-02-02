@@ -1,7 +1,11 @@
-;; Welcome to Ben's Init file!
+;; Welcome to Ben's Emacs Init file!
 
 ;; Setting `gc-cons-threshold' high makes startup faster.
 (setq gc-cons-threshold 100000000)
+
+;; Right off the bat remove the eyesores.
+(menu-bar-mode -1)
+(tool-bar-mode -1)
 
 (require 'package)
 (add-to-list 'package-archives (cons "melpa" "https://melpa.org/packages/") t)
@@ -22,7 +26,9 @@
 	      (setq cask-path "~/.cask/cask.el"))))
 
 (unless (file-exists-p cask-path)
-  (user-error "Cask is not installed! Get it at https://github.com/cask/cask"))
+  (message "Cask is not installed! Attempting automatic install...")
+  (shell-command (cond ((eq system-type 'darwin) "brew install cask")
+		       ((eq system-type 'gnu/linux) "curl -fsSL https://raw.githubusercontent.com/cask/cask/master/go | python"))))
 
 (require 'cask cask-path)
 (cask-initialize)
@@ -157,7 +163,7 @@ other, future frames."
 (defun ben/insert-time ()
   "Inserts the date and time into the current buffer."
   (interactive)
-  (shell-command "date '+%A, %B %d %Y at %R'" 1))
+  (shell-command "date '+%A, %B %d, %Y at %R'" 1))
 
 (setq initial-scratch-message
       (format ";; Scratch buffer created on %s\n"
@@ -271,10 +277,7 @@ make Emacs nicer."
 	 (setq show-paren-style 'expression)
 	 (setq backup-directory-alist
 	       `(("." . ,(concat user-emacs-directory "backups"))))	 
-	 (menu-bar-mode -1)
-	 (tool-bar-mode -1)
 	 (ben/reset-font-size) 
 	 (exec-path-from-shell-initialize)))
-
 
 (add-hook 'after-init-hook #'ben/essential-settings)
