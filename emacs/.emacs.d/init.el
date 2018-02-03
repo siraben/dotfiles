@@ -275,8 +275,6 @@ make Emacs nicer."
 	 (setq gc-cons-threshold 800000)
 	 (setq inhibit-startup-screen t) 
 	 (setq show-paren-style 'expression)
-	 (setq backup-directory-alist
-	       `(("." . ,(concat user-emacs-directory "backups"))))	 
 	 (ben/reset-font-size) 
 	 (exec-path-from-shell-initialize)))
 
