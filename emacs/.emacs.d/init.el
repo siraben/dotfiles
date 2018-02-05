@@ -47,8 +47,7 @@
 (setq use-package-verbose t)
 (setq load-prefer-newer t)
 
-(use-package pallet
-  :config (pallet-mode t))
+(use-package pallet)
 
 (use-package auto-compile  
   :config (auto-compile-on-load-mode))
@@ -64,7 +63,6 @@
   :config (ben/apply-solarized-theme))
 
 (use-package exec-path-from-shell)
-
 
 ;; Font settings, inspired by
 ;; `https://github.com/hrs/dotfiles/blob/master/emacs/.emacs.d/configuration.org'
@@ -146,15 +144,17 @@ other, future frames."
 
 (use-package company)
 
-;; Unused, possibly remove?
 (use-package writeroom-mode)
 
 (use-package markdown-mode)
 
 (use-package org-bullets)
 
-(use-package smooth-scrolling 
-  :init (smooth-scrolling-mode))
+(use-package smart-mode-line
+  :config (sml/setup))
+
+(use-package beacon
+  :config (beacon-mode 1))
 
 (use-package magit)
 
@@ -167,7 +167,7 @@ other, future frames."
 
 (setq initial-scratch-message
       (format ";; Scratch buffer created on %s\n"
-	      (shell-command-to-string "date '+%A, %B %d %Y at %R'")))
+	      (shell-command-to-string "date '+%A, %B %d, %Y at %R'")))
 
 (defun ben/new-diary-entry ()
   "Creates a new buffer with a new diary entry with org mode
@@ -213,8 +213,7 @@ code."
 (add-hook 'inferior-scheme-mode-hook 
 	  (lambda ()
 	    (progn (ben/enable-lisp-editing-modes)
-		   (undo-tree-mode -1)
-		   (company-mode -1))))
+		   (undo-tree-mode -1))))
 
 (defun ben/enable-writing-modes ()
   "Enables auto-fill mode, spell checking and disables company
@@ -223,6 +222,9 @@ org-export, it actually doesn't!"
   (progn (auto-fill-mode 1)
 	 (undo-tree-mode 1)
 	 (flyspell-mode 1)
+	 ;; This is for situations like vertically split windows when Org mode headings
+	 ;; don't wrap.
+	 (visual-line-mode 1)
 	 (company-mode -1)))
 
 (add-hook 'markdown-mode-hook #'ben/enable-writing-modes)
@@ -262,20 +264,50 @@ org-export, it actually doesn't!"
 		       (setq emms-player-list '(emms-player-mplayer))
 		     (emms-default-players)))))
 
+(when (fboundp 'tool-bar-mode)
+  (tool-bar-mode -1))
+
+(menu-bar-mode -1)
+
+(setq-default cursor-type 'box)
+
+;; disable startup screen
+(setq inhibit-startup-screen t)
+
+;; nice scrolling
+(setq scroll-margin 0
+      scroll-conservatively 100000
+      scroll-preserve-screen-position 1)
+
+;; mode line settings
+(line-number-mode t)
+(column-number-mode t)
+(size-indication-mode t)
+
+;; enable y/n answers
+(fset 'yes-or-no-p 'y-or-n-p)
+
+(setq helm-buffers-fuzzy-matching           t
+      helm-move-to-line-cycle-in-source     t
+      helm-ff-search-library-in-sexp        t
+      helm-ff-file-name-history-use-recentf t)
+
+
 ;; Finally, we have the essential-settings function that makes Emacs
 ;; usable for my personal setup.
 (defun ben/essential-settings ()
   "Modifies a bunch of settings and enables a bunch of modes to
 make Emacs nicer."
-  (progn (display-time-mode 1)
-	 (display-battery-mode 1)
-	 (global-company-mode 1)
-	 (setq-default cursor-type 'box)
-	 (setq auto-save-interval 100)
-	 (setq gc-cons-threshold 800000)
-	 (setq inhibit-startup-screen t) 
-	 (setq show-paren-style 'expression)
-	 (ben/reset-font-size) 
-	 (exec-path-from-shell-initialize)))
+  (progn 
+    (display-battery-mode 1)
+    (global-company-mode 1) 
+    (setq auto-save-interval 100)
+    (setq gc-cons-threshold 800000)
+    (setq inhibit-startup-screen t) 
+    (setq show-paren-style 'expression)
+    (ben/reset-font-size)
+    (pallet-mode t)
+    (exec-path-from-shell-initialize)))
 
 (add-hook 'after-init-hook #'ben/essential-settings)
+
