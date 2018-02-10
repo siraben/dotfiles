@@ -235,8 +235,9 @@ org-export, it actually doesn't!"
 	 (company-mode -1)))
 
 (add-hook 'markdown-mode-hook #'ben/enable-writing-modes)
-(add-hook 'org-mode-hook (progn (ben/enable-writing-modes)
-				(org-bullets-mode)))
+(add-hook 'org-mode-hook #'(lambda ()
+			     (ben/enable-writing-modes)
+			     (org-bullets-mode)))
 
 (use-package emms
   :bind ("<f7>" . emms-smart-browse)
