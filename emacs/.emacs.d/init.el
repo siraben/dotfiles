@@ -133,39 +133,17 @@ other, future frames."
   :magic ("%PDF" . pdf-view-mode)
   :config (pdf-tools-install))
 
-(use-package helm
-  :demand
-  ;; Override default key bindings with those from Helm
-  :bind (("M-x" . #'helm-M-x)
-         ("C-x r b" . #'helm-filtered-bookmarks)
-         ("C-x b" . #'helm-mini)
-	 ("C-x C-f" . #'helm-find-files)
-	 ("C-h a" . #'helm-apropos)
-	 ("M-y" . #'helm-show-kill-ring)
-	 ("C-x C-b" . #'helm-buffers-list))
-  :config (helm-mode t))
-
+(require 'helm-ido-like "~/.emacs.d/helm-ido-like.el")
 
 (use-package company)
-
 (use-package writeroom-mode)
-
 (use-package markdown-mode)
-
 (use-package org-bullets)
-
 (use-package neotree)
-
-(use-package smart-mode-line
-  :config (sml/setup))
-
-(use-package beacon
-  :config (beacon-mode t))
-
+(use-package smart-mode-line)
+(use-package beacon)
 (use-package magit)
-
 (use-package free-keys)
-
 (use-package fill-column-indicator)
 
 (defun ben/insert-time ()
@@ -219,8 +197,9 @@ code."
 ;; Enable some Lisp modes like paredit and rainbow delimiters, but no
 ;; need to undo and autocomplete.
 (add-hook 'inferior-scheme-mode-hook 
-	  (progn (ben/enable-lisp-editing-modes)
-		 (undo-tree-mode -1)))
+	  #'(lambda ()
+	      (ben/enable-lisp-editing-modes)
+	      (undo-tree-mode -1)))
 
 (defun ben/enable-writing-modes ()
   "Enables auto-fill mode, spell checking and disables company
@@ -235,9 +214,7 @@ org-export, it actually doesn't!"
 	 (company-mode -1)))
 
 (add-hook 'markdown-mode-hook #'ben/enable-writing-modes)
-(add-hook 'org-mode-hook #'(lambda ()
-			     (ben/enable-writing-modes)
-			     (org-bullets-mode)))
+(add-hook 'org-mode-hook #'ben/enable-writing-modes)
 
 (use-package emms
   :bind ("<f7>" . emms-smart-browse)
@@ -309,13 +286,16 @@ make Emacs nicer."
   (progn 
     (display-battery-mode t)
     (display-time-mode t) 
-    (global-company-mode t) 
+    (global-company-mode t)
+    (pallet-mode t)
+    (sml/setup)
     (setq auto-save-interval 100)
     (setq gc-cons-threshold 800000)
     (setq inhibit-startup-screen t) 
     (setq show-paren-style 'expression)
     (ben/reset-font-size)
-    (pallet-mode t)
+    (helm-ido-like)
     (exec-path-from-shell-initialize)))
 
 (add-hook 'after-init-hook #'ben/essential-settings)
+
