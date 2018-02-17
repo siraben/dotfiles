@@ -95,6 +95,7 @@ other, future frames."
   (interactive)
   (setq ben/current-font-size
         (ceiling (* ben/current-font-size ben/font-change-increment)))
+
   (ben/set-font-size))
 
 (defun ben/decrease-font-size ()
@@ -133,7 +134,19 @@ other, future frames."
   :magic ("%PDF" . pdf-view-mode)
   :config (pdf-tools-install))
 
-(require 'helm-ido-like "~/.emacs.d/helm-ido-like.el")
+
+
+;; (require 'helm-ido-like "~/.emacs.d/helm-ido-like.el")
+
+(use-package helm
+  :demand
+  ;; Override default key bindings with those from Helm
+  :bind (("M-x" . #'helm-M-x)
+	 ("C-x r b" . #'helm-filtered-bookmarks)
+	 ("C-x b" . #'helm-mini)
+	 ("C-x C-f" . #'helm-find-files)
+	 ("C-h a" . #'helm-apropos)
+	 ("M-y" . #'helm-show-kill-ring)))
 
 (use-package company)
 (use-package writeroom-mode)
@@ -293,9 +306,7 @@ make Emacs nicer."
     (setq gc-cons-threshold 800000)
     (setq inhibit-startup-screen t) 
     (setq show-paren-style 'expression)
-    (ben/reset-font-size)
-    (helm-ido-like)
+    (ben/reset-font-size) 
     (exec-path-from-shell-initialize)))
 
 (add-hook 'after-init-hook #'ben/essential-settings)
-
