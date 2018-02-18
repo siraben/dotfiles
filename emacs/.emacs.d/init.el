@@ -139,6 +139,7 @@ other, future frames."
 ;; (require 'helm-ido-like "~/.emacs.d/helm-ido-like.el")
 
 (use-package helm
+  :disabled
   :demand
   ;; Override default key bindings with those from Helm
   :bind (("M-x" . #'helm-M-x)
@@ -147,6 +148,9 @@ other, future frames."
 	 ("C-x C-f" . #'helm-find-files)
 	 ("C-h a" . #'helm-apropos)
 	 ("M-y" . #'helm-show-kill-ring)))
+
+(use-package smex
+  :bind (("M-x" . #'smex)))
 
 (use-package company)
 (use-package writeroom-mode)
@@ -301,6 +305,7 @@ make Emacs nicer."
     (display-time-mode t) 
     (global-company-mode t)
     (pallet-mode t)
+    (ido-mode t)
     (sml/setup)
     (setq auto-save-interval 100)
     (setq gc-cons-threshold 800000)
