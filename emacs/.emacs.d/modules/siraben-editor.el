@@ -1,29 +1,40 @@
-
-(setq-default indent-tabs-mode nil)   ;; don't use tabs to indent
-(setq-default tab-width 8)            ;; but maintain correct appearance
+;; siraben-editor.el
+;; This file sets up editor features that make Emacs usable.
+(setq-default indent-tabs-mode nil)   ;; Don't use tabs to indent
+(setq-default tab-width 8)            ;; But maintain correct appearance
 
 ;; Newline at end of file
 (setq require-final-newline t)
 
-;; delete the selection with a keypress
+;; Delete the selection with a keypress.
 (delete-selection-mode t)
 
-;; store all backup and autosave files in the tmp dir
+;; Store all backup and autosave files in the tmp dir.
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-;; autosave the undo-tree history
+;; Autosave the undo-tree history.
 (setq undo-tree-history-directory-alist
       `((".*" . ,temporary-file-directory)))
 (setq undo-tree-auto-save-history t)
 
-;; revert buffers automatically when underlying files are changed externally
+;; Revert buffers automatically when underlying files are changed externally.
 (global-auto-revert-mode t)
 (setq tab-always-indent 'complete)
 
 (setq blink-matching-paren nil)
+
+;; Org mode code block languages
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (gnuplot . t)
+   (calc . t)
+   (python . t)
+   (scheme . t)))
 
 (defun ben/enable-lisp-editing-modes ()
   "Enables a collection of modes (such as paredit, rainbow delimiters,

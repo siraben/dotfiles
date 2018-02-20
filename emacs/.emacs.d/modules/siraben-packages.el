@@ -1,5 +1,6 @@
 ;;; siraben-packages.el
-;; This file sets up `use-package' and installs other packages.
+
+;; This file sets up `use-package' and handles the installation of most packages.
 
 (require 'package)
 (add-to-list 'package-archives (cons "melpa" "https://melpa.org/packages/") t)
@@ -47,16 +48,6 @@
 	auto-package-update-interval 4)
   (auto-package-update-maybe))
 
-;; I sometimes use code blocks in Org mode, so enable those.
-
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((emacs-lisp . t)
-   (gnuplot . t)
-   (calc . t)
-   (python . t)
-   (scheme . t)))
-
 (use-package pdf-tools
   ;; The :magic tag automatically turns on pdf-view-mode when PDF
   ;; files are opened.
@@ -77,6 +68,7 @@
 (use-package smex
   :bind (("M-x" . #'smex)))
 
+;; This one is pretty long, it's a music player in Emacs.
 (use-package emms
   :bind ("<f7>" . emms-smart-browse)
   :config (progn (require 'emms-setup)

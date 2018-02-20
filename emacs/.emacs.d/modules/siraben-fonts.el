@@ -1,3 +1,8 @@
+;; siraben-fonts.el
+
+;; This file sets up the use of the Hack font and various functions
+;; that allow fonts to be resized.
+
 ;; Font settings, inspired by
 ;; `https://github.com/hrs/dotfiles/blob/master/emacs/.emacs.d/configuration.org'
 (setq ben/default-font "Hack")

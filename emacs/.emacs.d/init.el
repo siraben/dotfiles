@@ -2,13 +2,13 @@
 
 ;; (package-initialize)
 
-;; Load new bytecode always
+;; Always prefer the newest version of a file.
 (setq load-prefer-newer t)
 
-;; Setting `gc-cons-threshold' high makes startup faster.
+;; Setting the garbage collection threshold high makes startup faster.
 (setq gc-cons-threshold 50000000)
 
-;; Right off the bat remove the eyesores.
+;; Right off the bat, remove the eyesores.
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
 (menu-bar-mode -1)
@@ -23,11 +23,11 @@
 
 (add-to-list 'load-path ben-modules-dir)
 
-;; Package setup
-(require 'siraben-core)
-(require 'siraben-fonts)
+;; Delegate tasks to various modules
 (require 'siraben-packages)
 (require 'siraben-ui)
+(require 'siraben-core)
+(require 'siraben-fonts)
 (require 'siraben-keybindings)
 (require 'siraben-editor)
 
@@ -38,6 +38,7 @@
 (when (eq system-type 'gnu/linux)
   (require 'siraben-linux))
 
+;; Initial scratch buffer message
 (setq initial-scratch-message
       (format ";; Scratch buffer created on %s\n"
 	      (shell-command-to-string "date '+%A, %B %d, %Y at %R'")))
