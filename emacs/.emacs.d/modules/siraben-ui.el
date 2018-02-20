@@ -16,6 +16,9 @@
       scroll-conservatively 100000
       scroll-preserve-screen-position 1)
 
+;; warn when opening files bigger than 100MB
+(setq large-file-warning-threshold 100000000)
+
 ;; mode line settings
 (line-number-mode t)
 (column-number-mode t)
