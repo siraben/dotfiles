@@ -12,10 +12,6 @@ This follows freedesktop standards, should work in X servers."
   (interactive)
   (shell-command "date '+%A, %B %d, %Y at %R'" 1))
 
-(setq initial-scratch-message
-      (format ";; Scratch buffer created on %s\n"
-	      (shell-command-to-string "date '+%A, %B %d, %Y at %R'")))
-
 (defun ben/new-diary-entry ()
   "Creates a new buffer with a new diary entry with org mode
 activated and a time stamp added."
