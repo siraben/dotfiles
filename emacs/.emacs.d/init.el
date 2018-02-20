@@ -36,5 +36,6 @@
 (when (eq system-type 'gnu/linux)
   (require 'siraben-linux))
 
-
-
+(setq initial-scratch-message
+      (format ";; Scratch buffer created on %s\n"
+	      (shell-command-to-string "date '+%A, %B %d, %Y at %R'")))

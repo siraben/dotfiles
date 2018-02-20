@@ -37,7 +37,6 @@
 (use-package markdown-mode)
 (use-package org-bullets)
 (use-package neotree)
-(use-package beacon)
 (use-package magit)
 (use-package free-keys)
 (use-package fill-column-indicator)

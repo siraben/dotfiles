@@ -36,8 +36,6 @@
 		   (abbreviate-file-name (buffer-file-name))
 		 "%b"))))
 
-(beacon-mode +1)
-
 (use-package color-theme-sanityinc-tomorrow
   :demand
   :config (load-theme 'sanityinc-tomorrow-night t))
