@@ -1,32 +1,32 @@
 ;; siraben-ui.el
+
 ;; This file configures the visual appearance of Emacs, loads
 ;; my favorite theme, and adds a smart mode line.
 
-;; the blinking cursor is nothing, but an annoyance
+;; Remove the annoying blinking cursor and bell ring.
 (blink-cursor-mode -1)
-
-;; disable the annoying bell ring
 (setq ring-bell-function 'ignore)
 
-;; disable startup screen
+;; Disable startup screen.
 (setq inhibit-startup-screen t)
 
-;; nice scrolling
+;; Nice scrolling.
 (setq scroll-margin 0
       scroll-conservatively 100000
       scroll-preserve-screen-position 1)
 
-;; warn when opening files bigger than 100MB
+;; Warn when opening files bigger than 100MB.
 (setq large-file-warning-threshold 100000000)
 
-;; mode line settings
+;; Mode line settings.
 (line-number-mode t)
 (column-number-mode t)
 (size-indication-mode t)
 
-;; enable y/n answers
+;; Enable y/n answers.
 (fset 'yes-or-no-p 'y-or-n-p)
 
+;; Extra mode line modes.
 (display-battery-mode t)
 (display-time-mode t) 
 (global-company-mode t)
