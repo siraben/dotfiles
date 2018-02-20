@@ -29,7 +29,7 @@ activated and a time stamp added."
     (message "Updating installed packages...")
     (auto-package-update-now)
     (message "Updating siraben's Emacs config...")
-    (cd (file-name-directory load-file-name))
+    (cd ben-root-dir)
     (shell-command "git pull") 
     (message "Update finished. Restart Emacs to complete the process.")))
 
