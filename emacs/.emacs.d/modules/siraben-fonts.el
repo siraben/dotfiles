@@ -1,7 +1,8 @@
 ;; Font settings, inspired by
 ;; `https://github.com/hrs/dotfiles/blob/master/emacs/.emacs.d/configuration.org'
 (setq ben/default-font "Hack")
-(setq ben/default-font-size 12)
+(setq ben/default-font-size (cond ((eq system-type 'darwin) 12)
+                                  ((eq system-type 'gnu/linux) 10)))
 (setq ben/font-change-increment 1.1)
 
 (defun ben/font-code ()

@@ -23,7 +23,7 @@ activated and a time stamp added."
   (end-of-buffer))
 
 (defun siraben-update ()
-  "Update Prelude to its latest version."
+  "Update siraben's Emacs config to its latest version."
   (interactive)
   (when (y-or-n-p "Do you want to update siraben's Emacs config?")
     (message "Updating installed packages...")
@@ -32,3 +32,5 @@ activated and a time stamp added."
     (cd (file-name-directory load-file-name))
     (shell-command "git pull") 
     (message "Update finished. Restart Emacs to complete the process.")))
+
+(provide 'siraben-core)
