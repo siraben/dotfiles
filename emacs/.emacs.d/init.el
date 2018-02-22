@@ -1,5 +1,6 @@
 ;; Welcome to Ben's Emacs Init file!
 
+;; Make package.el happy.
 ;; (package-initialize)
 
 ;; Always prefer the newest version of a file.
@@ -31,7 +32,7 @@
 (require 'siraben-keybindings)
 (require 'siraben-editor)
 
-;; OS-specific settings
+;; OS-specific elisp
 (when (eq system-type 'darwin)
   (require 'siraben-macos))
 
