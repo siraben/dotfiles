@@ -12,5 +12,8 @@
   (shell-command "brew install aspell"))
 (defvar ben/default-font-size 12)
 (setq system-uses-terminfo nil)
-  
+
+(use-package exec-path-from-shell
+  :demand
+  :config (exec-path-from-shell-initialize))
 (provide 'siraben-macos)
