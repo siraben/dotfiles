@@ -1,7 +1,9 @@
-;;; siraben-packages.el
+;; siraben-packages.el
 
-;; This file sets up `use-package' and handles the installation of most packages.
+;; This file sets up `use-package', which handles the installation of
+;; most packages.
 
+;; Initialize package.el
 (require 'package)
 (add-to-list 'package-archives (cons "melpa" "https://melpa.org/packages/") t)
 (package-initialize)
@@ -15,7 +17,6 @@
 
 ;; Ensure that all packages are downloaded to their latest version,
 ;; but also defer them to speed up init.
-
 (setq use-package-always-ensure t)
 (setq use-package-always-defer t)
 (setq use-package-verbose t)
@@ -24,16 +25,23 @@
   :demand
   :config (auto-compile-on-load-mode))
 
+;; These packages add things to the mode line when they're activated,
+;; I don't want them to clutter my screen.
 (use-package diminish)
-(use-package paredit
+
+(use-package paredit 
   :diminish paredit-mode)
-(use-package rainbow-delimiters)
-(use-package undo-tree
+
+(use-package undo-tree 
   :diminish undo-tree-mode)
+
 (use-package aggressive-indent
   :diminish aggressive-indent-mode)
+
 (use-package company
   :diminish company-mode)
+
+(use-package rainbow-delimiters)
 (use-package writeroom-mode)
 (use-package markdown-mode)
 (use-package org-bullets)
@@ -51,8 +59,7 @@
 (use-package pdf-tools
   ;; The :magic tag automatically turns on pdf-view-mode when PDF
   ;; files are opened.
-  :magic ("%PDF" . pdf-view-mode)
-  :config (pdf-tools-install))
+  :magic ("%PDF" . pdf-view-mode))
 
 (setq helm-buffers-fuzzy-matching           t
       helm-move-to-line-cycle-in-source     t
@@ -63,7 +70,6 @@
   ;; Override default key bindings with those from Helm
   :bind (("C-h a" . #'helm-apropos)
 	 ("M-y" . #'helm-show-kill-ring)))
-
 
 (use-package smex
   :bind (("M-x" . #'smex)))

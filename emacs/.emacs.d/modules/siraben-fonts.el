@@ -1,54 +1,57 @@
 ;; siraben-fonts.el
 
 ;; This file sets up the use of the Hack font and various functions
-;; that allow fonts to be resized.
-
-;; Font settings, inspired by
+;; that allow fonts to be resized. The font settings were inspired by
+;; hrs's dotfiles repository at
 ;; `https://github.com/hrs/dotfiles/blob/master/emacs/.emacs.d/configuration.org'
-(setq ben/default-font "Hack")
-(setq ben/default-font-size (cond ((eq system-type 'darwin) 12)
-                                  ((eq system-type 'gnu/linux) 10)))
-(setq ben/font-change-increment 1.1)
 
-(defun ben/font-code ()
+(setq siraben/default-font "Hack")
+(setq siraben/default-font-size (cond ((eq system-type 'darwin) 13)
+                                  ((eq system-type 'gnu/linux) 10)))
+(setq siraben/font-change-increment 1.1)
+
+(defun siraben/font-code ()
   "Return a string representing the current font (like
   \"Hack-13\")."
-  (concat ben/default-font "-" (number-to-string ben/current-font-size)))
+  (concat siraben/default-font "-"
+          (number-to-string siraben/current-font-size)))
 
-(defun ben/set-font-size ()
-  "Set the font to `ben/default-font' at `ben/current-font-size'.
+(defun siraben/set-font-size ()
+  "Set the font to `siraben/default-font' at `siraben/current-font-size'.
 Set that for the current frame, and also make it the default for
 other, future frames."
-  (let ((font-code (ben/font-code)))
+  (let ((font-code (siraben/font-code)))
     (add-to-list 'default-frame-alist (cons 'font font-code))
     (set-frame-font font-code)))
 
-(defun ben/reset-font-size ()
-  "Change font size back to `ben/default-font-size'."
+(defun siraben/reset-font-size ()
+  "Change font size back to `siraben/default-font-size'."
   (interactive)
-  (setq ben/current-font-size ben/default-font-size)
-  (ben/set-font-size))
+  (setq siraben/current-font-size siraben/default-font-size)
+  (siraben/set-font-size))
 
-(defun ben/increase-font-size ()
+(defun siraben/increase-font-size ()
   "Increase current font size by a factor of
-`ben/font-change-increment'."
+`siraben/font-change-increment'."
   (interactive)
-  (setq ben/current-font-size
-        (ceiling (* ben/current-font-size ben/font-change-increment)))
+  (setq siraben/current-font-size
+        (ceiling (* siraben/current-font-size
+                    siraben/font-change-increment)))
 
-  (ben/set-font-size))
+  (siraben/set-font-size))
 
-(defun ben/decrease-font-size ()
+(defun siraben/decrease-font-size ()
   "Decrease current font size by a factor of
-`ben/font-change-increment', down to a minimum size of 1."
+`siraben/font-change-increment', down to a minimum size of 1."
   (interactive)
-  (setq ben/current-font-size
+  (setq siraben/current-font-size
         (max 1
-             (floor (/ ben/current-font-size ben/font-change-increment))))
-  (ben/set-font-size))
+             (floor (/ siraben/current-font-size
+                       siraben/font-change-increment))))
+  (siraben/set-font-size))
 
 
-(ben/reset-font-size)
+(siraben/reset-font-size)
 
 
 (provide 'siraben-fonts)

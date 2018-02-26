@@ -1,18 +1,13 @@
-(defun siraben-fullscreen ()
-  "Make Emacs window fullscreen.
-This follows freedesktop standards, should work in X servers."
-  (interactive)
-  (if (eq window-system 'x)
-      (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
-                             '(2 "_NET_WM_STATE_FULLSCREEN" 0))
-    (error "Only X server is supported")))
+;; siraben-core.el
 
-(defun ben/insert-time ()
+;; This file contains the core functions I wrote.
+
+(defun siraben/insert-time ()
   "Inserts the date and time into the current buffer."
   (interactive)
   (shell-command "date '+%A, %B %d, %Y at %R'" 1))
 
-(defun ben/new-diary-entry ()
+(defun siraben/new-diary-entry ()
   "Creates a new buffer with a new diary entry with org mode
 activated and a time stamp added."
   (interactive)
@@ -29,8 +24,17 @@ activated and a time stamp added."
     (message "Updating installed packages...")
     (auto-package-update-now)
     (message "Updating siraben's Emacs config...")
-    (cd ben-root-dir)
+    (cd siraben-root-dir)
     (shell-command "git pull") 
     (message "Update finished. Restart Emacs to complete the process.")))
+
+(defun siraben-reset-packages ()
+  "Attempts to reset installed packages."
+  (interactive)
+  (when (y-or-n-p "Really reset packages?")
+    (message "Removing installed package directory...")
+    (delete-directory (concat siraben-root-dir "elpa/") t t) 
+    (when (y-or-n-p "Packages deleted. Quit Emacs?")
+      (save-buffers-kill-emacs))))
 
 (provide 'siraben-core)
