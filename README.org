@@ -1,0 +1,32 @@
+#+TITLE: siraben's dotfiles
+#+AUTHOR: Siraphob (Ben) Phipathananunth
+
+This is a collection of my dotfiles. These are highly tailored to my
+tastes so don't expect me to merge drastically-altering pull requests!
+
+* Supported platforms
+Should work on any Linux platform that allows for the installation of
+the dependencies (e.g. through a package manager, or building from
+source).
+
+All versions of macOS that support Homebrew.
+
+* What is configured?
+- Emacs
+
+* Dependencies
+- Emacs (>= 24.3)
+- GNU Stow
+
+* Things to Implement
+- Automated setup of [[http://ohmyz.sh][Oh My Zsh!]]
+- Homebrew
+- Firefox user.js
+
+* Installation
+#+BEGIN_SRC sh
+> cd ~/
+> git clone https://github.com/siraben/dotfiles
+> cd dotfiles
+> ./install.sh
+#+END_SRC
