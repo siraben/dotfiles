@@ -23,7 +23,7 @@
 (column-number-mode t)
 (size-indication-mode t)
 
-;; Enable y/n answers.
+;; Enable short answers
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;; Extra mode line modes.
@@ -39,14 +39,19 @@
 		   (abbreviate-file-name (buffer-file-name))
 		 "%b"))))
 
+;; Enable my favorite color scheme
 (use-package color-theme-sanityinc-tomorrow
   :demand
   :config (load-theme 'sanityinc-tomorrow-night t))
 
+;; Improve the mode line
 (use-package smart-mode-line
   :demand
   :config (progn (setq sml/no-confirm-load-theme t)
 		 (setq sml/theme nil)))
+
+;; Remove the auto-revert mode-line
+(diminish 'auto-revert-mode)
 
 (add-hook 'after-init-hook #'sml/setup)
 
