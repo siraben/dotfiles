@@ -1,12 +1,11 @@
 ;; siraben-org.el
 
 ;; This file configure Org mode, especially its agenda and notes
-;; features..
+;; features.
 
 (setq org-directory "~/Nextcloud")
-(add-to-list 'auto-mode-alist '("\\.org\\’" . org-mode))
-
 (setq org-default-notes-file (concat org-directory "/notes.org"))
+(setq org-agenda-files "~/Nextcloud/homework.org")
 
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c l") 'org-store-link)
