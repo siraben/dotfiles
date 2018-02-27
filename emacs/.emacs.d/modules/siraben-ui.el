@@ -32,6 +32,7 @@
 (global-company-mode t)
 
 (ido-mode t)
+(desktop-save-mode 1)
 
 (setq frame-title-format
       '("" invocation-name " Siraben - "
