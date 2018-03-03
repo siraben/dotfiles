@@ -18,6 +18,8 @@
 (when window-system
   (scroll-bar-mode -1))
 
+(setq-default cursor-type 'box)
+
 (defvar siraben-root-dir "~/dotfiles/emacs/.emacs.d/")
 
 (defvar siraben-modules-dir (expand-file-name "modules" siraben-root-dir)
