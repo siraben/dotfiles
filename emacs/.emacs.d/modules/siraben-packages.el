@@ -44,11 +44,13 @@
 (use-package rainbow-delimiters)
 (use-package writeroom-mode)
 (use-package markdown-mode)
-(use-package org-bullets)
 (use-package neotree)
 (use-package magit)
 (use-package free-keys)
 (use-package fill-column-indicator)
+(use-package which-key
+  :diminish
+  :demand)
 
 (use-package auto-package-update 
   :config

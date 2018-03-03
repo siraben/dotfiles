@@ -1,8 +1,11 @@
 ;; Welcome to siraben's Emacs Init file!
 
-;; This file is the first file to be executed by Emacs.
+;; init.el
+;; This is the first to be executed by Emacs.
 
-;; Make package.el happy.
+
+;; Make package.el happy. Drop this line in Emacs 27 as it will no
+;; longer be needed.
 ;; (package-initialize)
 
 ;; Always prefer the newest version of a file.
@@ -18,6 +21,7 @@
 (when window-system
   (scroll-bar-mode -1))
 
+;; And ensure the cursor is a box.
 (setq-default cursor-type 'box)
 
 (defvar siraben-root-dir "~/dotfiles/emacs/.emacs.d/")
