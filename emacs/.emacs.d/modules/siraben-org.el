@@ -4,8 +4,8 @@
 ;; features.
 
 (setq org-directory "~/Nextcloud")
-(setq org-default-notes-file (concat org-directory "/notes.org"))
-(setq org-agenda-files "~/Nextcloud/homework.org")
+(setq org-default-notes-file (concat org-directory "/homework.org"))
+(setq org-agenda-files '("~/Nextcloud/homework.org"))
 
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c l") 'org-store-link)
@@ -23,5 +23,19 @@
    (calc . t)
    (python . t)
    (scheme . t)))
+
+;; From `https://emacs.stackexchange.com/a/13828'
+;; The fifth entry specifies how many newlines are allowed inside a
+;; marked up expression. By default, org-mode allows a single
+;; newline. So if you want to be able to add markup to text that spans
+;; more than two consecutive lines, you'll need to modify this entry.
+
+(setcar (nthcdr 4 org-emphasis-regexp-components) 2)
+
+(defun my-org-archive-done-tasks ()
+  (interactive)
+  (org-map-entries 'org-archive-subtree "/DONE" 'file))
+
+;; ... where N is the number of newlines you want to allow.
 
 (provide 'siraben-org)
