@@ -45,14 +45,15 @@
   :config (load-theme 'sanityinc-tomorrow-night t))
 
 ;; Improve the mode line
-(use-package smart-mode-line
-  :demand
+(use-package smart-mode-line 
   :config (progn (setq sml/no-confirm-load-theme t)
-		 (setq sml/theme nil)))
+		 (setq sml/theme nil)
+                 (add-to-list 'sml/replacer-regexp-list '("^~/dotfiles/emacs/.emacs.d/" ":Emacs Config:") t)))
 
 ;; Remove the auto-revert mode-line
 (diminish 'auto-revert-mode)
-
+(diminish 'flyspell-mode)
+(diminish 'auto-fill-function " ⮐")
 (add-hook 'after-init-hook #'sml/setup)
 
 (provide 'siraben-ui)
