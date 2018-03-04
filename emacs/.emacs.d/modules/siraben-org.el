@@ -38,6 +38,7 @@
 
 ;; ... where N is the number of newlines you want to allow.
 
+(require 'ox-latex)
 (add-to-list 'org-latex-classes
              '("koma-article"
                "\\documentclass{scrartcl}"
