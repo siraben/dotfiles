@@ -9,7 +9,7 @@
 (defvar siraben/default-font-size
   (cond
    ((eq system-type 'darwin) 13)
-   ((eq system-type 'gnu/linux) 12))
+   ((eq system-type 'gnu/linux) 10.7))
   "The default font size in Emacs.")
 
 (defvar siraben/font-change-increment 1.1
