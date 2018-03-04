@@ -5,10 +5,16 @@
 ;; hrs's dotfiles repository at
 ;; `https://github.com/hrs/dotfiles/blob/master/emacs/.emacs.d/configuration.org'
 
-(setq siraben/default-font "Hack")
-(setq siraben/default-font-size (cond ((eq system-type 'darwin) 13)
-                                  ((eq system-type 'gnu/linux) 10)))
-(setq siraben/font-change-increment 1.1)
+(defvar siraben/default-font "Hack" "The default font to use in Emacs.")
+(defvar siraben/default-font-size
+  (cond
+   ((eq system-type 'darwin) 13)
+   ((eq system-type 'gnu/linux) 12))
+  "The default font size in Emacs.")
+
+(defvar siraben/font-change-increment 1.1
+      "The multipler to the font size when
+`siraben/increase-font-size' is invoked.")
 
 (defun siraben/font-code ()
   "Return a string representing the current font (like
