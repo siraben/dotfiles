@@ -14,7 +14,6 @@
   (message "Installing aspell")
   (shell-command "brew install aspell"))
 
-(defvar siraben/default-font-size 12)
 (setq system-uses-terminfo nil)
 
 (use-package exec-path-from-shell
