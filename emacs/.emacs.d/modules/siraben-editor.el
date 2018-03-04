@@ -73,12 +73,12 @@ org-export, it actually doesn't!"
 	 (visual-line-mode 1)
 	 (company-mode -1)))
 
-(defvar siraben-timed-writing-timer
+(defvar-local siraben-timed-writing-timer
   nil
   "The current writing timer object. Stop this timer with
   `cancel-timer'.")
 
-(defun siraben-timed-writing (&optional length)
+(defun siraben-timed-writing-mode (&optional length)
   "Begin a timed writing session for X minutes, where X is the
 numerical prefix passed to the function, or the numerical
 argument from an Elisp function call, or the default value of 5.
@@ -88,40 +88,49 @@ which the function was invoked read only."
   (interactive "p")
   (let ((working-buffer (current-buffer))
         (default-length 5))
-    (setq siraben-timed-writing-timer
-          (run-at-time (concat (int-to-string (or current-prefix-arg
-                                                  length
-                                                  default-length)) "min")
-                       nil
-                       `(lambda ()
-                          (switch-to-buffer ,working-buffer)
-                          (read-only-mode))))))
+    (setq-local siraben-timed-writing-timer
+                (run-at-time (concat (int-to-string (or current-prefix-arg
+                                                        length
+                                                        default-length)) "min")
+                             nil
+                             `(lambda ()
+                                (switch-to-buffer ,working-buffer)
+                                (read-only-mode))))))
 
 (add-hook 'markdown-mode-hook #'siraben-enable-writing-modes)
 (add-hook 'org-mode-hook #'siraben-enable-writing-modes)
 (setq auto-save-interval 100)
 
-(defvar-local siraben-most-dangerous-timer
-  nil
-  "Reserved timer for `siraben-most-dangerous-mode'.")
+;; Implement the most dangerous mode
 
-(defun siraben-most-dangerous-mode (&optional duration)
-  "A mode inspired by `http://www.themostdangerouswritingapp.com/'. "
-  (interactive "p") 
-  (let ((working-buffer (current-buffer)))
-    (setq-local siraben-most-dangerous-timer
-                (run-with-idle-timer 5 nil `(lambda ()
-                                              (when (yes-or-no-p "Time's up! Make the buffer you were working on read-only? ")
-                                                (switch-to-buffer ,working-buffer)
-                                                (erase-buffer)
-                                                (setq-local siraben-most-dangerous-timer nil)))))
-    
-    (run-at-time (or current-prefix-arg duration 900)
-                 nil
-                 #'(lambda () (if (timerp siraben-most-dangerous-timer)
-                                  (cancel-timer siraben-most-dangerous-timer))))))
+(defvar grace 5)
+(defvar restore-mode-line nil)
+(defvar most-dangerous-timer nil)
 
+(defun most-dangerous-timer-reset ()
+  (setq grace 5))
 
+(defvar end-time 0)
 
+(defun most-dangerous-mode (&optional duration) 
+  (interactive "p")
+  (most-dangerous-timer-reset)
+  (setq end-time (+ (or current-prefix-arg duration 300) (cadr (current-time)))
+        most-dangerous-timer
+        (run-with-timer 1 1 #'(lambda ()
+                                (unless (> grace 0)
+                                  (backward-kill-word 1))
+                                (setq mode-line-format (format "Grace: %d Time left: %d"
+                                                               (setq grace (- grace 1))
+                                                               (- end-time (cadr (current-time)))))
+                                (force-mode-line-update)))
+        restore-mode-line mode-line-format)
+  (add-hook 'post-self-insert-hook #'most-dangerous-timer-reset)
+  (run-at-time (- end-time (cadr (current-time)))
+               nil
+               #'(lambda ()
+                   (cancel-timer most-dangerous-timer)
+                   (remove-hook 'post-self-insert-hook #'most-dangerous-timer-reset)
+                   (setq mode-line-format restore-mode-line))))
 
 (provide 'siraben-editor)
