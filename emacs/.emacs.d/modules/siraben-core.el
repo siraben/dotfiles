@@ -2,12 +2,12 @@
 
 ;; This file contains the core functions I wrote.
 
-(defun siraben/insert-time ()
+(defun siraben-insert-time ()
   "Inserts the date and time into the current buffer."
   (interactive)
   (shell-command "date '+%A, %B %d, %Y at %R'" 1))
 
-(defun siraben/new-diary-entry ()
+(defun siraben-new-diary-entry ()
   "Creates a new buffer with a new diary entry with org mode
 activated and a time stamp added."
   (interactive)
@@ -29,7 +29,7 @@ activated and a time stamp added."
     (message "Update finished. Restart Emacs to complete the process.")))
 
 (defun siraben-reset-packages ()
-  "Attempts to reset installed packages."
+  "Deletes all packages from the directory `siraben-root-dir'"
   (interactive)
   (when (y-or-n-p "Really reset packages?")
     (message "Removing installed package directory...")

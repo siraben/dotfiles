@@ -31,7 +31,7 @@
 (display-time-mode t) 
 (global-company-mode t)
 
-(ido-mode t)
+;;(ido-mode t)
 
 (setq frame-title-format
       '("" invocation-name " Siraben - "
@@ -54,6 +54,7 @@
 (diminish 'auto-revert-mode)
 (diminish 'flyspell-mode)
 (diminish 'auto-fill-function " ⮐")
+(diminish 'helm-mode)
 (add-hook 'after-init-hook #'sml/setup)
 
 (provide 'siraben-ui)

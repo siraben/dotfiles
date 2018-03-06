@@ -15,6 +15,8 @@
 
 (require 'use-package)
 
+(setq use-package-compute-statistics t)
+
 ;; Ensure that all packages are downloaded to their latest version,
 ;; but also defer them to speed up init.
 (setq use-package-always-ensure t)
@@ -23,7 +25,8 @@
 
 (use-package auto-compile
   :demand
-  :config (auto-compile-on-load-mode))
+  :config
+  (auto-compile-on-load-mode))
 
 ;; These packages add things to the mode line when they're activated,
 ;; I don't want them to clutter my screen.
@@ -32,7 +35,7 @@
 (use-package paredit 
   :diminish paredit-mode)
 
-(use-package undo-tree 
+(use-package undo-tree
   :diminish undo-tree-mode)
 
 (use-package aggressive-indent
@@ -55,28 +58,36 @@
 (use-package auto-package-update 
   :config
   (setq auto-package-update-delete-old-versions t
-	auto-package-update-interval 4)
-  (auto-package-update-maybe))
+	auto-package-update-interval 4))
 
 (use-package pdf-tools
   ;; The :magic tag automatically turns on pdf-view-mode when PDF
   ;; files are opened.
   :magic ("%PDF" . pdf-view-mode))
 
-(setq helm-buffers-fuzzy-matching           t
-      helm-move-to-line-cycle-in-source     t
-      helm-ff-search-library-in-sexp        t
-      helm-ff-file-name-history-use-recentf t)
-
 (use-package helm 
-  ;; Override default key bindings with those from Helm
-  :bind (("C-h a" . #'helm-apropos)
-	 ("M-y" . #'helm-show-kill-ring)))
+  ;; Override default key bindings with those from Helm 
+  :bind (("C-h a" . 'helm-apropos)
+         ("C-h f" . 'helm-apropos)
+         ("C-h r" . 'helm-info-emacs)
+         ("C-x C-f" . 'helm-find-files)
+	 ("M-y" . 'helm-show-kill-ring)
+         ("C-x b" . 'helm-mini)
+         ("C-x C-b" . 'helm-buffers-list)
+         ("M-x" . 'helm-M-x))
+  :config (setq helm-split-window-in-side-p           t
+                helm-buffers-fuzzy-matching           t
+                helm-move-to-line-cycle-in-source     t
+                helm-ff-search-library-in-sexp        t
+                helm-ff-file-name-history-use-recentf t))
+
+(add-hook 'after-init-hook '(lambda () (helm-mode 1)))
 
 (use-package smex
-  :bind (("M-x" . #'smex)))
+  :disabled
+  :bind (("M-x" . 'smex)))
 
-;; This one is pretty long, it's a music player in Emacs.
+;; This one has a pretty long config, it's a music player in Emacs.
 (use-package emms
   :bind ("<f7>" . emms-smart-browse)
   :config (progn (require 'emms-setup)
