@@ -24,17 +24,20 @@
 ;; And ensure the cursor is a box.
 (setq-default cursor-type 'box)
 
-(defvar siraben-root-dir "~/dotfiles/emacs/.emacs.d/")
+(defvar siraben-root-dir
+  "~/dotfiles/emacs/.emacs.d/"
+  "The root directory of the Emacs configuration.")
 
-(defvar siraben-modules-dir (expand-file-name "modules" siraben-root-dir)
+(defvar siraben-modules-dir
+  (expand-file-name "modules" siraben-root-dir)
   "The directory that contains all the modules for my
 configuration.")
 
 (add-to-list 'load-path siraben-modules-dir)
 
+(require 'siraben-core)
 (require 'siraben-packages)
 (require 'siraben-ui)
-(require 'siraben-core)
 (require 'siraben-fonts)
 (require 'siraben-keybindings)
 (require 'siraben-editor)
