@@ -14,17 +14,19 @@ activated and a time stamp added."
   (pop-to-buffer (generate-new-buffer-name "diary-"))
   (org-mode)
   (insert "* ")
-  (ben/insert-time)
+  (siraben-insert-time)
   (end-of-buffer))
 
 (defun siraben-update ()
-  "Update siraben's Emacs config to its latest version."
+  "Update siraben's Emacs config to its latest version, and any
+packages along with it."
   (interactive)
-  (when (y-or-n-p "Do you want to update siraben's Emacs config?")
+  (when (y-or-n-p "Confirm update config? Any changes made locally will be discarded.")
     (message "Updating installed packages...")
-    (auto-package-update-now)
+    (auto-package-update-maybe)
     (message "Updating siraben's Emacs config...")
     (cd siraben-root-dir)
+    (shell-command "git reset --hard")
     (shell-command "git pull") 
     (message "Update finished. Restart Emacs to complete the process.")))
 
