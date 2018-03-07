@@ -41,6 +41,7 @@ configuration.")
 (require 'siraben-fonts)
 (require 'siraben-keybindings)
 (require 'siraben-editor)
+(require 'siraben-gnus)
 (require 'siraben-org)
 (require 'siraben-c)
 
@@ -55,3 +56,8 @@ configuration.")
 (setq initial-scratch-message
       (format ";; Scratch buffer created on %s\n"
 	      (shell-command-to-string "date '+%A, %B %d, %Y at %R'")))
+
+;; Keep some things out of version control.
+(let ((secret.el (expand-file-name "secret.el" user-emacs-directory)))
+  (when (file-exists-p secret.el)
+    (load secret.el)))

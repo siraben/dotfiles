@@ -3,10 +3,6 @@
 ;; This file configure Org mode, especially its agenda and notes
 ;; features.
 
-(setq org-directory "~/Nextcloud")
-(setq org-default-notes-file (concat org-directory "/homework.org"))
-(setq org-agenda-files '("~/Nextcloud/homework.org"))
-
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c a") 'org-agenda)
@@ -47,5 +43,7 @@
                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+(use-package gnuplot)
 
 (provide 'siraben-org)
