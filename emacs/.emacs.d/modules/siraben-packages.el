@@ -122,4 +122,8 @@
 		       (setq emms-player-list '(emms-player-mplayer))
 		     (emms-default-players)))))
 
+
+(use-package clojure-mode)
+(use-package cider)
+(use-package paradox)
 (provide 'siraben-packages)
