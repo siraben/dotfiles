@@ -31,13 +31,15 @@
 ;; Don't blink!
 (setq blink-matching-paren nil)
 
+(use-package smartparens)
+
 (defun siraben-enable-lisp-editing-modes ()
   "Enables a collection of modes (such as paredit, rainbow delimiters,
 aggressive indentation etc.) that greatly help with editing lisp
 code."
   (interactive)
   (progn (setq show-paren-style 'mixed)
-	 (paredit-mode t)
+	 (smartparens-strict-mode t)
 	 (rainbow-delimiters-mode t)
 	 (aggressive-indent-mode t)
 	 (show-paren-mode t)
@@ -59,6 +61,21 @@ code."
 	  #'(lambda ()
 	      (siraben-enable-lisp-editing-modes)
 	      (undo-tree-mode -1)))
+
+(use-package js2-mode
+  :config 
+  (progn (add-to-list 'auto-mode-alist '("\\.js\\'"    . js2-mode))
+         (add-to-list 'auto-mode-alist '("\\.pac\\'"   . js2-mode))
+         (add-to-list 'interpreter-mode-alist '("node" . js2-mode))))
+
+(add-hook 'js-mode-hook
+          #'(lambda ()
+              (smartparens-strict-mode 1)
+              (js2-mode 1)
+              (setq-local electric-layout-rules '((?\; . after)))
+              (js2-imenu-extras-mode 1)))
+
+(use-package racket-mode)
 
 (defun siraben-enable-writing-modes ()
   "Enables auto-fill mode, spell checking and disables company
@@ -132,5 +149,25 @@ which the function was invoked read only."
                    (cancel-timer most-dangerous-timer)
                    (remove-hook 'post-self-insert-hook #'most-dangerous-timer-reset)
                    (setq mode-line-format restore-mode-line))))
+
+
+(use-package mark-multiple)
+(use-package multiple-cursors)
+
+(require 'inline-string-rectangle)
+(global-set-key (kbd "C-x r t") 'inline-string-rectangle)
+
+(require 'mark-more-like-this)
+(global-set-key (kbd "C-<") 'mark-previous-like-this)
+(global-set-key (kbd "C->") 'mark-next-like-this)
+
+;; like the other two, but takes an argument (negative is previous)
+(global-set-key (kbd "C-M-m") 'mark-more-like-this)
+(global-set-key (kbd "C-*") 'mark-all-like-this)
+
+(add-hook 'sgml-mode-hook
+          (lambda ()
+            (require 'rename-sgml-tag)
+            (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)))
 
 (provide 'siraben-editor)
