@@ -52,7 +52,7 @@ other, future frames."
   (interactive)
   (setq siraben-current-font-size
         (max 1
-             (floor (- siraben-current-font-size
+             (floor (/ siraben-current-font-size
                        siraben-font-change-increment))))
   (siraben-set-font-size))
 
