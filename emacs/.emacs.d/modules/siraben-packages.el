@@ -51,9 +51,11 @@
 (use-package magit)
 (use-package free-keys)
 (use-package fill-column-indicator)
+(use-package memory-usage)
 (use-package which-key
-  :diminish
-  :demand)
+  :diminish)
+
+(add-hook 'after-init-hook 'which-key-mode)
 
 (use-package auto-package-update 
   :config
@@ -73,13 +75,13 @@
          ("C-x C-f" . 'helm-find-files)
 	 ("M-y" . 'helm-show-kill-ring)
          ("C-x b" . 'helm-mini)
-         ("C-x C-b" . 'helm-buffers-list)
          ("M-x" . 'helm-M-x))
-  :config (setq helm-split-window-in-side-p           t
-                helm-buffers-fuzzy-matching           t
-                helm-move-to-line-cycle-in-source     t
-                helm-ff-search-library-in-sexp        t
-                helm-ff-file-name-history-use-recentf t))
+  :config
+  (setq helm-split-window-in-side-p           t
+        helm-buffers-fuzzy-matching           t
+        helm-move-to-line-cycle-in-source     t
+        helm-ff-search-library-in-sexp        t
+        helm-ff-file-name-history-use-recentf t))
 
 (add-hook 'after-init-hook '(lambda () (helm-mode 1)))
 
@@ -90,40 +92,42 @@
 ;; This one has a pretty long config, it's a music player in Emacs.
 (use-package emms
   :bind ("<f7>" . emms-smart-browse)
-  :config (progn (require 'emms-setup)
-		 (require 'emms-player-mplayer)
-		 (emms-standard)
-		 (emms-default-players)
-		 (define-emms-simple-player mplayer '(file url)
-		   (regexp-opt '(".ogg" ".mp3" ".wav" ".mpg" ".mpeg" ".wmv" ".wma"
-				 ".mov" ".avi" ".divx" ".ogm" ".asf" ".mkv" "http://" "mms://"
-				 ".rm" ".rmvb" ".mp4" ".flac" ".vob" ".m4a" ".flv" ".ogv" ".pls"))
-		   "mplayer" "-slave" "-quiet" "-really-quiet" "-fullscreen")
-		 
-		 ;; You can change this to your favorite EMMS interface.
-		 (autoload 'emms-smart-browse "emms-browser.el" "Browse with EMMS" t)
-		 
-		 (with-eval-after-load 'emms
-		   (emms-standard) ;; or (emms-devel) if you want all features
-		   (setq emms-source-file-default-directory "~/Music"
-			 emms-info-asynchronously t
-			 emms-show-format "♪ %s")
+  :config
+  (require 'emms-setup)
+  (require 'emms-player-mplayer)
+  (emms-standard)
+  (emms-default-players)
+  (define-emms-simple-player mplayer '(file url)
+    (regexp-opt '(".ogg" ".mp3" ".wav" ".mpg" ".mpeg" ".wmv" ".wma"
+		  ".mov" ".avi" ".divx" ".ogm" ".asf" ".mkv" "http://" "mms://"
+		  ".rm" ".rmvb" ".mp4" ".flac" ".vob" ".m4a" ".flv" ".ogv" ".pls"))
+    "mplayer" "-slave" "-quiet" "-really-quiet" "-fullscreen")
+  
+  ;; You can change this to your favorite EMMS interface.
+  (autoload 'emms-smart-browse "emms-browser.el" "Browse with EMMS" t)
+  
+  (with-eval-after-load 'emms
+    (emms-standard) ;; or (emms-devel) if you want all features
+    (setq emms-source-file-default-directory "~/Music"
+	  emms-info-asynchronously t
+	  emms-show-format "♪ %s")
 
-		   ;; Might want to check `emms-info-functions',
-		   ;; `emms-info-libtag-program-name',
-		   ;; `emms-source-file-directory-tree-function'
-		   ;; as well.
+    ;; Might want to check `emms-info-functions',
+    ;; `emms-info-libtag-program-name',
+    ;; `emms-source-file-directory-tree-function'
+    ;; as well.
 
-		   ;; Determine which player to use.
-		   ;; If you don't have strong preferences or don't have
-		   ;; exotic files from the past (wma) `emms-default-players`
-		   ;; is probably all you need.
-		   (if (executable-find "mplayer")
-		       (setq emms-player-list '(emms-player-mplayer))
-		     (emms-default-players)))))
-
+    ;; Determine which player to use.
+    ;; If you don't have strong preferences or don't have
+    ;; exotic files from the past (wma) `emms-default-players`
+    ;; is probably all you need.
+    (if (executable-find "mplayer")
+	(setq emms-player-list '(emms-player-mplayer))
+      (emms-default-players))))
 
 (use-package clojure-mode)
 (use-package cider)
 (use-package paradox)
+(use-package erc-view-log)
+
 (provide 'siraben-packages)
