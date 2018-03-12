@@ -28,54 +28,12 @@
 (global-auto-revert-mode t)
 (setq tab-always-indent 'complete)
 
-;; Don't blink!
+;; Blinking parens are ugly, remove that.
 (setq blink-matching-paren nil)
 
+;; Not a big fan of this package (needs some getting used to), but
+;; it's good for JavaScript editing.
 (use-package smartparens)
-
-(defun siraben-enable-lisp-editing-modes ()
-  "Enables a collection of modes (such as paredit, rainbow delimiters,
-aggressive indentation etc.) that greatly help with editing lisp
-code."
-  (interactive)
-  (progn (setq show-paren-style 'mixed)
-	 (smartparens-strict-mode t)
-	 (rainbow-delimiters-mode t)
-	 (aggressive-indent-mode t)
-	 (show-paren-mode t)
-	 (global-undo-tree-mode t)
-	 (company-mode t)))
-
-(setq siraben-lispy-mode-hooks
-      '(clojure-mode-hook
-        emacs-lisp-mode-hook
-        lisp-mode-hook
-        scheme-mode-hook))
-
-(dolist (hook siraben-lispy-mode-hooks)
-  (add-hook hook #'siraben-enable-lisp-editing-modes))
-
-;; Enable some Lisp modes like paredit and rainbow delimiters, but no
-;; need to undo and autocomplete.
-(add-hook 'inferior-scheme-mode-hook 
-	  #'(lambda ()
-	      (siraben-enable-lisp-editing-modes)
-	      (undo-tree-mode -1)))
-
-(use-package js2-mode
-  :config 
-  (progn (add-to-list 'auto-mode-alist '("\\.js\\'"    . js2-mode))
-         (add-to-list 'auto-mode-alist '("\\.pac\\'"   . js2-mode))
-         (add-to-list 'interpreter-mode-alist '("node" . js2-mode))))
-
-(add-hook 'js-mode-hook
-          #'(lambda ()
-              (smartparens-strict-mode 1)
-              (js2-mode 1)
-              (setq-local electric-layout-rules '((?\; . after)))
-              (js2-imenu-extras-mode 1)))
-
-(use-package racket-mode)
 
 (defun siraben-enable-writing-modes ()
   "Enables auto-fill mode, spell checking and disables company
@@ -118,38 +76,7 @@ which the function was invoked read only."
 (add-hook 'org-mode-hook #'siraben-enable-writing-modes)
 (setq auto-save-interval 100)
 
-;; Implement the most dangerous mode
-
-(defvar grace 5)
-(defvar restore-mode-line nil)
-(defvar most-dangerous-timer nil)
-
-(defun most-dangerous-timer-reset ()
-  (setq grace 5))
-
-(defvar end-time 0)
-
-(defun most-dangerous-mode (&optional duration) 
-  (interactive "p")
-  (most-dangerous-timer-reset)
-  (setq end-time (+ (or current-prefix-arg duration 300) (cadr (current-time)))
-        most-dangerous-timer
-        (run-with-timer 1 1 #'(lambda ()
-                                (unless (> grace 0)
-                                  (backward-kill-word 1))
-                                (setq mode-line-format (format "Grace: %d Time left: %d"
-                                                               (setq grace (- grace 1))
-                                                               (- end-time (cadr (current-time)))))
-                                (force-mode-line-update)))
-        restore-mode-line mode-line-format)
-  (add-hook 'post-self-insert-hook #'most-dangerous-timer-reset)
-  (run-at-time (- end-time (cadr (current-time)))
-               nil
-               #'(lambda ()
-                   (cancel-timer most-dangerous-timer)
-                   (remove-hook 'post-self-insert-hook #'most-dangerous-timer-reset)
-                   (setq mode-line-format restore-mode-line))))
-
+(require 'siraben-mdm)
 
 (use-package mark-multiple)
 (use-package multiple-cursors)
@@ -161,7 +88,7 @@ which the function was invoked read only."
 (global-set-key (kbd "C-<") 'mark-previous-like-this)
 (global-set-key (kbd "C->") 'mark-next-like-this)
 
-;; like the other two, but takes an argument (negative is previous)
+;; Like the other two, but takes an argument (negative is previous)
 (global-set-key (kbd "C-M-m") 'mark-more-like-this)
 (global-set-key (kbd "C-*") 'mark-all-like-this)
 
@@ -169,5 +96,8 @@ which the function was invoked read only."
           (lambda ()
             (require 'rename-sgml-tag)
             (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)))
+
+(use-package emojify)
+(use-package company-emoji)
 
 (provide 'siraben-editor)

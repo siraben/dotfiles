@@ -41,18 +41,18 @@ configuration.")
 (require 'siraben-fonts)
 (require 'siraben-keybindings)
 (require 'siraben-editor)
+(require 'siraben-programming)
 (require 'siraben-gnus)
 (require 'siraben-org)
-(require 'siraben-c)
 
-;; Load configuration that is OS-specific 
+;; Load configuration that is OS-specific.
 (when (eq system-type 'darwin)
   (require 'siraben-macos))
 
 (when (eq system-type 'gnu/linux)
   (require 'siraben-linux))
 
-;; Initial scratch buffer message
+;; Initial scratch buffer message.
 (setq initial-scratch-message
       (format ";; Scratch buffer created on %s\n"
 	      (shell-command-to-string "date '+%A, %B %d, %Y at %R'")))
@@ -61,3 +61,4 @@ configuration.")
 (let ((secret.el (expand-file-name "secret.el" user-emacs-directory)))
   (when (file-exists-p secret.el)
     (load secret.el)))
+
