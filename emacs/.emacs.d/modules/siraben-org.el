@@ -15,7 +15,7 @@
  'org-babel-load-languages
  '((emacs-lisp . t)
    (gnuplot . t)
-   (sh . t)
+   (shell . t)
    (calc . t)
    (python . t)
    (scheme . t)))
