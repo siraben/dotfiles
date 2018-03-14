@@ -86,13 +86,10 @@
       helm-autoresize-min-height            20)
 
 (add-hook 'after-init-hook '(lambda ()
+                              (helm-mode 1)
                               (helm-autoresize-mode 1)))
 
-(use-package smex
-  :disabled
-  :bind (("M-x" . 'smex)))
-
-;; This one has a pretty long config, it's a music player in Emacs.
+;; This one has a pretty long configuration, it's a music player in Emacs.
 (use-package emms
   :bind ("<f7>" . emms-smart-browse)
   :config
