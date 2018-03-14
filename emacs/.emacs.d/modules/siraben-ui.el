@@ -47,7 +47,7 @@
 ;; Improve the mode line
 (use-package smart-mode-line 
   :config (progn (setq sml/no-confirm-load-theme t)
-		 (setq sml/theme nil)
+	         (setq sml/theme nil)
                  (add-to-list 'sml/replacer-regexp-list '("^~/dotfiles/emacs/.emacs.d/" ":Emacs Config:") t)))
 
 ;; Remove the auto-revert mode-line
