@@ -37,21 +37,23 @@
 
 (defun siraben-enable-writing-modes ()
   "Enables auto-fill mode, spell checking and disables company
-mode. Although it looks like hard wrapping will warp the text on
-org-export, it actually doesn't!"
+mode. Although it looks like hard wrapping will distort the text
+on org-export, it actually doesn't!"
   (interactive)
   (progn (auto-fill-mode 1)
 	 (undo-tree-mode 1)
 	 (flyspell-mode 1)
-	 ;; This is for situations like vertically split windows when
+
+         ;; This is for situations like vertically split windows when
 	 ;; Org mode headings don't wrap.
 	 (visual-line-mode 1)
+         
 	 (company-mode -1)))
 
 (defvar-local siraben-timed-writing-timer
   nil
   "The current writing timer object. Stop this timer with
-  `cancel-timer'.")
+`cancel-timer'.")
 
 (defun siraben-timed-writing-mode (&optional length)
   "Begin a timed writing session for X minutes, where X is the
@@ -93,9 +95,9 @@ which the function was invoked read only."
 (global-set-key (kbd "C-*") 'mark-all-like-this)
 
 (add-hook 'sgml-mode-hook
-          (lambda ()
-            (require 'rename-sgml-tag)
-            (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)))
+          #'(lambda ()
+              (require 'rename-sgml-tag)
+              (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)))
 
 (use-package emojify)
 (use-package company-emoji)

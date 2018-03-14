@@ -55,12 +55,12 @@
 (use-package which-key
   :diminish)
 
-(add-hook 'after-init-hook 'which-key-mode)
+(add-hook 'after-init-hook #'(lambda () (which-key-mode 1)))
 
 (use-package auto-package-update 
   :config
   (setq auto-package-update-delete-old-versions t
-	auto-package-update-interval 4))
+	auto-package-update-interval 3))
 
 (use-package pdf-tools
   ;; The :magic tag automatically turns on pdf-view-mode when PDF
@@ -69,21 +69,24 @@
 
 (use-package helm 
   ;; Override default key bindings with those from Helm 
-  :bind (("C-h a" . 'helm-apropos)
-         ("C-h f" . 'helm-apropos)
-         ("C-h r" . 'helm-info-emacs)
+  :bind (("C-h a"   . 'helm-apropos)
+         ("C-h f"   . 'helm-apropos)
+         ("C-h r"   . 'helm-info-emacs)
          ("C-x C-f" . 'helm-find-files)
-	 ("M-y" . 'helm-show-kill-ring)
-         ("C-x b" . 'helm-mini)
-         ("M-x" . 'helm-M-x))
-  :config
-  (setq helm-split-window-in-side-p           t
-        helm-buffers-fuzzy-matching           t
-        helm-move-to-line-cycle-in-source     t
-        helm-ff-search-library-in-sexp        t
-        helm-ff-file-name-history-use-recentf t))
+         ("M-x"     . 'helm-M-x)
+	 ("M-y"     . 'helm-show-kill-ring)
+         ("C-x b"   . 'helm-mini)))
 
-(add-hook 'after-init-hook '(lambda () (helm-mode 1)))
+(setq helm-split-window-in-side-p           t
+      helm-buffers-fuzzy-matching           t
+      helm-move-to-line-cycle-in-source     t
+      helm-ff-search-library-in-sexp        t
+      helm-ff-file-name-history-use-recentf t
+      helm-autoresize-max-height            0
+      helm-autoresize-min-height            20)
+
+(add-hook 'after-init-hook '(lambda ()
+                              (helm-autoresize-mode 1)))
 
 (use-package smex
   :disabled
@@ -127,7 +130,9 @@
 
 (use-package clojure-mode)
 (use-package cider)
-(use-package paradox)
+(use-package paradox
+  :config
+  (setq paradox-github-token nil))
 (use-package erc-view-log)
 
 (provide 'siraben-packages)
