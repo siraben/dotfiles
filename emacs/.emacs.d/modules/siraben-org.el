@@ -13,9 +13,9 @@
 ;; Org mode code block languages
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((emacs-lisp . t)
+ `((emacs-lisp . t)
    (gnuplot . t)
-   (shell . t)
+   (,(if (version< emacs-version "26") 'sh 'shell) . t)
    (calc . t)
    (python . t)
    (scheme . t)))

@@ -17,6 +17,11 @@ activated and a time stamp added."
   (siraben-insert-time)
   (end-of-buffer))
 
+(defun siraben-recompile-init ()
+  "Byte compile dotfiles."
+  (interactive)
+  (byte-recompile-directory siraben-root-dir 0))
+
 (defun siraben-update ()
   "Update siraben's Emacs config to its latest version, and any
 packages along with it."
@@ -26,8 +31,8 @@ packages along with it."
     (auto-package-update-maybe)
     (message "Updating siraben's Emacs config...")
     (cd siraben-root-dir)
-    (shell-command "git reset --hard")
-    (shell-command "git pull") 
+    (shell-command "git pull")
+    (siraben-recompile-init)
     (message "Update finished. Restart Emacs to complete the process.")))
 
 (defun siraben-reset-packages ()
