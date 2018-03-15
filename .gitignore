@@ -15,3 +15,5 @@ emms
 .last-package-update-day
 modules
 secret.el
+bookmarks
+smex-items
