@@ -29,7 +29,8 @@ code."
 (add-hook 'inferior-scheme-mode-hook 
 	  #'(lambda ()
 	      (siraben-enable-lisp-editing-modes)
-	      (undo-tree-mode -1)))
+	      (undo-tree-mode -1)
+              (aggressive-indent-mode -1)))
 
 (use-package racket-mode
   :config
