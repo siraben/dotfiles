@@ -13,8 +13,9 @@ All versions of macOS that support Homebrew.
 
 ## Installation Guide
 On macOS, run:
+
 ``` bash
-source <(curl -fsSL https://raw.githubusercontent.com/siraben/dotfiles/master/setup-mac.sh)
+curl -fsSL https://raw.githubusercontent.com/siraben/dotfiles/master/setup-mac.sh | bash
 ```
 
 ## What is configured?
@@ -37,6 +38,8 @@ On macOS, the dependencies are automatically installed.
   - [ ] Firefox user.js
   - [ ] Run partially if certain things have been set up before
         (e.g. don't install homebrew again etc...)
+  - [x] Configure key repeat
+  - [x] Configure other `defaults write` commands
 - [ ] Lookup other dotfiles setups and learn from them
 - [ ] Add `setup-linux.sh`
 

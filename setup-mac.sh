@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo "========================================================================"
-echo "|                      Ben's MacBook Pro Setup                         |"
+echo "|                       Ben's macOS Setup Script                       |"
 echo "========================================================================"
 
 echo "We'll need sudo permissions temporarily..."
@@ -59,8 +59,4 @@ say "Done configuring your computer, for now!"
 #       -DLIBCLANG_INCLUDE_DIR=$LIBCLANG_INCLUDE \
 #       -DCMAKE_INSTALL_PREFIX\=~/.emacs.d/irony/ ~/.emacs.d/elpa/$IRONY_PATH/server &&\
 #     cmake --build . --use-stderr --config Release --target install
-
-
-
-
 
