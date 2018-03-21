@@ -5,7 +5,7 @@ echo "|                     Ben's macOS Defaults Script                      |"
 echo "========================================================================"
 
 echo "Some defaults write operations need sudo, asking for permission..."
-sudo echo "Sucessfully used sudo!"
+sudo echo "Sucessfully used sudo!" || exit
 
 # Setup defaults write in macOS
 echo "Disabling press and hold..."
@@ -15,8 +15,8 @@ defaults write com.apple.dock launchanim -bool false
 
 # Set a blazingly fast keyboard repeat rate
 echo "Setting a high keyboard repeat rate..."
-defaults write NSGlobalDomain KeyRepeat -int 1
-defaults write NSGlobalDomain InitialKeyRepeat -int 10
+defaults write NSGlobalDomain KeyRepeat -int 2
+defaults write NSGlobalDomain InitialKeyRepeat -int 25
 
 echo "Setting locale..."
 defaults write NSGlobalDomain AppleLanguages -array "en"
