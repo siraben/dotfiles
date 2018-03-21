@@ -45,5 +45,6 @@
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
 (use-package gnuplot)
-
+(use-package htmlize)
+(use-package edit-indirect)
 (provide 'siraben-org)

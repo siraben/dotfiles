@@ -43,7 +43,7 @@ configuration.")
 (require 'siraben-editor)
 (require 'siraben-programming)
 (require 'siraben-gnus)
-(require 'siraben-org)
+(add-hook 'org-mode-hook #'(lambda () (require 'siraben-org)))
 
 ;; Load configuration that is OS-specific.
 (when (eq system-type 'darwin)

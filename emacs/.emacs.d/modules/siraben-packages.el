@@ -23,6 +23,10 @@
 (setq use-package-always-defer t)
 (setq use-package-verbose t)
 
+(use-package benchmark-init
+  :config
+  (add-hook 'after-init-hook 'benchmark-init/deactivate)
+  :demand)
 (use-package auto-compile
   :demand
   :config

@@ -6,8 +6,10 @@
 (use-package company-irony)
 (use-package flycheck-irony)
 
-(add-hook 'c-mode-hook #'irony-mode)
+(add-hook 'c-mode-hook #'(lambda ()
+                           (irony-mode 1)
+                           (flycheck-mode 1)))
 
-(add-hook 'irony-mode-hook #'irony-cdb-autosetup-compile-options)
+(define-key c-mode-map (kbd "s-b") #'recompile)
 
 (provide 'siraben-c)
