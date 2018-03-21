@@ -21,7 +21,7 @@ wget -O font.zip https://github.com/source-foundry/Hack/releases/download/v3.003
 echo "Installing applications..."
 brew tap caskroom/cask
 brew update
-brew cask install iterm2 firefox github-desktop keepassxc virtualbox nextcloud thunderbird flux
+brew cask install iterm2 firefox github keepassxc virtualbox nextcloud thunderbird flux
 
 # Emacs. The one true editor.
 echo "Installing Emacs..."
