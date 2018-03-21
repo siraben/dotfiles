@@ -8,6 +8,7 @@ auto-save-list
 saveplace
 emojis
 emacs/.emacs.d/url/*
+emacs/.emacs.d/irony
 network-security.data
 ido.last
 games
