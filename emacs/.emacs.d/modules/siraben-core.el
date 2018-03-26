@@ -15,7 +15,7 @@ activated and a time stamp added."
   (org-mode)
   (insert "* ")
   (siraben-insert-time)
-  (end-of-buffer))
+  (goto-char (point-max)))
 
 (defun siraben-recompile-init ()
   "Byte compile dotfiles."

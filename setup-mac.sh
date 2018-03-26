@@ -5,7 +5,7 @@ echo "|                       Ben's macOS Setup Script                       |"
 echo "========================================================================"
 
 echo "We'll need sudo permissions temporarily..."
-sudo echo "Successfully used sudo!"
+sudo echo "Successfully used sudo!" || exit
 
 # Install homebrew
 echo "Installing homebrew..."
