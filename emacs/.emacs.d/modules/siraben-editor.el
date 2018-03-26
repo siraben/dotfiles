@@ -92,7 +92,7 @@ which the function was invoked read only."
 
 ;; Like the other two, but takes an argument (negative is previous)
 (global-set-key (kbd "C-M-m") 'mark-more-like-this)
-(global-set-key (kbd "C-*") 'mark-all-like-this)
+(global-set-key (kbd "s-G") 'mark-all-like-this)
 
 (add-hook 'sgml-mode-hook
           #'(lambda ()

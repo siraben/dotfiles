@@ -34,7 +34,7 @@
 ;;(ido-mode t)
 
 (setq frame-title-format
-      '("" invocation-name " Siraben - "
+      '(""
 	(:eval (if (buffer-file-name)
 		   (abbreviate-file-name (buffer-file-name))
 		 "%b"))))
@@ -48,7 +48,9 @@
 (use-package smart-mode-line 
   :config (progn (setq sml/no-confirm-load-theme t)
 	         (setq sml/theme nil)
-                 (add-to-list 'sml/replacer-regexp-list '("^~/dotfiles/emacs/.emacs.d/" ":Emacs Config:") t)))
+                 (add-to-list 'sml/replacer-regexp-list
+                              '("^~/dotfiles/emacs/.emacs.d/" ":Emacs Config:") t)))
+
 
 ;; Remove the auto-revert mode-line
 (diminish 'auto-revert-mode)
