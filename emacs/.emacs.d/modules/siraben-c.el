@@ -1,7 +1,9 @@
 ;; siraben-c.el
 
 ;; Configures Emacs for C-code development
+
 (require 'cc-mode)
+
 (use-package irony)
 (use-package company-irony)
 (use-package flycheck-irony)

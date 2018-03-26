@@ -22,7 +22,9 @@ code."
         scheme-mode-hook))
 
 (dolist (hook siraben-lispy-mode-hooks)
-  (add-hook hook #'siraben-enable-lisp-editing-modes))
+  (add-hook hook #'(lambda ()
+                     (siraben-enable-lisp-editing-modes)
+                     (local-set-key (kbd "M-<backspace>") #'paredit-backward-kill-word))))
 
 ;; Enable some Lisp modes like paredit and rainbow delimiters, but no
 ;; need to undo and autocomplete.
