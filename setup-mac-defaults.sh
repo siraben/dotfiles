@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+control_c()
+{
+  (>&2 printf "\n${RED}Aborting...${NC}\n")
+  exit 1
+}
+
+trap control_c SIGINT
+
 echo "========================================================================"
 echo "|                     Ben's macOS Defaults Script                      |"
 echo "========================================================================"
