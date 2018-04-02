@@ -14,7 +14,7 @@ ido.last
 games
 emms
 .last-package-update-day
-modules
+scheme-interp.el
 secret.el
 bookmarks
 smex-items

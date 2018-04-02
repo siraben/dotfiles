@@ -42,7 +42,7 @@
 ;; Enable my favorite color scheme
 (use-package color-theme-sanityinc-tomorrow
   :demand
-  :config (load-theme 'sanityinc-tomorrow-night t))
+  :config (load-theme 'sanityinc-tomorrow-bright t))
 
 ;; Improve the mode line
 (use-package smart-mode-line 

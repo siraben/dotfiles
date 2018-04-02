@@ -1,40 +1,27 @@
-;; Welcome to siraben's Emacs Init file!
+;; Welcome to siraben's Emacs init file!
 
 ;; init.el
+
 ;; This is the first to be executed by Emacs.
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
 
 ;; Make package.el happy. Drop this line in Emacs 27 as it will no
 ;; longer be needed.
 ;; (package-initialize)
 
-;; Always prefer the newest version of a file.
-(setq load-prefer-newer t)
-
-;; Reducing garbage collection makes startup faster.
-(setq gc-cons-threshold 50000000)
-
-;; At least remove the eyesores while we wait.
-(when (fboundp 'tool-bar-mode)
-  (tool-bar-mode -1))
-(menu-bar-mode -1)
-(when window-system
-  (scroll-bar-mode -1))
-
-;; And ensure the cursor is a box.
-(setq-default cursor-type 'box)
-
-(defvar siraben-root-dir
-  "~/dotfiles/emacs/.emacs.d/"
-  "The root directory of the Emacs configuration.")
-
-(defvar siraben-modules-dir
-  (expand-file-name "modules" siraben-root-dir)
-  "The directory that contains all the modules for my
-configuration.")
-
-(add-to-list 'load-path siraben-modules-dir)
-
+(require 'siraben-preconf)
 (require 'siraben-core)
 (require 'siraben-packages)
 (require 'siraben-ui)
@@ -45,6 +32,7 @@ configuration.")
 (require 'siraben-gnus)
 (require 'siraben-shell)
 (require 'siraben-org)
+(require 'siraben-arcadia)
 
 ;; Load configuration that is OS-specific.
 (when (eq system-type 'darwin)
@@ -62,3 +50,4 @@ configuration.")
 (let ((secret.el (expand-file-name "secret.el" user-emacs-directory)))
   (when (file-exists-p secret.el)
     (load secret.el)))
+
