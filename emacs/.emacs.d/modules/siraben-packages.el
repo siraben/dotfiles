@@ -135,5 +135,5 @@
   :config
   (setq paradox-github-token nil))
 (use-package erc-view-log)
-
+(use-package geiser)
 (provide 'siraben-packages)

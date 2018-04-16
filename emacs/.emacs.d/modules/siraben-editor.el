@@ -102,20 +102,7 @@ which the function was invoked read only."
 (use-package emojify)
 (use-package company-emoji)
 
-(defun siraben-delete-word (arg)
-  "Delete characters forward until encountering the end of a word.
-With argument, do this that many times."
-  (interactive "p")
-  (if (use-region-p)
-      (delete-region (region-beginning) (region-end))
-    (delete-region (point) (progn (forward-word arg) (point)))))
-
-(defun siraben-backward-delete-word (arg)
-  "Delete characters backward until encountering the end of a word.
-With argument, do this that many times."
-  (interactive "p")
-  (siraben-delete-word (- arg)))
-
-(global-set-key (kbd "M-<backspace>") 'siraben-backward-delete-word)
+(setq kill-do-not-save-duplicates t)
+(setq save-interprogram-paste-before-kill t)
 
 (provide 'siraben-editor)
