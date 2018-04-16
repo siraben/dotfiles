@@ -9,5 +9,6 @@
 (require 'siraben-c)
 (require 'siraben-lisp)
 (require 'siraben-prolog)
+(require 'siraben-java)
 
 (provide 'siraben-programming)
