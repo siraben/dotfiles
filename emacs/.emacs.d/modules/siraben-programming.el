@@ -10,5 +10,7 @@
 (require 'siraben-lisp)
 (require 'siraben-prolog)
 
+(add-hook 'prog-mode-hook #'(lambda () (flyspell-prog-mode)))
+
 
 (provide 'siraben-programming)
