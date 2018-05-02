@@ -48,6 +48,16 @@
 (use-package company
   :diminish company-mode)
 
+(use-package which-key
+  :diminish)
+
+(add-hook 'after-init-hook #'(lambda () (which-key-mode 1)))
+
+(use-package exec-path-from-shell
+  :demand
+  :config (progn (setq exec-path-from-shell-check-startup-files nil)
+                 (exec-path-from-shell-initialize)))
+
 (use-package rainbow-delimiters)
 (use-package writeroom-mode)
 (use-package markdown-mode)
@@ -56,10 +66,6 @@
 (use-package free-keys)
 (use-package fill-column-indicator)
 (use-package memory-usage)
-(use-package which-key
-  :diminish)
-
-(add-hook 'after-init-hook #'(lambda () (which-key-mode 1)))
 
 (use-package auto-package-update 
   :config
@@ -78,7 +84,6 @@
          ("C-h r"   . 'helm-info-emacs)
          ("C-x C-f" . 'helm-find-files)
          ("M-x"     . 'helm-M-x)
-	 ("M-y"     . 'helm-show-kill-ring)
          ("C-x b"   . 'helm-mini)))
 
 (setq helm-split-window-in-side-p           t

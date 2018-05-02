@@ -23,15 +23,17 @@ code."
 
 (dolist (hook siraben-lispy-mode-hooks)
   (add-hook hook #'(lambda ()
-                     (siraben-enable-lisp-editing-modes))))
+                     (siraben-enable-lisp-editing-modes)
+                     (push '("lambda" . ?λ) prettify-symbols-alist))))
 
 ;; Enable some Lisp modes like paredit and rainbow delimiters, but no
 ;; need to undo and autocomplete.
-(add-hook 'geiser-mode-hook
+(add-hook 'geiser-repl-mode-hook
           #'(lambda ()
               (siraben-enable-lisp-editing-modes)
               (undo-tree-mode -1)
-              (aggressive-indent-mode -1)))
+              (aggressive-indent-mode -1)
+              (push '("lambda" . ?λ) prettify-symbols-alist)))
 
 (use-package racket-mode
   :config
