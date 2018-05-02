@@ -136,4 +136,7 @@
   (setq paradox-github-token nil))
 (use-package erc-view-log)
 (use-package geiser)
+
+(use-package guru-mode)
+
 (provide 'siraben-packages)
