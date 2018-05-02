@@ -44,4 +44,9 @@ packages along with it."
     (when (y-or-n-p "Packages deleted. Quit Emacs?")
       (save-buffers-kill-emacs))))
 
+(defmacro set-if-exists (var str)
+  "Sets VAR TO STR if STR exists as a file."
+  `(if (file-exists-p ,str) 
+       (setq ,var ,str)))
+
 (provide 'siraben-core)
