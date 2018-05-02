@@ -1,8 +1,11 @@
 ;; Welcome to siraben's Emacs init file!
+;; This is the first to be executed by Emacs.
 
 ;; init.el
 
-;; Always prefer the newest version of a file.
+;; Always prefer the newest version of a file, even if the old one is
+;; compiled.
+
 (setq load-prefer-newer t)
 
 ;; Reducing garbage collection makes startup faster.
@@ -68,6 +71,7 @@ configuration.")
   (when (file-exists-p secret.el)
     (load secret.el)))
 
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -77,3 +81,4 @@ configuration.")
 
 (custom-set-variables
 )
+
