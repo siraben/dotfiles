@@ -1,11 +1,10 @@
-;; siraben-arcadia.el
+;;; siraben-arcadia.el --- provides integration with Arcadia.
 
-;; Emascs interop with the Clojure REPL in Arcadia.
-;; See `https://github.com/arcadia-unity/Arcadia' for more.
+;;; Commentary:
+;; Emacs interoperability with the Clojure REPL in Arcadia.  See
+;; `https://github.com/arcadia-unity/Arcadia' for more.
 
-(use-package dash)
-
-(require 'dash)
+;;; Code:
 
 (defcustom unity-repl-command "ruby repl-client.rb"
   "Command to use for arcadia-repl.")
@@ -21,15 +20,16 @@
          (directory-files dir)))
 
 (defun unity-find-root (start levels)
-  "Look upwards from the START directory to find the Unity root directory 
-and return its full path. Search for the number of LEVELS specified."
+  "Search from the START directory to find the Unity root
+directory and return its full path.  Search for the number of
+LEVELS specified."
   (cond ((= levels 0) nil)
         ((unity-root-p start) start)
         (t (unity-find-root
             (expand-file-name ".." start) (- levels 1)))))
 
 (defun unity-jack-in ()
-  "Start the Arcadia REPL"
+  "Start the Arcadia REPL."
   (interactive)
   (let ((default-directory
           (concat (unity-find-root default-directory 10) "/"
@@ -37,3 +37,5 @@ and return its full path. Search for the number of LEVELS specified."
     (run-lisp unity-repl-command)))
 
 (provide 'siraben-arcadia)
+;;; siraben-arcadia.el ends here
+

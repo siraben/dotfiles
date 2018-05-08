@@ -1,6 +1,7 @@
-;; siraben-editor.el
+;;; siraben-editor.el --- make Emacs a great editor.
+;;; Commentary:
 
-;; This file configures Emacs to be more usable as a text editor.
+;;; Code:
 
 ;; Don't use tabs to indent but maintain correct appearance.
 (setq-default indent-tabs-mode nil)
@@ -18,27 +19,30 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-;; Autosave the undo-tree history.
+(require 'undo-tree)
+;; Auto-save the undo-tree history.
 (setq undo-tree-history-directory-alist
       `((".*" . ,temporary-file-directory)))
 (setq undo-tree-auto-save-history t)
 
 ;; Revert buffers automatically when underlying files are changed
-;; externally.
-(global-auto-revert-mode t)
+;; externally.  Disabled because of performance concerns.  (buffers
+;; are checked every five seconds)
+
+;; (global-auto-revert-mode t)
+
 (setq tab-always-indent 'complete)
 
 ;; Blinking parens are ugly, remove that.
 (setq blink-matching-paren nil)
 
 ;; Not a big fan of this package (needs some getting used to), but
-;; it's good for JavaScript editing.
+;; necessary for many programming languages.
 (use-package smartparens)
 
 (defun siraben-enable-writing-modes ()
-  "Enables auto-fill mode, spell checking and disables company
-mode. Although it looks like hard wrapping will distort the text
-on org-export, it actually doesn't!"
+  "Enables writing modes for writing prose.
+Enables auto-fill mode, spell checking and disables company mode."
   (interactive)
   (progn (auto-fill-mode 1)
 	 (undo-tree-mode 1)
@@ -56,9 +60,8 @@ on org-export, it actually doesn't!"
 `cancel-timer'.")
 
 (defun siraben-timed-writing-mode (&optional length)
-  "Begin a timed writing session for X minutes, where X is the
-numerical prefix passed to the function, or the numerical
-argument from an Elisp function call, or the default value of 5.
+  "Begin a timed writing session for LENGTH minutes.
+Default value of 5.
 
 After X minutes, the user is prompted to make the buffer from
 which the function was invoked read only."
@@ -106,3 +109,4 @@ which the function was invoked read only."
 (setq save-interprogram-paste-before-kill t)
 
 (provide 'siraben-editor)
+;;; siraben-editor.el ends here
