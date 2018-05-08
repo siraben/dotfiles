@@ -1,11 +1,13 @@
+;;; init.el --- Entry point for siraben's Emacs
+
+;;; Commentary:
 ;; Welcome to siraben's Emacs init file!
 ;; This is the first to be executed by Emacs.
 
-;; init.el
+;;; Code:
 
 ;; Always prefer the newest version of a file, even if the old one is
 ;; compiled.
-
 (setq load-prefer-newer t)
 
 ;; Reducing garbage collection makes startup faster.
@@ -31,8 +33,7 @@
 
 (defvar siraben-modules-dir
   (expand-file-name "modules" siraben-root-dir)
-  "The directory that contains all the modules for my
-configuration.")
+  "The directory that contains all the modules for my configuration.")
 
 (add-to-list 'load-path siraben-modules-dir)
 
@@ -80,5 +81,12 @@ configuration.")
  )
 
 (custom-set-variables
-)
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (writeroom-mode which-key use-package undo-tree smartparens smart-mode-line rainbow-delimiters racket-mode racer pdf-tools paredit paradox neotree multiple-cursors memory-usage markdown-mode mark-multiple magit js2-mode htmlize helm guru-mode gnuplot geiser free-keys flycheck-rust flycheck-irony fill-column-indicator exec-path-from-shell erc-view-log emojify emms edit-indirect ediprolog diminish company-irony company-emoji color-theme-sanityinc-tomorrow cider cargo benchmark-init auto-package-update auto-compile aggressive-indent))))
 
+;;; init.el ends here

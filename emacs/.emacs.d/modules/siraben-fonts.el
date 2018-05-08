@@ -1,10 +1,12 @@
-;; siraben-fonts.el
+;;; siraben-fonts.el --- Setup fonts
 
+;;; Commentary:
 ;; This file sets up the use of the Hack font and various functions
-;; that allow fonts to be resized. The font settings were inspired by
+;; that allow fonts to be resized.  The font settings were inspired by
 ;; hrs's dotfiles repository at
 ;; `https://github.com/hrs/dotfiles/blob/master/emacs/.emacs.d/configuration.org'
 
+;;; Code:
 (defvar siraben-default-font "Hack" "The default font type.")
 (defvar siraben-default-font-size
   (cond
@@ -13,12 +15,10 @@
   "The default font size.")
 
 (defvar siraben-font-change-increment 1.1
-  "The multipler to the font size when
-`siraben-increase-font-size' is invoked.")
+  "The multipler to the font size when `siraben-increase-font-size' is invoked.")
 
 (defun siraben-font-code ()
-  "Return a string representing the current font (like
-  \"Hack-13\")."
+  "Return a string representing the current font (like \"Hack-13\")."
   (concat siraben-default-font "-"
           (number-to-string siraben-current-font-size)))
 
@@ -37,8 +37,7 @@ other, future frames."
   (siraben-set-font-size))
 
 (defun siraben-increase-font-size ()
-  "Increase current font size by a factor of
-`siraben-font-change-increment'."
+  "Increase current font size by a factor of `siraben-font-change-increment'."
   (interactive)
   (setq siraben-current-font-size
         (ceiling (* siraben-current-font-size
@@ -47,8 +46,7 @@ other, future frames."
   (siraben-set-font-size))
 
 (defun siraben-decrease-font-size ()
-  "Decrease current font size by a factor of
-`siraben-font-change-increment', down to a minimum size of 1."
+  "Decrease current font size by a factor of `siraben-font-change-increment', down to a minimum size of 1."
   (interactive)
   (setq siraben-current-font-size
         (max 1
@@ -59,3 +57,4 @@ other, future frames."
 (siraben-reset-font-size)
 
 (provide 'siraben-fonts)
+;;; siraben-fonts.el ends here
