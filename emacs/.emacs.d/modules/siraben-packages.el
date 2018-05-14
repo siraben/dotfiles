@@ -1,7 +1,10 @@
-;; siraben-packages.el
+;;; siraben-packages.el --- Set up MELPA packages
 
+;;; Commentary:
 ;; This file sets up `use-package', which handles the installation of
 ;; most packages.
+
+;;; Code:
 
 ;; Initialize package.el
 (require 'package)
@@ -54,6 +57,7 @@
 (add-hook 'after-init-hook #'(lambda () (which-key-mode 1)))
 
 (use-package exec-path-from-shell
+  :disabled
   :demand
   :config (progn (setq exec-path-from-shell-check-startup-files nil)
                  (exec-path-from-shell-initialize)))
@@ -145,3 +149,5 @@
 (use-package guru-mode)
 
 (provide 'siraben-packages)
+
+;;; siraben-packages.el ends here
