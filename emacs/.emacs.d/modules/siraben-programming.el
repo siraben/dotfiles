@@ -9,7 +9,7 @@
 
 (global-set-key (kbd "M-C") 'comment-or-uncomment-region)
 
-(require 'which-func)
+;; (require 'which-func)
 
 (defun siraben-prog-mode-defaults ()
   "Default coding hook, useful with any programming language."
