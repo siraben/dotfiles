@@ -1,4 +1,5 @@
 ;;; siraben-editor.el --- make Emacs a great editor.
+
 ;;; Commentary:
 
 ;;; Code:

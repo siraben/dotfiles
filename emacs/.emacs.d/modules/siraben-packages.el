@@ -30,7 +30,9 @@
   :config
   (add-hook 'after-init-hook 'benchmark-init/deactivate)
   :demand)
+
 (use-package auto-compile
+  :disabled
   :demand
   :config
   (auto-compile-on-load-mode))
@@ -39,7 +41,7 @@
 ;; I don't want them to clutter my screen.
 (use-package diminish)
 
-(use-package paredit 
+(use-package paredit
   :diminish paredit-mode)
 
 (use-package undo-tree
@@ -145,8 +147,6 @@
   (setq paradox-github-token nil))
 (use-package erc-view-log)
 (use-package geiser)
-
-(use-package guru-mode)
 
 (provide 'siraben-packages)
 
