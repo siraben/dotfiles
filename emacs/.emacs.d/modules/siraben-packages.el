@@ -1,6 +1,22 @@
 ;;; siraben-packages.el --- Set up MELPA packages
 
+;;; License:
+
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 ;;; Commentary:
+
 ;; This file sets up `use-package', which handles the installation of
 ;; most packages.
 
@@ -27,6 +43,7 @@
 (setq use-package-verbose t)
 
 (use-package benchmark-init
+  :disabled
   :config
   (add-hook 'after-init-hook 'benchmark-init/deactivate)
   :demand)
@@ -59,7 +76,6 @@
 (add-hook 'after-init-hook #'(lambda () (which-key-mode 1)))
 
 (use-package exec-path-from-shell
-  :disabled
   :demand
   :config (progn (setq exec-path-from-shell-check-startup-files nil)
                  (exec-path-from-shell-initialize)))
@@ -73,7 +89,7 @@
 (use-package fill-column-indicator)
 (use-package memory-usage)
 
-(use-package auto-package-update 
+(use-package auto-package-update
   :config
   (setq auto-package-update-delete-old-versions t
 	auto-package-update-interval 3))
@@ -83,8 +99,8 @@
   ;; files are opened.
   :magic ("%PDF" . pdf-view-mode))
 
-(use-package helm 
-  ;; Override default key bindings with those from Helm 
+(use-package helm
+  ;; Override default key bindings with those from Helm
   :bind (("C-h a"   . 'helm-apropos)
          ("C-h f"   . 'helm-apropos)
          ("C-h r"   . 'helm-info-emacs)

@@ -1,30 +1,43 @@
 # siraben's dotfiles
 ### By Siraphob (Ben) Phipathananunth
 
-This is a collection of my dotfiles. These are highly tailored to my
-tastes so don't expect me to merge drastically-altering pull requests!
+This is a collection of my dotfiles.  The configurations are highly
+tailored to my tastes, and may or may not be suited to yours.
 
 ## Supported platforms
-Works on any Linux platform that allows for the installation of the
-dependencies (e.g. through a package manager, or building from
-source).
+Works on any GNU/Linux platform that allows for the installation of
+the dependencies (e.g. through a package manager such as Apt, Nix or
+Guix, or building from source).
 
 All versions of macOS that support Homebrew.
 
 ## Installation Guide
-On macOS, run:
+On a macOS system, run:
 
 ``` bash
 curl -fsSL https://raw.githubusercontent.com/siraben/dotfiles/master/setup-mac.sh | bash
 ```
 
 ## What is configured?
+### Both Platforms
 - Emacs
+### macOS
 - Homebrew
+  - Packages
+    - aspell
+    - guile
+  - Casks
+    - iTerm 2
+    - Firefox ESR
+    - GitHub Desktop
+    - KeepassXC
+    - VirtualBox
+    - Nextcloud Desktop
+    - f.lux
 
 ## Dependencies
-### Linux
-- Emacs (>= 24.3)
+### GNU/Linux
+- GNU Emacs (>= 25.1)
 - GNU Stow
 
 On macOS, the dependencies are automatically installed.
@@ -40,6 +53,5 @@ On macOS, the dependencies are automatically installed.
         (e.g. don't install homebrew again etc...)
   - [x] Configure key repeat
   - [x] Configure other `defaults write` commands
-- [ ] Lookup other dotfiles setups and learn from them
-- [ ] Add `setup-linux.sh`
+- [x] Add `setup-linux.sh`
 
