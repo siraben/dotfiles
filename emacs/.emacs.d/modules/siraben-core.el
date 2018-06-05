@@ -1,5 +1,19 @@
 ;;; siraben-core.el --- This file contains the core functions I wrote.
 
+;;; License:
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 ;;; Commentary:
 
 ;;; Code:
@@ -18,7 +32,8 @@
   (siraben-insert-time)
   (goto-char (point-max)))
 
-;; Byte compiling files does not seem to gain any benefit, disable this command for now.
+;; Byte compiling files does not seem to gain any benefit, disable
+;; this command for now.
 
 ;; (defun siraben-recompile-init ()
 ;;   "Byte compile dotfiles."
@@ -46,10 +61,10 @@
     (when (y-or-n-p? "Packages deleted. Quit Emacs?")
       (save-buffers-kill-emacs))))
 
-(defmacro set-if-exists (var str)
-  "Set VAR TO STR if STR exists as a file."
+(defmacro set-if-exists (sym str)
+  "Set SYM TO STR if STR exists as a file."
   `(if (file-exists-p ,str)
-       (setq ,var ,str)))
+       (setq ,sym ,str)))
 
 (provide 'siraben-core)
 ;;; siraben-core.el ends here

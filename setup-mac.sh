@@ -1,5 +1,20 @@
 #!/usr/bin/env bash
 
+## License:
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 control_c()
 {
   (>&2 printf "\n${RED}Aborting...${NC}\n")
@@ -29,7 +44,7 @@ wget -O font.zip https://github.com/source-foundry/Hack/releases/download/v3.003
 echo "Installing applications..."
 brew tap caskroom/cask
 brew update
-brew cask install iterm2 firefox github keepassxc virtualbox nextcloud thunderbird flux
+brew cask install iterm2 firefox-esr github keepassxc virtualbox nextcloud thunderbird flux
 
 # Emacs. The one true editor.
 echo "Installing Emacs..."
@@ -45,7 +60,7 @@ echo "Installing aspell, chezscheme and llvm"
 brew install llvm --with-clang
 
 echo "Starting Emacs in the background..."
-brew install aspell chezscheme
+brew install aspell guile
 emacs --daemon
 
 say "Done configuring your computer, for now!"
