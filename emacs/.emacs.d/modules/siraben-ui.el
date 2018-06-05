@@ -1,5 +1,18 @@
 ;;; siraben-ui.el -- configure Emacs' visual appearance.
 
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 ;;; Commentary:
 ;; This file configures the visual appearance of Emacs, loads
 ;; my favorite theme, and adds a smart mode line.
@@ -49,6 +62,7 @@
 
 ;; Improve the mode line.
 (use-package smart-mode-line
+  :disabled
   :config (progn (setq sml/no-confirm-load-theme t)
 	         (setq sml/theme nil)
                  (add-to-list 'sml/replacer-regexp-list
@@ -61,7 +75,10 @@
 (diminish 'auto-fill-function " ->|")
 (diminish 'helm-mode)
 (diminish 'emacs-lisp-mode "Elisp")
-(add-hook 'after-init-hook #'sml/setup)
+(diminish 'lisp-interaction-mode)
+(diminish 'flycheck-mode)
+
+;; (add-hook 'after-init-hook #'sml/setup)
 
 (provide 'siraben-ui)
 ;;; siraben-ui.el ends here
