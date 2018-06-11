@@ -70,6 +70,7 @@
 
 
 ;; Remove the auto-revert mode-line
+(require 'diminish)
 (diminish 'auto-revert-mode)
 (diminish 'flyspell-mode)
 (diminish 'auto-fill-function " ->|")
