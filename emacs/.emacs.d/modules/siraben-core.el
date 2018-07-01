@@ -43,7 +43,7 @@
 (defun siraben-update ()
   "Update my config to the latest version, along with packages."
   (interactive)
-  (when (y-or-n-p? "Confirm update config? Any changes made locally will be discarded.")
+  (when (y-or-n-p "Confirm update config? Any changes made locally will be discarded.")
     (message "Updating installed packages...")
     (auto-package-update-now)
     (message "Updating siraben's Emacs config...")
@@ -55,10 +55,10 @@
 (defun siraben-reset-packages ()
   "Deletes all packages from the directory `siraben-root-dir'."
   (interactive)
-  (when (y-or-n-p? "Really reset packages?")
+  (when (y-or-n-p "Really reset packages?")
     (message "Removing installed package directory...")
     (delete-directory (concat siraben-root-dir "elpa/") t t)
-    (when (y-or-n-p? "Packages deleted. Quit Emacs?")
+    (when (y-or-n-p "Packages deleted. Quit Emacs?")
       (save-buffers-kill-emacs))))
 
 (defmacro set-if-exists (sym str)
