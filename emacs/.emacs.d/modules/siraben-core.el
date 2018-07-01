@@ -46,10 +46,10 @@
   (when (y-or-n-p "Confirm update config? Any changes made locally will be discarded.")
     (message "Updating installed packages...")
     (auto-package-update-now)
-    (message "Updating siraben's Emacs config...")
+    (message "Updating siraben's Emacs configuration...")
     (cd siraben-root-dir)
+    (shell-command "git reset --hard")
     (shell-command "git pull")
-    (siraben-recompile-init)
     (message "Update finished. Restart Emacs to complete the process.")))
 
 (defun siraben-reset-packages ()
