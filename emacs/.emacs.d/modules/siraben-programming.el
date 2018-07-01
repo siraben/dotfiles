@@ -26,6 +26,7 @@
 
 ;; (require 'which-func)
 
+(require 'ispell)
 (defun siraben-prog-mode-defaults ()
   "Default coding hook, useful with any programming language."
   (define-key c-mode-base-map (kbd "s-b") 'recompile)
