@@ -33,8 +33,17 @@
 (global-set-key (kbd "C-=") 'siraben-reset-font-size)
 (global-set-key (kbd "C--") 'siraben-decrease-font-size)
 
-;; Retain old buffer behavior.
+;; Retain old ibuffer behavior.
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+
+(defun unfill-paragraph (&optional region)
+  "Take a REGION and make it into a single line of text."
+  (interactive (progn (barf-if-buffer-read-only) '(t)))
+  (let ((fill-column (point-max)))
+    ;; This would override `fill-column' if it was an integer.
+    (emacs-lisp-docstring-fill-column t))
+  (fill-paragraph nil region))
+
 
 ;;; Miscellaneous.
 

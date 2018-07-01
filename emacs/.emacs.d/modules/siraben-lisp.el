@@ -18,21 +18,18 @@
 
 ;;; Code:
 
+(require 'paren)
+
 (defun siraben-enable-lisp-editing-modes ()
   "Enables a collection of modes for editing Lisp code."
   (interactive)
   (progn (setq show-paren-style 'mixed)
-         
-         ;; Change to paredit because I haven't figured out how to get
-         ;; smartparens to stop trying to pair single quotes.
-         
-         (smartparens-mode -1)
-	 (paredit-mode t)
+	 (paredit-mode            t)
 	 (rainbow-delimiters-mode t)
-	 (aggressive-indent-mode t)
-	 (show-paren-mode t)
-	 (global-undo-tree-mode t)
-	 (company-mode t)))
+	 (aggressive-indent-mode  t)
+	 (show-paren-mode         t)
+	 (undo-tree-mode          t)
+	 (company-mode            t)))
 
 (defvar siraben-lispy-mode-hooks
   '(clojure-mode-hook
@@ -49,8 +46,16 @@
 (add-hook 'geiser-repl-mode-hook
           #'(lambda ()
               (siraben-enable-lisp-editing-modes)
-              (undo-tree-mode -1)
-              (aggressive-indent-mode -1)))
+              (undo-tree-mode                 -1)
+              (smartparens-mode               -1)
+              (font-lock-mode                 -1)
+              (aggressive-indent-mode         -1)))
+
+;; Even with the Chicken Scheme compiler giving error messages it's
+;; annoying.
+(add-hook 'scheme-mode-hook
+          #'(lambda ()
+              (flycheck-mode -1)))
 
 (use-package racket-mode
   :config
