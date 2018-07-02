@@ -46,7 +46,7 @@
   (when (y-or-n-p "Confirm update config? Any changes made locally will be discarded.")
     (message "Updating installed packages...")
     (auto-package-update-now)
-    (message "Updating siraben's Emacs configuration...")
+    (message "Updating siraben's Emacs config...")
     (cd siraben-root-dir)
     (shell-command "git reset --hard")
     (shell-command "git pull")
