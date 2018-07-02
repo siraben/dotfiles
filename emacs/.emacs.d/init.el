@@ -55,8 +55,7 @@
 
 ;; This is the first to be executed by Emacs.
 
-;; Make package.el happy. Drop this line in Emacs 27 as it will no
-;; longer be needed.
+;; TODO: Drop this line in Emacs 27.
 ;; (package-initialize)
 
 (require 'siraben-core)
@@ -72,11 +71,10 @@
 (require 'siraben-arcadia)
 
 ;; Load configuration that is OS-specific.
-(when (eq system-type 'darwin)
-  (require 'siraben-macos))
-
-(when (eq system-type 'gnu/linux)
-  (require 'siraben-linux))
+(require
+ (cl-case system-type
+   (gnu/linux  'siraben-linux)
+   (darwin     'siraben-macos)))
 
 ;; Initial scratch buffer message.
 (setq initial-scratch-message
@@ -87,7 +85,6 @@
 (let ((secret.el (expand-file-name "secret.el" user-emacs-directory)))
   (when (file-exists-p secret.el)
     (load secret.el)))
-
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -103,6 +100,5 @@
  ;; If there is more than one, they won't work right.
  '(geiser-default-implementation (quote guile))
  )
-
 
 ;;; init.el ends here
