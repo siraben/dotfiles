@@ -100,6 +100,7 @@
   :magic ("%PDF" . pdf-view-mode))
 
 (use-package helm
+  :diminish helm-mode
   ;; Override default key bindings with those from Helm
   :bind (("C-h a"   . 'helm-apropos)
          ("C-h f"   . 'helm-apropos)
