@@ -163,8 +163,31 @@
   :config
   (setq paradox-github-token nil))
 (use-package erc-view-log)
-(use-package geiser)
+
+(use-package geiser
+  :config
+  (setq geiser-default-implementation 'guile))
+
+(use-package svg-clock)
+
+(use-package exwm
+  :config
+  (require 'exwm)
+  (require 'exwm-config)
+  (exwm-config-default))
+
+(use-package xkcd)
+
+;; Did you know there's a package that allows you to see the current
+;; time?
+(use-package svg-clock)
+
+(use-package writegood-mode)
+(use-package define-word
+  :bind (("C-M-=" . define-word-at-point)))
+
+(use-package yasnippet)
+(use-package demo-it)
 
 (provide 'siraben-packages)
-
 ;;; siraben-packages.el ends here

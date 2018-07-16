@@ -44,11 +44,11 @@
 (fringe-mode 0)
 
 (defvar siraben-root-dir
-  "~/dotfiles/emacs/.emacs.d/"
+  "~/.emacs.d/"
   "The root directory of the Emacs configuration.")
 
 (defvar siraben-modules-dir
-  (expand-file-name "modules" siraben-root-dir)
+  (expand-file-name "modules/" siraben-root-dir)
   "The directory that contains all the modules for my configuration.")
 
 (add-to-list 'load-path siraben-modules-dir)
@@ -68,6 +68,7 @@
 (require 'siraben-gnus)
 (require 'siraben-shell)
 (require 'siraben-org)
+(require 'siraben-mu4e)
 (require 'siraben-arcadia)
 
 ;; Load configuration that is OS-specific.
@@ -82,7 +83,7 @@
 	      (shell-command-to-string "date '+%A, %B %d, %Y at %R'")))
 
 ;; Keep some things out of version control.
-(let ((secret.el (expand-file-name "secret.el" user-emacs-directory)))
+(let ((secret.el "~/Nextcloud/secret.el"))
   (when (file-exists-p secret.el)
     (load secret.el)))
 
@@ -98,7 +99,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(geiser-default-implementation (quote guile))
  )
-
 ;;; init.el ends here

@@ -24,6 +24,9 @@
 (use-package irony)
 (use-package company-irony)
 (use-package flycheck-irony)
+(use-package google-c-style
+  :config
+  (add-hook 'c-mode-common-hook 'google-set-c-style))
 
 (add-hook 'c-mode-hook #'(lambda ()
                            (irony-mode 1)
