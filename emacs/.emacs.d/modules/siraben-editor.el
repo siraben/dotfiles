@@ -94,7 +94,7 @@ which the function was invoked read only."
 
 (add-hook 'markdown-mode-hook #'siraben-enable-writing-modes)
 (add-hook 'org-mode-hook #'siraben-enable-writing-modes)
-(setq auto-save-interval 100)
+
 
 (require 'siraben-mdm)
 

@@ -62,10 +62,11 @@
 
 ;; Improve the mode line.
 (use-package smart-mode-line
-  :config (progn (setq sml/no-confirm-load-theme t)
-	         (setq sml/theme nil)
-                 (add-to-list 'sml/replacer-regexp-list
-                              '("^~/dotfiles/emacs/.emacs.d/" ":Emacs Config:") t)))
+  :config (progn
+            (setq sml/no-confirm-load-theme t)
+            (setq sml/theme nil)
+            (add-to-list 'sml/replacer-regexp-list
+                         '("^~/dotfiles/emacs/.emacs.d/" ":Emacs Config:"))))
 
 
 ;; Remove the auto-revert mode-line
@@ -74,11 +75,10 @@
 (diminish 'flyspell-mode)
 (diminish 'auto-fill-function " ->|")
 (diminish 'helm-mode)
-(diminish 'emacs-lisp-mode "Elisp")
 (diminish 'lisp-interaction-mode)
 (diminish 'flycheck-mode)
 
-;; (add-hook 'after-init-hook #'sml/setup)
+(add-hook 'after-init-hook #'sml/setup)
 
 (provide 'siraben-ui)
 ;;; siraben-ui.el ends here
