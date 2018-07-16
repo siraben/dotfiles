@@ -26,6 +26,25 @@
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c b") 'org-iswitchb)
 
+(setq org-modules '(org-mu4e
+                    org-habit
+                    org-crypt
+                    org-bbdb
+                    org-bibtex
+                    org-docview
+                    org-gnus
+                    org-info
+                    org-irc
+                    org-mhe
+                    org-rmail))
+
+(setq org-habit-show-habits-only-for-today t)
+
+(setq org-agenda-diary-file nil)
+(setq org-habit-graph-column 50)
+(setq org-habit-preceding-days 7)
+(setq org-habit-following-days 7)
+
 (setq org-log-done t)
 
 ;; Org mode code block languages
@@ -36,9 +55,19 @@
    (,(if (version< emacs-version "26") 'sh 'shell) . t)
    (calc . t)
    (python . t)
-   (scheme . t)))
+   (scheme . t)
+   (dot . t)
+   (octave . t)))
 
-;; From `https://emacs.stackexchange.com/a/13828'
+;; These are code blocks that are "safe" to evaluate.
+(defun my-org-confirm-babel-evaluate (lang body)
+  (not (or (string= lang "dot")
+           (string= lang "gnuplot")
+           (string= lang "octave"))))
+
+(setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+
+;; From `https://emacs.stackexchange.com/a/13828'.
 ;; The fifth entry specifies how many newlines are allowed inside a
 ;; marked up expression. By default, org-mode allows a single
 ;; newline. So if you want to be able to add markup to text that spans
@@ -65,6 +94,18 @@
 (use-package gnuplot)
 (use-package htmlize)
 (use-package edit-indirect)
+(use-package org-wc)
+
+;; I want to have source code syntax highlighting for LaTeX export as well.
+(setq org-latex-listings 'minted)
+(require 'ox-latex)
+(add-to-list 'org-latex-packages-alist '("" "minted"))
+
+
+(setq org-latex-pdf-process
+      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
 (provide 'siraben-org)
 ;;; siraben-org.el ends here
