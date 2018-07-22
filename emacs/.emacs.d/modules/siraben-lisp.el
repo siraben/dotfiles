@@ -24,7 +24,7 @@
   "Enables a collection of modes for editing Lisp code."
   (interactive)
   (progn (setq show-paren-style 'mixed)
-	 (paredit-mode            t)
+	 (paredit-mode t)
 	 (rainbow-delimiters-mode t)
 	 (aggressive-indent-mode  t)
 	 (show-paren-mode         t)
@@ -47,7 +47,7 @@
           #'(lambda ()
               (siraben-enable-lisp-editing-modes)
               (undo-tree-mode                 -1)
-              (smartparens-mode               -1)
+              (paredit-mode                   +1)
               (font-lock-mode                 -1)
               (aggressive-indent-mode         -1)))
 

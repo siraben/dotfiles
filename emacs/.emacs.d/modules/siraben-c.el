@@ -24,14 +24,14 @@
 (use-package irony)
 (use-package company-irony)
 (use-package flycheck-irony)
-(use-package google-c-style
-  :config
-  (add-hook 'c-mode-common-hook 'google-set-c-style))
+(use-package google-c-style)
 
 (add-hook 'c-mode-hook #'(lambda ()
-                           (irony-mode 1)
-                           (flycheck-mode 1)
-                           (smartparens-mode 1)))
+                           (google-set-c-style)
+                           (irony-mode t)
+                           (flycheck-mode t)
+                           (electric-pair-mode t)
+                           (electric-indent-mode t)))
 
 ;; I like having an easy key binding to recompile easily.
 (define-key c-mode-base-map (kbd "s-b") 'recompile)

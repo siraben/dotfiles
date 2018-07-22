@@ -43,7 +43,9 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;; Extra mode line modes.
-(display-battery-mode t)
+;; (display-battery-mode t)
+(use-package fancy-battery)
+(add-hook 'after-init-hook #'fancy-battery-mode)
 (display-time-mode t)
 (global-company-mode t)
 
@@ -62,23 +64,41 @@
 
 ;; Improve the mode line.
 (use-package smart-mode-line
+  :disabled
   :config (progn
+            (add-hook 'after-init-hook #'sml/setup)
             (setq sml/no-confirm-load-theme t)
             (setq sml/theme nil)
             (add-to-list 'sml/replacer-regexp-list
                          '("^~/dotfiles/emacs/.emacs.d/" ":Emacs Config:"))))
 
+(use-package spaceline)
+(setq fancy-battery-show-percentage t)
+(add-hook 'after-init-hook #'(lambda ()
+                               (if (display-graphic-p)
+                                   (progn
+                                     (require 'spaceline-config)
+                                     (spaceline-emacs-theme)
+                                     (spaceline-helm-mode)))))
+(use-package golden-ratio
+  :disabled
+  :config (add-hook 'after-init-hook #'golden-ratio-mode))
 
 ;; Remove the auto-revert mode-line
 (require 'diminish)
 (diminish 'auto-revert-mode)
 (diminish 'flyspell-mode)
-(diminish 'auto-fill-function " ->|")
-(diminish 'helm-mode)
+(diminish 'visual-line-mode "Visual Line")
+(diminish 'auto-fill-function "Auto Fill")
+;; For some reason helm-mode needs special treatment.
+(add-hook 'helm-mode-hook #'(lambda ()
+                              (diminish 'helm-mode)
+                              (message "Diminishing helm...")
+                              (setq helm-mode-hook nil)))
+(diminish 'eldoc-mode)
 (diminish 'lisp-interaction-mode)
 (diminish 'flycheck-mode)
 
-(add-hook 'after-init-hook #'sml/setup)
 
 (provide 'siraben-ui)
 ;;; siraben-ui.el ends here
