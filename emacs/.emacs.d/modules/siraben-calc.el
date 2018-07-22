@@ -1,7 +1,6 @@
-;;; siraben-c.el --- configures Emacs for C-code development
+;;; siraben-calc.el --- Emacs calc configuration
 
 ;;; License:
-
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
@@ -18,24 +17,6 @@
 ;;; Commentary:
 
 ;;; Code:
-(require 'cc-mode)
 
-;; Code auto completion packages for C code.
-(use-package irony)
-(use-package company-irony)
-(use-package flycheck-irony)
-(use-package google-c-style)
-
-(add-hook 'c-mode-hook #'(lambda ()
-                           (google-set-c-style)
-                           (irony-mode t)
-                           (flycheck-mode t)
-                           (electric-pair-mode t)
-                           (electric-indent-mode t)))
-
-;; I like having an easy key binding to recompile easily.
-(define-key c-mode-base-map (kbd "s-b") 'recompile)
-
-(provide 'siraben-c)
-
-;;; siraben-c.el ends here
+(provide 'siraben-calc)
+;;; siraben-calc.el ends here.

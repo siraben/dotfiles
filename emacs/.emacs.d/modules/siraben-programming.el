@@ -38,18 +38,15 @@
 
 (defun siraben-prog-mode-defaults ()
   "Default programming mode hook, useful with any programming language."
-  
   (when (executable-find ispell-program-name)
     (flyspell-prog-mode)
-    (diminish 'flyspell-mode))
+    (diminish 'flyspell-mode)
+    (undo-tree-mode t))
   
-  ;;   (enable-and-diminish flycheck-mode)
-  
-
   (set (make-local-variable 'comment-auto-fill-only-comments) t)
   
   (font-lock-add-keywords
-   nil '(("\\<\\(\\(FIX\\(ME\\)?\\|TODO\\|OPTIMIZE\\|HACK\\|REFACTOR\\):\\)"
+   nil '(("\\<\\(\\(FIX\\(ME\\)?\\|TODO\\|OPTIMIZE\\|REFACTOR\\):\\)"
           1 font-lock-warning-face t))))
 
 (add-hook 'prog-mode-hook (lambda ()

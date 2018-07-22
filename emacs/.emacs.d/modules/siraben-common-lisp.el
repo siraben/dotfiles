@@ -43,6 +43,9 @@
   ;; default to SBCL on Linux and Windows
   (setq slime-default-lisp 'sbcl))
 
+;; Add fancy slime contribs
+(setq slime-contribs '(slime-fancy slime-cl-indent))
+
 (eval-after-load "slime"
   '(progn
      (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol
@@ -52,14 +55,17 @@
            slime-auto-start 'always)
      (define-key slime-mode-map (kbd "C-c C-s") 'slime-selector)))
 
-;; rainbow-delimeters messes up colors in slime-repl, and doesn't seem to work
-;; anyway, so we won't use prelude-lisp-coding-defaults.
+;; rainbow-delimeters messes up colors in slime-repl
 
 (add-hook 'comint-mode-hook
           (lambda ()
             (siraben-enable-lisp-editing-modes)
             (undo-tree-mode -1)
-            (aggressive-indent-mode -1)))
+            (aggressive-indent-mode -1)
+            (rainbow-delimiters-mode -1)))
+
+(add-hook 'slime-repl-mode-hook (lambda ()
+                                  (paredit-mode +1)))
 
 (provide 'siraben-common-lisp)
 ;;; siraben-common-lisp.el ends here
