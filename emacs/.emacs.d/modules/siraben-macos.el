@@ -26,6 +26,9 @@
 (set-if-exists ispell-program-name "/usr/local/bin/aspell")
 (setq system-uses-terminfo nil)
 
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+(add-to-list 'default-frame-alist '(ns-appearance . dark))
+
 (provide 'siraben-macos)
 
 ;;; siraben-macos.el ends here
