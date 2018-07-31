@@ -42,8 +42,8 @@
 
 (setq org-agenda-diary-file nil)
 (setq org-habit-graph-column 50)
-(setq org-habit-preceding-days 7)
-(setq org-habit-following-days 7)
+(setq org-habit-preceding-days 20)
+(setq org-habit-following-days 4)
 
 (setq org-log-done t)
 

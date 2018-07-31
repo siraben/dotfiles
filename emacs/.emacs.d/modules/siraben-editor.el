@@ -106,8 +106,10 @@ buffer from which the function was invoked read-only."
 ;; Emacs.
 (setq save-interprogram-paste-before-kill t)
 
+;;; Dired stuff
 ;; In case we want to restore the file we deleted..
 (setq delete-by-moving-to-trash t)
+(dired-async-mode 1)
 
 (defmacro my-defun (name params doc &rest rest)
   "Define NAME as a function with PARAMS with siraben/ prepended to it.
@@ -120,7 +122,7 @@ documentation you'll know who to blame if you break something."
     `(progn (defun ,internal-name ,params ,doc ,@rest)
             (defalias ',name ',internal-name))))
 
-(defun siraben-days-until (&optional date)
+(defun siraben-days-until (&optional date just-number)
   "Display the number of days until DATE, in the minibuffer.
 For \"days\" it counts the number of nights that between today
 and then, so tomorrow is 1 day from now, and so on.
@@ -136,11 +138,13 @@ The date must be in (month day year) format."
       (let ((days (- (calendar-absolute-from-gregorian target)
                      (calendar-absolute-from-gregorian
                       (calendar-current-date)))))
-        (message (format "%s days until %s %s, %s"
-                         days
-                         (calendar-month-name (car target))
-                         (cadr target)
-                         (caddr target)))))))
+        (if just-number
+            days
+          (message (format "%s days until %s %s, %s"
+                           days
+                           (calendar-month-name (car target))
+                           (cadr target)
+                           (caddr target))))))))
 
 
 (defun siraben-unfill-paragraph ()
