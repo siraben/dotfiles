@@ -1,4 +1,4 @@
-;;; siraben-c.el --- configures Emacs for C-code development
+;;; siraben-csharp.el --- configures Emacs for C# development
 
 ;;; License:
 
@@ -18,24 +18,14 @@
 ;;; Commentary:
 
 ;;; Code:
-(require 'cc-mode)
 
 ;; Code auto completion packages for C code.
-(use-package irony)
-(use-package company-irony)
-(use-package flycheck-irony)
-(use-package google-c-style)
+(use-package csharp-mode)
 
-(add-hook 'c-mode-hook #'(lambda ()
-                           (google-set-c-style)
-                           (irony-mode t)
-                           (flycheck-mode t)
-                           (electric-pair-local-mode t)
-                           (electric-indent-mode t)))
+(add-hook 'csharp-mode-hook #'(lambda ()
+                                (electric-pair-local-mode t)
+                                (electric-indent-mode t)))
 
-;; I like having an easy key binding to recompile easily.
-(define-key c-mode-base-map (kbd "s-b") 'recompile)
+(provide 'siraben-csharp)
 
-(provide 'siraben-c)
-
-;;; siraben-c.el ends here
+;;; siraben-csharp.el ends here

@@ -59,6 +59,7 @@
 (require 'siraben-rust)
 (require 'siraben-common-lisp)
 (require 'siraben-haskell)
+(require 'siraben-csharp)
 
 (provide 'siraben-programming)
 ;;; siraben-programming.el ends here
