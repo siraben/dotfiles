@@ -57,6 +57,10 @@
           #'(lambda ()
               (flycheck-mode -1)))
 
+(add-hook 'emacs-lisp-mode-hook
+          #'(lambda ()
+              (flycheck-mode t)))
+
 (use-package racket-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.rkt\\'" . racket-mode)))

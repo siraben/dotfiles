@@ -30,7 +30,7 @@
                            (google-set-c-style)
                            (irony-mode t)
                            (flycheck-mode t)
-                           (electric-pair-mode t)
+                           (electric-pair-local-mode t)
                            (electric-indent-mode t)))
 
 ;; I like having an easy key binding to recompile easily.

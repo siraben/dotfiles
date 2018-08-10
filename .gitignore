@@ -19,3 +19,4 @@ secret.el
 bookmarks
 smex-items
 emacs/.emacs.d/diary
+emacs/.emacs.d/modules/siraben-mu4e.el
