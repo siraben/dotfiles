@@ -34,9 +34,9 @@ sudo echo "Successfully used sudo!" || exit
 echo "Installing homebrew..."
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-echo "Installing wget zsh git stow tmux"
+echo "Installing wget zsh git stow tmux vim"
 
-brew install wget zsh git stow tmux
+brew install wget zsh git stow tmux vim
 
 echo "Installing Hack font"
 wget -O font.zip https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.zip && unzip -j font.zip -d /Library/Fonts/ && rm font.zip
@@ -44,11 +44,11 @@ wget -O font.zip https://github.com/source-foundry/Hack/releases/download/v3.003
 echo "Installing applications..."
 brew tap caskroom/cask
 brew update
-brew cask install iterm2 firefox-esr github keepassxc virtualbox nextcloud thunderbird flux
+brew cask install iterm2 firefox github keepassxc virtualbox nextcloud thunderbird flux torbrowser github-desktop libreoffice
 
 # Emacs. The one true editor.
 echo "Installing Emacs..."
-brew install emacs --devel --with-ctags --with-mailutils --with-modules --with-cocoa --with-imagemagick@6 --with-gnutls --with-librsvg && brew linkapps
+brew install emacs --with-ctags --with-mailutils --with-modules --with-cocoa --with-imagemagick@6 --with-librsvg --with-dbus
 
 # Of course, my Emacs dotfiles!
 echo "Installing siraben's dotfiles"
@@ -56,14 +56,13 @@ git clone https://github.com/siraben/dotfiles ~/dotfiles
 source <(cat ~/dotfiles/install.sh)
 
 # Start in the background for configuration
-echo "Installing aspell, chezscheme and llvm"
-brew install llvm --with-clang
+echo "Installing aspell and Guile."
+brew install aspell guile
 
 echo "Starting Emacs in the background..."
-brew install aspell guile
 emacs --daemon
 
-say "Done configuring your computer, for now!"
+say "Done!"
 
 # Candidate change to automatically set up irony mode
 # IRONY_PATH=`ls -1 ~/.emacs.d/elpa/ | grep ^irony | head -n 1`

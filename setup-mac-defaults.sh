@@ -56,7 +56,7 @@ echo "Disabling window animations and Get Info animations..."
 defaults write com.apple.finder DisableAllAnimations -bool true
 
 
-echo "Disabling shadow in screenshots"
+echo "Disabling shadow in screenshots..."
 defaults write com.apple.screencapture disable-shadow -bool true
 
 
@@ -86,8 +86,8 @@ defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
 defaults write com.apple.helpviewer DevMode -bool true
 
 
-echo "Reveal IP address, hostname, OS version, etc. when clicking the clock in login window..."
-sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
+# echo "Reveal IP address, hostname, OS version, etc. when clicking the clock in login window..."
+# sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
 
 echo "Restarting automatically if the computer freezes..."
 sudo systemsetup -setrestartfreeze on
@@ -95,13 +95,13 @@ sudo systemsetup -setrestartfreeze on
 echo "Showing all filename extensions..."
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 
-# When performing a search, search the current folder by default
+echo "Enabling searching the current folder by default..."
 defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 
-echo "Disabling the warning when changing a file extension"
+echo "Disabling the warning when changing a file extension..."
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 
-echo "Avoiding creating .DS_Store files on network"
+echo "Avoiding creating .DS_Store files on network..."
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 
 echo "Showing the ~/Library folder..."
@@ -116,7 +116,6 @@ defaults write com.apple.dock mineffect -string "scale"
 echo "Speeding up Mission Control animations..."
 defaults write com.apple.dock expose-animation-duration -float 0.1
 
-
 echo "Stop showing windows by application in Mission Control..."
 defaults write com.apple.dock expose-group-by-app -bool false
 
@@ -126,8 +125,8 @@ defaults write com.apple.dashboard mcx-disabled -bool true
 echo "Removing dashboard as a space..."
 defaults write com.apple.dock dashboard-in-overlay -bool true
 
-echo "Stopping automatic rearrangement of Spaces based on most recent use..."
-defaults write com.apple.dock mru-spaces -bool false
+# echo "Stopping automatic rearrangement of Spaces based on most recent use..."
+# defaults write com.apple.dock mru-spaces -bool false
 
 echo "Removing the auto-hiding Dock delay..."
 defaults write com.apple.dock autohide-delay -float 0
@@ -140,6 +139,7 @@ defaults write com.apple.dock autohide -bool true
 
 echo "Using plain text mode for new TextEdit documents"
 defaults write com.apple.TextEdit RichText -int 0
+
 echo "Opening and saving files as UTF-8 in TextEdit..."
 defaults write com.apple.TextEdit PlainTextEncoding -int 4
 defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
@@ -147,30 +147,28 @@ defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
 echo "Disabling Notification Center and remove the menu bar icon..."
 launchctl unload -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist 2> /dev/null
 
-echo "Disabling automatic capitalization as it's annoying when typing code..."
+echo "Disabling automatic capitalization..."
 defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
 
-echo "Disabling smart dashes as they're annoying when typing code..."
+echo "Disabling smart dashes..."
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
 
-echo "Disabling automatic period substitution as it's annoying when typing code..."
+echo "Disabling automatic period substitution..."
 defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
 
-echo "Disabling smart quotes as they’re annoying when typing code..."
+echo "Disabling smart quotes..."
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 
 echo "Disabling auto-correct..."
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 
-
-echo "Trackpad: enabling tap to click for this user and for the login screen"
+echo "Enabling tap to click for this user and for the login screen..."
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 
-# Increase sound quality for Bluetooth headphones/headsets
+echo "Increasing sound quality for Bluetooth headphones/headsets..."
 defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 40
-
 
 
 echo "========================================================================"
