@@ -28,16 +28,17 @@ curl -fsSL https://raw.githubusercontent.com/siraben/dotfiles/master/setup-mac.s
     - guile
   - Casks
     - iTerm 2
-    - Firefox ESR
+    - Firefox
     - GitHub Desktop
     - KeepassXC
     - VirtualBox
     - Nextcloud Desktop
     - f.lux
+    - Thunderbird
 
 ## Dependencies
 ### GNU/Linux
-- GNU Emacs (>= 25.1)
+- GNU Emacs (>= 26.1)
 - GNU Stow
 
 On macOS, the dependencies are automatically installed.
