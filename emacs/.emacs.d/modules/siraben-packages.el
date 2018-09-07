@@ -143,5 +143,7 @@
 ;; This is useful for testing out various commands.
 (use-package lorem-ipsum)
 
+(use-package forth-mode)
+
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here

@@ -39,6 +39,10 @@
 (column-number-mode t)
 (size-indication-mode t)
 
+;; Enable winner mode
+(add-hook 'after-init-hook #'(lambda ()
+                               (winner-mode t)))
+
 ;; Enable short answers
 (fset 'yes-or-no-p 'y-or-n-p)
 
