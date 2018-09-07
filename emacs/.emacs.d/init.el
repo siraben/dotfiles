@@ -36,12 +36,11 @@
 (menu-bar-mode -1)
 
 (when window-system
-  (scroll-bar-mode -1))
+  (scroll-bar-mode -1)
+  ;; And ensure the cursor is a box, and remove the fringe.
+  (setq-default cursor-type 'box)
+  (fringe-mode 0))
 
-;; And ensure the cursor is a box, and remove the fringe.
-(setq-default cursor-type 'box)
-
-(fringe-mode 0)
 
 (defvar siraben-root-dir
   "~/.emacs.d/"
@@ -68,7 +67,7 @@
 (require 'siraben-gnus)
 (require 'siraben-shell)
 (require 'siraben-org)
-(require 'siraben-mu4e)
+;; (require 'siraben-mu4e)
 (require 'siraben-arcadia)
 (require 'siraben-calc)
 (require 'siraben-midnight)
@@ -88,6 +87,11 @@
 (let ((secret.el "~/Nextcloud/secret.el"))
   (when (file-exists-p secret.el)
     (load secret.el)))
+
+(let ((secret.el "~/Nextcloud/mu4e.el"))
+  (when (file-exists-p secret.el)
+    (load secret.el)))
+
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
