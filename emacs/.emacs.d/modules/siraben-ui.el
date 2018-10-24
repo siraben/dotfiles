@@ -47,15 +47,12 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;; Extra mode line modes.
-;; (display-battery-mode t)
 (use-package fancy-battery
   :config (setq fancy-battery-show-percentage t)
   :init (add-hook 'after-init-hook #'fancy-battery-mode))
 
 (display-time-mode t)
 (global-company-mode t)
-
-;;(ido-mode t)
 
 (setq frame-title-format
       '(""

@@ -41,7 +41,7 @@
   (when (executable-find ispell-program-name)
     (flyspell-prog-mode)
     (diminish 'flyspell-mode)
-    (undo-tree-mode t))
+    (undo-tree-mode +1))
   
   (set (make-local-variable 'comment-auto-fill-only-comments) t)
   
@@ -60,6 +60,7 @@
 (require 'siraben-common-lisp)
 (require 'siraben-haskell)
 (require 'siraben-csharp)
+(require 'siraben-forth)
 
 (provide 'siraben-programming)
 ;;; siraben-programming.el ends here
