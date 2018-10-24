@@ -71,7 +71,9 @@
   :diminish paredit-mode)
 
 (use-package undo-tree
-  :diminish undo-tree-mode)
+  :diminish undo-tree-mode
+  :config (lambda ()
+            (global-undo-tree-mode +1)))
 
 (use-package aggressive-indent
   :diminish aggressive-indent-mode)
@@ -110,6 +112,8 @@
          ("M-x"     . 'helm-M-x)
          ("C-x b"   . 'helm-mini)))
 
+(use-package helm-ag)
+
 (setq helm-split-window-in-side-p           t
       helm-buffers-fuzzy-matching           t
       helm-move-to-line-cycle-in-source     t
@@ -144,6 +148,29 @@
 (use-package lorem-ipsum)
 
 (use-package forth-mode)
+
+;; (use-package alert
+;;   :commands (alert)
+;;   :init
+;;   (setq alert-default-style 'libnotify))
+
+;; (use-package quelpa-use-package
+;;   :demand)
+
+;; (use-package matrix-client
+;;   :defer t
+;;   :ensure nil
+;;   :quelpa (matrix-client-ng
+;;            :fetcher github
+;;            :repo "jgkamat/matrix-client-el"
+;;            :branch "client-ng")
+
+;;   :commands (matrix-client)
+;;   :config
+;;   (setq matrix-client-render-membership nil
+;;         matrix-client-render-presence nil
+;;         matrix-client-use-tracking t
+;;         matrix-client-save-token t))
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here
