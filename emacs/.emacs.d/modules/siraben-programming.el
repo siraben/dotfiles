@@ -61,6 +61,7 @@
 (require 'siraben-haskell)
 (require 'siraben-csharp)
 (require 'siraben-forth)
+(require 'siraben-sml)
 
 (provide 'siraben-programming)
 ;;; siraben-programming.el ends here

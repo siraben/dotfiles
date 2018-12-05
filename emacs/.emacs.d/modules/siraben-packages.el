@@ -47,7 +47,7 @@
 (use-package diminish)
 (use-package svg-clock)
 (use-package writegood-mode)
-;; (use-package ranger)
+(use-package ranger)
 (use-package mark-multiple)
 (use-package multiple-cursors)
 (use-package svg-clock)
@@ -63,7 +63,7 @@
 (use-package free-keys)
 (use-package fill-column-indicator)
 (use-package memory-usage)
-(use-package yasnippet)
+(use-package yasnippet-snippets)
 (use-package demo-it)
 (use-package ledger-mode)
 
