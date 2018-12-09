@@ -9,6 +9,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./recap.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -42,6 +43,8 @@
     dejavu_fonts
     gentium
     terminus_font
+    siji
+    unifont
   ];
 
   environment = {
@@ -53,6 +56,7 @@
       binutils
       chromium
       emacs
+      evince
       firefox
       gcc
       gimp
@@ -61,6 +65,8 @@
       guile
       htop
       i3-gaps
+      imagemagick7
+      inkscape
       keepassxc
       killall
       libreoffice
@@ -69,57 +75,45 @@
       networkmanagerapplet
       nextcloud-client
       nitrogen
+      polybar
       ranger
       redshift
       riot-web
+      rofi
       stow
+      scrot
       terminator
       texlive.combined.scheme-full
       thunderbird
-      unclutter
+      tree
+      unzip
       vim
       vlc
       wget
       wpa_supplicant
+      xss-lock
       zile
-      zsh
     ];
   };
   # nextcloud-client = pkgs.nextcloud-client.override { withGnomeKeyring = true; libgnome-keyring = pkgs.gnome3.libgnome-keyring; };
 
-  systemd.user.services."unclutter" = {
-    enable = true;
-    description = "hide cursor after X seconds idle";
-    wantedBy = [ "default.target" ];
-    serviceConfig.Restart = "always";
-    serviceConfig.RestartSec = 2;
-    serviceConfig.ExecStart = "${pkgs.unclutter}/bin/unclutter";
-  };
+  # systemd.user.services."unclutter" = {
+  #   enable = true;
+  #   description = "hide cursor after X seconds idle";
+  #   wantedBy = [ "graphical-session.target" ];
+  #   serviceConfig.Restart = "always";
+  #   serviceConfig.RestartSec = 2;
+  #   serviceConfig.ExecStart = "${pkgs.unclutter}/bin/unclutter";
+  # };
 
   services.redshift = {
-     enable = true;
-     latitude = "13";
-     longitude = "100";
-     provider = "manual";
-     temperature.day = 6500;
-     temperature.night = 3500;
+    enable = true;
+    latitude = "13";
+    longitude = "100";
+    provider = "manual";
+    temperature.day = 6500;
+    temperature.night = 3500;
   };
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -128,12 +122,11 @@
   sound.enable = true;
   hardware.pulseaudio.enable = true;
 
-  # Enable the KDE Desktop Environment.
-  # services.xserver.displayManager.sddm.enable = true;
   services.xserver = {
     enable = true;
     # desktopManager.plasma5.enable = true;
-    displayManager.sddm.enable = true;
+    # displayManager.sddm.enable = true;
+    displayManager.lightdm.enable = true;
     xkbOptions = "ctrl:nocaps";
     libinput.enable = true;
     layout = "us";
@@ -147,9 +140,12 @@
         enableXfwm = false;
       };
     };
-    windowManager.i3 = {
-      enable = true;
-      package = pkgs.i3-gaps;
+    windowManager = {
+      default = "i3";
+      i3 = {
+        enable = true;
+        package = pkgs.i3-gaps;
+      };
     };
   };
   systemd.user.services.nm-applet = {
@@ -166,6 +162,7 @@
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.siraben = {
+    shell = pkgs.fish;
     isNormalUser = true;
     home = "/home/siraben";
     description = "Ben Siraphob";
