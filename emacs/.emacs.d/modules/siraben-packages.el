@@ -47,7 +47,6 @@
 (use-package diminish)
 (use-package svg-clock)
 (use-package writegood-mode)
-(use-package ranger)
 (use-package mark-multiple)
 (use-package multiple-cursors)
 (use-package svg-clock)
