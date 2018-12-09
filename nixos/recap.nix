@@ -8,8 +8,8 @@ let
   recap = import (pkgs.fetchFromGitHub {
     owner = "dustinlacewell";
     repo = "recap";
-    rev = "ac4e74dd0e24236636947e408de81930f7b8d3e2";
-    sha256 = "023cj5i71x7z418r3s53gm1mhnd2df5ijnvnpgdfhln6y3m72xp5";
+    rev = "4d441ab94c868be9a2a48f28430c56e4ce991e3d";
+    sha256 = "0z6085k4jv8pxivr1rsgzg953lpr38xrwm9lvj30c3zrn7m9jz6j";
   });
 
   # recap = import /home/ldlework/src/recap;
