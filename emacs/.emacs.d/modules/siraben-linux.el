@@ -21,18 +21,11 @@
 
 ;;; Code:
 
-(require 'scheme)
-(require 'ispell)
+;; (require 'scheme)
+;; (require 'ispell)
 
-(set-if-exists scheme-program-name "/usr/bin/guile")
-
-(set-if-exists ispell-program-name "/usr/bin/aspell")
-
-;; I use the Guix package manager on some machines.
-(if (file-exists-p "~/.guix-profile")
-    (progn
-      (use-package guix)
-      (set-if-exists scheme-program-name "~/.guix-profile/bin/guile")))
+(setq ispell-program-name (executable-find "aspell"))
+;; (setq scheme-program-name (executable-find "guile"))
 
 (provide 'siraben-linux)
 
