@@ -153,23 +153,25 @@
 ;;   :init
 ;;   (setq alert-default-style 'libnotify))
 
-;; (use-package quelpa-use-package
-;;   :demand)
+(use-package rainbow-identifiers)
 
-;; (use-package matrix-client
-;;   :defer t
-;;   :ensure nil
-;;   :quelpa (matrix-client-ng
-;;            :fetcher github
-;;            :repo "jgkamat/matrix-client-el"
-;;            :branch "client-ng")
+(use-package quelpa-use-package
+  :demand)
 
-;;   :commands (matrix-client)
-;;   :config
-;;   (setq matrix-client-render-membership nil
-;;         matrix-client-render-presence nil
-;;         matrix-client-use-tracking t
-;;         matrix-client-save-token t))
+
+(use-package matrix-client
+  :quelpa ((matrix-client :fetcher github :repo "jgkamat/matrix-client-el"
+                          :files (:defaults "logo.png"))
+           :upgrade t)
+  :custom
+  (matrix-client-render-membership nil)
+  (matrix-client-render-presence nil)
+  (matrix-client-show-images t)
+  (matrix-client-use-tracking t)
+  (matrix-client-save-token t)
+  (matrix-client-show-room-avatars t)
+  (global-matrix-client-rainbow-mode t))
+
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here
