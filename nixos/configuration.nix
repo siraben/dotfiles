@@ -53,6 +53,7 @@
     };
     systemPackages = with pkgs; [
       anki
+      arc-theme
       binutils
       chromium
       emacs
@@ -93,6 +94,7 @@
       wpa_supplicant
       xss-lock
       zile
+      zip
     ];
   };
   # nextcloud-client = pkgs.nextcloud-client.override { withGnomeKeyring = true; libgnome-keyring = pkgs.gnome3.libgnome-keyring; };
@@ -148,17 +150,17 @@
       };
     };
   };
-  systemd.user.services.nm-applet = {
-    description = "Network Manager applet";
-    partOf = [ "graphical-session.target" ];
-    wantedBy = [ "graphical-session.target" ];
-    path = [ pkgs.dbus ];
-    serviceConfig = {
-      ExecStart = "${pkgs.networkmanagerapplet}/bin/nm-applet";
-      RestartSec = 3;
-      Restart = "always";
-    };
-  };
+  # systemd.user.services.nm-applet = {
+  #   description = "Network Manager applet";
+  #   partOf = [ "graphical-session.target" ];
+  #   wantedBy = [ "graphical-session.target" ];
+  #   path = [ pkgs.dbus ];
+  #   serviceConfig = {
+  #     ExecStart = "${pkgs.networkmanagerapplet}/bin/nm-applet";
+  #     RestartSec = 3;
+  #     Restart = "always";
+  #   };
+  # };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.siraben = {
