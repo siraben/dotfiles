@@ -17,7 +17,7 @@ font pango:monospace 8
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-#font pango:DejaVu Sans Mono 8
+font pango:DejaVu Sans Mono 8
 
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -118,7 +118,7 @@ bindsym $mod+Shift+8 move container to workspace $ws8
 bindsym $mod+Shift+9 move container to workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10
 
-bindsym $mod+Shift+l exec "~/.config/i3/lock.sh $HOME/Pictures/Icons/lock.png"
+bindsym $mod+Shift+l exec "xflock4"
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -170,4 +170,6 @@ exec --no-startup-id nitrogen --restore
 exec --no-startup-id xfce4-panel --disable-wm-check
 
 exec --no-startup-id polybar example
-exec --no-startup-id xss-lock -- "~/.config/i3/lock.sh $HOME/Pictures/Icons/lock.png"
+
+# need this line otherwise urxvt freaks out
+exec --no-startup-id  xrdb ~/.Xresources 
