@@ -155,22 +155,22 @@
 
 (use-package rainbow-identifiers)
 
-(use-package quelpa-use-package
-  :demand)
-
-
-(use-package matrix-client
-  :quelpa ((matrix-client :fetcher github :repo "jgkamat/matrix-client-el"
-                          :files (:defaults "logo.png"))
-           :upgrade t)
-  :custom
-  (matrix-client-render-membership nil)
-  (matrix-client-render-presence nil)
-  (matrix-client-show-images t)
-  (matrix-client-use-tracking t)
-  (matrix-client-save-token t)
-  (matrix-client-show-room-avatars t)
-  (global-matrix-client-rainbow-mode t))
+;; (use-package quelpa-use-package
+;;   :demand)
+;; 
+;; 
+;; (use-package matrix-client
+;;   :quelpa ((matrix-client :fetcher github :repo "jgkamat/matrix-client-el"
+;;                           :files (:defaults "logo.png"))
+;;            :upgrade t)
+;;   :custom
+;;   (matrix-client-render-membership nil)
+;;   (matrix-client-render-presence nil)
+;;   (matrix-client-show-images t)
+;;   (matrix-client-use-tracking t)
+;;   (matrix-client-save-token t)
+;;   (matrix-client-show-room-avatars t)
+;;   (global-matrix-client-rainbow-mode t))
 
 
 (provide 'siraben-packages)

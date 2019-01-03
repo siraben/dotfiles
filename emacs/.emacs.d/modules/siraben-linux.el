@@ -21,11 +21,11 @@
 
 ;;; Code:
 
-;; (require 'scheme)
-;; (require 'ispell)
+(require 'scheme)
+(require 'ispell)
 
-(setq ispell-program-name (executable-find "aspell"))
-;; (setq scheme-program-name (executable-find "guile"))
+(setq ispell-program-name  "aspell")
+(setq scheme-program-name  "guile")
 
 (provide 'siraben-linux)
 
