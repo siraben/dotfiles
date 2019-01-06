@@ -14,11 +14,12 @@ general {
 # order += "ipv6"
 order += "disk /"
 order += "wireless _first_"
-# order += "ethernet _first_"
-# order += "battery all"
+order += "ethernet _first_"
+order += "battery all"
 # order += "load"
 # order += "memory"
-# order += "tztime local"
+order += "tztime local"
+order += "volume master"
 
 wireless _first_ {
         format_up = "W: (%quality at %essid) %ip"
@@ -31,8 +32,34 @@ wireless _first_ {
 # }
 
 # battery all {
-#         format = "%status %percentage %remaining"
+#         format = "%status %percentage"
 # }
+
+battery all {
+        format = "%status %percentage"
+        format_down = "No battery"
+        status_chr = "⚡ CHR"
+        status_bat = "🔋 BAT"
+        status_unk = "? UNK"
+        status_full = "☻ FULL"
+        low_threshold = 10
+        integer_battery_capacity = true
+}
+
+
+tztime local {
+        format = "%Y-%m-%d %H:%M"
+}
+
+
+volume master {
+        format = "VOL: %volume"
+        format_muted = "MUT: %volume"
+        device = "default"
+        mixer = "Master"
+        mixer_idx = 0
+}
+
 
 
 # load {
