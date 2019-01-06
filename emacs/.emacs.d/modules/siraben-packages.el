@@ -154,6 +154,8 @@
 ;;   (setq alert-default-style 'libnotify))
 
 (use-package rainbow-identifiers)
+(use-package nix-mode)
+(use-package webpaste)
 
 ;; (use-package quelpa-use-package
 ;;   :demand)

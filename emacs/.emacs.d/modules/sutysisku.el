@@ -4,23 +4,19 @@
 
 ;; Author: Dustin Lacewell <dlacewell@gmail.com>
 ;; Version: 0.1
-;; Package-Requires: ((emacs "24") (request "0") (helm "0") (a "0")
+;; Package-Requires: ((emacs "24") (request "0") (helm "0") (a "0") (ivy "0"))
 ;; Keywords: hydra
 ;; URL: http://github.com/dustinlacewell/hera
 
 ;;; Commentary:
 
-;; This package offers Lojban dictionary search with Helm.
+;; This package offers Lojban dictionary search with Helm
 
 ;;; Code:
-
-(use-package a)
-(use-package helm)
-(use-package request)
-
 (require 'cl)
 (require 'a)
 (require 'helm)
+(require 'ivy)
 (require 'request)
 
 (setq sutysisku/data-url
@@ -170,6 +166,85 @@
                   sutysisku--definition-match-source))
 
     (sutysisku-fetch 'sutysisku-search)))
+
+(defun sutysisku-ivy-candidates (str)
+  (when (and (not (equal str nil)) (not (equal str "")))
+    (let ((exact)
+          (gloss-exact)
+          (word-prefix)
+          (word-substring)
+          (gloss-prefix)
+          (gloss-substring)
+          (definition-substring))
+      (cl-loop for item in sutysisku--data
+               for display = (car item)
+               for record = (cdr item)
+               for word = (a-get record :word)
+               for gloss = (a-get record :gloss)
+               for definition = (a-get record :definition)
+               do (add-text-properties 0 1 `(record ,record) display)
+               do (cond
+                   ((s-equals? str word)
+                    (setf exact (append (list display) exact)))
+
+                   ((s-equals? str gloss)
+                    (setf gloss-exact (append (list display) exact)))
+
+                   ((s-prefix? str word)
+                    (setf word-prefix (append (list display) word-prefix)))
+
+                   ((s-contains? str word)
+                    (setf word-substring (append (list display) word-substring)))
+
+                   ((s-prefix? str gloss)
+                    (setf gloss-prefix (append (list display) gloss-prefix)))
+
+                   ((s-contains? str gloss)
+                    (setf gloss-substring (append (list display) gloss-substring)))
+
+                   ((s-contains? str definition)
+                    (setf definition-substring (append (list display) definition-substring)))))
+      (append
+       exact gloss-exact
+       word-prefix word-substring
+       gloss-prefix gloss-substring
+       definition-substring))))
+
+(defun sutysisku--search-ivy-kill-word-action (entry)
+  (let* ((record (get-text-property 0 'record entry))
+         (word (a-get record :word)))
+    (kill-new word)))
+
+(defun sutysisku--search-ivy-kill-definition-action (entry)
+  (let* ((record (get-text-property 0 'record entry)))
+    (kill-new (a-get record :definition))))
+
+(defun sutysisku--search-ivy-kill-gloss-action (entry)
+  (let* ((record (get-text-property 0 'record entry)))
+    (kill-new (a-get record :gloss))))
+
+(defun sutysisku--search-ivy-kill-all-action (entry)
+  (let* ((record (get-text-property 0 'record entry)))
+    (kill-new (format "%s (%s): %s"
+                      (a-get record :word)
+                      (a-get record :gloss)
+                      (a-get record :definition)))))
+
+(defun sutysisku-search-ivy ()
+  (interactive)
+  (if (> (length sutysisku--data) 0)
+      (ivy-read
+       "vlasisku: " 'sutysisku-ivy-candidates
+       :dynamic-collection t
+       :action 'sutysisku--search-ivy-kill-word-action)
+    (sutysisku-fetch 'sutysisku-search-ivy)))
+
+(ivy-set-actions
+ 'sutysisku-search-ivy
+ '(("w" sutysisku--search-ivy-kill-word-action "Word")
+   ("g" sutysisku--search-ivy-kill-gloss-action "Gloss")
+   ("d" sutysisku--search-ivy-kill-definition-action "Definition")
+   ("a" sutysisku--search-ivy-kill-all-action "All")))
 
 (provide 'sutysisku)
 ;;; sutysisku.el ends here
