@@ -9,7 +9,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      # ./sddm.nix
+      ./sddm.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -50,10 +50,12 @@
       noto-fonts-extra
       hack-font
       inconsolata
+      material-icons
       liberation_ttf
       dejavu_fonts
       terminus_font
       siji
+      unifont
     ];
     fontconfig.ultimate.enable = true;
     fontconfig.defaultFonts = {
@@ -83,12 +85,13 @@
       aspellDicts.en
       binutils
       borgbackup
-      brave
+      # brave
       emacs
       evince
       exfat
       ffmpeg
       firefox
+      font-awesome-ttf
       gcc
       gforth
       gimp
@@ -105,7 +108,7 @@
       killall
       libreoffice
       lightlocker
-      magic-wormhole
+      # magic-wormhole
       mpd
       mpv
       msmtp
@@ -121,12 +124,16 @@
       python3
       qutebrowser
       rambox
+      # highlight
+      atool
+      lynx
+      mediainfo
       ranger
       redshift
       rhythmbox
       riot-web
       rofi
-      # rxvt_unicode
+      rxvt_unicode
       scrot
       silver-searcher
       stow
@@ -136,6 +143,7 @@
       thunderbird
       tmux
       tor-browser-bundle-bin
+      transmission-gtk
       tree
       unzip
       vim
@@ -188,13 +196,20 @@
   services.xserver = {
     enable = true;
     # desktopManager.plasma5.enable = true;
-    # displayManager.sddm.enable = true;
-    # displayManager.sddm.theme = "maldives";
-    displayManager.lightdm.enable = true;
+    displayManager.sddm = {
+      enable = true;
+      enableHidpi = true;
+      theme = "sugar-light";
+      extraConfig = ''
+        ForceHideCompletePassword=true
+      '';
+     };
+    
+    # displayManager.lightdm.enable = true;
     xkbOptions = "ctrl:nocaps";
     libinput.enable = true;
     layout = "us";
-
+    
     desktopManager = {
       default = "xfce";
       xterm.enable = false;
@@ -212,21 +227,14 @@
       };
     };
   };
-  # systemd.user.services.nm-applet = {
-  #   description = "Network Manager applet";
-  #   partOf = [ "graphical-session.target" ];
-  #   wantedBy = [ "graphical-session.target" ];
-  #   path = [ pkgs.dbus ];
-  #   serviceConfig = {
-  #     ExecStart = "${pkgs.networkmanagerapplet}/bin/nm-applet";
-  #     RestartSec = 3;
-  #     Restart = "always";
-  #   };
-  # };
+
+  # services.xserver.desktopManager.gnome3.enable = true;
+  # services.xserver.displayManager.gdm.enable = true;
+
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.siraben = {
-    shell = pkgs.zsh;
+    shell = pkgs.bash;
     isNormalUser = true;
     home = "/home/siraben";
     description = "Ben Siraphob";
@@ -242,3 +250,4 @@
   system.stateVersion = "18.09"; # Did you read the comment?
 
 }
+
