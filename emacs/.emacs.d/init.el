@@ -106,15 +106,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(global-matrix-client-rainbow-mode t t)
- '(matrix-client-render-membership nil t)
- '(matrix-client-render-presence nil t)
- '(matrix-client-save-token t t)
- '(matrix-client-show-images t t)
- '(matrix-client-show-room-avatars t t)
- '(matrix-client-use-tracking t t)
- '(package-selected-packages
-   (quote
-    (webpaste yasnippet-snippets xkcd writeroom-mode writegood-mode which-key undo-tree svg-clock spaceline slime rpn-calc rainbow-delimiters racket-mode racer quelpa-use-package pdf-tools paredit paradox org-wc ob-sml nix-mode neotree multiple-cursors memory-usage matrix-client mark-multiple magit lorem-ipsum ledger-mode htmlize helm-nixos-options helm-ag google-c-style gnuplot geiser free-keys forth-mode flycheck-rust flycheck-irony flycheck-haskell fireplace fill-column-indicator fancy-battery exec-path-from-shell erc-view-log emojify edit-indirect ediprolog diminish demo-it define-word csharp-mode company-irony company-emoji color-theme-sanityinc-tomorrow cider cargo auto-package-update aggressive-indent))))
+ )
 
 ;;; init.el ends here

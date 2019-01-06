@@ -28,7 +28,7 @@
 (defvar siraben-default-font-size
   (cond
    ((eq system-type 'darwin) 13)
-   ((eq system-type 'gnu/linux) 10.7))
+   ((eq system-type 'gnu/linux) 10))
   "The default font size.")
 
 (defvar siraben-font-change-increment 1.1
