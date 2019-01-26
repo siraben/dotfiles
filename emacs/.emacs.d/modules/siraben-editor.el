@@ -18,6 +18,7 @@
 
 ;;; Code:
 
+(global-auto-revert-mode t)
 ;; Dynamic binding sucks.
 (setq lexical-binding t)
 

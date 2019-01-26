@@ -1,6 +1,7 @@
-;;; siraben-forth.el --- Specific modes and packages for Forth code.
+;;; siraben-prolog.el --- Coq programming customizations.
 
 ;;; License:
+
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
@@ -16,14 +17,19 @@
 
 ;;; Commentary:
 
+;; This file fixes the broken built-in Prolog editing modes that Emacs
+;; provides.
+
 ;;; Code:
 
-(use-package forth-mode)
-(add-hook 'forth-mode-hook
+(use-package proof-general)
+(use-package company-coq)
+
+(add-hook 'coq-mode-hook
           #'(lambda ()
-              (undo-tree-mode +1)
-              (orgtbl-mode    +1)))
+              (siraben-prog-mode-defaults)
+              (company-coq-mode t)))
 
 
-(provide 'siraben-forth)
-;;; siraben-forth.el ends here
+(provide 'siraben-coq)
+;;; siraben-coq.el ends here
