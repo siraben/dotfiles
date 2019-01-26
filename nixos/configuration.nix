@@ -10,6 +10,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./sddm.nix
+      ./tilem.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -196,16 +197,16 @@
   services.xserver = {
     enable = true;
     # desktopManager.plasma5.enable = true;
-    displayManager.sddm = {
-      enable = true;
-      enableHidpi = true;
-      theme = "sugar-light";
-      extraConfig = ''
-        ForceHideCompletePassword=true
-      '';
-     };
+    # displayManager.sddm = {
+    #   enable = true;
+    #   enableHidpi = true;
+    #   theme = "sugar-light";
+    #   extraConfig = ''
+    #     ForceHideCompletePassword=true
+    #   '';
+    #  };
     
-    # displayManager.lightdm.enable = true;
+    displayManager.lightdm.enable = true;
     xkbOptions = "ctrl:nocaps";
     libinput.enable = true;
     layout = "us";

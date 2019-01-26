@@ -19,7 +19,6 @@
 ;;; Code:
 
 (use-package forth-mode)
-
 (add-hook 'forth-mode-hook
           #'(lambda ()
               (undo-tree-mode +1)
