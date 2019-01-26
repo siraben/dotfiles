@@ -161,8 +161,8 @@ bar {
 }
 
 # Gaps
-gaps inner 3
-gaps outer 5
+# gaps inner 0
+# gaps outer 0
 for_window [class="^.*"] border pixel 0
 
 exec --no-startup-id nitrogen --restore

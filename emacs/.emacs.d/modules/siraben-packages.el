@@ -146,8 +146,6 @@
 ;; This is useful for testing out various commands.
 (use-package lorem-ipsum)
 
-(use-package forth-mode)
-
 ;; (use-package alert
 ;;   :commands (alert)
 ;;   :init
