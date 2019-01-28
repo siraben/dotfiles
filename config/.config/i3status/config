@@ -12,6 +12,7 @@ general {
 }
 
 # order += "ipv6"
+order += "cpu_temperature all"
 order += "disk /"
 order += "wireless _first_"
 order += "ethernet _first_"
@@ -22,7 +23,7 @@ order += "tztime local"
 order += "volume master"
 
 wireless _first_ {
-        format_up = "W: (%quality at %essid) %ip"
+        format_up = "W: (%quality at %essid, %frequency)"
         format_down = "W: down"
 }
 
@@ -31,21 +32,24 @@ wireless _first_ {
 #         format_down = "E: down"
 # }
 
-# battery all {
-#         format = "%status %percentage"
-# }
+
+cpu_temperature all {
+        format = "%degrees°C"
+
+}
 
 battery all {
-        format = "%status %percentage"
+        format = "%status %percentage %emptytime"
         format_down = "No battery"
         status_chr = "⚡ CHR"
         status_bat = "🔋 BAT"
         status_unk = "? UNK"
-        status_full = "☻ FULL"
+        status_full = "FULL"
         low_threshold = 10
+        last_full_capacity = true
+        hide_seconds = true
         integer_battery_capacity = true
 }
-
 
 tztime local {
         format = "%Y-%m-%d %H:%M"
@@ -60,13 +64,8 @@ volume master {
         mixer_idx = 0
 }
 
-
-
-# load {
-#         format = "%1min"
-# }
-
-
 disk "/" {
-        format = "%avail free"
+        format = "%avail"
+        low_threshold = 15
+        format_below_threshold = "Storage low: %avail (%percentage_avail left)"
 }

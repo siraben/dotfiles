@@ -10,7 +10,8 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./sddm.nix
-      ./tilem.nix
+      # ./mktiupgrade.nix
+      # ./tilem.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -23,6 +24,10 @@
 
   networking.networkmanager.enable = true;
   networking.hostName = "nixos"; # Define your hostname.
+  networking.nameservers = [
+    "1.0.0.1"
+    "1.1.1.1"
+  ];
   swapDevices = [ { device = "/var/swap"; size = 4096; } ];
 
   sound.enable = true;
@@ -77,16 +82,18 @@
 
   environment = {
     variables = {
-      EDITOR = pkgs.lib.mkOverride 0 "emacs";
+      EDITOR = pkgs.lib.mkOverride 0 "emacsclient";
     };
     systemPackages = with pkgs; [
       anki
       arc-theme
       aspell
       aspellDicts.en
+      atool
       binutils
       borgbackup
-      # brave
+      brave
+      coq
       emacs
       evince
       exfat
@@ -95,9 +102,11 @@
       font-awesome-ttf
       gcc
       gforth
+      ghc
       gimp
       git
       gnumake
+      gnupg
       gparted
       gpicview
       guile
@@ -109,7 +118,8 @@
       killall
       libreoffice
       lightlocker
-      # magic-wormhole
+      lynx
+      mediainfo
       mpd
       mpv
       msmtp
@@ -122,31 +132,31 @@
       pandoc
       paper-icon-theme
       polybar
+      powertop
       python3
       qutebrowser
       rambox
-      # highlight
-      atool
-      lynx
-      mediainfo
       ranger
       redshift
       rhythmbox
       riot-web
       rofi
       rxvt_unicode
+      urxvt_font_size
       scrot
       silver-searcher
       stow
       system-config-printer
       terminator
       texlive.combined.scheme-full
+      biber
       thunderbird
       tmux
       tor-browser-bundle-bin
       transmission-gtk
       tree
       unzip
+      rxvt_unicode
       vim
       vlc
       wget
@@ -196,17 +206,13 @@
 
   services.xserver = {
     enable = true;
-    # desktopManager.plasma5.enable = true;
-    # displayManager.sddm = {
-    #   enable = true;
-    #   enableHidpi = true;
-    #   theme = "sugar-light";
-    #   extraConfig = ''
-    #     ForceHideCompletePassword=true
-    #   '';
-    #  };
     
-    displayManager.lightdm.enable = true;
+    displayManager.lightdm = {
+     enable = true;
+     greeters.gtk.extraConfig = ''
+       xft-dpi=192
+     '';
+    };
     xkbOptions = "ctrl:nocaps";
     libinput.enable = true;
     layout = "us";
@@ -241,6 +247,10 @@
     description = "Ben Siraphob";
     extraGroups = [ "wheel" "networkmanager" ];
   };
+
+  nix.gc.automatic = true;
+  nix.gc.dates = "daily";
+  nix.gc.options = "--delete-older-than 7d";
 
   # mine.workstation.recap.enable = true;
 
