@@ -19,4 +19,4 @@
 ;;; Code:
 
 (provide 'siraben-calc)
-;;; siraben-calc.el ends here.
+;;; siraben-calc.el ends here

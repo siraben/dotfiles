@@ -59,6 +59,7 @@
 (use-package markdown-mode)
 (use-package neotree)
 (use-package magit)
+
 (use-package free-keys)
 (use-package fill-column-indicator)
 (use-package memory-usage)

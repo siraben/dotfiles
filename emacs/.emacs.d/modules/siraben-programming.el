@@ -21,20 +21,14 @@
 ;; need to be loaded easier.
 
 ;;; Code:
-
-(global-set-key (kbd "M-C") 'comment-or-uncomment-region)
-
 (require 'ispell)
 (require 'cc-mode)
+(require 'magit)
+
+(global-set-key (kbd "M-C") 'comment-or-uncomment-region)
+(global-set-key (kbd "C-x g") 'magit-status)
 
 (define-key c-mode-base-map (kbd "s-b") 'recompile)
-
-(defmacro enable-and-diminish (mode)
-  "Enable MODE and diminish it."
-  `(progn
-     (,mode t)
-     (diminish (quote ,mode))))
-
 
 (defun siraben-prog-mode-defaults ()
   "Default programming mode hook, useful with any programming language."
@@ -46,11 +40,11 @@
   (set (make-local-variable 'comment-auto-fill-only-comments) t)
   
   (font-lock-add-keywords
-   nil '(("\\<\\(\\(FIX\\(ME\\)?\\|TODO\\|OPTIMIZE\\|REFACTOR\\):\\)"
+   nil '(("\\<\\(\\(FIX\\(ME\\)?\\|TODO\\|REFACTOR\\):\\)"
           1 font-lock-warning-face t))))
 
-(add-hook 'prog-mode-hook (lambda ()
-                            (siraben-prog-mode-defaults)))
+(add-hook 'prog-mode-hook(lambda ()
+                           (siraben-prog-mode-defaults)))
 
 (require 'siraben-js)
 (require 'siraben-c)
