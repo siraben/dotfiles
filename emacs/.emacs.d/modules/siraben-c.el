@@ -37,5 +37,4 @@
 (define-key c-mode-base-map (kbd "s-b") 'recompile)
 
 (provide 'siraben-c)
-
 ;;; siraben-c.el ends here
