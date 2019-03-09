@@ -23,10 +23,10 @@
 ;;; Code:
 (require 'ispell)
 (require 'cc-mode)
-(require 'magit)
+;; (require 'magit)
 
 (global-set-key (kbd "M-C") 'comment-or-uncomment-region)
-(global-set-key (kbd "C-x g") 'magit-status)
+;; (global-set-key (kbd "C-x g") 'magit-status)
 
 (define-key c-mode-base-map (kbd "s-b") 'recompile)
 

@@ -58,7 +58,8 @@
 (use-package writeroom-mode)
 (use-package markdown-mode)
 (use-package neotree)
-(use-package magit)
+(use-package magit
+  :demand)
 
 (use-package free-keys)
 (use-package fill-column-indicator)
@@ -120,7 +121,7 @@
       helm-ff-search-library-in-sexp        t
       helm-ff-file-name-history-use-recentf t
       helm-autoresize-max-height            0
-      helm-autoresize-min-height            20)
+      helm-autoresize-min-height            40)
 
 (add-hook 'after-init-hook '(lambda ()
                               (helm-mode 1)
@@ -154,7 +155,9 @@
 
 (use-package rainbow-identifiers)
 (use-package nix-mode)
-(use-package webpaste)
+(use-package webpaste
+  :config
+  (setq webpaste-provider-priority '("dpaste.de" "ix.io")))
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here

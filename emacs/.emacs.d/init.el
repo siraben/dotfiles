@@ -67,7 +67,7 @@
 (require 'siraben-gnus)
 (require 'siraben-shell)
 (require 'siraben-org)
-(require 'siraben-tramp)
+;; (require 'siraben-tramp)
 (require 'siraben-arcadia)
 (require 'siraben-calc)
 (require 'siraben-midnight)
@@ -80,7 +80,7 @@
 
 ;; Initial scratch buffer message.
 (setq initial-scratch-message
-      (format ";; Scratch buffer was created on %s\n"
+      (format ";; Session started on %s\n"
 	      (shell-command-to-string "date '+%A, %B %d, %Y at %R.'")))
 
 ;; Keep some things out of version control.
