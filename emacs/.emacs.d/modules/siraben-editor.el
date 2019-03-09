@@ -237,5 +237,7 @@ that doesn't want text with hard newlines"
 (defalias 'current-block           'siraben-current-block)
 (defalias 'round-off               'siraben-round-off)
 
+(add-hook 'text-mode-hook #'(lambda ()
+                              (undo-tree-mode 1)))
 (provide 'siraben-editor)
 ;;; siraben-editor.el ends here

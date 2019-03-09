@@ -30,5 +30,9 @@
               (eldoc-mode               t)
               (interactive-haskell-mode t)))
 
+(add-hook 'inferior-haskell-mode-hook
+          #'(lambda ()
+              (paredit-mode -1)))
+
 (provide 'siraben-haskell)
 ;;; siraben-haskell.el ends here
