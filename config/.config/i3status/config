@@ -12,7 +12,7 @@ general {
 }
 
 # order += "ipv6"
-order += "cpu_temperature all"
+# order += "cpu_temperature all"
 order += "disk /"
 order += "wireless _first_"
 order += "ethernet _first_"
@@ -66,6 +66,5 @@ volume master {
 
 disk "/" {
         format = "%avail"
-        low_threshold = 15
-        format_below_threshold = "Storage low: %avail (%percentage_avail left)"
+        low_threshold = 5
 }

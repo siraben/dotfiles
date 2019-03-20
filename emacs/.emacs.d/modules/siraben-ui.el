@@ -31,6 +31,8 @@
       scroll-conservatively 100000
       scroll-preserve-screen-position 1)
 
+(scroll-bar-mode -1)
+
 ;; Warn when opening files bigger than 100MB.
 (setq large-file-warning-threshold 100000000)
 
@@ -79,11 +81,10 @@
   :config (setq powerline-default-separator 'utf-8)
   :init
   (add-hook 'after-init-hook #'(lambda ()
-                                 (if (display-graphic-p)
-                                     (progn
-                                       (require 'spaceline-config)
-                                       (spaceline-emacs-theme)
-                                       (spaceline-helm-mode))))))
+                                 (progn
+                                   (require 'spaceline-config)
+                                   (spaceline-emacs-theme)
+                                   (spaceline-helm-mode)))))
 
 
 

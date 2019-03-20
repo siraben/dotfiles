@@ -24,5 +24,9 @@
 (if (file-exists-p "/usr/bin/zsh")
     (setq-default shell-file-name "/usr/bin/zsh"))
 
+(add-hook 'shell-mode-hook
+          #'(lambda ()
+              (paredit-mode -1)))
+
 (provide 'siraben-shell)
 ;;; siraben-shell.el ends here
