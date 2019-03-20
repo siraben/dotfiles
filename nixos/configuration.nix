@@ -134,7 +134,7 @@
       polybar
       powertop
       python3
-      qutebrowser
+      # qutebrowser
       rambox
       ranger
       redshift
