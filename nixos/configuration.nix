@@ -9,7 +9,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./sddm.nix
+      # ./sddm.nix
       # ./mktiupgrade.nix
       # ./tilem.nix
     ];
@@ -116,6 +116,7 @@
       inkscape
       keepassxc
       killall
+      kitty
       libreoffice
       lightlocker
       lynx
@@ -145,6 +146,7 @@
       urxvt_font_size
       scrot
       silver-searcher
+      smlnj
       stow
       system-config-printer
       terminator
@@ -163,11 +165,16 @@
       wpa_supplicant
       xss-lock
       youtube-dl
+      zathura
       zile
       zip
+      zsh
     ];
   };
   # nextcloud-client = pkgs.nextcloud-client.override { withGnomeKeyring = true; libgnome-keyring = pkgs.gnome3.libgnome-keyring; };
+
+  programs.zsh.enable = true;
+  programs.zsh.promptInit = ""; # Clear this to avoid a conflict with oh-my-zsh
 
   services.redshift = {
     enable = true;
@@ -241,7 +248,7 @@
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.siraben = {
-    shell = pkgs.bash;
+    shell = pkgs.zsh;
     isNormalUser = true;
     home = "/home/siraben";
     description = "Ben Siraphob";
