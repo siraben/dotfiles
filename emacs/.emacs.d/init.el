@@ -67,7 +67,7 @@
 (require 'siraben-gnus)
 (require 'siraben-shell)
 (require 'siraben-org)
-;; (require 'siraben-tramp)
+(require 'siraben-tramp)
 (require 'siraben-arcadia)
 (require 'siraben-calc)
 (require 'siraben-midnight)
