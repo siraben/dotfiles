@@ -39,7 +39,7 @@ cpu_temperature all {
 }
 
 battery all {
-        format = "%status %percentage "
+        format = "%status %percentage"
         format_down = "No battery"
         status_chr = "⚡ CHR"
         status_bat = "🔋 BAT"
