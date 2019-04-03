@@ -163,6 +163,18 @@ bar {
         status_command i3status
 }
 
+set $mode_launcher Launch:  [e]macs [f]irefox [r]anger
+bindsym $mod+o mode "$mode_launcher"
+
+mode "$mode_launcher" {
+    bindsym f exec firefox
+    bindsym t exec thunderbird
+    bindsym r exec "kitty ranger"
+
+    bindsym Escape mode "default"
+    bindsym Return mode "default"
+}
+
 # Gaps
 # gaps inner 0
 # gaps outer 0

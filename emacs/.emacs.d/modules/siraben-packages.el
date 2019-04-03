@@ -157,7 +157,8 @@
 (use-package nix-mode)
 (use-package webpaste
   :config
-  (setq webpaste-provider-priority '("dpaste.de" "ix.io")))
+  (setq webpaste-provider-priority '("ix.io" "dpaste.de"))
+  (setq webpaste-paste-raw-text t))
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here
