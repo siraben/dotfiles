@@ -87,12 +87,16 @@
     systemPackages = with pkgs; [
       anki
       arc-theme
+      asciinema
       aspell
       aspellDicts.en
       atool
+      biber
       binutils
       borgbackup
       brave
+      cabal-install
+      cargo
       coq
       emacs
       evince
@@ -135,33 +139,33 @@
       polybar
       powertop
       python3
-      # qutebrowser
-      rambox
       ranger
       redshift
       rhythmbox
-      riot-web
       rofi
+      rustc
+      rustfmt
       rxvt_unicode
-      urxvt_font_size
       scrot
       silver-searcher
+      smlnj
       smlnj
       stow
       system-config-printer
       terminator
       texlive.combined.scheme-full
-      biber
+      the-powder-toy
       thunderbird
       tmux
       tor-browser-bundle-bin
       transmission-gtk
       tree
       unzip
-      rxvt_unicode
+      urxvt_font_size
       vim
       vlc
       wget
+      whois
       wpa_supplicant
       xss-lock
       youtube-dl
@@ -245,14 +249,15 @@
   # services.xserver.desktopManager.gnome3.enable = true;
   # services.xserver.displayManager.gdm.enable = true;
 
-
+  users = {
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.siraben = {
-    shell = pkgs.zsh;
-    isNormalUser = true;
-    home = "/home/siraben";
-    description = "Ben Siraphob";
-    extraGroups = [ "wheel" "networkmanager" ];
+    users.siraben = {
+      shell = pkgs.zsh;
+      isNormalUser = true;
+      home = "/home/siraben";
+      description = "Ben Siraphob";
+      extraGroups = [ "wheel" "networkmanager" ];
+    };
   };
 
   nix.gc.automatic = true;
