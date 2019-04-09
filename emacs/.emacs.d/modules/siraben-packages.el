@@ -59,7 +59,8 @@
 (use-package markdown-mode)
 (use-package neotree)
 (use-package magit
-  :demand)
+  :demand
+  :bind (("C-x g" . 'magit-status)))
 
 (use-package free-keys)
 (use-package fill-column-indicator)
@@ -74,7 +75,10 @@
 (use-package undo-tree
   :diminish undo-tree-mode
   :config (lambda ()
-            (global-undo-tree-mode +1)))
+            (global-undo-tree-mode +1)
+            (defadvice undo-tree-make-history-save-file-name         
+                (after undo-tree activate)                             
+              (setq ad-return-value (concat ad-return-value ".gz")))))
 
 (use-package aggressive-indent
   :diminish aggressive-indent-mode)
