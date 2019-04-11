@@ -5,11 +5,15 @@
 # The following line should contain a sharp s:
 # ß
 # If the above line is not correctly displayed, fix your editor first!
-
 general {
-        colors = true
+        output_format = "i3bar"
+        markup = pango
         interval = 5
 }
+# general {
+#        colors = true
+#        interval = 5
+# }
 
 # order += "ipv6"
 # order += "cpu_temperature all"
