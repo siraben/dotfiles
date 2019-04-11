@@ -5,13 +5,11 @@
 
 { config, pkgs, ... }:
 
+let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      # ./sddm.nix
-      # ./mktiupgrade.nix
-      # ./tilem.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -257,6 +255,12 @@
       home = "/home/siraben";
       description = "Ben Siraphob";
       extraGroups = [ "wheel" "networkmanager" ];
+      packages = with pkgs; [
+        (wrapWeb "riot" "https://riot.im/app")
+        (wrapWeb "hn" "https://news.ycombinator.com")
+        (wrapWeb "neverssl" "http://neverssl.com")
+        (wrapWeb "mastodon" "https://mastodon.social")
+      ];
     };
   };
 
