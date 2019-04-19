@@ -10,6 +10,7 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -134,7 +135,6 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       okular
       pandoc
       paper-icon-theme
-      polybar
       powertop
       python3
       ranger
