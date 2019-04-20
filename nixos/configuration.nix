@@ -94,15 +94,12 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       binutils
       borgbackup
       brave
-      cabal-install
       cargo
       coq
       emacs
       evince
       exfat
-      ffmpeg
       firefox
-      font-awesome-ttf
       gcc
       gforth
       ghc
@@ -113,18 +110,13 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       gparted
       gpicview
       guile
-      htop
+      htop 
       i3-gaps
-      imagemagick7
-      inkscape
       keepassxc
       killall
       kitty
       libreoffice
-      lightlocker
-      lynx
       mediainfo
-      mpd
       mpv
       msmtp
       mu
@@ -132,8 +124,6 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       nextcloud-client
       nitrogen
       offlineimap
-      okular
-      pandoc
       paper-icon-theme
       powertop
       python3
@@ -143,27 +133,20 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       rofi
       rustc
       rustfmt
-      rxvt_unicode
       scrot
       silver-searcher
       smlnj
-      smlnj
       stow
       system-config-printer
-      terminator
       texlive.combined.scheme-full
       the-powder-toy
-      thunderbird
       tmux
       tor-browser-bundle-bin
       transmission-gtk
       tree
       unzip
-      urxvt_font_size
       vim
-      vlc
       wget
-      whois
       wpa_supplicant
       xss-lock
       youtube-dl
@@ -173,10 +156,9 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       zsh
     ];
   };
-  # nextcloud-client = pkgs.nextcloud-client.override { withGnomeKeyring = true; libgnome-keyring = pkgs.gnome3.libgnome-keyring; };
 
   programs.zsh.enable = true;
-  programs.zsh.promptInit = ""; # Clear this to avoid a conflict with oh-my-zsh
+  programs.zsh.promptInit = "";
 
   services.redshift = {
     enable = true;
@@ -190,12 +172,6 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
   };
 
   nixpkgs.config.packageOverrides = pkgs: {
-    polybar = pkgs.polybar.override {
-      alsaSupport = true;
-      i3GapsSupport = true;
-      # githubSupport = true;
-      mpdSupport = true;
-    };
     emacs = pkgs.emacs.override {
      imagemagick = pkgs.imagemagick;
     };
@@ -207,9 +183,7 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
   services.printing.drivers = with pkgs; [
     brlaser
     gutenprint
-    gutenprintBin
   ];
-
 
   services.gnome3.gnome-keyring.enable = true;
 
@@ -266,9 +240,7 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
 
   nix.gc.automatic = true;
   nix.gc.dates = "daily";
-  nix.gc.options = "--delete-older-than 7d";
-
-  # mine.workstation.recap.enable = true;
+  nix.gc.options = "--delete-older-than 30d";
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
