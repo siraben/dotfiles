@@ -26,7 +26,7 @@
 ;; (require 'magit)
 
 (global-set-key (kbd "M-C") 'comment-or-uncomment-region)
-;; (global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-x g") 'magit-status)
 
 (define-key c-mode-base-map (kbd "s-b") 'recompile)
 
@@ -36,6 +36,8 @@
     (flyspell-prog-mode)
     (diminish 'flyspell-mode)
     (undo-tree-mode +1))
+
+  (electric-pair-mode +1)
   
   (set (make-local-variable 'comment-auto-fill-only-comments) t)
   

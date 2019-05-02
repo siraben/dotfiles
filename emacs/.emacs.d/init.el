@@ -105,6 +105,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(package-selected-packages
+   (quote
+    (org-wc edit-indirect htmlize gnuplot company-coq proof-general ob-sml sml-mode forth-mode csharp-mode flycheck-haskell haskell-mode slime cargo flycheck-rust racer rust-mode ediprolog racket-mode google-c-style flycheck-irony company-irony irony js2-mode company-emoji emojify spaceline color-theme-sanityinc-tomorrow fancy-battery webpaste nix-mode rainbow-identifiers lorem-ipsum define-word geiser paradox helm-ag helm pdf-tools auto-package-update exec-path-from-shell which-key company aggressive-indent undo-tree paredit ledger-mode demo-it yasnippet-snippets memory-usage fill-column-indicator free-keys magit neotree markdown-mode writeroom-mode rainbow-delimiters xkcd cider clojure-mode erc-view-log multiple-cursors mark-multiple writegood-mode svg-clock diminish use-package))))
 
 ;;; init.el ends here

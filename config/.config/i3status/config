@@ -9,32 +9,33 @@ general {
         output_format = "i3bar"
         markup = pango
         interval = 5
+        color_separator = "#000000"
+        separator = ": "
 }
-# general {
-#        colors = true
-#        interval = 5
-# }
 
 # order += "ipv6"
-# order += "cpu_temperature all"
+
+order += "cpu_temperature all"
 order += "disk /"
-order += "wireless _first_"
-order += "ethernet _first_"
-order += "battery all"
+
+# order += "ethernet _first_"
+
 # order += "load"
 # order += "memory"
-order += "tztime local"
 order += "volume master"
+order += "battery all"
+order += "tztime local"
+order += "wireless _first_"
 
 wireless _first_ {
-        format_up = "W: (%quality at %essid, %frequency)"
+        format_up = "W:%quality, %essid, %frequency"
         format_down = "W: down"
 }
 
-# ethernet _first_ {
-#         format_up = "E: %ip (%speed)"
-#         format_down = "E: down"
-# }
+ethernet _first_ {
+        format_up = "E: %ip (%speed)"
+        format_down = "E: down"
+}
 
 
 cpu_temperature all {
@@ -45,24 +46,23 @@ cpu_temperature all {
 battery all {
         format = "%status %percentage"
         format_down = "No battery"
-        status_chr = "⚡ CHR"
-        status_bat = "🔋 BAT"
-        status_unk = "? UNK"
-        status_full = "FULL"
-        low_threshold = 10
+        status_chr = "/"
+        status_bat = "\\"
+        status_unk = "? "
+        status_full = "-"
+        low_threshold = 15
         last_full_capacity = true
-        hide_seconds = true
         integer_battery_capacity = true
 }
 
 tztime local {
-        format = "%Y-%m-%d %H:%M"
+        format = "%m-%d %H:%M"
 }
 
 
 volume master {
-        format = "VOL: %volume"
-        format_muted = "MUT: %volume"
+        format = "V %volume"
+        format_muted = "M %volume"
         device = "default"
         mixer = "Master"
         mixer_idx = 0

@@ -99,6 +99,8 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       emacs
       evince
       exfat
+      ffmpeg
+      ffmpegthumbnailer
       firefox
       gcc
       gforth
@@ -116,15 +118,20 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       killall
       kitty
       libreoffice
+      lightlocker
       mediainfo
       mpv
       msmtp
       mu
+      multimc
+      musescore
       networkmanager
       nextcloud-client
       nitrogen
+      fast-cli
       offlineimap
       paper-icon-theme
+      poppler_utils
       powertop
       python3
       ranger
@@ -133,15 +140,19 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       rofi
       rustc
       rustfmt
+      rustracer
       scrot
       silver-searcher
       smlnj
+      speedtest-cli
       stow
       system-config-printer
       texlive.combined.scheme-full
       the-powder-toy
       tmux
+      tor
       tor-browser-bundle-bin
+      torsocks
       transmission-gtk
       tree
       unzip
@@ -246,7 +257,7 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
   # compatible, in order to avoid breaking some software such as database
   # servers. You should change this only after NixOS release notes say you
   # should.
-  system.stateVersion = "18.09"; # Did you read the comment?
+  system.stateVersion = "19.09"; # Did you read the comment?
 
 }
 
