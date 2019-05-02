@@ -24,6 +24,7 @@
   "Enables a collection of modes for editing Lisp code."
   (interactive)
   (progn (setq show-paren-style 'mixed)
+         (electric-pair-mode      -1)
 	 (paredit-mode            t)
 	 (rainbow-delimiters-mode t)
 	 (aggressive-indent-mode  t)
