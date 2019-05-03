@@ -37,8 +37,12 @@ bindsym $mod+Return exec kitty
 # kill focused window
 bindsym $mod+Shift+q kill
 
+# rofi for window switching binding to mod + space disables switching
+# between floating and tiling windows, but in practice I hardly ever
+# use that key combination anyway.
+bindsym $mod+Tab exec rofi -dpi 1 -show window
+
 # start dmenu (a program launcher)
-# bindsym $mod+d exec rofi -dpi 1 -show drun -fake-transparency
 bindsym $mod+d exec --no-startup-id exe=`dmenu_path | dmenu -b -nb '#000000' -sb '#ffffff' -sf '#000000' -fn Hack-11X -nf '#888888' -p '>'` && "${exe}"
 
 # There also is the (new) i3-dmenu-desktop which only displays applications
@@ -47,10 +51,10 @@ bindsym $mod+d exec --no-startup-id exe=`dmenu_path | dmenu -b -nb '#000000' -sb
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
@@ -58,10 +62,10 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+semicolon move right
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
@@ -69,7 +73,7 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+h split h
+bindsym $mod+Shift+h split h
 
 # split in vertical orientation
 bindsym $mod+v split v
@@ -86,7 +90,7 @@ bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+# bindsym $mod+space focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -185,16 +189,17 @@ bar {
 
 
 
-set $mode_launcher Launch:  [e]macs [f]irefox [r]anger
+set $mode_launcher Launch [f]irefox [r]anger r[i]ot
 bindsym $mod+o mode "$mode_launcher"
 
 mode "$mode_launcher" {
     bindsym f exec firefox
     bindsym t exec thunderbird
-    bindsym r exec "kitty ranger"
-
+    bindsym r exec kitty ranger
+    bindsym i exec riot
     bindsym Escape mode "default"
     bindsym Return mode "default"
+    bindsym q mode "default"
 }
 
 # Gaps
@@ -205,9 +210,5 @@ for_window [class="^.*"] border pixel 0
 exec --no-startup-id nitrogen --restore
 
 exec --no-startup-id xfce4-panel --disable-wm-check
-
-
-# need this line otherwise urxvt freaks out
-exec --no-startup-id xrdb ~/.Xresources
 
 exec --no-startup-id emacs --daemon

@@ -83,6 +83,7 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
     variables = {
       EDITOR = pkgs.lib.mkOverride 0 "emacsclient";
     };
+
     systemPackages = with pkgs; [
       anki
       arc-theme
@@ -99,6 +100,7 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       emacs
       evince
       exfat
+      fast-cli
       ffmpeg
       ffmpegthumbnailer
       firefox
@@ -128,7 +130,6 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       networkmanager
       nextcloud-client
       nitrogen
-      fast-cli
       offlineimap
       paper-icon-theme
       poppler_utils
@@ -168,6 +169,7 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
     ];
   };
 
+  
   programs.zsh.enable = true;
   programs.zsh.promptInit = "";
 
@@ -181,6 +183,9 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
     brightness.day = "1";
     brightness.night = "1";
   };
+
+  security.pam.services.lightdm.enableGnomeKeyring = true;
+  
 
   nixpkgs.config.packageOverrides = pkgs: {
     emacs = pkgs.emacs.override {
@@ -196,7 +201,6 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
     gutenprint
   ];
 
-  services.gnome3.gnome-keyring.enable = true;
 
   services.xserver = {
     enable = true;
@@ -242,9 +246,7 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       extraGroups = [ "wheel" "networkmanager" ];
       packages = with pkgs; [
         (wrapWeb "riot" "https://riot.im/app")
-        (wrapWeb "hn" "https://news.ycombinator.com")
         (wrapWeb "neverssl" "http://neverssl.com")
-        (wrapWeb "mastodon" "https://mastodon.social")
       ];
     };
   };
