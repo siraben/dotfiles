@@ -9,27 +9,18 @@ general {
         output_format = "i3bar"
         markup = pango
         interval = 5
-        color_separator = "#000000"
-        separator = ": "
 }
-
-# order += "ipv6"
 
 order += "cpu_temperature all"
 order += "disk /"
-
-# order += "ethernet _first_"
-
-# order += "load"
-# order += "memory"
 order += "volume master"
 order += "battery all"
 order += "tztime local"
 order += "wireless _first_"
 
 wireless _first_ {
-        format_up = "W:%quality, %essid, %frequency"
-        format_down = "W: down"
+        format_up = "%quality %essid (%frequency)"
+        format_down = "offline"
 }
 
 ethernet _first_ {
@@ -39,7 +30,9 @@ ethernet _first_ {
 
 
 cpu_temperature all {
-        format = "%degrees°C"
+        format = ""
+        max_threshold = 40
+        format_above_threshold = "%degrees°C"
 
 }
 
@@ -50,19 +43,20 @@ battery all {
         status_bat = "\\"
         status_unk = "? "
         status_full = "-"
-        low_threshold = 15
-        last_full_capacity = true
+        low_threshold = 30
+        threshold_type = time
+        # last_full_capacity = true
         integer_battery_capacity = true
 }
 
 tztime local {
-        format = "%m-%d %H:%M"
+        format = "%F %H:%M %a"
 }
 
 
 volume master {
-        format = "V %volume"
-        format_muted = "M %volume"
+        format = "| %volume"
+        format_muted = "<span foreground='gray'>O %volume</span>"
         device = "default"
         mixer = "Master"
         mixer_idx = 0
