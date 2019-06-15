@@ -28,12 +28,10 @@ ethernet _first_ {
         format_down = "E: down"
 }
 
-
 cpu_temperature all {
         format = ""
-        max_threshold = 40
+        max_threshold = 50
         format_above_threshold = "%degrees°C"
-
 }
 
 battery all {
@@ -50,9 +48,8 @@ battery all {
 }
 
 tztime local {
-        format = "%F %H:%M %a"
+        format = "%a, %F %R"
 }
-
 
 volume master {
         format = "| %volume"
