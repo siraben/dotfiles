@@ -83,83 +83,97 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
     variables = {
       EDITOR = pkgs.lib.mkOverride 0 "emacsclient";
     };
-
     systemPackages = with pkgs; [
+      afl
       anki
       arc-theme
       asciinema
       aspell
       aspellDicts.en
       atool
+      bc
       biber
       binutils
       borgbackup
       brave
-      cargo
+      cabal-install
       coq
+      dragon-drop
       emacs
       evince
       exfat
-      fast-cli
+      feh
       ffmpeg
-      ffmpegthumbnailer
       firefox
+      font-awesome-ttf
       gcc
+      gdb
       gforth
       ghc
       gimp
       git
+      gnome3.cheese
       gnumake
       gnupg
+      gnuplot
       gparted
-      gpicview
       guile
-      htop 
+      highlight
+      htop
       i3-gaps
+      imagemagick7
+      inkscape
       keepassxc
       killall
       kitty
+      ledger
       libreoffice
       lightlocker
+      lynx
+      man-pages
+      mawk
+      mdk
       mediainfo
+      mpd
       mpv
       msmtp
       mu
-      multimc
       musescore
       networkmanager
       nextcloud-client
       nitrogen
       offlineimap
+      okular
+      pandoc
       paper-icon-theme
-      poppler_utils
       powertop
       python3
       ranger
       redshift
       rhythmbox
       rofi
-      rustc
-      rustfmt
-      rustracer
       scrot
       silver-searcher
       smlnj
-      speedtest-cli
       stow
       system-config-printer
       texlive.combined.scheme-full
       the-powder-toy
+      thunderbird
+      tldr
       tmux
-      tor
       tor-browser-bundle-bin
-      torsocks
       transmission-gtk
       tree
       unzip
+      urxvt_font_size
       vim
+      vlc
+      w3m
       wget
+      whois
       wpa_supplicant
+      xorg.xkill
       xss-lock
       youtube-dl
       zathura
@@ -168,10 +182,11 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       zsh
     ];
   };
+  virtualisation.docker.enable = true;
+  # nextcloud-client = pkgs.nextcloud-client.override { withGnomeKeyring = true; libgnome-keyring = pkgs.gnome3.libgnome-keyring; };
 
-  
   programs.zsh.enable = true;
-  programs.zsh.promptInit = "";
+  programs.zsh.promptInit = ""; # Clear this to avoid a conflict with oh-my-zsh
 
   services.redshift = {
     enable = true;
@@ -183,9 +198,6 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
     brightness.day = "1";
     brightness.night = "1";
   };
-
-  security.pam.services.lightdm.enableGnomeKeyring = true;
-  
 
   nixpkgs.config.packageOverrides = pkgs: {
     emacs = pkgs.emacs.override {
@@ -199,8 +211,11 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
   services.printing.drivers = with pkgs; [
     brlaser
     gutenprint
+    gutenprintBin
   ];
 
+
+  services.gnome3.gnome-keyring.enable = true;
 
   services.xserver = {
     enable = true;
@@ -246,14 +261,17 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       extraGroups = [ "wheel" "networkmanager" ];
       packages = with pkgs; [
         (wrapWeb "riot" "https://riot.im/app")
+        (wrapWeb "hn" "https://news.ycombinator.com")
         (wrapWeb "neverssl" "http://neverssl.com")
+        (wrapWeb "mastodon" "https://mastodon.social")
       ];
     };
   };
 
   nix.gc.automatic = true;
   nix.gc.dates = "daily";
-  nix.gc.options = "--delete-older-than 30d";
+  nix.gc.options = "--delete-older-than 7d";
+
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
@@ -262,4 +280,3 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
   system.stateVersion = "19.09"; # Did you read the comment?
 
 }
-

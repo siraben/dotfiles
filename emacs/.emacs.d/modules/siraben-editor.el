@@ -132,8 +132,8 @@ The date must be in (month day year) format."
   (interactive)
   (let ((target (or date (calendar-read-date))))
     (if (not (and (listp target)
-                  (= 3 (list-length target))
-                  (every #'numberp target)))
+                  (= 3 (cl-list-length target))
+                  (cl-every #'numberp target)))
         ;; If the date was invalid.
         (error "Date passed was not a valid date")
       (let ((days (- (calendar-absolute-from-gregorian target)
