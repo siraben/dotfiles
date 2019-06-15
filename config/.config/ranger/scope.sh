@@ -171,6 +171,7 @@ handle_mime() {
         # Text
         text/* | */xml)
             # Syntax highlight
+#             bat "${FILE_PATH}" --paging never --color always --theme 'Monokai Extended' -n && exit 5
             if [[ "$( stat --printf='%s' -- "${FILE_PATH}" )" -gt "${HIGHLIGHT_SIZE_MAX}" ]]; then
                 exit 2
             fi
@@ -181,9 +182,9 @@ handle_mime() {
                 local pygmentize_format='terminal'
                 local highlight_format='ansi'
             fi
-/nix/store/pf6d2k5x9axkqwjyxs8gfb5by456r7v8-highlight-3.43/bin/highlight --replace-tabs="${HIGHLIGHT_TABWIDTH}" --out-format="${highlight_format}" \
+            $(which highlight) --replace-tabs="${HIGHLIGHT_TABWIDTH}" --out-format="${highlight_format}" \
                 --style="${HIGHLIGHT_STYLE}" --force -- "${FILE_PATH}" && exit 5
-            # pygmentize -f "${pygmentize_format}" -O "style=${PYGMENTIZE_STYLE}" -- "${FILE_PATH}" && exit 5
+            pygmentize -f "${pygmentize_format}" -O "style=${PYGMENTIZE_STYLE}" -- "${FILE_PATH}" && exit 5
             exit 2;;
 
         # Image

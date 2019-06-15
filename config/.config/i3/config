@@ -73,7 +73,7 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+Shift+h split h
+bindsym $mod+Shift+v split h
 
 # split in vertical orientation
 bindsym $mod+v split v
@@ -152,10 +152,10 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
@@ -174,7 +174,7 @@ bindsym $mod+r mode "resize"
 set $white #ffffff
 set $black #000000
 set $gray  #cccccc
-
+set $red #900000
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
@@ -184,16 +184,16 @@ bar {
             active_workspace $black $black $white
             inactive_workspace $black $black $white
             focused_workspace $gray $gray $black
+            urgent_workspace $red $red $white
         }
 }
 
-
-
-set $mode_launcher Launch [f]irefox [r]anger r[i]ot
+set $mode_launcher Launch [f]irefox [k]eepassxc [r]anger r[i]ot
 bindsym $mod+o mode "$mode_launcher"
 
 mode "$mode_launcher" {
     bindsym f exec firefox
+    bindsym k exec keepassxc
     bindsym t exec thunderbird
     bindsym r exec kitty ranger
     bindsym i exec riot
@@ -203,12 +203,10 @@ mode "$mode_launcher" {
 }
 
 # Gaps
-# gaps inner 0
-# gaps outer 0
-for_window [class="^.*"] border pixel 0
+# gaps inner 5
+# gaps outer 3
+for_window [class="^.*"] border pixel 1
 
 exec --no-startup-id nitrogen --restore
-
 exec --no-startup-id xfce4-panel --disable-wm-check
-
 exec --no-startup-id emacs --daemon

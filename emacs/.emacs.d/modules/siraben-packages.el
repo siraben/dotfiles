@@ -58,15 +58,16 @@
 (use-package writeroom-mode)
 (use-package markdown-mode)
 (use-package neotree)
-(use-package magit
-  :demand)
+(use-package magit)
 
 (use-package free-keys)
 (use-package fill-column-indicator)
 (use-package memory-usage)
 (use-package yasnippet-snippets)
 (use-package demo-it)
-(use-package ledger-mode)
+(use-package ledger-mode
+  :config
+  (setq ledger-reconcile-default-commodity "THB"))
 
 (use-package paredit
   :diminish paredit-mode)
@@ -88,7 +89,6 @@
 (add-hook 'after-init-hook #'(lambda () (which-key-mode t)))
 
 (use-package exec-path-from-shell
-  :demand
   :config (progn (setq exec-path-from-shell-check-startup-files nil)
                  (exec-path-from-shell-initialize)))
 
@@ -104,7 +104,6 @@
   :magic ("%PDF" . pdf-view-mode))
 
 (use-package helm
-  :demand
   ;; Override default key bindings with those from Helm
   :bind (("C-h a"   . 'helm-apropos)
          ("C-h f"   . 'helm-apropos)
@@ -134,16 +133,6 @@
 (use-package geiser
   :config
   (setq geiser-default-implementation 'guile))
-
-(use-package exwm
-  :disabled
-  :config
-  (require 'exwm)
-  (require 'exwm-config)
-  (exwm-config-default))
-
-(use-package define-word
-  :bind (("C-M-=" . define-word-at-point)))
 
 ;; This is useful for testing out various commands.
 (use-package lorem-ipsum)
