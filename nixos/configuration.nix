@@ -97,7 +97,8 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       borgbackup
       brave
       cabal-install
-      coq
+      coq_8_8
+      djvu2pdf
       dragon-drop
       emacs
       evince
@@ -152,12 +153,14 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       redshift
       rhythmbox
       rofi
+      sbcl
       scrot
       silver-searcher
       smlnj
       stow
       system-config-printer
       texlive.combined.scheme-full
+      tdesktop
       the-powder-toy
       thunderbird
       tldr
@@ -187,6 +190,7 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
 
   programs.zsh.enable = true;
   programs.zsh.promptInit = ""; # Clear this to avoid a conflict with oh-my-zsh
+  programs.ssh.startAgent = true;
 
   services.redshift = {
     enable = true;
@@ -194,7 +198,7 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
     longitude = "100";
     provider = "manual";
     temperature.day = 6500;
-    temperature.night = 3000;
+    temperature.night = 3400;
     brightness.day = "1";
     brightness.night = "1";
   };
