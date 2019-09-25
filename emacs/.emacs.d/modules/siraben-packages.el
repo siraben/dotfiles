@@ -150,7 +150,7 @@
 (use-package nix-mode)
 (use-package webpaste
   :config
-  (setq webpaste-provider-priority '("ix.io" "dpaste.de"))
+  (setq webpaste-provider-priority '("dpaste.de" "ix.io"))
   (setq webpaste-paste-raw-text t))
 
 
