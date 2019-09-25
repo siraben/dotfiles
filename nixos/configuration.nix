@@ -189,8 +189,7 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
   # nextcloud-client = pkgs.nextcloud-client.override { withGnomeKeyring = true; libgnome-keyring = pkgs.gnome3.libgnome-keyring; };
 
   programs.zsh.enable = true;
-  programs.zsh.promptInit = ""; # Clear this to avoid a conflict with oh-my-zsh
-  programs.ssh.startAgent = true;
+  programs.zsh.promptInit = "";
 
   services.redshift = {
     enable = true;
