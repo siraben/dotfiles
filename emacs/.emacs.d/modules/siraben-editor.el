@@ -239,5 +239,7 @@ that doesn't want text with hard newlines"
 
 (add-hook 'text-mode-hook #'(lambda ()
                               (undo-tree-mode 1)))
+(setq ffap-machine-p-known 'reject)
+
 (provide 'siraben-editor)
 ;;; siraben-editor.el ends here

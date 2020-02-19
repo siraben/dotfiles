@@ -1,4 +1,4 @@
-;;; siraben-prolog.el --- Coq programming customizations.
+;;; siraben-typescript.el --- Typescript programming customizations.
 
 ;;; License:
 
@@ -17,18 +17,13 @@
 
 ;;; Commentary:
 
-;; This file has Coq and Proof General specific customizations.
+;; This file 
+;; This file fixes the broken built-in Prolog editing modes that Emacs
+;; provides.
 
 ;;; Code:
 
-(use-package proof-general)
-(use-package company-coq)
-
-(add-hook 'coq-mode-hook
-          #'(lambda ()
-              (siraben-prog-mode-defaults)
-              (company-coq-mode t)))
+(use-package typescript-mode)
 
 
-(provide 'siraben-coq)
-;;; siraben-coq.el ends here
+;;; siraben-typescript.el ends here

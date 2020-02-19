@@ -48,6 +48,14 @@
 (add-hook 'prog-mode-hook(lambda ()
                            (siraben-prog-mode-defaults)))
 
+;; https://emacs.stackexchange.com/questions/8135/why-does-compilation-buffer-show-control-characters
+(require 'ansi-color)
+(defun siraben-ansi-colorize-buffer ()
+  "Colorize the buffer with ANSI color."
+  (let ((buffer-read-only nil))
+    (ansi-color-apply-on-region (point-min) (point-max))))
+(add-hook 'compilation-filter-hook 'siraben-ansi-colorize-buffer)
+
 (require 'siraben-js)
 (require 'siraben-c)
 (require 'siraben-lisp)
@@ -59,6 +67,7 @@
 (require 'siraben-forth)
 (require 'siraben-sml)
 (require 'siraben-coq)
+(require 'siraben-typescript)
 
 (provide 'siraben-programming)
 ;;; siraben-programming.el ends here
