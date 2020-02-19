@@ -17,8 +17,7 @@
 
 ;;; Commentary:
 
-;; This file fixes the broken built-in Prolog editing modes that Emacs
-;; provides.
+;; This file has Coq and Proof General specific customizations.
 
 ;;; Code:
 
