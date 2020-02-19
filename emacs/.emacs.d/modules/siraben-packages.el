@@ -45,11 +45,9 @@
 ;; These packages don't require any configuration, so let's just clump
 ;; them together.
 (use-package diminish)
-(use-package svg-clock)
 (use-package writegood-mode)
 (use-package mark-multiple)
 (use-package multiple-cursors)
-(use-package svg-clock)
 (use-package erc-view-log)
 (use-package clojure-mode)
 (use-package cider)
@@ -141,11 +139,6 @@
 ;; This is useful for testing out various commands.
 (use-package lorem-ipsum)
 
-;; (use-package alert
-;;   :commands (alert)
-;;   :init
-;;   (setq alert-default-style 'libnotify))
-
 (use-package rainbow-identifiers)
 (use-package nix-mode)
 (use-package webpaste
@@ -187,5 +180,6 @@
    `(agda2-highlight-termination-problem-face ((t (:background ,orange :foreground ,base03))))
    `(agda2-highlight-incomplete-pattern-face ((t (:background ,orange :foreground ,base03))))
    `(agda2-highlight-typechecks-face ((t (:background ,cyan :foreground ,base03))))))
+
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here
