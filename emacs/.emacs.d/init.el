@@ -97,13 +97,37 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(agda2-highlight-bound-variable-face ((t nil)))
+ '(agda2-highlight-coinductive-constructor-face ((t (:foreground "#b58900"))))
+ '(agda2-highlight-datatype-face ((t (:foreground "#268bd2"))))
+ '(agda2-highlight-dotted-face ((t nil)))
+ '(agda2-highlight-error-face ((t (:foreground "#dc322f" :underline t))))
+ '(agda2-highlight-field-face ((t (:foreground "#dc322f"))))
+ '(agda2-highlight-function-face ((t (:foreground "#268bd2"))))
+ '(agda2-highlight-incomplete-pattern-face ((t (:background "#cb4b16" :foreground "#002b36"))))
+ '(agda2-highlight-inductive-constructor-face ((t (:foreground "#859900"))))
+ '(agda2-highlight-keyword-face ((t (:foreground "#cb4b16"))))
+ '(agda2-highlight-module-face ((t (:foreground "#6c71c4"))))
+ '(agda2-highlight-number-face ((t (:foreground "#6c71c4"))))
+ '(agda2-highlight-operator-face ((t nil)))
+ '(agda2-highlight-postulate-face ((t (:foreground "#268bd2"))))
+ '(agda2-highlight-primitive-face ((t (:foreground "#268bd2"))))
+ '(agda2-highlight-primitive-type-face ((t (:foreground "#268bd2"))))
+ '(agda2-highlight-record-face ((t (:foreground "#268bd2"))))
+ '(agda2-highlight-string-face ((t (:foreground "#d33682"))))
+ '(agda2-highlight-symbol-face ((((background "#fdf6e3")) (:foreground "#586e75"))))
+ '(agda2-highlight-termination-problem-face ((t (:background "#cb4b16" :foreground "#002b36"))))
+ '(agda2-highlight-typechecks-face ((t (:background "#2aa198" :foreground "#002b36"))))
+ '(agda2-highlight-unsolved-constraint-face ((t (:background "#002b36" :foreground "#b58900"))))
+ '(agda2-highlight-unsolved-meta-face ((t (:background "#002b36" :foreground "#b58900")))))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(package-selected-packages
+   (quote
+    (typescript-mode yasnippet-snippets xkcd writeroom-mode writegood-mode which-key webpaste use-package undo-tree svg-clock spaceline slime rainbow-identifiers rainbow-delimiters racket-mode racer proof-general pdf-tools paredit paradox org-wc ob-sml nix-mode neotree multiple-cursors memory-usage mark-multiple magit lorem-ipsum ledger-mode js2-mode htmlize helm-ag google-c-style gnuplot geiser free-keys forth-mode flycheck-rust flycheck-irony flycheck-haskell fill-column-indicator fancy-battery exec-path-from-shell erc-view-log emojify edit-indirect ediprolog diminish demo-it csharp-mode company-irony company-emoji company-coq color-theme-sanityinc-tomorrow cider cargo auto-package-update aggressive-indent))))
 
 ;;; init.el ends here
