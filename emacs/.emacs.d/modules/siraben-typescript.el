@@ -25,5 +25,5 @@
 
 (use-package typescript-mode)
 
-
+(provide 'siraben-typescript)
 ;;; siraben-typescript.el ends here
