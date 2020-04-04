@@ -27,6 +27,7 @@
 
 (global-set-key (kbd "M-C") 'comment-or-uncomment-region)
 (global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-x M-g") 'magit-dispatch)
 
 (define-key c-mode-base-map (kbd "s-b") 'recompile)
 
