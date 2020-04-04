@@ -32,14 +32,6 @@
   (siraben-insert-time)
   (goto-char (point-max)))
 
-;; Byte compiling files does not seem to gain any benefit, disable
-;; this command for now.
-
-;; (defun siraben-recompile-init ()
-;;   "Byte compile dotfiles."
-;;   (interactive)
-;;   (byte-recompile-directory siraben-root-dir 0))
-
 (defun siraben-update ()
   "Update my config to the latest version, along with packages."
   (interactive)

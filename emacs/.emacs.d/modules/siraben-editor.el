@@ -58,6 +58,7 @@ Enables auto-fill mode, spell checking and disables company mode."
   (progn (auto-fill-mode 1)
 	 (undo-tree-mode 1)
 	 (flyspell-mode 1)
+         (electric-pair-mode 1)
          (visual-line-mode 1)    ; Org mode headings don't wrap.
          (company-mode -1)))
 

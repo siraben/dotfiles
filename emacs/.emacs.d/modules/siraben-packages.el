@@ -46,8 +46,13 @@
 ;; them together.
 (use-package diminish)
 (use-package writegood-mode)
-(use-package mark-multiple)
-(use-package multiple-cursors)
+(use-package multiple-cursors
+  :bind (("C-<" . mc/mark-previous-like-this)
+         ("C->" . mc/mark-next-like-this)
+         ("C-S-c C-S-c" . mc/edit-lines)
+         ("C-M-m" . mc/mark-more-like-this)
+         ("s-G" . mc/mark-all-like-this)))
+
 (use-package erc-view-log)
 (use-package clojure-mode)
 (use-package cider)
@@ -58,9 +63,13 @@
 (use-package neotree)
 (use-package magit)
 
-(use-package free-keys)
+(use-package free-keys
+  :commands free-keys)
+
 (use-package fill-column-indicator)
-(use-package memory-usage)
+(use-package memory-usage
+  :commands memory-usage)
+
 (use-package yasnippet-snippets)
 (use-package demo-it)
 (use-package ledger-mode
@@ -139,14 +148,33 @@
 ;; This is useful for testing out various commands.
 (use-package lorem-ipsum)
 
-(use-package rainbow-identifiers)
 (use-package nix-mode)
 (use-package webpaste
   :config
   (setq webpaste-provider-priority '("dpaste.de" "ix.io"))
   (setq webpaste-paste-raw-text t))
 
-(if (locate-library "agda2-mode")
+(use-package auctex
+  :config
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq TeX-master nil)
+  (setq TeX-PDF-mode t))
+
+(use-package lsp-mode)
+(use-package lsp-ui :commands lsp-ui-mode)
+(use-package company-lsp :commands company-lsp)
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+
+(add-hook 'LaTeX-mode-hook
+          #'(lambda ()
+              (company-auctex-init)
+              (setq TeX-command-extra-options "-shell-escape")
+              (flyspell-mode t)))
+
+(use-package company-auctex)
+
+(when (locate-library "agda2-mode")
   (load-library "agda2-mode")
   (let ((base03    "#002b36") (base02    "#073642")
         (base01    "#586e75") (base00    "#657b83")
