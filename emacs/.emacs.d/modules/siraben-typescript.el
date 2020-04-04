@@ -17,13 +17,21 @@
 
 ;;; Commentary:
 
-;; This file 
-;; This file fixes the broken built-in Prolog editing modes that Emacs
-;; provides.
+;; This file fixes the broken built-in typescript editing modes that
+;; Emacs provides.
 
 ;;; Code:
 
+(require 'use-package)
+
 (use-package typescript-mode)
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
+(add-hook 'typescript-mode-hook #'(lambda ()
+                                    (setq-local tab-width 2)
+                                    (lsp)
+                                    ))
+
+
 
 (provide 'siraben-typescript)
 ;;; siraben-typescript.el ends here

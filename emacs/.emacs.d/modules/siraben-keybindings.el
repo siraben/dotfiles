@@ -20,18 +20,12 @@
 
 ;;; Commentary:
 
-;; Mostly convenience driven.
+;; Customization of global keybindings.
 
 ;;; Code:
 
 ;; Custom functions
 (global-set-key (kbd "M-T") 'siraben-insert-time)
-
-;; Fonts - I'm debating whether I should just use the default keybindings.
-;; (global-set-key (kbd "C-)") 'siraben-reset-font-size)
-;; (global-set-key (kbd "C-+") 'siraben-increase-font-size)
-;; (global-set-key (kbd "C-=") 'siraben-reset-font-size)
-;; (global-set-key (kbd "C--") 'siraben-decrease-font-size)
 
 ;; Retain old ibuffer behavior.
 (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -45,34 +39,12 @@
 
 (require 'inline-string-rectangle)
 
-;; `align-regexp' is useful. For instance:
-;; - this
-;;    - list of things
-;;  - is not indented
-;;       - to the same level!
-
-;; Select this list of things and perform C-x \ - RET
-;; - this
-;; - list of things
-;; - is not indented
-;; - to the same level!
-
 (require 'mark-more-like-this)
-(defmacro siraben-set-key (kbd-string function)
-  "Bind KBD-STRING to FUNCTION using `global-set-key'."
-  `(global-set-key (kbd ,kbd-string) ,function))
 
-(siraben-set-key "C-x r t" 'inline-string-rectangle)
-(siraben-set-key "C-x \\" 'align-regexp)
-(siraben-set-key "C-<" 'mark-previous-like-this)
-(siraben-set-key "C->" 'mark-next-like-this)
+(global-set-key (kbd "C-x r t") 'inline-string-rectangle)
+(global-set-key (kbd "C-x \\") 'align-regexp)
 
-;; Like the other two, but takes an argument (negative is previous)
-(siraben-set-key "C-M-m" 'mark-more-like-this)
-(siraben-set-key "s-G" 'mark-all-like-this)
-
-(siraben-set-key "M-F" 'free-keys)
-(siraben-set-key "C-:" 'eval-print-last-sexp)
+(global-set-key (kbd "C-:") 'eval-print-last-sexp)
 
 (provide 'siraben-keybindings)
 ;;; siraben-keybindings.el ends here
