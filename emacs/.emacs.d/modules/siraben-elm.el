@@ -1,4 +1,4 @@
-;;; siraben-macos.el --- This files runs when the host OS is macOS.
+;;; siraben-elm.el --- Prolog programming customizations.
 
 ;;; License:
 
@@ -17,20 +17,12 @@
 
 ;;; Commentary:
 
-;; Currently only simple customizations are being made.
+;; This file fixes the broken built-in Elm editing modes that Emacs
+;; provides.
 
 ;;; Code:
 
-(require 'ispell)
-(set-if-exists scheme-program-name "/usr/local/bin/guile")
-(set-if-exists ispell-program-name "/usr/local/bin/aspell")
-(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
-(require 'mu4e)
-(setq system-uses-terminfo nil)
+(use-package elm-mode)
 
-(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-(add-to-list 'default-frame-alist '(ns-appearance . dark))
-
-(provide 'siraben-macos)
-
-;;; siraben-macos.el ends here
+(provide 'siraben-elm)
+;;; siraben-elm.el ends here

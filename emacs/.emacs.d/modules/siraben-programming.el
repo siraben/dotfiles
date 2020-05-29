@@ -46,8 +46,8 @@
    nil '(("\\<\\(\\(FIX\\(ME\\)?\\|TODO\\|REFACTOR\\):\\)"
           1 font-lock-warning-face t))))
 
-(add-hook 'prog-mode-hook(lambda ()
-                           (siraben-prog-mode-defaults)))
+(add-hook 'prog-mode-hook #'(lambda ()
+                              (siraben-prog-mode-defaults)))
 
 ;; https://emacs.stackexchange.com/questions/8135/why-does-compilation-buffer-show-control-characters
 (require 'ansi-color)
@@ -69,6 +69,8 @@
 (require 'siraben-sml)
 (require 'siraben-coq)
 (require 'siraben-typescript)
+(require 'siraben-python)
+(require 'siraben-elm)
 
 (provide 'siraben-programming)
 ;;; siraben-programming.el ends here
