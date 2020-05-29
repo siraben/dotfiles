@@ -37,11 +37,11 @@
 
 (global-set-key (kbd "M-Q") #'unfill-paragraph)
 
-(require 'inline-string-rectangle)
+;; (require 'inline-string-rectangle)
 
-(require 'mark-more-like-this)
+;; (require 'mark-more-like-this)
 
-(global-set-key (kbd "C-x r t") 'inline-string-rectangle)
+(global-set-key (kbd "C-x r t") 'string-rectangle)
 (global-set-key (kbd "C-x \\") 'align-regexp)
 
 (global-set-key (kbd "C-:") 'eval-print-last-sexp)
