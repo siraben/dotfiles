@@ -17,7 +17,7 @@
 
 ;;; Commentary:
 
-;; This file fixes the broken built-in typescript editing modes that
+;; This file fixes the broken built-in Typescript editing modes that
 ;; Emacs provides.
 
 ;;; Code:
