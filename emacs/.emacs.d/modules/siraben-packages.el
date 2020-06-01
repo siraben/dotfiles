@@ -174,6 +174,8 @@
 
 (use-package company-auctex)
 
+(use-package vyper-mode)
+
 (when (locate-library "agda2-mode")
   (load-library "agda2-mode")
   (let ((base03    "#002b36") (base02    "#073642")
