@@ -78,7 +78,7 @@
                          '("^~/dotfiles/emacs/.emacs.d/" ":Emacs Config:"))))
 
 (use-package spaceline
-  :config (setq powerline-default-separator 'utf-8)
+  :config (setq powerline-default-separator 'arrow)
   :init
   (add-hook 'after-init-hook #'(lambda ()
                                  (progn

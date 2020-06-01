@@ -21,14 +21,12 @@
 (require 'cc-mode)
 
 ;; Code auto completion packages for C code.
-(use-package irony)
-(use-package company-irony)
-(use-package flycheck-irony)
 (use-package google-c-style)
+(use-package ccls)
 
 (add-hook 'c-mode-hook #'(lambda ()
                            (google-set-c-style)
-                           (irony-mode t)
+                           (lsp)
                            (flycheck-mode t)
                            (electric-pair-local-mode t)
                            (electric-indent-mode t)))
