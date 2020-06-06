@@ -1,4 +1,4 @@
-;;; siraben-python.el --- Python programming customizations.
+;;; siraben-bash.el --- configures Emacs for Bash development
 
 ;;; License:
 
@@ -17,22 +17,12 @@
 
 ;;; Commentary:
 
-;; This file fixes the broken built-in Python editing modes that
-;; Emacs provides.
-
 ;;; Code:
 
-(require 'use-package)
-
-(use-package lsp-python-ms
-  :ensure t
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-python-ms)
-                         (lsp)))
-  :init
-  (setq lsp-python-ms-executable (executable-find "python-language-server")))
+(add-hook 'sh-mode-hook #'(lambda ()
+                            (flycheck-mode t)
+                            (lsp)))
 
 
-
-(provide 'siraben-python)
-;;; siraben-python.el ends here
+(provide 'siraben-bash)
+;;; siraben-bash.el ends here

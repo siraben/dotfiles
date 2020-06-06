@@ -71,6 +71,7 @@
 (require 'siraben-typescript)
 (require 'siraben-python)
 (require 'siraben-elm)
+(require 'siraben-bash)
 
 (provide 'siraben-programming)
 ;;; siraben-programming.el ends here
