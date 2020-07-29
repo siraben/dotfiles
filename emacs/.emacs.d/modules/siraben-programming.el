@@ -23,7 +23,7 @@
 ;;; Code:
 (require 'ispell)
 (require 'cc-mode)
-;; (require 'magit)
+(require 'magit)
 
 (global-set-key (kbd "M-C") 'comment-or-uncomment-region)
 (global-set-key (kbd "C-x g") 'magit-status)
@@ -51,6 +51,7 @@
 
 ;; https://emacs.stackexchange.com/questions/8135/why-does-compilation-buffer-show-control-characters
 (require 'ansi-color)
+
 (defun siraben-ansi-colorize-buffer ()
   "Colorize the buffer with ANSI color."
   (let ((buffer-read-only nil))
