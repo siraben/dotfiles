@@ -107,5 +107,7 @@
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
+(setq org-export-backends '(ascii beamer html icalendar latex odt))
+
 (provide 'siraben-org)
 ;;; siraben-org.el ends here

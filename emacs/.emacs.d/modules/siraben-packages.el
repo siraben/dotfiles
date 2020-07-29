@@ -131,7 +131,8 @@
       helm-ff-search-library-in-sexp        t
       helm-ff-file-name-history-use-recentf t
       helm-autoresize-max-height            0
-      helm-autoresize-min-height            40)
+      helm-autoresize-min-height            40
+      recentf-max-saved-items               200)
 
 (add-hook 'after-init-hook '(lambda ()
                               (helm-mode 1)
@@ -162,7 +163,7 @@
   (setq TeX-PDF-mode t))
 
 (use-package lsp-mode)
-(use-package lsp-ui :commands lsp-ui-mode)
+(use-package lsp-ui)
 (use-package company-lsp :commands company-lsp)
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
@@ -175,6 +176,10 @@
 (use-package company-auctex)
 
 (use-package vyper-mode)
+
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
 
 (when (locate-library "agda2-mode")
   (load-library "agda2-mode")
@@ -210,6 +215,6 @@
      `(agda2-highlight-termination-problem-face ((t (:background ,orange :foreground ,base03))))
      `(agda2-highlight-incomplete-pattern-face ((t (:background ,orange :foreground ,base03))))
      `(agda2-highlight-typechecks-face ((t (:background ,cyan :foreground ,base03)))))))
-  
+
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here
