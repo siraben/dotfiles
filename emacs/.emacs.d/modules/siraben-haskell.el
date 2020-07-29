@@ -23,12 +23,13 @@
 
 (use-package haskell-mode)
 (use-package flycheck-haskell)
-
+(require 'lsp)
 (add-hook 'haskell-mode-hook
           #'(lambda ()
               (subword-mode             t)
               (eldoc-mode               t)
-              (interactive-haskell-mode t)))
+              (interactive-haskell-mode t)
+              (lsp-ui-mode)))
 
 (add-hook 'inferior-haskell-mode-hook
           #'(lambda ()

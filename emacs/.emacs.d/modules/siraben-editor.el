@@ -51,6 +51,8 @@
 (require 'windmove)
 (windmove-default-keybindings)
 
+(require 'flyspell)
+(setq flyspell-issue-message-flag nil)
 (defun siraben-enable-writing-modes ()
   "Enables writing modes for writing prose.
 Enables auto-fill mode, spell checking and disables company mode."
@@ -59,7 +61,7 @@ Enables auto-fill mode, spell checking and disables company mode."
 	 (undo-tree-mode 1)
 	 (flyspell-mode 1)
          (electric-pair-mode 1)
-         (visual-line-mode 1)    ; Org mode headings don't wrap.
+         (visual-line-mode 1)    ;; Org mode headings don't wrap.
          (company-mode -1)))
 
 (defvar-local siraben-timed-writing-timer
