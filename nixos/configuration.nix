@@ -1,33 +1,26 @@
-# configuration.nix
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { config, pkgs, ... }:
 
 let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+  imports = [ ./hardware-configuration.nix ];
 
-    ];
-
-  # Use the systemd-boot EFI boot loader.
   boot = {
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
     cleanTmpDir = true;
+    supportedFilesystems = [ "exfat" "btrfs" ];
   };
+  
   nixpkgs.config.allowUnfree = true;
 
   networking.networkmanager.enable = true;
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "siraben-nixos";
   networking.nameservers = [
     "1.0.0.1"
     "1.1.1.1"
   ];
-  swapDevices = [ { device = "/var/swap"; size = 4096; } ];
+  swapDevices = [ { device = "/dev/disk/by-label/swap"; } ];
+  # swapDevices = [ { device = "/var/swap"; size = 8192; } ];
 
   sound.enable = true;
   hardware = {
@@ -40,15 +33,14 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
   powerManagement.enable = true;
   programs.light.enable = true;
 
-  # Set your time zone.
   time.timeZone = "Asia/Bangkok";
 
   fonts = {
     enableFontDir = true;
-    enableCoreFonts = true;
     enableGhostscriptFonts = true;
 
     fonts = with pkgs; [
+      corefonts
       emojione
       noto-fonts
       noto-fonts-cjk
@@ -62,7 +54,6 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       siji
       unifont
     ];
-    fontconfig.ultimate.enable = true;
     fontconfig.defaultFonts = {
       monospace = [
         "Hack"
@@ -84,6 +75,7 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       EDITOR = pkgs.lib.mkOverride 0 "emacsclient";
     };
     systemPackages = with pkgs; [
+      (import ./popcorntime.nix)
       afl
       anki
       arc-theme
@@ -91,8 +83,6 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       aspell
       aspellDicts.en
       atool
-      bc
-      biber
       binutils
       borgbackup
       brave
@@ -109,6 +99,7 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       font-awesome-ttf
       gcc
       gdb
+      geekbench
       gforth
       ghc
       gimp
@@ -123,14 +114,12 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       htop
       i3-gaps
       imagemagick7
-      inkscape
       keepassxc
       killall
       kitty
       ledger
       libreoffice
       lightlocker
-      lynx
       man-pages
       mawk
       mdk
@@ -139,6 +128,7 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       mpv
       msmtp
       mu
+      multimc
       musescore
       networkmanager
       nextcloud-client
@@ -147,8 +137,10 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       okular
       pandoc
       paper-icon-theme
-      powertop
+      poppler_utils
       python3
+      python37Packages.pygments
+      python37Packages.virtualenv
       ranger
       redshift
       rhythmbox
@@ -158,9 +150,10 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       silver-searcher
       smlnj
       stow
+      spotify
       system-config-printer
-      texlive.combined.scheme-full
       tdesktop
+      texlive.combined.scheme-small
       the-powder-toy
       thunderbird
       tldr
@@ -169,7 +162,6 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       transmission-gtk
       tree
       unzip
-      urxvt_font_size
       vim
       vlc
       w3m
@@ -186,25 +178,33 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
     ];
   };
   virtualisation.docker.enable = true;
+  virtualisation.virtualbox.host.enable = true;
+  virtualisation.virtualbox.guest.enable = true;
+  virtualisation.virtualbox.host.enableExtensionPack = true;
+  virtualisation.virtualbox.host.enableHardening = true;
+
   # nextcloud-client = pkgs.nextcloud-client.override { withGnomeKeyring = true; libgnome-keyring = pkgs.gnome3.libgnome-keyring; };
 
   programs.zsh.enable = true;
-  programs.zsh.promptInit = "";
+  programs.zsh.promptInit = ""; # Clear this to avoid a conflict with oh-my-zsh
+  programs.ssh.startAgent = true;
+  location.provider = "geoclue2";
 
   services.redshift = {
     enable = true;
-    latitude = "13";
-    longitude = "100";
-    provider = "manual";
     temperature.day = 6500;
     temperature.night = 3400;
     brightness.day = "1";
     brightness.night = "1";
   };
 
+  services.logind.extraConfig = ''
+      HandlePowerKey=suspend
+  '';
+
   nixpkgs.config.packageOverrides = pkgs: {
     emacs = pkgs.emacs.override {
-     imagemagick = pkgs.imagemagick;
+      imagemagick = pkgs.imagemagick;
     };
   };
 
@@ -223,18 +223,20 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
   services.xserver = {
     enable = true;
     
-    displayManager.lightdm = {
-     enable = true;
-     greeters.gtk.extraConfig = ''
-       xft-dpi=192
-     '';
+    displayManager = {
+      lightdm = {
+        enable = true;
+        greeters.gtk.extraConfig = ''
+         xft-dpi=192
+        '';
+      };
+      defaultSession = "xfce+i3";
     };
     xkbOptions = "ctrl:nocaps";
     libinput.enable = true;
     layout = "us";
     
     desktopManager = {
-      default = "xfce";
       xterm.enable = false;
       xfce = {
         enable = true;
@@ -243,7 +245,6 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       };
     };
     windowManager = {
-      default = "i3";
       i3 = {
         enable = true;
         package = pkgs.i3-gaps;
@@ -251,17 +252,13 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
     };
   };
 
-  # services.xserver.desktopManager.gnome3.enable = true;
-  # services.xserver.displayManager.gdm.enable = true;
-
   users = {
-  # Define a user account. Don't forget to set a password with ‘passwd’.
     users.siraben = {
       shell = pkgs.zsh;
       isNormalUser = true;
       home = "/home/siraben";
       description = "Ben Siraphob";
-      extraGroups = [ "wheel" "networkmanager" ];
+      extraGroups = [ "wheel" "networkmanager" "vboxusers" "docker" ];
       packages = with pkgs; [
         (wrapWeb "riot" "https://riot.im/app")
         (wrapWeb "hn" "https://news.ycombinator.com")
@@ -271,15 +268,5 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
     };
   };
 
-  nix.gc.automatic = true;
-  nix.gc.dates = "daily";
-  nix.gc.options = "--delete-older-than 7d";
-
-
-  # This value determines the NixOS release with which your system is to be
-  # compatible, in order to avoid breaking some software such as database
-  # servers. You should change this only after NixOS release notes say you
-  # should.
-  system.stateVersion = "19.09"; # Did you read the comment?
-
+  system.stateVersion = "19.09";
 }
