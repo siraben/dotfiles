@@ -1,4 +1,4 @@
-;;; siraben-coq.el --- Coq programming customizations.
+;;; siraben-nix.el --- Nix programming customizations.
 
 ;;; License:
 
@@ -17,18 +17,15 @@
 
 ;;; Commentary:
 
-;; This file has Coq and Proof General specific customizations.
+;; This file has Nix specific customizations.
 
 ;;; Code:
 
-(use-package proof-general)
-(use-package company-coq)
 
-(add-hook 'coq-mode-hook
+(add-hook 'nix-mode-hook
           #'(lambda ()
-              (siraben-prog-mode-defaults)
-              (company-coq-mode t)))
+              (undo-tree-mode t)))
 
 
-(provide 'siraben-coq)
-;;; siraben-coq.el ends here
+(provide 'siraben-nix)
+;;; siraben-nix.el ends here
