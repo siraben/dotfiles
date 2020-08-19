@@ -27,8 +27,9 @@
 (require 'ccls)
 (set-if-exists ccls-executable "/usr/local/bin/ccls")
 
-(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
-(require 'mu4e)
+;; (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
+;; (require 'mu4e)
+
 (setq system-uses-terminfo nil)
 
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))

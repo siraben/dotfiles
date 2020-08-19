@@ -1,4 +1,4 @@
-;;; siraben-prolog.el --- Coq programming customizations.
+;;; siraben-coq.el --- Coq programming customizations.
 
 ;;; License:
 
