@@ -19,6 +19,7 @@
     htop
     jq
     mu
+    smlnj
     nodePackages.bash-language-server
     nodePackages.node2nix
     nodePackages.npm
@@ -33,6 +34,7 @@
     tor
     vim
     watch
+    youtube-dl
     zile
     zathura
   ];
