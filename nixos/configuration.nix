@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 
-let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in 
+let wrapWeb = pkgs.callPackage ./wrapWeb.nix {};
+in
 {
   imports = [ ./hardware-configuration.nix ];
 
@@ -10,7 +11,7 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
     cleanTmpDir = true;
     supportedFilesystems = [ "exfat" "btrfs" ];
   };
-  
+
   nixpkgs.config.allowUnfree = true;
 
   networking.networkmanager.enable = true;
@@ -20,7 +21,6 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
     "1.1.1.1"
   ];
   swapDevices = [ { device = "/dev/disk/by-label/swap"; } ];
-  # swapDevices = [ { device = "/var/swap"; size = 8192; } ];
 
   sound.enable = true;
   hardware = {
@@ -30,7 +30,17 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
     pulseaudio.package = pkgs.pulseaudioFull;
   };
 
+  services.blueman.enable = true;
+  hardware.bluetooth.extraConfig = "
+    [General]
+    Enable=Source,Sink,Media,Socket
+  ";
+  hardware.pulseaudio.extraConfig = "
+    load-module module-switch-on-connect
+  ";
+
   powerManagement.enable = true;
+  powerManagement.powertop.enable = true;
   programs.light.enable = true;
 
   time.timeZone = "Asia/Bangkok";
@@ -70,6 +80,9 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
 
   };
 
+  system.autoUpgrade.enable = true;
+  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-unstable";
+
   environment = {
     variables = {
       EDITOR = pkgs.lib.mkOverride 0 "emacsclient";
@@ -83,11 +96,10 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       aspell
       aspellDicts.en
       atool
-      binutils
-      borgbackup
       brave
-      cabal-install
       coq_8_8
+      discord
+      dmenu
       djvu2pdf
       dragon-drop
       emacs
@@ -96,12 +108,12 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       feh
       ffmpeg
       firefox
+      slack
       font-awesome-ttf
       gcc
       gdb
       geekbench
       gforth
-      ghc
       gimp
       git
       gnome3.cheese
@@ -109,10 +121,8 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       gnupg
       gnuplot
       gparted
-      guile
       highlight
       htop
-      i3-gaps
       imagemagick7
       keepassxc
       killall
@@ -127,7 +137,6 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       mpd
       mpv
       msmtp
-      mu
       multimc
       musescore
       networkmanager
@@ -141,57 +150,49 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       python3
       python37Packages.pygments
       python37Packages.virtualenv
-      ranger
-      redshift
       rhythmbox
       rofi
       sbcl
       scrot
       silver-searcher
-      smlnj
-      stow
       spotify
+      stow
       system-config-printer
-      tdesktop
+      # tdesktop
       texlive.combined.scheme-small
       the-powder-toy
       thunderbird
       tldr
-      tmux
       tor-browser-bundle-bin
       transmission-gtk
       tree
       unzip
-      vim
       vlc
       w3m
-      wget
       whois
       wpa_supplicant
       xorg.xkill
       xss-lock
-      youtube-dl
-      zathura
       zile
       zip
+      zoom-us
       zsh
     ];
   };
   virtualisation.docker.enable = true;
-  virtualisation.virtualbox.host.enable = true;
-  virtualisation.virtualbox.guest.enable = true;
-  virtualisation.virtualbox.host.enableExtensionPack = true;
-  virtualisation.virtualbox.host.enableHardening = true;
-
-  # nextcloud-client = pkgs.nextcloud-client.override { withGnomeKeyring = true; libgnome-keyring = pkgs.gnome3.libgnome-keyring; };
+  # virtualisation.virtualbox.host.enable = true;
+  # virtualisation.virtualbox.guest.enable = true;
+  # virtualisation.virtualbox.host.enableExtensionPack = true;
+  # virtualisation.virtualbox.host.enableHardening = true;
 
   programs.zsh.enable = true;
-  programs.zsh.promptInit = ""; # Clear this to avoid a conflict with oh-my-zsh
+  programs.zsh.promptInit = "";
   programs.ssh.startAgent = true;
   location.provider = "geoclue2";
 
   services.redshift = {
     enable = true;
+    package = pkgs.redshift-wlr;
     temperature.day = 6500;
     temperature.night = 3400;
     brightness.day = "1";
@@ -202,13 +203,6 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       HandlePowerKey=suspend
   '';
 
-  nixpkgs.config.packageOverrides = pkgs: {
-    emacs = pkgs.emacs.override {
-      imagemagick = pkgs.imagemagick;
-    };
-  };
-
-
   # Enable CUPS to print documents.
   services.printing.enable = true;
   services.printing.drivers = with pkgs; [
@@ -217,13 +211,20 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
     gutenprintBin
   ];
 
-
   services.gnome3.gnome-keyring.enable = true;
-
   services.xserver = {
     enable = true;
-    
+
     displayManager = {
+      # sddm = {
+      #   enable = true;
+      #   enableHidpi = true;
+      #   theme = "sugar-light";
+      #   extraConfig = ''
+      #     ForceHideCompletePassword=true
+      #   '';
+
+      # };
       lightdm = {
         enable = true;
         greeters.gtk.extraConfig = ''
@@ -232,11 +233,9 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       };
       defaultSession = "xfce+i3";
     };
-    xkbOptions = "ctrl:nocaps";
-    libinput.enable = true;
-    layout = "us";
-    
+
     desktopManager = {
+      gnome3.enable = true;
       xterm.enable = false;
       xfce = {
         enable = true;
@@ -244,12 +243,17 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
         enableXfwm = false;
       };
     };
+
     windowManager = {
       i3 = {
         enable = true;
         package = pkgs.i3-gaps;
       };
     };
+    xkbOptions = "ctrl:nocaps";
+    libinput.enable = true;
+    layout = "us";
+
   };
 
   users = {
@@ -260,7 +264,7 @@ let wrapWeb = pkgs.callPackage ./wrapWeb.nix {}; in
       description = "Ben Siraphob";
       extraGroups = [ "wheel" "networkmanager" "vboxusers" "docker" ];
       packages = with pkgs; [
-        (wrapWeb "riot" "https://riot.im/app")
+        (wrapWeb "element" "https://app.element.io")
         (wrapWeb "hn" "https://news.ycombinator.com")
         (wrapWeb "neverssl" "http://neverssl.com")
         (wrapWeb "mastodon" "https://mastodon.social")
