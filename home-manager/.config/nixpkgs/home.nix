@@ -3,8 +3,21 @@
 let
   inherit (builtins) currentSystem;
   inherit (lib.systems.elaborate { system = currentSystem; }) isLinux isDarwin;
-  linuxPackages  = with pkgs; [
+  linuxPackages =  with pkgs; [
+    anki
+    feh
+    firefox
+    rhythmbox
+    rofi
+    slack
     smlnj
+    spotify
+    thunderbird
+    tor-browser-bundle-bin
+    transmission-gtk
+    vlc
+    whois
+    zoom-us
   ];
   darwinPackages = with pkgs; [
     coreutils
@@ -24,6 +37,8 @@ let
     coqPackages.mathcomp
     docker
     docker-compose
+    gcc
+    gforth
     ghc
     guile
     haskellPackages.haskell-language-server
@@ -34,7 +49,6 @@ let
     mpv
     mu
     nodePackages.bash-language-server
-    nodePackages.node2nix
     nodePackages.npm
     nodejs
     ranger
@@ -45,7 +59,10 @@ let
     tldr
     tmux
     tor
+    tree
+    unzip
     vim
+    w3m
     watch
     youtube-dl
     zathura
