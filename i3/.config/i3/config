@@ -147,11 +147,6 @@ bindsym $mod+Shift+e exec 'xfce4-session-logout'
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
-
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
         bindsym h resize shrink width 10 px or 10 ppt
         bindsym j resize grow height 10 px or 10 ppt
         bindsym k resize shrink height 10 px or 10 ppt
@@ -188,23 +183,21 @@ bar {
         }
 }
 
-set $mode_launcher Launch [f]irefox [k]eepassxc [r]anger r[i]ot
+set $mode_launcher Launch [d]iscord [e]lement e[f]irefox [k]eepassxc [r]anger 
 bindsym $mod+o mode "$mode_launcher"
 
 mode "$mode_launcher" {
+    bindsym d exec Discord
     bindsym f exec firefox
     bindsym k exec keepassxc
     bindsym t exec thunderbird
     bindsym r exec kitty ranger
-    bindsym i exec riot
+    bindsym e exec element
     bindsym Escape mode "default"
     bindsym Return mode "default"
     bindsym q mode "default"
 }
 
-# Gaps
-# gaps inner 5
-# gaps outer 3
 for_window [class="^.*"] border pixel 1
 
 exec --no-startup-id nitrogen --restore

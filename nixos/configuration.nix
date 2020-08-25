@@ -26,17 +26,19 @@ in
   hardware = {
     bluetooth.enable = true;
     facetimehd.enable = true;
-    pulseaudio.enable = true;
-    pulseaudio.package = pkgs.pulseaudioFull;
+    pulseaudio = {
+      enable = true;
+      package = pkgs.pulseaudioFull;
+      extraConfig = "
+        load-module module-switch-on-connect
+      ";
+    }
   };
 
   services.blueman.enable = true;
   hardware.bluetooth.extraConfig = "
     [General]
     Enable=Source,Sink,Media,Socket
-  ";
-  hardware.pulseaudio.extraConfig = "
-    load-module module-switch-on-connect
   ";
 
   powerManagement.enable = true;
@@ -90,7 +92,6 @@ in
     systemPackages = with pkgs; [
       (import ./popcorntime.nix)
       afl
-      anki
       arc-theme
       asciinema
       aspell
@@ -105,15 +106,10 @@ in
       emacs
       evince
       exfat
-      feh
       ffmpeg
-      firefox
-      slack
       font-awesome-ttf
-      gcc
       gdb
       geekbench
-      gforth
       gimp
       git
       gnome3.cheese
@@ -135,7 +131,6 @@ in
       mdk
       mediainfo
       mpd
-      mpv
       msmtp
       multimc
       musescore
@@ -150,40 +145,20 @@ in
       python3
       python37Packages.pygments
       python37Packages.virtualenv
-      rhythmbox
-      rofi
       sbcl
       scrot
       silver-searcher
-      spotify
       stow
       system-config-printer
-      # tdesktop
-      texlive.combined.scheme-small
-      the-powder-toy
-      thunderbird
-      tldr
-      tor-browser-bundle-bin
-      transmission-gtk
-      tree
-      unzip
-      vlc
-      w3m
-      whois
       wpa_supplicant
       xorg.xkill
       xss-lock
       zile
       zip
-      zoom-us
       zsh
     ];
   };
   virtualisation.docker.enable = true;
-  # virtualisation.virtualbox.host.enable = true;
-  # virtualisation.virtualbox.guest.enable = true;
-  # virtualisation.virtualbox.host.enableExtensionPack = true;
-  # virtualisation.virtualbox.host.enableHardening = true;
 
   programs.zsh.enable = true;
   programs.zsh.promptInit = "";
@@ -216,15 +191,6 @@ in
     enable = true;
 
     displayManager = {
-      # sddm = {
-      #   enable = true;
-      #   enableHidpi = true;
-      #   theme = "sugar-light";
-      #   extraConfig = ''
-      #     ForceHideCompletePassword=true
-      #   '';
-
-      # };
       lightdm = {
         enable = true;
         greeters.gtk.extraConfig = ''
