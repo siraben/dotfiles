@@ -81,8 +81,7 @@
 
 (use-package undo-tree
   :diminish undo-tree-mode
-  :config (lambda ()
-            (global-undo-tree-mode +1)
+  :config (progn
             (defadvice undo-tree-make-history-save-file-name
                 (after undo-tree activate)
               (setq ad-return-value (concat ad-return-value ".gz")))))
@@ -100,8 +99,12 @@
 
 (use-package exec-path-from-shell
   :demand
-  :config (progn (setq exec-path-from-shell-check-startup-files nil)
-                 (exec-path-from-shell-initialize)))
+  :config
+  (when (memq window-system '(mac ns))
+    (setenv "SHELL" "/bin/zsh")
+    (exec-path-from-shell-initialize)
+    (exec-path-from-shell-copy-envs
+     '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE"))))
 
 
 (use-package auto-package-update
@@ -171,6 +174,7 @@
           #'(lambda ()
               (company-auctex-init)
               (setq TeX-command-extra-options "-shell-escape")
+              (auto-fill-mode 1)
               (flyspell-mode t)))
 
 (use-package company-auctex)
@@ -178,8 +182,12 @@
 (use-package vyper-mode)
 
 (use-package flycheck
-  :ensure t
   :init (global-flycheck-mode))
+
+(use-package direnv
+  :config
+  (direnv-mode)
+  (setq direnv-always-show-summary nil))
 
 (when (locate-library "agda2-mode")
   (load-library "agda2-mode")
