@@ -1,13 +1,4 @@
 # siraben's dotfiles
-## Programs
-- emacs
-- zsh
-- Xresources
-- config
-  - i3
-  - i3status
-  - kitty
-  - polybar
-
-## NixOS
-The entire state of my system is configured with `nixos/configuration.nix`
+Install configuration using GNU Stow. e.g. `stow emacs` to symlink my
+Emacs configuration to your home directory.  Every folder except
+`nixos` can be `stow`'d.
