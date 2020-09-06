@@ -1,4 +1,5 @@
-#!/run/current-system/sw/bin/bash
+#!/usr/bin/env bash
+
 set -o noclobber -o noglob -o nounset -o pipefail
 IFS=$'\n'
 
@@ -58,11 +59,11 @@ handle_extension() {
 
         # PDF
         # pdf)
-        #     # Preview as text conversion
-        #     pdftotext -l 10 -nopgbrk -q -- "${FILE_PATH}" - | fmt -w ${PV_WIDTH} && exit 5
-        #     mutool draw -F txt -i -- "${FILE_PATH}" 1-10 | fmt -w ${PV_WIDTH} && exit 5
-        #     exiftool "${FILE_PATH}" && exit 5
-        #     exit 1;;
+            # Preview as text conversion
+            # pdftotext -l 10 -nopgbrk -q -- "${FILE_PATH}" - | fmt -w ${PV_WIDTH} && exit 5
+            # mutool draw -F txt -i -- "${FILE_PATH}" 1-10 | fmt -w ${PV_WIDTH} && exit 5
+            # exiftool "${FILE_PATH}" && exit 5
+            # exit 1;;
 
         # BitTorrent
         torrent)
@@ -93,9 +94,6 @@ handle_image() {
         #     convert "${FILE_PATH}" "${IMAGE_CACHE_PATH}" && exit 6
         #     exit 1;;
 
-        image/vnd.djvu)
-            exit 1;;
-        
         # Image
         image/*)
             local orientation
@@ -112,10 +110,10 @@ handle_image() {
             exit 7;;
 
         # Video
-        video/*)
-            # Thumbnail
-            ffmpegthumbnailer -i "${FILE_PATH}" -o "${IMAGE_CACHE_PATH}" -s 0 && exit 6
-            exit 1;;
+        # video/*)
+        #     # Thumbnail
+        #     ffmpegthumbnailer -i "${FILE_PATH}" -o "${IMAGE_CACHE_PATH}" -s 0 && exit 6
+        #     exit 1;;
         # PDF
         application/pdf)
             pdftoppm -f 1 -l 1 \
@@ -171,7 +169,6 @@ handle_mime() {
         # Text
         text/* | */xml)
             # Syntax highlight
-#             bat "${FILE_PATH}" --paging never --color always --theme 'Monokai Extended' -n && exit 5
             if [[ "$( stat --printf='%s' -- "${FILE_PATH}" )" -gt "${HIGHLIGHT_SIZE_MAX}" ]]; then
                 exit 2
             fi
@@ -182,9 +179,9 @@ handle_mime() {
                 local pygmentize_format='terminal'
                 local highlight_format='ansi'
             fi
-            $(which highlight) --replace-tabs="${HIGHLIGHT_TABWIDTH}" --out-format="${highlight_format}" \
+            highlight --replace-tabs="${HIGHLIGHT_TABWIDTH}" --out-format="${highlight_format}" \
                 --style="${HIGHLIGHT_STYLE}" --force -- "${FILE_PATH}" && exit 5
-            pygmentize -f "${pygmentize_format}" -O "style=${PYGMENTIZE_STYLE}" -- "${FILE_PATH}" && exit 5
+            # pygmentize -f "${pygmentize_format}" -O "style=${PYGMENTIZE_STYLE}" -- "${FILE_PATH}" && exit 5
             exit 2;;
 
         # Image
