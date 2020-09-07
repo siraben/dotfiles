@@ -35,8 +35,7 @@
   "Default programming mode hook, useful with any programming language."
   (when (executable-find ispell-program-name)
     (flyspell-prog-mode)
-    (diminish 'flyspell-mode)
-    (undo-tree-mode +1))
+    (diminish 'flyspell-mode))
 
   (electric-pair-mode +1)
   
