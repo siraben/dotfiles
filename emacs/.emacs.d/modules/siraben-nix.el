@@ -22,10 +22,5 @@
 ;;; Code:
 
 
-(add-hook 'nix-mode-hook
-          #'(lambda ()
-              (undo-tree-mode t)))
-
-
 (provide 'siraben-nix)
 ;;; siraben-nix.el ends here
