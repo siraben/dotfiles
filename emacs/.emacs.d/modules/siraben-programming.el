@@ -22,14 +22,8 @@
 
 ;;; Code:
 (require 'ispell)
-(require 'cc-mode)
-(require 'magit)
 
 (global-set-key (kbd "M-C") 'comment-or-uncomment-region)
-(global-set-key (kbd "C-x g") 'magit-status)
-(global-set-key (kbd "C-x M-g") 'magit-dispatch)
-
-(define-key c-mode-base-map (kbd "s-b") 'recompile)
 
 (defun siraben-prog-mode-defaults ()
   "Default programming mode hook, useful with any programming language."
@@ -59,7 +53,7 @@
 
 (require 'siraben-bash)
 (require 'siraben-c)
-(require 'siraben-common-lisp)
+;; (require 'siraben-common-lisp)
 (require 'siraben-coq)
 (require 'siraben-csharp)
 (require 'siraben-elm)

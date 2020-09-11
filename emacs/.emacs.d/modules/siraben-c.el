@@ -32,6 +32,7 @@
                            (electric-pair-local-mode t)
                            (electric-indent-mode t)
                            ))
+
 (defun clang-format-save-hook-for-this-buffer ()
   "Create a buffer local save hook."
   (add-hook 'before-save-hook
