@@ -54,24 +54,17 @@
          ("s-G" . mc/mark-all-like-this)))
 
 (use-package erc-view-log)
-(use-package clojure-mode)
-(use-package cider)
-(use-package xkcd)
 (use-package rainbow-delimiters)
 (use-package writeroom-mode)
 (use-package markdown-mode)
-(use-package neotree)
-(use-package magit)
+(use-package magit
+  :bind (("C-x g"   . 'magit-status)
+         ("C-x M-g" . 'magit-dispatch)))
 
 (use-package free-keys
   :commands free-keys)
 
-(use-package fill-column-indicator)
-(use-package memory-usage
-  :commands memory-usage)
-
 (use-package yasnippet-snippets)
-(use-package demo-it)
 (use-package ledger-mode
   :config
   (setq ledger-reconcile-default-commodity "THB"))
@@ -100,7 +93,6 @@
 (add-hook 'after-init-hook #'(lambda () (which-key-mode t)))
 
 (use-package exec-path-from-shell
-  :demand
   :config
   (when (memq window-system '(mac ns))
     (setenv "SHELL" "/bin/zsh")
@@ -130,6 +122,8 @@
 
 (use-package helm-ag)
 
+(use-package helm-swoop)
+
 (setq helm-split-window-in-side-p           t
       helm-buffers-fuzzy-matching           t
       helm-move-to-line-cycle-in-source     t
@@ -143,16 +137,9 @@
                               (helm-mode 1)
                               (helm-autoresize-mode 1)))
 
-(use-package paradox
-  :config
-  (setq paradox-github-token nil))
-
 (use-package geiser
   :config
   (setq geiser-default-implementation 'guile))
-
-;; This is useful for testing out various commands.
-(use-package lorem-ipsum)
 
 (use-package nix-mode)
 (use-package webpaste
@@ -183,8 +170,7 @@
 
 (use-package vyper-mode)
 
-(use-package flycheck
-  :init (global-flycheck-mode))
+(use-package flycheck)
 
 (use-package direnv
   :config
@@ -225,6 +211,10 @@
      `(agda2-highlight-termination-problem-face ((t (:background ,orange :foreground ,base03))))
      `(agda2-highlight-incomplete-pattern-face ((t (:background ,orange :foreground ,base03))))
      `(agda2-highlight-typechecks-face ((t (:background ,cyan :foreground ,base03)))))))
+
+(use-package esup
+  :config (setq esup-user-init-file (file-truename "~/.emacs.d/init.el"))
+  :commands (esup))
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here

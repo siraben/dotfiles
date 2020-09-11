@@ -66,7 +66,6 @@
 (require 'siraben-keybindings)
 (require 'siraben-editor)
 (require 'siraben-programming)
-(require 'siraben-gnus)
 (require 'siraben-shell)
 (require 'siraben-org)
 (require 'siraben-tramp)

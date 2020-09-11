@@ -100,9 +100,6 @@ buffer from which the function was invoked read-only."
               (require 'rename-sgml-tag)
               (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)))
 
-(use-package emojify)
-(use-package company-emoji)
-
 ;; De-duplicate kill ring entries.
 (setq kill-do-not-save-duplicates t)
 
