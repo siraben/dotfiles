@@ -23,7 +23,7 @@
 
 (use-package haskell-mode)
 (use-package flycheck-haskell)
-(require 'lsp)
+
 (add-hook 'haskell-mode-hook
           #'(lambda ()
               (subword-mode             t)
