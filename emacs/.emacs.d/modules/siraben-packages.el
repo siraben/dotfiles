@@ -85,21 +85,13 @@
   :diminish aggressive-indent-mode)
 
 (use-package company
-  :diminish company-mode)
+  :diminish company-mode
+  :config (global-company-mode t))
 
 (use-package which-key
   :diminish)
 
 (add-hook 'after-init-hook #'(lambda () (which-key-mode t)))
-
-(use-package exec-path-from-shell
-  :config
-  (when (memq window-system '(mac ns))
-    (setenv "SHELL" "/bin/zsh")
-    (exec-path-from-shell-initialize)
-    (exec-path-from-shell-copy-envs
-     '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE"))))
-
 
 (use-package auto-package-update
   :config
