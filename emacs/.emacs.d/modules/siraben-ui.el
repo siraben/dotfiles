@@ -54,7 +54,6 @@
   :init (add-hook 'after-init-hook #'fancy-battery-mode))
 
 (display-time-mode t)
-(global-company-mode t)
 
 (setq frame-title-format
       '(""
