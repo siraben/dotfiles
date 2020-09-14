@@ -87,75 +87,24 @@ in
   system.autoUpgrade.channel = "https://nixos.org/channels/nixos-unstable";
 
   environment = {
-    variables = {
-      EDITOR = pkgs.lib.mkOverride 0 "emacsclient";
-    };
     systemPackages = with pkgs; [
       (import ./popcorntime.nix)
       arc-theme
-      asciinema
-      aspell
-      aspellDicts.en
-      atool
-      brave
-      coq_8_8
-      discord
       dmenu
-      djvu2pdf
-      dragon-drop
-      emacs
-      evince
       exfat
-      ffmpeg
-      font-awesome-ttf
-      gdb
-      geekbench
-      gimp
-      git
-      gnome3.cheese
-      gnumake
       gnupg
-      gnuplot
-      gparted
-      highlight
-      htop
-      imagemagick7
-      keepassxc
       killall
-      kitty
-      ledger
-      libreoffice
       lightlocker
-      man-pages
-      mawk
-      mdk
-      mediainfo
-      mpd
-      msmtp
-      multimc
-      musescore
       networkmanager
-      nextcloud-client
       nitrogen
-      offlineimap
-      okular
       pandoc
       paper-icon-theme
       poppler_utils
-      python3
-      python37Packages.pygments
-      python37Packages.virtualenv
-      sbcl
       scrot
-      silver-searcher
-      stow
       system-config-printer
       wpa_supplicant
       xorg.xkill
       xss-lock
-      zile
-      zip
-      zsh
     ];
   };
   virtualisation.docker.enable = true;
