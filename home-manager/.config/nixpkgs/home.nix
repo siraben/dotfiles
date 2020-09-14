@@ -79,7 +79,7 @@ in
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
   home.username = "siraben";
-  home.homeDirectory = "/Users/siraben";
+  home.homeDirectory = if isDarwin then "/Users/siraben" else "/home/siraben";
   home.packages = sharedPackages
                   ++ (lib.optionals isLinux linuxPackages)
                   ++ (lib.optionals isDarwin darwinPackages);
@@ -100,6 +100,7 @@ in
       history = {
         size = 100000;
         save = 100000;
+        extended = true;
       };
       initExtra = if isDarwin then darwinShellExtra else linuxShellExtra;
     };
