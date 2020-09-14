@@ -6,7 +6,8 @@ in
   imports = [ ./hardware-configuration.nix ];
 
   boot = {
-    loader.systemd-boot.enable = true;
+    loader.grub.enable = true;
+    loader.grub.device = "nodev";
     loader.efi.canTouchEfiVariables = true;
     cleanTmpDir = true;
     supportedFilesystems = [ "exfat" "btrfs" ];
@@ -32,7 +33,7 @@ in
       extraConfig = "
         load-module module-switch-on-connect
       ";
-    }
+    };
   };
 
   services.blueman.enable = true;
@@ -91,7 +92,6 @@ in
     };
     systemPackages = with pkgs; [
       (import ./popcorntime.nix)
-      afl
       arc-theme
       asciinema
       aspell
