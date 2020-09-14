@@ -35,12 +35,13 @@
 
 (menu-bar-mode -1)
 
-(when window-system
-  (scroll-bar-mode -1)
-  ;; And ensure the cursor is a box, and remove the fringe.
-  (setq-default cursor-type 'box)
-  (fringe-mode 0))
-
+(add-hook 'after-init-hook
+          #'(lambda ()
+              (when window-system
+                (scroll-bar-mode -1)
+                ;; And ensure the cursor is a box, and remove the fringe.
+                (setq-default cursor-type 'box)
+                (fringe-mode 0))))
 
 (defvar siraben-root-dir
   "~/.emacs.d/"
@@ -83,6 +84,16 @@
 (setq initial-scratch-message
       (format ";; Session started on %s\n"
 	      (shell-command-to-string "date +'%A, %F at %R'")))
+
+(add-hook 'after-init-hook
+          #'(lambda ()
+              (if (not (getenv "zsh"))
+                  (setenv "PATH"
+                          (shell-command-to-string "source $HOME/.zshrc && printf $PATH")))
+
+              (setq exec-path (split-string (getenv "PATH") ":"))))
+
+(setq default-directory "~/")
 
 ;; Keep some things out of version control.
 (let ((secret.el "~/Nextcloud/secret.el"))

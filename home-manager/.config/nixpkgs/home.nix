@@ -12,6 +12,8 @@ let
     slack
     smlnj
     spotify
+    make
+    clang
     thunderbird
     tor-browser-bundle-bin
     transmission-gtk
@@ -28,16 +30,17 @@ let
     ag
     agda
     alacritty
+    aspell
+    aspellDicts.en
+    aspellDicts.en-computers
     bat
     borgbackup
     cabal-install
     chez
-    cmake
     coq
     coqPackages.mathcomp
     docker
     docker-compose
-    gcc
     gforth
     ghc
     guile
@@ -48,9 +51,8 @@ let
     kitty
     mpv
     mu
+    nnn
     nodePackages.bash-language-server
-    nodePackages.npm
-    nodejs
     ranger
     rustup
     stow
@@ -73,22 +75,27 @@ let
   linuxShellExtra = '''';
 in
 {
-  # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  # Home Manager needs a bit of information about you and the
-  # paths it should manage.
   home.username = "siraben";
   home.homeDirectory = if isDarwin then "/Users/siraben" else "/home/siraben";
   home.packages = sharedPackages
                   ++ (lib.optionals isLinux linuxPackages)
                   ++ (lib.optionals isDarwin darwinPackages);
+
+  home.sessionVariables = {
+    EDITOR = "vim";
+  };
   
   programs = {
     git = {
       enable = true;
       userName = "Ben Siraphob";
       userEmail = "bensiraphob@gmail.com";
+      extraConfig = {
+        pull.rebase = true;
+        github.user = "siraben";
+      };
     };
     emacs.enable = isLinux;
     zsh = {
