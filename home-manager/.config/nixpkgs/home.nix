@@ -5,15 +5,24 @@ let
   inherit (lib.systems.elaborate { system = currentSystem; }) isLinux isDarwin;
   linuxPackages =  with pkgs; [
     anki
+    brave
+    discord
+    evince
     feh
     firefox
+    gnome3.cheese
+    keepassxc
+    libreoffice
+    gnumake
+    msmtp
+    musescore
+    nextcloud-client
+    offlineimap
     rhythmbox
     rofi
     slack
     smlnj
     spotify
-    make
-    clang
     thunderbird
     tor-browser-bundle-bin
     transmission-gtk
@@ -23,8 +32,8 @@ let
   ];
   darwinPackages = with pkgs; [
     coreutils
-    smlnjBootstrap
     emacsMacport
+    smlnjBootstrap
   ];
   sharedPackages = with pkgs; [
     ag
@@ -43,16 +52,20 @@ let
     docker-compose
     gforth
     ghc
+    git
     guile
     haskellPackages.haskell-language-server
     htop
     idris
     jq
     kitty
+    ledger
     mpv
     mu
     nnn
     nodePackages.bash-language-server
+    python3
+    python38Packages.pygments
     ranger
     rustup
     stow
@@ -68,6 +81,7 @@ let
     watch
     youtube-dl
     zathura
+    zip
   ];
   darwinShellExtra = ''
     source $HOME/.nix-profile/etc/profile.d/nix.sh
