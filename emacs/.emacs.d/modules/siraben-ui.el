@@ -31,7 +31,7 @@
       scroll-conservatively 100000
       scroll-preserve-screen-position 1)
 
-(scroll-bar-mode -1)
+(add-hook 'after-init-hook (lambda () (scroll-bar-mode -1)))
 
 ;; Warn when opening files bigger than 100MB.
 (setq large-file-warning-threshold 100000000)
@@ -42,8 +42,8 @@
 (size-indication-mode t)
 
 ;; Enable winner mode
-(add-hook 'after-init-hook #'(lambda ()
-                               (winner-mode t)))
+(add-hook 'after-init-hook (lambda ()
+                             (winner-mode t)))
 
 ;; Enable short answers
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -51,7 +51,7 @@
 ;; Extra mode line modes.
 (use-package fancy-battery
   :config (setq fancy-battery-show-percentage t)
-  :init (add-hook 'after-init-hook #'fancy-battery-mode))
+  :hook (after-init . fancy-battery-mode))
 
 (display-time-mode t)
 
@@ -64,38 +64,27 @@
 ;; Enable my favorite color scheme.
 (use-package color-theme-sanityinc-tomorrow
   :demand
-  :config (load-theme 'sanityinc-tomorrow-bright t))
-
-;; Improve the mode line.
-(use-package smart-mode-line
-  :disabled
-  :config (progn
-            (add-hook 'after-init-hook #'sml/setup)
-            (setq sml/no-confirm-load-theme t)
-            (setq sml/theme nil)
-            (add-to-list 'sml/replacer-regexp-list
-                         '("^~/dotfiles/emacs/.emacs.d/" ":Emacs Config:"))))
+  :config (load-theme 'sanityinc-tomorrow-night t))
 
 (use-package spaceline
   :config (setq powerline-default-separator 'arrow)
-  :init
-  (add-hook 'after-init-hook #'(lambda ()
-                                 (progn
-                                   (require 'spaceline-config)
-                                   (spaceline-emacs-theme)
-                                   (spaceline-helm-mode)))))
+  :hook
+  (after-init . (lambda ()
+                  (progn
+                    (require 'spaceline-config)
+                    (spaceline-emacs-theme)
+                    (spaceline-helm-mode)))))
 
 
 
 ;; Remove the auto-revert mode-line
 (require 'diminish)
-(diminish 'auto-revert-mode)
-(diminish 'flyspell-mode)
-(diminish 'visual-line-mode "Visual Line")
-(diminish 'auto-fill-function "Auto Fill")
-(diminish 'eldoc-mode)
-(diminish 'lisp-interaction-mode)
-(diminish 'flycheck-mode)
+(add-hook 'after-init-hook (lambda ()
+                             (diminish 'auto-revert-mode)
+                             (diminish 'visual-line-mode "Visual Line")
+                             (diminish 'auto-fill-function "Auto Fill")
+                             (diminish 'eldoc-mode)
+                             (diminish 'lisp-interaction-mode)))
 
 (provide 'siraben-ui)
 ;;; siraben-ui.el ends here

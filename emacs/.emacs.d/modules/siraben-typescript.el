@@ -28,8 +28,7 @@
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
 (add-hook 'typescript-mode-hook #'(lambda ()
                                     (setq-local tab-width 2)
-                                    (lsp)
-                                    ))
+                                    (lsp)))
 
 
 

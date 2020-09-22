@@ -67,6 +67,7 @@
 (require 'siraben-rust)
 (require 'siraben-sml)
 (require 'siraben-typescript)
+(require 'siraben-ocaml)
 
 (provide 'siraben-programming)
 ;;; siraben-programming.el ends here

@@ -20,11 +20,11 @@
 ;;; Code:
 
 ;; Code auto completion packages for C code.
-(use-package csharp-mode)
-
-(add-hook 'csharp-mode-hook #'(lambda ()
-                                (electric-pair-local-mode t)
-                                (electric-indent-mode t)))
+(use-package csharp-mode
+  :hook
+  (csharp-mode . (lambda ()
+                   (electric-pair-local-mode t)
+                   (electric-indent-mode t))))
 
 (provide 'siraben-csharp)
 

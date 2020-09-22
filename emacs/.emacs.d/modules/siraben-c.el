@@ -25,14 +25,6 @@
 (use-package ccls)
 (use-package clang-format)
 
-(add-hook 'c-mode-hook #'(lambda ()
-                           (google-set-c-style)
-                           (lsp)
-                           (flycheck-mode t)
-                           (electric-pair-local-mode t)
-                           (electric-indent-mode t)
-                           ))
-
 (defun clang-format-save-hook-for-this-buffer ()
   "Create a buffer local save hook."
   (add-hook 'before-save-hook
@@ -46,7 +38,14 @@
             ;; Buffer local hook.
             t))
 
-(add-hook 'c-mode-hook (lambda () (clang-format-save-hook-for-this-buffer)))
+(add-hook 'c-mode-hook (lambda ()
+                         (google-set-c-style)
+                         (direnv-update-environment)
+                         (lsp)
+                         (electric-pair-local-mode t)
+                         (electric-indent-mode t)
+                         (clang-format-save-hook-for-this-buffer)))
+
 (add-hook 'c++-mode-hook (lambda () (clang-format-save-hook-for-this-buffer)))
 
 ;; I like having an easy key binding to recompile easily.

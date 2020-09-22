@@ -19,10 +19,6 @@
 ;;; Code:
 
 (use-package forth-mode)
-(add-hook 'forth-mode-hook
-          #'(lambda ()
-              (orgtbl-mode    +1)))
-
 
 (provide 'siraben-forth)
 ;;; siraben-forth.el ends here

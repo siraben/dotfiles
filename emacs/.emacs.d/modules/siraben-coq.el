@@ -25,9 +25,9 @@
 (use-package company-coq)
 
 (add-hook 'coq-mode-hook
-          #'(lambda ()
-              (siraben-prog-mode-defaults)
-              (company-coq-mode t)))
+          (lambda ()
+            (siraben-prog-mode-defaults)
+            (company-coq-mode t)))
 
 
 (provide 'siraben-coq)

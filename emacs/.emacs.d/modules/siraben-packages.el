@@ -53,13 +53,15 @@
          ("C-M-m" . mc/mark-more-like-this)
          ("s-G" . mc/mark-all-like-this)))
 
-(use-package erc-view-log)
 (use-package rainbow-delimiters)
 (use-package writeroom-mode)
 (use-package markdown-mode)
 (use-package magit
   :bind (("C-x g"   . 'magit-status)
          ("C-x M-g" . 'magit-dispatch)))
+
+(use-package forge
+  :after magit)
 
 (use-package free-keys
   :commands free-keys)
@@ -89,9 +91,17 @@
   :config (global-company-mode t))
 
 (use-package which-key
-  :diminish)
+  :diminish
+  :init (which-key-mode t))
 
-(add-hook 'after-init-hook #'(lambda () (which-key-mode t)))
+(use-package exec-path-from-shell
+  :demand
+  :config
+  (progn
+    (setenv "SHELL" "/bin/zsh")
+    (exec-path-from-shell-initialize)
+    (exec-path-from-shell-copy-envs
+     '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE"))))
 
 (use-package auto-package-update
   :config
@@ -99,12 +109,9 @@
 	auto-package-update-interval 3))
 
 (use-package pdf-tools
-  ;; The :magic tag automatically turns on pdf-view-mode when PDF
-  ;; files are opened.
   :magic ("%PDF" . pdf-view-mode))
 
 (use-package helm
-  ;; Override default key bindings with those from Helm
   :bind (("C-h a"   . 'helm-apropos)
          ("C-h f"   . 'helm-apropos)
          ("C-h r"   . 'helm-info-emacs)
@@ -112,22 +119,19 @@
          ("M-x"     . 'helm-M-x)
          ("C-x b"   . 'helm-mini)))
 
-(use-package helm-ag)
-
-(use-package helm-swoop)
-
-(setq helm-split-window-in-side-p           t
-      helm-buffers-fuzzy-matching           t
-      helm-move-to-line-cycle-in-source     t
-      helm-ff-search-library-in-sexp        t
-      helm-ff-file-name-history-use-recentf t
-      helm-autoresize-max-height            0
-      helm-autoresize-min-height            40
-      recentf-max-saved-items               200)
-
-(add-hook 'after-init-hook '(lambda ()
-                              (helm-mode 1)
-                              (helm-autoresize-mode 1)))
+(use-package helm-ag
+  :config
+  (setq helm-split-window-in-side-p           t
+        helm-buffers-fuzzy-matching           t
+        helm-move-to-line-cycle-in-source     t
+        helm-ff-search-library-in-sexp        t
+        helm-ff-file-name-history-use-recentf t
+        helm-autoresize-max-height            0
+        helm-autoresize-min-height            40
+        recentf-max-saved-items               200)
+  :hook (after-init . (lambda ()
+                        (helm-mode t)
+                        (helm-autoresize-mode t))))
 
 (use-package geiser
   :config
@@ -144,65 +148,30 @@
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
   (setq TeX-master nil)
-  (setq TeX-PDF-mode t))
+  (setq TeX-PDF-mode t)
+  :hook
+  (LaTeX-mode . (lambda ()
+                  (company-auctex-init)
+                  (setq TeX-command-extra-options "-shell-escape")
+                  (auto-fill-mode 1)
+                  (flyspell-mode t))))
 
 (use-package lsp-mode)
 (use-package lsp-ui)
+
 (use-package company-lsp :commands company-lsp)
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
-
-(add-hook 'LaTeX-mode-hook
-          #'(lambda ()
-              (company-auctex-init)
-              (setq TeX-command-extra-options "-shell-escape")
-              (auto-fill-mode 1)
-              (flyspell-mode t)))
 
 (use-package company-auctex)
 
 (use-package vyper-mode)
 
-(use-package flycheck)
+(use-package flycheck
+  :init (global-flycheck-mode)
+  :diminish)
 
 (use-package direnv
-  :config
-  (direnv-mode)
-  (setq direnv-always-show-summary nil))
-
-(when (locate-library "agda2-mode")
-  (load-library "agda2-mode")
-  (let ((base03    "#002b36") (base02    "#073642")
-        (base01    "#586e75") (base00    "#657b83")
-        (base0     "#839496") (base1     "#93a1a1")
-        (base2     "#eee8d5") (base3     "#fdf6e3")
-        (yellow    "#b58900") (orange    "#cb4b16")
-        (red       "#dc322f") (magenta   "#d33682")
-        (violet    "#6c71c4") (blue      "#268bd2")
-        (cyan      "#2aa198") (green     "#859900"))
-    (custom-set-faces
-     `(agda2-highlight-keyword-face ((t (:foreground ,orange))))
-     `(agda2-highlight-string-face ((t (:foreground ,magenta))))
-     `(agda2-highlight-number-face ((t (:foreground ,violet))))
-     `(agda2-highlight-symbol-face ((((background ,base3)) (:foreground ,base01))))
-     `(agda2-highlight-primitive-type-face ((t (:foreground ,blue))))
-     `(agda2-highlight-bound-variable-face ((t nil)))
-     `(agda2-highlight-inductive-constructor-face ((t (:foreground ,green))))
-     `(agda2-highlight-coinductive-constructor-face ((t (:foreground ,yellow))))
-     `(agda2-highlight-datatype-face ((t (:foreground ,blue))))
-     `(agda2-highlight-field-face ((t (:foreground ,red))))
-     `(agda2-highlight-function-face ((t (:foreground ,blue))))
-     `(agda2-highlight-module-face ((t (:foreground ,violet))))
-     `(agda2-highlight-postulate-face ((t (:foreground ,blue))))
-     `(agda2-highlight-primitive-face ((t (:foreground ,blue))))
-     `(agda2-highlight-record-face ((t (:foreground ,blue))))
-     `(agda2-highlight-dotted-face ((t nil)))
-     `(agda2-highlight-operator-face ((t nil)))
-     `(agda2-highlight-error-face ((t (:foreground ,red :underline t))))
-     `(agda2-highlight-unsolved-meta-face ((t (:background ,base03 :foreground ,yellow))))
-     `(agda2-highlight-unsolved-constraint-face ((t (:background ,base03 :foreground ,yellow))))
-     `(agda2-highlight-termination-problem-face ((t (:background ,orange :foreground ,base03))))
-     `(agda2-highlight-incomplete-pattern-face ((t (:background ,orange :foreground ,base03))))
-     `(agda2-highlight-typechecks-face ((t (:background ,cyan :foreground ,base03)))))))
+  :config (setq direnv-always-show-summary nil))
 
 (use-package esup
   :config (setq esup-user-init-file (file-truename "~/.emacs.d/init.el"))
