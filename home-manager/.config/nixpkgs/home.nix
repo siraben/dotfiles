@@ -11,9 +11,9 @@ let
     feh
     firefox
     gnome3.cheese
+    gnumake
     keepassxc
     libreoffice
-    gnumake
     msmtp
     musescore
     nextcloud-client
@@ -30,14 +30,14 @@ let
     whois
     zoom-us
   ];
+  emacsGcc = (import (fetchTarball "https://github.com/twlz0ne/nix-gccemacs-darwin/archive/master.tar.gz")).emacsGccDarwin;
   darwinPackages = with pkgs; [
     coreutils
-    emacsMacport
+    emacsGcc
     smlnjBootstrap
   ];
   sharedPackages = with pkgs; [
     ag
-    agda
     alacritty
     aspell
     aspellDicts.en
@@ -45,9 +45,11 @@ let
     bat
     borgbackup
     cabal-install
+    cachix
+    ccls
     chez
+    clang
     coq
-    coqPackages.mathcomp
     docker
     docker-compose
     gforth
@@ -56,14 +58,14 @@ let
     guile
     haskellPackages.haskell-language-server
     htop
-    idris
-    jq
     kitty
     ledger
     mpv
     mu
     nnn
     nodePackages.bash-language-server
+    nodePackages.javascript-typescript-langserver
+    nodePackages.pyright
     python3
     python38Packages.pygments
     ranger
@@ -100,7 +102,7 @@ in
   home.sessionVariables = {
     EDITOR = "vim";
   };
-  
+
   programs = {
     git = {
       enable = true;
