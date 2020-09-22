@@ -16,7 +16,7 @@
 
 ;;; Commentary:
 
-;; Common lisp stuff.
+;; Common Lisp stuff.
 
 ;;; Code:
 

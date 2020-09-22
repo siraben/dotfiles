@@ -55,10 +55,10 @@
   (add-hook 'post-self-insert-hook #'siraben-mdm-timer-reset)
   (run-at-time (- siraben-mdm-end-time (cadr (current-time)))
                nil
-               #'(lambda ()
-                   (cancel-timer siraben-mdm-timer)
-                   (remove-hook 'post-self-insert-hook #'siraben-mdm-timer-reset)
-                   (setq mode-line-format siraben-mdm-restore))))
+               (lambda ()
+                 (cancel-timer siraben-mdm-timer)
+                 (remove-hook 'post-self-insert-hook #'siraben-mdm-timer-reset)
+                 (setq mode-line-format siraben-mdm-restore))))
 
 (provide 'siraben-mdm)
 ;;; siraben-mdm.el ends here

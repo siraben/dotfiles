@@ -19,9 +19,8 @@
 
 ;;; Code:
 
-(add-hook 'sh-mode-hook #'(lambda ()
-                            (flycheck-mode t)
-                            (lsp)))
+(add-hook 'sh-mode-hook (lambda ()
+                          (lsp)))
 
 
 (provide 'siraben-bash)

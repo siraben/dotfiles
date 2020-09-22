@@ -1,4 +1,4 @@
-;;; siraben-csharp.el --- configures Emacs for C# development
+;;; siraben-ocaml.el --- configures Emacs for OCaml development
 
 ;;; License:
 
@@ -19,13 +19,9 @@
 
 ;;; Code:
 
-;; Code auto completion packages for C code.
-(use-package csharp-mode
-  :hook
-  (csharp-mode . (lambda ()
-                   (electric-pair-local-mode t)
-                   (electric-indent-mode t))))
 
-(provide 'siraben-csharp)
+(use-package flycheck-ocaml)
+(use-package tuareg)
 
-;;; siraben-csharp.el ends here
+(provide 'siraben-ocaml)
+;;; siraben-ocaml.el ends here

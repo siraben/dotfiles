@@ -24,15 +24,13 @@
 
 (require 'use-package)
 
-(use-package lsp-python-ms
-  :ensure t
+(use-package lsp-pyright
   :hook (python-mode . (lambda ()
-                         (require 'lsp-python-ms)
-                         (lsp)))
-  :init
-  (setq lsp-python-ms-executable (executable-find "python-language-server")))
+                         (require 'lsp-pyright)
+                         (direnv-update-environment)
+                         (lsp))))
 
-
+(use-package pyvenv)
 
 (provide 'siraben-python)
 ;;; siraben-python.el ends here
