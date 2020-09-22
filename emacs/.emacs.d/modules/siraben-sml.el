@@ -22,15 +22,15 @@
 (use-package ob-sml)
 
 (add-hook 'inferior-sml-mode-hook
-          #'(lambda ()
-              (paredit-mode -1)
-              (electric-indent-mode -1)))
+          (lambda ()
+            (paredit-mode -1)
+            (electric-indent-mode -1)))
 
 
 (add-hook 'sml-mode-hook
-          #'(lambda ()
-              (paredit-mode -1)
-              (electric-indent-mode -1)))
+          (lambda ()
+            (paredit-mode -1)
+            (electric-indent-mode -1)))
 
 (provide 'siraben-sml)
 ;;; siraben-sml.el ends here

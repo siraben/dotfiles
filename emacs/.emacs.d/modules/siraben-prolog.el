@@ -26,9 +26,9 @@
   :config (global-set-key [f10] 'ediprolog-dwim))
 
 (add-hook 'after-init-hook
-          '(lambda ()
-             (autoload 'prolog-mode "prolog" "Major mode for editing Prolog programs." t)
-             (add-to-list 'auto-mode-alist '("\\.P\\'" . prolog-mode))))
+          (lambda ()
+            (autoload 'prolog-mode "prolog" "Major mode for editing Prolog programs." t)
+            (add-to-list 'auto-mode-alist '("\\.P\\'" . prolog-mode))))
 
 (provide 'siraben-prolog)
 ;;; siraben-prolog.el ends here

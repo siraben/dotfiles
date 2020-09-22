@@ -21,19 +21,64 @@
 
 ;;; Code:
 
-(use-package haskell-mode)
 (use-package flycheck-haskell)
 
-(add-hook 'haskell-mode-hook
-          #'(lambda ()
-              (subword-mode             t)
-              (eldoc-mode               t)
-              (interactive-haskell-mode t)
-              (lsp-ui-mode)))
+(use-package haskell-mode
+  :preface
+  (defvar haskell-prettify-symbols-alist
+    '(("::"     . ?∷)
+      ("forall" . ?∀)
+      ("exists" . ?∃)
+      ("->"     . ?→)
+      ("<-"     . ?←)
+      ("=>"     . ?⇒)
+      ("~>"     . ?⇝)
+      ("<~"     . ?⇜)
+      ("<>"     . ?⨂)
+      ("msum"   . ?⨁)
+      ("\\"     . ?λ)
+      ("not"    . ?¬)
+      ("&&"     . ?∧)
+      ("||"     . ?∨)
+      ("/="     . ?≠)
+      ("<="     . ?≤)
+      (">="     . ?≥)
+      ("<<<"    . ?⋘)
+      (">>>"    . ?⋙)
+
+      ("`elem`"             . ?∈)
+      ("`notElem`"          . ?∉)
+      ("`member`"           . ?∈)
+      ("`notMember`"        . ?∉)
+      ("`union`"            . ?∪)
+      ("`intersection`"     . ?∩)
+      ("`isSubsetOf`"       . ?⊆)
+      ("`isProperSubsetOf`" . ?⊂)
+      ("undefined"          . ?⊥)))
+  :config
+  (require 'haskell)
+
+  (defun my-haskell-mode-hook ()
+    (subword-mode             t)
+    (eldoc-mode               t)
+    (interactive-haskell-mode t)
+    (diminish 'interactive-haskell-mode)
+    (flycheck-haskell-setup)
+    (setq-local prettify-symbols-alist haskell-prettify-symbols-alist)
+    (prettify-symbols-mode 1)
+    (haskell-indentation-mode t)
+    (direnv-update-environment)
+    (lsp))
+
+  (add-hook 'haskell-mode-hook #'my-haskell-mode-hook))
+
+(use-package lsp-haskell
+  :config
+  (setq lsp-haskell-process-path-hie "haskell-language-server-wrapper"))
 
 (add-hook 'inferior-haskell-mode-hook
-          #'(lambda ()
-              (paredit-mode -1)))
+          (lambda ()
+            (paredit-mode -1)))
 
 (provide 'siraben-haskell)
 ;;; siraben-haskell.el ends here

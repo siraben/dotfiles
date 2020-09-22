@@ -45,22 +45,22 @@
 ;; Enable some Lisp modes like paredit and rainbow delimiters, but no
 ;; need to undo and auto complete.
 (add-hook 'geiser-repl-mode-hook
-          #'(lambda ()
-              (siraben-enable-lisp-editing-modes)
-              (undo-tree-mode                 -1)
-              (paredit-mode                   +1)
-              ;; (font-lock-mode                 -1)
-              (aggressive-indent-mode         -1)))
+          (lambda ()
+            (siraben-enable-lisp-editing-modes)
+            (undo-tree-mode                 -1)
+            (paredit-mode                   +1)
+            ;; (font-lock-mode                 -1)
+            (aggressive-indent-mode         -1)))
 
 ;; Even with the Chicken Scheme compiler giving error messages it's
 ;; annoying.
 (add-hook 'scheme-mode-hook
-          #'(lambda ()
-              (flycheck-mode -1)))
+          (lambda ()
+            (flycheck-mode -1)))
 
 (add-hook 'emacs-lisp-mode-hook
-          #'(lambda ()
-              (flycheck-mode t)))
+          (lambda ()
+            (flycheck-mode t)))
 
 (use-package racket-mode
   :config

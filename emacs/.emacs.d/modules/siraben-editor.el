@@ -84,9 +84,9 @@ buffer from which the function was invoked read-only."
                                                         default-length))
                                      "min")
                              nil
-                             `(lambda ()
-                                (switch-to-buffer ,working-buffer)
-                                (read-only-mode t))))))
+                             (lambda ()
+                               (switch-to-buffer ,working-buffer)
+                               (read-only-mode t))))))
 
 (defalias 'timed-writing-mode 'siraben-timed-writing-mode)
 
@@ -96,9 +96,9 @@ buffer from which the function was invoked read-only."
 (require 'siraben-mdm)
 
 (add-hook 'sgml-mode-hook
-          #'(lambda ()
-              (require 'rename-sgml-tag)
-              (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)))
+          (lambda ()
+            (require 'rename-sgml-tag)
+            (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)))
 
 ;; De-duplicate kill ring entries.
 (setq kill-do-not-save-duplicates t)
@@ -226,16 +226,6 @@ that doesn't want text with hard newlines"
   "Round Z to N decimal places."
   (let ((power (+ 0.0 (expt 10 n)))) ; coerce power to be a float.
     (/ (round (* power z)) power)))
-
-;; If they ever cause problems, inspecting them should show that they're aliased.
-(defalias 'days-until              'siraben-days-until)
-(defalias 'unfill-paragraph        'siraben-unfill-paragraph)
-(defalias 'get-time                'siraben-get-time)
-(defalias 'convert-time-to-minutes 'siraben-convert-time-to-minutes)
-(defalias 'minutes-since-wake      'siraben-minutes-since-wake)
-(defalias 'day-block-length        'siraben-day-block-length)
-(defalias 'current-block           'siraben-current-block)
-(defalias 'round-off               'siraben-round-off)
 
 (setq ffap-machine-p-known 'reject)
 

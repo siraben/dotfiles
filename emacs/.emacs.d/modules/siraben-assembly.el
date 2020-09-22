@@ -19,10 +19,10 @@
 ;;; Code:
 
 (add-hook 'asm-mode-hook
-          #'(lambda ()
-              (undo-tree-mode +1)
-              (setq asm-indent-level 8)
-              (orgtbl-mode    +1)))
+          (lambda ()
+            (undo-tree-mode +1)
+            (setq asm-indent-level 8)
+            (orgtbl-mode    +1)))
 
 (provide 'siraben-assembly)
 ;;; siraben-assembly.el ends here
