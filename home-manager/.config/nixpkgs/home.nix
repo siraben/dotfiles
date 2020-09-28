@@ -3,7 +3,13 @@
 let
   inherit (builtins) currentSystem;
   inherit (lib.systems.elaborate { system = currentSystem; }) isLinux isDarwin;
-  linuxPackages =  with pkgs; [
+  comma = import ( pkgs.fetchFromGitHub {
+      owner = "Shopify";
+      repo = "comma";
+      rev = "4a62ec17e20ce0e738a8e5126b4298a73903b468";
+      sha256 = "0n5a3rnv9qnnsrl76kpi6dmaxmwj1mpdd2g0b4n1wfimqfaz6gi1";
+  }) {};
+  linuxPackages  = with pkgs; [
     anki
     brave
     discord
@@ -48,13 +54,17 @@ let
     cachix
     ccls
     chez
-    clang
+    clang-tools
+    clang_8
+    cmake
+    comma
     coq
     docker
     docker-compose
     gforth
     ghc
     git
+    github-cli
     guile
     haskellPackages.haskell-language-server
     htop
