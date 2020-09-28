@@ -27,7 +27,6 @@
 (use-package lsp-pyright
   :hook (python-mode . (lambda ()
                          (require 'lsp-pyright)
-                         (direnv-update-environment)
                          (lsp))))
 
 (use-package pyvenv)

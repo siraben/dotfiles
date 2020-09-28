@@ -67,7 +67,6 @@
     (setq-local prettify-symbols-alist haskell-prettify-symbols-alist)
     (prettify-symbols-mode 1)
     (haskell-indentation-mode t)
-    (direnv-update-environment)
     (lsp))
 
   (add-hook 'haskell-mode-hook #'my-haskell-mode-hook))

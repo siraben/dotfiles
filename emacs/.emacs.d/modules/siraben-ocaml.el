@@ -19,7 +19,6 @@
 
 ;;; Code:
 
-
 (use-package flycheck-ocaml)
 (use-package tuareg)
 
