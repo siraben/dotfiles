@@ -24,7 +24,7 @@
 
 ;; Initialize package.el
 (require 'package)
-(add-to-list 'package-archives (cons "melpa" "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
 ;; Ensure `use-package' is installed.
@@ -66,7 +66,11 @@
 (use-package free-keys
   :commands free-keys)
 
+(use-package yasnippet
+  :config
+  (yas-global-mode t))
 (use-package yasnippet-snippets)
+
 (use-package ledger-mode
   :config
   (setq ledger-reconcile-default-commodity "THB"))
@@ -94,14 +98,15 @@
   :diminish
   :init (which-key-mode t))
 
-(use-package exec-path-from-shell
-  :demand
-  :config
-  (progn
-    (setenv "SHELL" "/bin/zsh")
-    (exec-path-from-shell-initialize)
-    (exec-path-from-shell-copy-envs
-     '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE"))))
+(when (memq window-system '(mac ns))
+  (use-package exec-path-from-shell
+    :demand
+    :hook
+    (after-init . (lambda ()
+                    (setenv "SHELL" "/bin/zsh")
+                    (exec-path-from-shell-initialize)
+                    (exec-path-from-shell-copy-envs
+                     '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE"))))))
 
 (use-package auto-package-update
   :config
@@ -120,24 +125,23 @@
          ("C-x b"   . 'helm-mini)))
 
 (use-package helm-ag
-  :config
-  (setq helm-split-window-in-side-p           t
-        helm-buffers-fuzzy-matching           t
-        helm-move-to-line-cycle-in-source     t
-        helm-ff-search-library-in-sexp        t
-        helm-ff-file-name-history-use-recentf t
-        helm-autoresize-max-height            0
-        helm-autoresize-min-height            40
-        recentf-max-saved-items               200)
   :hook (after-init . (lambda ()
                         (helm-mode t)
                         (helm-autoresize-mode t))))
+
+(setq helm-split-window-in-side-p           t
+      helm-buffers-fuzzy-matching           t
+      helm-move-to-line-cycle-in-source     t
+      helm-ff-search-library-in-sexp        t
+      helm-ff-file-name-history-use-recentf t
+      helm-autoresize-max-height            0
+      helm-autoresize-min-height            40
+      recentf-max-saved-items               200)
 
 (use-package geiser
   :config
   (setq geiser-default-implementation 'guile))
 
-(use-package nix-mode)
 (use-package webpaste
   :config
   (setq webpaste-provider-priority '("dpaste.de" "ix.io"))
@@ -171,7 +175,8 @@
   :diminish)
 
 (use-package direnv
-  :config (setq direnv-always-show-summary nil))
+  :config
+  (direnv-mode))
 
 (use-package esup
   :config (setq esup-user-init-file (file-truename "~/.emacs.d/init.el"))

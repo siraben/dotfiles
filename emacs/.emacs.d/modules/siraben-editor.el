@@ -110,7 +110,7 @@ buffer from which the function was invoked read-only."
 ;;; Dired stuff
 ;; In case we want to restore the file we deleted..
 (setq delete-by-moving-to-trash t)
-(dired-async-mode 1)
+(add-hook 'after-init-hook 'dired-async-mode)
 
 (defmacro my-defun (name params doc &rest rest)
   "Define NAME as a function with PARAMS with siraben/ prepended to it.
