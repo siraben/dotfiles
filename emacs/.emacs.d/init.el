@@ -28,16 +28,10 @@
 
 (setq package-enable-at-startup nil
       message-log-max 16384
-      gc-cons-threshold 402653184
-      gc-cons-percentage 0.6
-      auto-window-vscroll nil)
+      auto-window-vscroll nil
+      gc-cons-threshold 50000000)
 
-(add-hook 'after-init-hook
-          `(lambda ()
-             (setq gc-cons-threshold 800000
-                   gc-cons-percentage 0.1)
-             (garbage-collect)) t)
-
+(setq read-process-output-max (* 1024 1024))
 
 ;; At least remove the eyesores while we wait.
 (when (fboundp 'tool-bar-mode)

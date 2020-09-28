@@ -18,11 +18,26 @@
 ;;; Commentary:
 
 ;;; Code:
-(require 'cc-mode)
+
 
 ;; Code auto completion packages for C code.
 (use-package google-c-style)
-(use-package ccls)
+(use-package ccls
+  :config
+  (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
+  (require 'cc-mode)
+  (add-hook 'c-mode-hook (lambda ()
+                           (google-set-c-style)
+                           (lsp)
+                           (electric-pair-local-mode t)
+                           (electric-indent-mode t)
+                           (clang-format-save-hook-for-this-buffer)))
+
+  (add-hook 'c++-mode-hook (lambda ()
+                             (lsp)
+                             (clang-format-save-hook-for-this-buffer)))
+
+  (define-key c-mode-base-map (kbd "s-b") 'recompile))
 (use-package clang-format)
 
 (defun clang-format-save-hook-for-this-buffer ()
@@ -38,18 +53,6 @@
             ;; Buffer local hook.
             t))
 
-(add-hook 'c-mode-hook (lambda ()
-                         (google-set-c-style)
-                         (direnv-update-environment)
-                         (lsp)
-                         (electric-pair-local-mode t)
-                         (electric-indent-mode t)
-                         (clang-format-save-hook-for-this-buffer)))
-
-(add-hook 'c++-mode-hook (lambda () (clang-format-save-hook-for-this-buffer)))
-
-;; I like having an easy key binding to recompile easily.
-(define-key c-mode-base-map (kbd "s-b") 'recompile)
 
 (provide 'siraben-c)
 ;;; siraben-c.el ends here

@@ -71,7 +71,7 @@ other, future frames."
                        siraben-font-change-increment))))
   (siraben-set-font-size))
 
-(siraben-reset-font-size)
+(add-hook 'after-init-hook 'siraben-reset-font-size)
 
 (provide 'siraben-fonts)
 ;;; siraben-fonts.el ends here

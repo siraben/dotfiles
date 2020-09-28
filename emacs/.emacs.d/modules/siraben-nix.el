@@ -22,5 +22,7 @@
 ;;; Code:
 
 
+(use-package nix-mode)
+
 (provide 'siraben-nix)
 ;;; siraben-nix.el ends here
