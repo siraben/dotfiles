@@ -71,9 +71,7 @@
 
   (add-hook 'haskell-mode-hook #'my-haskell-mode-hook))
 
-(use-package lsp-haskell
-  :config
-  (setq lsp-haskell-process-path-hie "haskell-language-server-wrapper"))
+(use-package lsp-haskell)
 
 (add-hook 'inferior-haskell-mode-hook
           (lambda ()
