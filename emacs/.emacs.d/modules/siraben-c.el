@@ -21,38 +21,23 @@
 
 
 ;; Code auto completion packages for C code.
+(use-package clang-format+)
+
 (use-package google-c-style)
-(use-package ccls
-  :config
-  (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
-  (require 'cc-mode)
-  (add-hook 'c-mode-hook (lambda ()
-                           (google-set-c-style)
-                           (lsp)
-                           (electric-pair-local-mode t)
-                           (electric-indent-mode t)
-                           (clang-format-save-hook-for-this-buffer)))
+(use-package ccls)
 
-  (add-hook 'c++-mode-hook (lambda ()
-                             (lsp)
-                             (clang-format-save-hook-for-this-buffer)))
+(require 'cc-mode)
+(add-hook 'c-mode-hook (lambda ()
+                         (lsp)
+                         (electric-pair-local-mode t)
+                         (electric-indent-mode t)
+                         (clang-format+-mode)))
 
-  (define-key c-mode-base-map (kbd "s-b") 'recompile))
-(use-package clang-format)
+(add-hook 'c++-mode-hook (lambda ()
+                           (clang-format+-mode)
+                           (electric-pair-local-mode t)))
 
-(defun clang-format-save-hook-for-this-buffer ()
-  "Create a buffer local save hook."
-  (add-hook 'before-save-hook
-            (lambda ()
-              (progn
-                (when (locate-dominating-file "." ".clang-format")
-                  (clang-format-buffer))
-                ;; Continue to save.
-                nil))
-            nil
-            ;; Buffer local hook.
-            t))
-
+(define-key c-mode-base-map (kbd "s-b") 'recompile)
 
 (provide 'siraben-c)
 ;;; siraben-c.el ends here

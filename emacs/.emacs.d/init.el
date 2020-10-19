@@ -44,8 +44,7 @@
               (when window-system
                 (scroll-bar-mode -1)
                 ;; And ensure the cursor is a box, and remove the fringe.
-                (setq-default cursor-type 'box)
-                (fringe-mode 0))))
+                (setq-default cursor-type 'box))))
 
 (defvar siraben-root-dir
   "~/.emacs.d/"
@@ -59,11 +58,6 @@
 
 (add-to-list 'load-path siraben-modules-dir)
 
-;; This is the first file to be executed by Emacs.
-
-;; TODO: Drop this line in Emacs 27.
-;; (package-initialize)
-
 (require 'siraben-core)
 (require 'siraben-packages)
 (require 'siraben-ui)
@@ -74,11 +68,10 @@
 (require 'siraben-shell)
 (require 'siraben-org)
 (require 'siraben-tramp)
-(require 'siraben-arcadia)
 (require 'siraben-calc)
 (require 'siraben-midnight)
 
-;; Load configuration that is OS-specific.
+;; Load OS-specific configuration.
 (require
  (cl-case system-type
    (gnu/linux  'siraben-linux)
