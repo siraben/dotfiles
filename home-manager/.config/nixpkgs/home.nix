@@ -3,12 +3,18 @@
 let
   inherit (builtins) currentSystem;
   inherit (lib.systems.elaborate { system = currentSystem; }) isLinux isDarwin;
-  comma = import ( pkgs.fetchFromGitHub {
+  comma = import (pkgs.fetchFromGitHub {
       owner = "Shopify";
       repo = "comma";
       rev = "4a62ec17e20ce0e738a8e5126b4298a73903b468";
       sha256 = "0n5a3rnv9qnnsrl76kpi6dmaxmwj1mpdd2g0b4n1wfimqfaz6gi1";
   }) {};
+  cargo2nix = (import (pkgs.fetchFromGitHub {
+    owner = "tenx-tech";
+    repo = "cargo2nix";
+    rev = "a0f38b977596c39f4127b67c84a6930b3cbd662a";
+    sha256 = "0dq2nc7n4clvxm1592dr1s8d4gqy0pq6z1xlxy1dfmf18hij4k6d";
+  }) {}).package;
   linuxPackages  = with pkgs; [
     anki
     brave
@@ -36,15 +42,19 @@ let
     whois
     zoom-us
   ];
-  emacsGcc = (import (fetchTarball "https://github.com/twlz0ne/nix-gccemacs-darwin/archive/master.tar.gz")).emacsGccDarwin;
+  gccemacs = (import (pkgs.fetchFromGitHub {
+      owner = "twlz0ne";
+      repo = "nix-gccemacs-darwin";
+      rev = "c10323fd2253d7b73bd6e06dd2cead5b3231df52";
+      sha256 = "0bpm5isv687lf13lhi9ad6zaj820g5144293c114gxxlhl32f1wh";
+  })).emacsGccDarwin;
   darwinPackages = with pkgs; [
     coreutils
-    emacsGcc
+    gccemacs
     smlnjBootstrap
   ];
   sharedPackages = with pkgs; [
     ag
-    alacritty
     aspell
     aspellDicts.en
     aspellDicts.en-computers
@@ -52,6 +62,7 @@ let
     borgbackup
     cabal-install
     cachix
+    cargo2nix
     ccls
     chez
     clang-tools
@@ -67,12 +78,15 @@ let
     github-cli
     guile
     haskellPackages.haskell-language-server
+    haskellPackages.ghcide
     htop
+    jq
     kitty
     ledger
     mpv
     mu
     nnn
+    nodejs
     nodePackages.bash-language-server
     nodePackages.javascript-typescript-langserver
     nodePackages.pyright
@@ -89,7 +103,6 @@ let
     tree
     unzip
     vim
-    w3m
     watch
     youtube-dl
     zathura
@@ -110,7 +123,8 @@ in
                   ++ (lib.optionals isDarwin darwinPackages);
 
   home.sessionVariables = {
-    EDITOR = "vim";
+    EDITOR = "emacsclient";
+    NNN_PLUG="p:-_less -iR $nnn*;l:-_git log";
   };
 
   programs = {

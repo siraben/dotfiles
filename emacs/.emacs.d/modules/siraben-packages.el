@@ -58,7 +58,19 @@
 (use-package markdown-mode)
 (use-package magit
   :bind (("C-x g"   . 'magit-status)
-         ("C-x M-g" . 'magit-dispatch)))
+         ("C-x M-g" . 'magit-dispatch))
+  :config
+  (when (eq system-type 'darwin)
+    (setq magit-git-executable "/usr/bin/git"))
+  ;; (setq magit-refresh-status-buffer nil)
+  )
+
+(use-package diff-hl
+  :after magit
+  :config
+  (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+  (add-hook after-init-hook 'global-diff-hl-mode))
 
 (use-package forge
   :after magit)
@@ -175,6 +187,7 @@
   :diminish)
 
 (use-package direnv
+  :demand
   :config
   (direnv-mode))
 
