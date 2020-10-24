@@ -17,29 +17,45 @@ let
   }) {}).package;
   linuxPackages  = with pkgs; [
     anki
+    arc-theme
     brave
     discord
+    dmenu
     evince
+    exfat
     feh
     firefox
     gnome3.cheese
     gnumake
+    gnupg
     keepassxc
+    killall
     libreoffice
+    lightlocker
     msmtp
     musescore
+    networkmanager
     nextcloud-client
+    nitrogen
     offlineimap
+    pandoc
+    paper-icon-theme
+    poppler_utils
     rhythmbox
     rofi
+    scrot
     slack
     smlnj
     spotify
+    system-config-printer
     thunderbird
     tor-browser-bundle-bin
     transmission-gtk
     vlc
     whois
+    wpa_supplicant
+    xorg.xkill
+    xss-lock
     zoom-us
   ];
   gccemacs = (import (pkgs.fetchFromGitHub {

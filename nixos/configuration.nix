@@ -89,22 +89,6 @@ in
   environment = {
     systemPackages = with pkgs; [
       (import ./popcorntime.nix)
-      arc-theme
-      dmenu
-      exfat
-      gnupg
-      killall
-      lightlocker
-      networkmanager
-      nitrogen
-      pandoc
-      paper-icon-theme
-      poppler_utils
-      scrot
-      system-config-printer
-      wpa_supplicant
-      xorg.xkill
-      xss-lock
     ];
   };
   virtualisation.docker.enable = true;
