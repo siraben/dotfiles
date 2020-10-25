@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let wrapWeb = pkgs.callPackage ./wrapWeb.nix {};
 in
@@ -37,10 +37,11 @@ in
   };
 
   services.blueman.enable = true;
-  hardware.bluetooth.extraConfig = "
-    [General]
-    Enable=Source,Sink,Media,Socket
-  ";
+  hardware.bluetooth.config = {
+    General = {
+      Enable = lib.concatStringsSep "," [ "Source" "Sink" "Media" "Socket" ];
+    };
+  };
 
   powerManagement.enable = true;
   powerManagement.powertop.enable = true;
@@ -49,7 +50,7 @@ in
   time.timeZone = "Asia/Bangkok";
 
   fonts = {
-    enableFontDir = true;
+    fontDir.enable = true;
     enableGhostscriptFonts = true;
 
     fonts = with pkgs; [
