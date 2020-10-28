@@ -61,7 +61,7 @@
          ("C-x M-g" . 'magit-dispatch))
   :config
   (when (eq system-type 'darwin)
-    (setq magit-git-executable "/usr/bin/git"))
+    (setq magit-git-executable (executable-find "git")))
   ;; (setq magit-refresh-status-buffer nil)
   )
 
@@ -129,26 +129,26 @@
   :magic ("%PDF" . pdf-view-mode))
 
 (use-package helm
+  :config
+  (setq helm-split-window-in-side-p           t
+        helm-buffers-fuzzy-matching           t
+        helm-move-to-line-cycle-in-source     t
+        helm-ff-search-library-in-sexp        t
+        helm-ff-file-name-history-use-recentf t
+        helm-autoresize-max-height            0
+        helm-autoresize-min-height            40
+        recentf-max-saved-items               200
+        helm-autoresize-mode                  t)
   :bind (("C-h a"   . 'helm-apropos)
          ("C-h f"   . 'helm-apropos)
          ("C-h r"   . 'helm-info-emacs)
          ("C-x C-f" . 'helm-find-files)
          ("M-x"     . 'helm-M-x)
-         ("C-x b"   . 'helm-mini)))
+         ("C-x b"   . 'helm-mini))
+  :hook
+  (after-init . helm-mode))
 
-(use-package helm-ag
-  :hook (after-init . (lambda ()
-                        (helm-mode t)
-                        (helm-autoresize-mode t))))
-
-(setq helm-split-window-in-side-p           t
-      helm-buffers-fuzzy-matching           t
-      helm-move-to-line-cycle-in-source     t
-      helm-ff-search-library-in-sexp        t
-      helm-ff-file-name-history-use-recentf t
-      helm-autoresize-max-height            0
-      helm-autoresize-min-height            40
-      recentf-max-saved-items               200)
+(use-package helm-rg)
 
 (use-package geiser
   :config
