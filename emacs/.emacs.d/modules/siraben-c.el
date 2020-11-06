@@ -22,8 +22,6 @@
 
 ;; Code auto completion packages for C code.
 (use-package clang-format+)
-
-(use-package google-c-style)
 (use-package ccls)
 
 (require 'cc-mode)
