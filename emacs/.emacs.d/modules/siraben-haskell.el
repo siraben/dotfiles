@@ -24,7 +24,8 @@
 (use-package flycheck-haskell)
 
 (use-package haskell-mode
-  :preface
+  :config
+  (require 'haskell)
   (defvar haskell-prettify-symbols-alist
     '(("::"     . ?∷)
       ("forall" . ?∀)
@@ -55,8 +56,6 @@
       ("`isSubsetOf`"       . ?⊆)
       ("`isProperSubsetOf`" . ?⊂)
       ("undefined"          . ?⊥)))
-  :config
-  (require 'haskell)
 
   (defun my-haskell-mode-hook ()
     (subword-mode             t)
@@ -67,15 +66,15 @@
     (setq-local prettify-symbols-alist haskell-prettify-symbols-alist)
     (prettify-symbols-mode 1)
     (haskell-indentation-mode t)
+
     (lsp))
 
-  (add-hook 'haskell-mode-hook #'my-haskell-mode-hook))
+  (add-hook 'haskell-mode-hook #'my-haskell-mode-hook)
+  (add-hook 'inferior-haskell-mode-hook (lambda () (paredit-mode -1)))
+  )
 
 (use-package lsp-haskell)
 
-(add-hook 'inferior-haskell-mode-hook
-          (lambda ()
-            (paredit-mode -1)))
 
 (provide 'siraben-haskell)
 ;;; siraben-haskell.el ends here

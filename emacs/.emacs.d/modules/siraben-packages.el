@@ -186,14 +186,14 @@
   :init (global-flycheck-mode)
   :diminish)
 
-(use-package direnv
-  :demand
-  :config
-  (direnv-mode))
+(use-package direnv)
 
 (use-package esup
   :config (setq esup-user-init-file (file-truename "~/.emacs.d/init.el"))
   :commands (esup))
+
+(use-package yaml-mode)
+(use-package build-farm)
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here
