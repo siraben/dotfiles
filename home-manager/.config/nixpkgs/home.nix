@@ -1,32 +1,32 @@
-{ config, lib, currentSystem, ... }:
-
+{ config
+, lib
+, currentSystem
+, sources ? import nix/sources.nix
+, pkgs ? import sources.nixpkgs { }
+, ...
+}:
+# To put pkgs in scope in nix repl
+# :a (import (import nix/sources.nix).nixpkgs) {}
 let
-  pkgs = import (builtins.fetchTarball {
-    name = "nixos-unstable-2020-11-01";
-    url =
-      "https://github.com/NixOS/nixpkgs/archive/26d3fbf21563c52f124551eb60dec5ea17ade8fa.tar.gz";
-    sha256 = "08xhvfnwy60yyyhkddg7lknm9g7w2pg6lkyha5kfkg98c09f1p10";
-  }) { };
   inherit (builtins) currentSystem;
   inherit (lib.systems.elaborate { system = currentSystem; }) isLinux isDarwin;
-  comma = import (pkgs.fetchFromGitHub {
-    owner = "Shopify";
-    repo = "comma";
-    rev = "4a62ec17e20ce0e738a8e5126b4298a73903b468";
-    sha256 = "0n5a3rnv9qnnsrl76kpi6dmaxmwj1mpdd2g0b4n1wfimqfaz6gi1";
-  }) { };
-  cargo2nix = (import (pkgs.fetchFromGitHub {
-    owner = "tenx-tech";
-    repo = "cargo2nix";
-    rev = "a0f38b977596c39f4127b67c84a6930b3cbd662a";
-    sha256 = "0dq2nc7n4clvxm1592dr1s8d4gqy0pq6z1xlxy1dfmf18hij4k6d";
-  }) { }).package;
-  haskell-hls = (import (pkgs.fetchFromGitHub {
-    owner = "siraben";
-    repo = "nix-haskell-hls";
-    rev = "06b44e936b604f9ffeb1c6e3a444d8587c9f0cec";
-    sha256 = "0v63saspagqjhi0dihiblw1z7xhm1pi7sw7zdg885pykjs9nbbq3";
-  }) { unstable = true; });
+  # Fork of comma that uses local nix-index if possible.
+  comma = (import
+    (pkgs.fetchFromGitHub {
+      owner = "SuperSandro2000";
+      repo = "comma";
+      rev = "28f94a11114893506ea2c5c5bdbc1dae1d1d8159";
+      sha256 = "05157wn3f1whq6krcijhipkjw5zjml5h4xbf06ibd77kc57lqw8z";
+    })
+    { });
+  cargo2nix = (import
+    (pkgs.fetchFromGitHub {
+      owner = "tenx-tech";
+      repo = "cargo2nix";
+      rev = "a0f38b977596c39f4127b67c84a6930b3cbd662a";
+      sha256 = "0dq2nc7n4clvxm1592dr1s8d4gqy0pq6z1xlxy1dfmf18hij4k6d";
+    })
+    { }).package;
   linuxPackages = with pkgs; [
     anki
     arc-theme
@@ -92,17 +92,17 @@ let
     ccls
     chez
     clang-tools
-    clang_9
+    clang_11
     cmake
     comma
     coq
+    exiftool
     ghc
     git
     github-cli
     guile
-    haskell-hls.hls
-    haskell-hls.hls-wrapper
     haskellPackages.ghcide
+    haskellPackages.haskell-language-server
     hlint
     htop
     jq
@@ -111,8 +111,11 @@ let
     mpv
     mu
     niv
+    nix-index
+    nix-prefetch-git
     nixfmt
     nixpkgs-fmt
+    nixpkgs-review
     nodePackages.bash-language-server
     nodePackages.javascript-typescript-langserver
     nodePackages.pyright
@@ -123,7 +126,7 @@ let
     rustup
     shellcheck
     stow
-    texlive.combined.scheme-medium
+    texlive.combined.scheme-small
     the-powder-toy
     tldr
     tmux
@@ -140,8 +143,15 @@ let
     source $HOME/.nix-profile/etc/profile.d/nix.sh
   '';
   linuxShellExtra = "";
-  sharedShellExtra = "";
-in {
+  sharedShellExtra = ''
+    source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
+  '';
+  darwinShellAliases = {
+    # useful command to run sequenced after a long command, `nix build; sd`
+    sd = "say done";
+  };
+in
+{
   programs.home-manager.enable = true;
 
   home.username = "siraben";
@@ -174,19 +184,21 @@ in {
       history = {
         size = 100000;
         save = 100000;
-        extended = true;
       };
       shellAliases = {
         hm = "home-manager";
+        httpcode = ''curl -o /dev/null -s -w "%{http_code}\n"'';
         nb = "nix build";
         nc = "nix channel";
         ncg = "nix-collect-garbage";
         ne = "nix edit";
         nr = "nix repl";
+        nrp = "nix repl '<nixpkgs>'";
         ns = "nix-shell";
-      };
+      } // darwinShellAliases;
       initExtra = lib.concatStringsSep "\n"
-        [ (lib.optionalString isDarwin darwinShellExtra)
+        [
+          (lib.optionalString isDarwin darwinShellExtra)
           (lib.optionalString isLinux linuxShellExtra)
           sharedShellExtra
         ];
