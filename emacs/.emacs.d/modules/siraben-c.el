@@ -22,7 +22,6 @@
 
 ;; Code auto completion packages for C code.
 (use-package clang-format+)
-(use-package ccls)
 
 (require 'cc-mode)
 (add-hook 'c-mode-hook (lambda ()
