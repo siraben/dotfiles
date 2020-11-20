@@ -62,7 +62,6 @@
   :config
   (when (eq system-type 'darwin)
     (setq magit-git-executable (executable-find "git")))
-  ;; (setq magit-refresh-status-buffer nil)
   )
 
 (use-package diff-hl
@@ -172,7 +171,10 @@
                   (auto-fill-mode 1)
                   (flyspell-mode t))))
 
-(use-package lsp-mode)
+(use-package lsp-mode
+  :config
+  (setq lsp-clients-clangd-args '("-j=4" "-background-index" "-log=error")))
+
 (use-package lsp-ui)
 
 (use-package company-lsp :commands company-lsp)
@@ -183,7 +185,6 @@
 (use-package vyper-mode)
 
 (use-package flycheck
-  :init (global-flycheck-mode)
   :diminish)
 
 (use-package direnv)

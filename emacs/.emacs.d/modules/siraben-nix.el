@@ -25,10 +25,7 @@
 (use-package nix-mode)
 
 (use-package nixpkgs-fmt
-  :after nix-mode
-  :hook
-  (nix-mode . (lambda ()
-                (nixpkgs-fmt-on-save-mode))))
+  :after nix-mode)
 
 (provide 'siraben-nix)
 ;;; siraben-nix.el ends here

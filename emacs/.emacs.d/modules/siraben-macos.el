@@ -22,8 +22,7 @@
 ;;; Code:
 
 (require 'ispell)
-(set-if-exists scheme-program-name "/usr/local/bin/guile")
-(set-if-exists ispell-program-name "/usr/local/bin/aspell")
+(setq ispell-program-name  "aspell")
 
 ;; (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
 ;; (require 'mu4e)
