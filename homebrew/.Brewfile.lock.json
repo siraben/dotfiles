@@ -1,0 +1,116 @@
+{
+  "entries": {
+    "tap": {
+      "homebrew/bundle": {
+        "revision": "6debfdc6b453b7c62bad3fba4836ec24561fac73"
+      },
+      "homebrew/cask": {
+        "revision": "1874d4c0592a769dc02ff540585cd885d2573367"
+      },
+      "homebrew/cask-versions": {
+        "revision": "00d2a549470d38811a21050991ae7fd98116e7c1"
+      },
+      "homebrew/core": {
+        "revision": "6b215209903fcf6cb98f6a206c1d92a70116ecd0"
+      }
+    },
+    "cask": {
+      "coconutbattery": {
+        "version": "3.9.0",
+        "options": {
+          "full_name": "coconutbattery"
+        }
+      },
+      "discord": {
+        "version": "0.0.259",
+        "options": {
+          "full_name": "discord"
+        }
+      },
+      "docker": {
+        "version": "2.4.0.0,48506",
+        "options": {
+          "full_name": "docker"
+        }
+      },
+      "element": {
+        "version": "1.7.4",
+        "options": {
+          "full_name": "element"
+        }
+      },
+      "eloston-chromium": {
+        "version": "86.0.4240.193-1.1",
+        "options": {
+          "full_name": "eloston-chromium"
+        }
+      },
+      "flux": {
+        "version": "40.1",
+        "options": {
+          "full_name": "flux"
+        }
+      },
+      "google-chrome": {
+        "version": "86.0.4240.198",
+        "options": {
+          "full_name": "google-chrome"
+        }
+      },
+      "kitty": {
+        "version": "0.19.2",
+        "options": {
+          "full_name": "kitty"
+        }
+      },
+      "libreoffice": {
+        "version": "7.0.3",
+        "options": {
+          "full_name": "libreoffice"
+        }
+      },
+      "nextcloud": {
+        "version": "3.0.3",
+        "options": {
+          "full_name": "nextcloud"
+        }
+      },
+      "spotify": {
+        "version": "latest",
+        "options": {
+          "full_name": "spotify"
+        }
+      },
+      "thunderbird": {
+        "version": "78.4.0",
+        "options": {
+          "full_name": "thunderbird"
+        }
+      },
+      "virtualbox": {
+        "version": "6.1.16,140961",
+        "options": {
+          "full_name": "virtualbox"
+        }
+      },
+      "zulip": {
+        "version": "5.4.3",
+        "options": {
+          "full_name": "zulip"
+        }
+      }
+    }
+  },
+  "system": {
+    "macos": {
+      "catalina": {
+        "HOMEBREW_VERSION": "2.5.11",
+        "HOMEBREW_PREFIX": "/usr/local",
+        "Homebrew/homebrew-core": "6b215209903fcf6cb98f6a206c1d92a70116ecd0",
+        "CLT": "12.0.32.2",
+        "Xcode": "12.2",
+        "macOS": "10.15.7"
+      }
+    }
+  }
+}
