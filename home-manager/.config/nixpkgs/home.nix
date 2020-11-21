@@ -108,6 +108,7 @@ let
     jq
     kitty
     ledger
+    manix
     mpv
     mu
     niv
@@ -149,6 +150,10 @@ let
   darwinShellAliases = {
     # useful command to run sequenced after a long command, `nix build; sd`
     sd = "say done";
+    # brew bundle, but make it like home manager
+    bb-switch = "brew bundle install --global --verbose";
+    bb-check = "brew bundle check --global --verbose";
+    bb-gc = "brew bundle cleanup --global --force";
   };
 in
 {
@@ -187,6 +192,7 @@ in
       };
       shellAliases = {
         hm = "home-manager";
+        hms = "home-manager switch";
         httpcode = ''curl -o /dev/null -s -w "%{http_code}\n"'';
         nb = "nix build";
         nc = "nix channel";
