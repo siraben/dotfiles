@@ -136,7 +136,7 @@
         helm-ff-file-name-history-use-recentf t
         helm-autoresize-max-height            0
         helm-autoresize-min-height            40
-        recentf-max-saved-items               200
+        recentf-max-saved-items               1000
         helm-autoresize-mode                  t)
   :bind (("C-h a"   . 'helm-apropos)
          ("C-h f"   . 'helm-apropos)
@@ -196,5 +196,8 @@
 (use-package yaml-mode)
 (use-package build-farm)
 
+(use-package editorconfig
+  :config
+  (editorconfig-mode 1))
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here
