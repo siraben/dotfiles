@@ -27,6 +27,14 @@ let
       sha256 = "0dq2nc7n4clvxm1592dr1s8d4gqy0pq6z1xlxy1dfmf18hij4k6d";
     })
     { }).package;
+  rnix-lsp = (import
+    (pkgs.fetchFromGitHub {
+      owner = "elkowar";
+      repo = "rnix-lsp";
+      rev = "257f3e6f74770c0f651c16eac1e0c9e3b4efe4f0";
+      sha256 = "0w59xbfz2y0iph6kl5h22f0pbw88agr75sipiigrixr18rgd1pfr";
+    })
+    { });
   linuxPackages = with pkgs; [
     anki
     arc-theme
@@ -75,7 +83,10 @@ let
     rev = "c10323fd2253d7b73bd6e06dd2cead5b3231df52";
     sha256 = "0bpm5isv687lf13lhi9ad6zaj820g5144293c114gxxlhl32f1wh";
   })).emacsGccDarwin;
-  darwinPackages = with pkgs; [ coreutils gccemacs ];
+  darwinPackages = with pkgs; [
+    coreutils
+    gccemacs
+  ];
   sharedPackages = with pkgs; [
     ag
     agda
@@ -124,10 +135,13 @@ let
     python3
     ranger
     ripgrep
+    rnix-lsp
     rustup
     shellcheck
     stow
-    texlive.combined.scheme-small
+    (texlive.combine {
+      inherit (texlive) scheme-medium latexmk wrapfig rotfloat capt-of minted fvextra upquote catchfile xstring framed biblatex;
+    })
     the-powder-toy
     tldr
     tmux
@@ -151,9 +165,17 @@ let
     # useful command to run sequenced after a long command, `nix build; sd`
     sd = "say done";
     # brew bundle, but make it like home manager
-    bb-switch = "brew bundle install --global --verbose";
     bb-check = "brew bundle check --global --verbose";
     bb-gc = "brew bundle cleanup --global --force";
+    bb-switch = "brew bundle install --global --verbose";
+    bb-upgrade = "brew bundle install --global --verbose --upgrade";
+    # linuxkit-builder.  Unfortunately I'll have to install it
+    # imperatively due to it lacking a bootstrap from darwin.
+    lb-gc = "rm -rf ~/.cache/nix-linuxkit-builder/";
+    lb-init = "nix-linuxkit-configure";
+    lb-reset = "lb-stop; lb-gc; lb-init;";
+    lb-start = "launchctl stop org.nix-community.linuxkit-builder";
+    lb-stop = "launchctl stop org.nix-community.linuxkit-builder";
   };
 in
 {
@@ -198,10 +220,12 @@ in
         nc = "nix channel";
         ncg = "nix-collect-garbage";
         ne = "nix edit";
+        nix-review-post = "nix-review pr --post-result";
         nr = "nix repl";
         nrp = "nix repl '<nixpkgs>'";
         ns = "nix-shell";
-      } // darwinShellAliases;
+        tb = "tput bel";
+      } // (lib.optionalAttrs isDarwin darwinShellAliases);
       initExtra = lib.concatStringsSep "\n"
         [
           (lib.optionalString isDarwin darwinShellExtra)
