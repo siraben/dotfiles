@@ -75,8 +75,6 @@
                     (spaceline-emacs-theme)
                     (spaceline-helm-mode)))))
 
-
-
 ;; Remove the auto-revert mode-line
 (require 'diminish)
 (add-hook 'after-init-hook (lambda ()
