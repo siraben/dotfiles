@@ -109,7 +109,7 @@ in
   };
 
   services.logind.extraConfig = ''
-      HandlePowerKey=suspend
+    HandlePowerKey=suspend
   '';
 
   # Enable CUPS to print documents.
@@ -156,6 +156,8 @@ in
 
   };
 
+  nix.trustedUsers = [ "root" "siraben" ];
+
   users = {
     users.siraben = {
       shell = pkgs.zsh;
@@ -172,5 +174,5 @@ in
     };
   };
 
-  system.stateVersion = "19.09";
+  system.stateVersion = "20.09";
 }
