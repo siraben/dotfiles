@@ -37,6 +37,7 @@ let
     gnome3.cheese
     gnumake
     gnupg
+    grim
     keepassxc
     killall
     libreoffice
@@ -51,7 +52,6 @@ let
     poppler_utils
     rhythmbox
     rofi
-    scrot
     slack
     spotify
     system-config-printer
