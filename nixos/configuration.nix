@@ -6,13 +6,11 @@ in
   imports = [ ./hardware-configuration.nix ];
 
   boot = {
-    loader.grub.enable = true;
-    loader.grub.device = "nodev";
+    loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
     cleanTmpDir = true;
     supportedFilesystems = [ "exfat" "btrfs" ];
   };
-
   nixpkgs.config.allowUnfree = true;
 
   networking.networkmanager.enable = true;
