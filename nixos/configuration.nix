@@ -3,7 +3,7 @@
 let wrapWeb = pkgs.callPackage ./wrapWeb.nix {};
 in
 {
-  imports = [ /etc/nixos/hardware-configuration.nix ];
+  imports = [ /etc/nixos/hardware-configuration.nix ./rescue_boot.nix ];
 
   boot = {
     loader.systemd-boot.enable = true;
