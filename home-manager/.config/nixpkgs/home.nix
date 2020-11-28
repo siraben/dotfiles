@@ -33,7 +33,7 @@ let
     evince
     exfat
     feh
-    firefox
+    firefox-wayland
     gnome3.cheese
     gnumake
     gnupg
