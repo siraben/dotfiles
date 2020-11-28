@@ -86,6 +86,19 @@ in
   programs.ssh.startAgent = true;
   location.provider = "geoclue2";
 
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true; # so that gtk works properly
+    extraPackages = with pkgs; [
+      swaylock
+      swayidle
+      wl-clipboard
+      mako # notification daemon
+      alacritty # Alacritty is the default terminal in the config
+      dmenu # Dmenu is the default in the config but i recommend wofi since its wayland native
+    ];
+  };
+
   services.redshift = {
     enable = true;
     package = pkgs.redshift-wlr;
@@ -112,31 +125,9 @@ in
     enable = true;
 
     displayManager = {
-      lightdm = {
-        enable = true;
-        greeters.gtk.extraConfig = ''
-         xft-dpi=192
-        '';
-      };
-      defaultSession = "xfce+i3";
+      defaultSession = "sway";
     };
 
-    desktopManager = {
-      gnome3.enable = true;
-      xterm.enable = false;
-      xfce = {
-        enable = true;
-        noDesktop = true;
-        enableXfwm = false;
-      };
-    };
-
-    windowManager = {
-      i3 = {
-        enable = true;
-        package = pkgs.i3-gaps;
-      };
-    };
     xkbOptions = "ctrl:nocaps";
     libinput.enable = true;
     layout = "us";
