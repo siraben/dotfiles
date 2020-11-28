@@ -187,6 +187,11 @@ in
     ++ (lib.optionals isDarwin darwinPackages);
 
   home.sessionVariables = { EDITOR = "emacsclient"; };
+  home.file = lib.optionalAttrs isLinux {
+    ".Xresources".text = ''
+      Xft.dpi: 220
+    '';
+  };
 
   programs = {
     broot.enable = true;
