@@ -122,7 +122,6 @@ let
     python3
     ranger
     ripgrep
-    rnix-lsp
     rustup
     shellcheck
     stow
