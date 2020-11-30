@@ -2,3 +2,4 @@
 *.elc
 .DS_Store
 nixos/hardware-configuration.nix
+emacs/.emacs.d/
