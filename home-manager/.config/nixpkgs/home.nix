@@ -5,7 +5,12 @@ let
   inherit (builtins) currentSystem;
   inherit (lib.systems.elaborate { system = currentSystem; }) isLinux isDarwin;
   sources = import ../../../nix/sources.nix;
-  pkgs = import sources.nixpkgs { overlays = [ (import ./nextcloud-overlay.nix) ]; };
+  pkgs = import sources.nixpkgs {
+    overlays = [
+      (import ./nextcloud-overlay.nix)
+      (import sources.nixpkgs-wayland)
+    ];
+  };
   # Fork of comma that uses local nix-index if possible.
   comma = (import
     (pkgs.fetchFromGitHub {
@@ -23,6 +28,14 @@ let
       sha256 = "0dq2nc7n4clvxm1592dr1s8d4gqy0pq6z1xlxy1dfmf18hij4k6d";
     })
     { }).package;
+  wrapWeb = pkgs.callPackage ./wrapWeb.nix {};
+  wayland-packages = with pkgs; [ grim firefox-wayland wlsunset swaylock-fancy ];
+  web-shortcuts =  with pkgs; [
+    (wrapWeb "element" "https://app.element.io")
+    (wrapWeb "hn" "https://news.ycombinator.com")
+    (wrapWeb "neverssl" "http://neverssl.com")
+    (wrapWeb "mastodon" "https://mastodon.social")
+  ];
   linuxPackages = with pkgs; [
     anki
     arc-theme
@@ -33,11 +46,9 @@ let
     evince
     exfat
     feh
-    firefox-wayland
     gnome3.cheese
     gnumake
     gnupg
-    grim
     keepassxc
     killall
     libreoffice
@@ -64,7 +75,7 @@ let
     wpa_supplicant
     xorg.xkill
     zoom-us
-  ];
+  ] ++ wayland-packages ++ web-shortcuts;
   gccemacs = (import (pkgs.fetchFromGitHub {
     owner = "twlz0ne";
     repo = "nix-gccemacs-darwin";
@@ -173,11 +184,6 @@ in
     ++ (lib.optionals isDarwin darwinPackages);
 
   home.sessionVariables = { EDITOR = "emacsclient"; };
-  home.file = lib.optionalAttrs isLinux {
-    ".Xresources".text = ''
-      Xft.dpi: 220
-    '';
-  };
 
   programs = {
     broot.enable = true;

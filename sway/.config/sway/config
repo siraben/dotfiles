@@ -228,17 +228,7 @@ bindsym --to-code {
     $mod+Shift+e            exec swaynag -t warning -m 'Do you want to exit sway?' -b 'Yes' 'swaymsg exit'
 }
 
-
-
-# Gaps
-# gaps inner 5
-# gaps outer 3
-# for_window [class="^.*"] border pixel 1
-
 titlebar_border_thickness 1
 titlebar_padding 1
 
-exec --no-startup-id nitrogen --restore
-exec --no-startup-id xfce4-panel --disable-wm-check
-exec --no-startup-id emacs --daemon
-exec --no-startup-id redshift
+exec --no-startup-id wlsunset -l 13 -L 100

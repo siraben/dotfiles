@@ -22,5 +22,17 @@
         "type": "tarball",
         "url": "https://github.com/NixOS/nixpkgs/archive/1121b2259b7d66e8c7c5131d1588a48c80ef9e58.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "nixpkgs-wayland": {
+        "branch": "master",
+        "description": "Automated, pre-built packages for Wayland (sway/wlroots) tools for NixOS.",
+        "homepage": "",
+        "owner": "colemickens",
+        "repo": "nixpkgs-wayland",
+        "rev": "01dca567103f948a938e81c94239d32e8e415c42",
+        "sha256": "13slrz4r0j7zmrqg5f8xgrxjhbnvgp2zbdsxhlc1sfvpx8kjr647",
+        "type": "tarball",
+        "url": "https://github.com/colemickens/nixpkgs-wayland/archive/01dca567103f948a938e81c94239d32e8e415c42.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }
