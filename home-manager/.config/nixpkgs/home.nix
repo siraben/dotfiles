@@ -38,6 +38,7 @@ let
     swaylock-fancy
     wlsunset
     wofi
+    xdg-desktop-portal-wlr
   ];
   web-shortcuts =  with pkgs; [
     (wrapWeb "element" "https://app.element.io")
@@ -66,7 +67,6 @@ let
     musescore
     networkmanager
     nextcloud-client
-    nitrogen
     offlineimap
     paper-icon-theme
     poppler_utils
@@ -79,6 +79,7 @@ let
     thunderbird
     tor-browser-bundle-bin
     transmission-gtk
+    ungoogled-chromium
     vlc
     whois
     wpa_supplicant
@@ -192,7 +193,11 @@ in
   home.packages = sharedPackages ++ (lib.optionals isLinux linuxPackages)
     ++ (lib.optionals isDarwin darwinPackages);
 
-  home.sessionVariables = { EDITOR = "emacsclient"; };
+  home.sessionVariables = {
+    EDITOR = "emacsclient";
+  } // (lib.optionalAttrs isLinux {
+    XDG_CURRENT_DESKTOP = "sway";
+  });
 
   programs = {
     broot.enable = true;
