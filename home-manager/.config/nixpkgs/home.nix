@@ -23,14 +23,6 @@ let
       sha256 = "0dq2nc7n4clvxm1592dr1s8d4gqy0pq6z1xlxy1dfmf18hij4k6d";
     })
     { }).package;
-  rnix-lsp = (import
-    (pkgs.fetchFromGitHub {
-      owner = "elkowar";
-      repo = "rnix-lsp";
-      rev = "257f3e6f74770c0f651c16eac1e0c9e3b4efe4f0";
-      sha256 = "0w59xbfz2y0iph6kl5h22f0pbw88agr75sipiigrixr18rgd1pfr";
-    })
-    { });
   linuxPackages = with pkgs; [
     anki
     arc-theme
@@ -64,6 +56,7 @@ let
     slack
     spotify
     system-config-printer
+    tdesktop
     thunderbird
     tor-browser-bundle-bin
     transmission-gtk
