@@ -203,4 +203,4 @@ titlebar_border_thickness 1
 titlebar_padding 1
 
 exec --no-startup-id wlsunset -l 13 -L 100
-exec --no-startup-id swaybg -i ~/Pictures/nix-wallpaper-dracula.png
+exec --no-startup-id swaybg -m fill -i ~/Pictures/nix-wallpaper-dracula.png
