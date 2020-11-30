@@ -99,16 +99,6 @@ in
     ];
   };
 
-  # Redshift segfaults on wayland? (see dmesg)
-  # services.redshift = {
-  #   enable = true;
-  #   package = pkgs.redshift-wlr;
-  #   temperature.day = 6500;
-  #   temperature.night = 3400;
-  #   brightness.day = "1";
-  #   brightness.night = "1";
-  # };
-
   services.logind.extraConfig = ''
     HandlePowerKey=suspend
   '';
@@ -124,11 +114,7 @@ in
   services.gnome3.gnome-keyring.enable = true;
   services.xserver = {
     enable = true;
-
-    displayManager = {
-      defaultSession = "sway";
-    };
-
+    displayManager.defaultSession = "sway";
     xkbOptions = "ctrl:nocaps";
     libinput.enable = true;
     layout = "us";
