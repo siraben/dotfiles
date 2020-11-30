@@ -1,15 +1,11 @@
-{ config
-, lib
-, currentSystem
-, sources ? import nix/sources.nix
-, pkgs ? import sources.nixpkgs { }
-, ...
-}:
+{ config, lib, currentSystem, ... }:
 # To put pkgs in scope in nix repl
 # :a (import (import nix/sources.nix).nixpkgs) {}
 let
   inherit (builtins) currentSystem;
   inherit (lib.systems.elaborate { system = currentSystem; }) isLinux isDarwin;
+  sources = import nix/sources.nix;
+  pkgs = import sources.nixpkgs { };
   # Fork of comma that uses local nix-index if possible.
   comma = (import
     (pkgs.fetchFromGitHub {
@@ -109,7 +105,6 @@ let
     coq
     exiftool
     ghc
-    git
     github-cli
     guile
     haskellPackages.ghcide
