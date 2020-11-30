@@ -4,7 +4,7 @@
 let
   inherit (builtins) currentSystem;
   inherit (lib.systems.elaborate { system = currentSystem; }) isLinux isDarwin;
-  sources = import nix/sources.nix;
+  sources = import ../../../nix/sources.nix;
   pkgs = import sources.nixpkgs { };
   # Fork of comma that uses local nix-index if possible.
   comma = (import

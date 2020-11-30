@@ -1,6 +1,7 @@
-{ config, pkgs, lib, ... }:
-
-let wrapWeb = pkgs.callPackage ./wrapWeb.nix {};
+let
+  sources = import ../nix/sources.nix;
+  pkgs = import sources.nixpkgs {};
+  lib = pkgs.lib;
 in
 {
   imports = [ /etc/nixos/hardware-configuration.nix ./rescue_boot.nix ];
@@ -44,7 +45,6 @@ in
     enableGhostscriptFonts = true;
 
     fonts = with pkgs; [
-      corefonts
       emojione
       noto-fonts
       noto-fonts-cjk
