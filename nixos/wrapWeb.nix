@@ -1,7 +1,7 @@
-{ lib, writeShellScriptBin, brave }:
+{ lib, writeShellScriptBin, ungoogled-chromium }:
 
 name: url: writeShellScriptBin name ''
-  ${brave}/bin/brave \
+  ${ungoogled-chromium}/bin/chromium \
     --app=${lib.escapeShellArg url} \
     --user-data-dir=$HOME/.local/web-wrapper/${name}
 ''

@@ -26,7 +26,6 @@ let
   linuxPackages = with pkgs; [
     anki
     arc-theme
-    brave
     discord
     dmenu
     docker
