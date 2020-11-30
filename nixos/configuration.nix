@@ -15,35 +15,27 @@ in
 
   networking.networkmanager.enable = true;
   networking.hostName = "siraben-nixos";
-  networking.nameservers = [
-    "1.0.0.1"
-    "1.1.1.1"
-  ];
-  swapDevices = [ { device = "/dev/disk/by-label/swap"; } ];
+  networking.nameservers = [ "1.0.0.1" "1.1.1.1" ];
 
   sound.enable = true;
   hardware = {
-    bluetooth.enable = true;
+    bluetooth = {
+      enable = true;
+      config = {
+        General.Enable = lib.concatStringsSep "," [ "Source" "Sink" "Media" "Socket" ];
+      };
+    };
     facetimehd.enable = true;
     pulseaudio = {
       enable = true;
       package = pkgs.pulseaudioFull;
-      extraConfig = "
-        load-module module-switch-on-connect
-      ";
+      extraConfig = "load-module module-switch-on-connect";
     };
   };
-
   services.blueman.enable = true;
-  hardware.bluetooth.config = {
-    General = {
-      Enable = lib.concatStringsSep "," [ "Source" "Sink" "Media" "Socket" ];
-    };
-  };
 
   powerManagement.enable = true;
   powerManagement.powertop.enable = true;
-  programs.light.enable = true;
 
   time.timeZone = "Asia/Bangkok";
 
@@ -85,11 +77,8 @@ in
   system.autoUpgrade.enable = true;
   system.autoUpgrade.channel = "https://nixos.org/channels/nixos-unstable";
 
-  environment = {
-    systemPackages = with pkgs; [
-      (import ./popcorntime.nix)
-    ];
-  };
+  environment.systemPackages = with pkgs; [ i3status brightnessctl ];
+
   virtualisation.docker.enable = true;
 
   programs.zsh.enable = true;
@@ -151,7 +140,6 @@ in
     xkbOptions = "ctrl:nocaps";
     libinput.enable = true;
     layout = "us";
-
   };
 
   nix.trustedUsers = [ "root" "siraben" ];
@@ -163,12 +151,6 @@ in
       home = "/home/siraben";
       description = "Ben Siraphob";
       extraGroups = [ "wheel" "networkmanager" "vboxusers" "docker" ];
-      packages = with pkgs; [
-        (wrapWeb "element" "https://app.element.io")
-        (wrapWeb "hn" "https://news.ycombinator.com")
-        (wrapWeb "neverssl" "http://neverssl.com")
-        (wrapWeb "mastodon" "https://mastodon.social")
-      ];
     };
   };
 
