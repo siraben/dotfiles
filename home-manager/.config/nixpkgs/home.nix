@@ -9,6 +9,7 @@ let
     overlays = [
       (import ./nextcloud-overlay.nix)
       (import sources.nixpkgs-wayland)
+      (import sources.emacs-overlay)
     ];
   };
   # Fork of comma that uses local nix-index if possible.
@@ -29,7 +30,15 @@ let
     })
     { }).package;
   wrapWeb = pkgs.callPackage ./wrapWeb.nix {};
-  wayland-packages = with pkgs; [ grim firefox-wayland wlsunset swaylock-fancy ];
+  wayland-packages = with pkgs; [
+    emacsPgtk
+    firefox-wayland
+    grim
+    slurp
+    swaylock-fancy
+    wlsunset
+    wofi
+  ];
   web-shortcuts =  with pkgs; [
     (wrapWeb "element" "https://app.element.io")
     (wrapWeb "hn" "https://news.ycombinator.com")
@@ -187,7 +196,6 @@ in
 
   programs = {
     broot.enable = true;
-    emacs.enable = isLinux;
     git = {
       enable = true;
       userName = "Ben Siraphob";
