@@ -11,7 +11,16 @@ let
       (import sources.nixpkgs-wayland)
       (import sources.emacs-overlay)
     ];
+    config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
   };
+  unfreePackages = [
+    "discord"
+    "slack"
+    "spotify"
+    "spotify-unwrapped"
+    "zoom-us"
+    "faac" # part of zoom
+  ];
   # Fork of comma that uses local nix-index if possible.
   comma = (import
     (pkgs.fetchFromGitHub {
@@ -29,9 +38,9 @@ let
       sha256 = "0dq2nc7n4clvxm1592dr1s8d4gqy0pq6z1xlxy1dfmf18hij4k6d";
     })
     { }).package;
-  wrapWeb = pkgs.callPackage ./wrapWeb.nix {};
+  wrapWeb = pkgs.callPackage ./wrapWeb.nix { };
   wayland-packages = with pkgs; [
-    emacsPgtk
+    emacsPgtkGcc
     firefox-wayland
     grim
     slurp
@@ -40,7 +49,7 @@ let
     wofi
     xdg-desktop-portal-wlr
   ];
-  web-shortcuts =  with pkgs; [
+  web-shortcuts = with pkgs; [
     (wrapWeb "element" "https://app.element.io")
     (wrapWeb "hn" "https://news.ycombinator.com")
     (wrapWeb "neverssl" "http://neverssl.com")
@@ -147,11 +156,12 @@ let
     shellcheck
     stow
     (texlive.combine {
-      inherit (texlive) scheme-medium latexmk wrapfig rotfloat capt-of minted fvextra upquote catchfile xstring framed biblatex;
+      inherit (texlive) scheme-medium latexmk wrapfig rotfloat capt-of minted fvextra upquote catchfile xstring framed biblatex csquotes;
     })
     the-powder-toy
     tldr
     tmux
+    tnef
     tor
     tree
     unzip
