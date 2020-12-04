@@ -1,6 +1,12 @@
 let
   sources = import ../nix/sources.nix;
-  pkgs = import sources.nixpkgs {};
+  pkgs = import sources.nixpkgs {
+    config.allowUnfreePredicate = pkg:
+      builtins.elem (lib.getName pkg) [
+        "broadcom-sta"
+        "facetimehd-firmware"
+      ];
+  };
   lib = pkgs.lib;
 in
 {
@@ -12,7 +18,13 @@ in
     cleanTmpDir = true;
     supportedFilesystems = [ "exfat" "btrfs" ];
   };
-  nixpkgs.config.allowUnfree = true;
+
+  # Make unfree software explicit
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "broadcom-sta"
+      "facetimehd-firmware"
+    ];
 
   networking.networkmanager.enable = true;
   networking.hostName = "siraben-nixos";
@@ -128,9 +140,10 @@ in
       isNormalUser = true;
       home = "/home/siraben";
       description = "Ben Siraphob";
-      extraGroups = [ "wheel" "networkmanager" "vboxusers" "docker" ];
+      extraGroups = [ "audio" "wheel" "networkmanager" "vboxusers" "docker" ];
     };
   };
 
   system.stateVersion = "20.09";
+
 }
