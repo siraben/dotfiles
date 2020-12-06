@@ -128,6 +128,7 @@ let
     exiftool
     ghc
     github-cli
+    graphviz
     guile
     haskellPackages.ghcide
     haskellPackages.haskell-language-server
@@ -149,7 +150,8 @@ let
     nodePackages.javascript-typescript-langserver
     nodePackages.pyright
     nodejs
-    python3
+    python38
+    python38Packages.nix-prefetch-github
     ranger
     ripgrep
     rustup
