@@ -17,6 +17,18 @@ in
     loader.efi.canTouchEfiVariables = true;
     cleanTmpDir = true;
     supportedFilesystems = [ "exfat" "btrfs" ];
+    kernelParams = [
+      "noibrs"
+      "noibpb"
+      "nopti"
+      "nospectre_v2"
+      "nospectre_v1"
+      "l1tf=off"
+      "nospec_store_bypass_disable"
+      "no_stf_barrier"
+      "mds=off"
+      "mitigations=off"
+    ];
   };
 
   # Make unfree software explicit
@@ -44,6 +56,8 @@ in
       package = pkgs.pulseaudioFull;
       extraConfig = "load-module module-switch-on-connect";
     };
+    enableRedistributableFirmware = true;
+    cpu.intel.updateMicrocode = true;
   };
   services.blueman.enable = true;
 
@@ -114,6 +128,13 @@ in
   services.logind.extraConfig = ''
     HandlePowerKey=suspend
   '';
+
+  # Disable XHC1 wakeup signal to avoid resume getting triggered some time
+  # after suspend. Reboot required for this to take effect.
+  services = {
+    udev.extraRules = ''SUBSYSTEM=="pci", KERNEL=="0000:00:14.0", ATTR{power/wakeup}="disabled"'';
+    tlp.enable = true;
+  };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
