@@ -60,6 +60,7 @@ in
     cpu.intel.updateMicrocode = true;
   };
   services.blueman.enable = true;
+  services.mbpfan.enable = true;
 
   powerManagement.enable = true;
   powerManagement.powertop.enable = true;
