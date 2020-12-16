@@ -38,6 +38,14 @@ let
       sha256 = "0dq2nc7n4clvxm1592dr1s8d4gqy0pq6z1xlxy1dfmf18hij4k6d";
     })
     { }).package;
+  nix-bisect = (import
+    (pkgs.fetchFromGitHub {
+      owner = "timokau";
+      repo = "nix-bisect";
+      rev = "35963d9c5c947a12f7bfe18532144ada254d534c";
+      sha256 = "00n7ci3h5kdy0avnf0x10aiayajwg9w41nhfp58cfmpim9sq890z";
+    })
+    { inherit pkgs; });
   wrapWeb = pkgs.callPackage ./wrapWeb.nix { };
   wayland-packages = with pkgs; [
     emacsPgtkGcc
@@ -141,6 +149,7 @@ let
     mpv
     mu
     niv
+    nix-bisect
     nix-index
     nix-prefetch-git
     nixfmt
@@ -247,6 +256,7 @@ in
         nrp = "nix repl '<nixpkgs>'";
         ns = "nix-shell";
         tb = "tput bel";
+        ix = ''curl -n -F 'f:1=<-' http://ix.io'';
       } // (lib.optionalAttrs isDarwin darwinShellAliases);
       initExtra = lib.concatStringsSep "\n"
         [

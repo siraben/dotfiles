@@ -60,7 +60,11 @@ in
     cpu.intel.updateMicrocode = true;
   };
   services.blueman.enable = true;
-  services.mbpfan.enable = true;
+  services.mbpfan = {
+    enable = true;
+    lowTemp = 55;
+    highTemp = 60;
+  };
 
   powerManagement.enable = true;
   powerManagement.powertop.enable = true;
