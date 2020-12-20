@@ -1,4 +1,16 @@
 {
+    "comma": {
+        "branch": "master",
+        "description": null,
+        "homepage": null,
+        "owner": "SuperSandro2000",
+        "repo": "comma",
+        "rev": "28f94a11114893506ea2c5c5bdbc1dae1d1d8159",
+        "sha256": "05157wn3f1whq6krcijhipkjw5zjml5h4xbf06ibd77kc57lqw8z",
+        "type": "tarball",
+        "url": "https://github.com/SuperSandro2000/comma/archive/28f94a11114893506ea2c5c5bdbc1dae1d1d8159.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "emacs-overlay": {
         "branch": "master",
         "description": "Bleeding edge emacs overlay [maintainer=@adisbladis] ",
@@ -21,6 +33,30 @@
         "sha256": "1kpsvc53x821cmjg1khvp1nz7906gczq8mp83664cr15h94sh8i4",
         "type": "tarball",
         "url": "https://github.com/nmattia/niv/archive/ba57d5a29b4e0f2085917010380ef3ddc3cf380f.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "nix-bisect": {
+        "branch": "master",
+        "description": "Bisect nix builds",
+        "homepage": "",
+        "owner": "timokau",
+        "repo": "nix-bisect",
+        "rev": "35963d9c5c947a12f7bfe18532144ada254d534c",
+        "sha256": "00n7ci3h5kdy0avnf0x10aiayajwg9w41nhfp58cfmpim9sq890z",
+        "type": "tarball",
+        "url": "https://github.com/timokau/nix-bisect/archive/35963d9c5c947a12f7bfe18532144ada254d534c.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "nix-gccemacs-darwin": {
+        "branch": "master",
+        "description": "Build gccemacs for macOS 10.15 or newer using Nix.",
+        "homepage": "",
+        "owner": "twlz0ne",
+        "repo": "nix-gccemacs-darwin",
+        "rev": "f1cbea6630f55013ae6428083a2d0daa1bdd6fe1",
+        "sha256": "1xjswwzzhihxdccn7623spss3crs2wsgxashkwq8inrvk952ll1k",
+        "type": "tarball",
+        "url": "https://github.com/twlz0ne/nix-gccemacs-darwin/archive/f1cbea6630f55013ae6428083a2d0daa1bdd6fe1.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs": {

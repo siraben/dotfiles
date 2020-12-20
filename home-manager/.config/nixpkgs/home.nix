@@ -22,30 +22,9 @@ let
     "faac" # part of zoom
   ];
   # Fork of comma that uses local nix-index if possible.
-  comma = (import
-    (pkgs.fetchFromGitHub {
-      owner = "SuperSandro2000";
-      repo = "comma";
-      rev = "28f94a11114893506ea2c5c5bdbc1dae1d1d8159";
-      sha256 = "05157wn3f1whq6krcijhipkjw5zjml5h4xbf06ibd77kc57lqw8z";
-    })
-    { });
-  cargo2nix = (import
-    (pkgs.fetchFromGitHub {
-      owner = "tenx-tech";
-      repo = "cargo2nix";
-      rev = "a0f38b977596c39f4127b67c84a6930b3cbd662a";
-      sha256 = "0dq2nc7n4clvxm1592dr1s8d4gqy0pq6z1xlxy1dfmf18hij4k6d";
-    })
-    { }).package;
-  nix-bisect = (import
-    (pkgs.fetchFromGitHub {
-      owner = "timokau";
-      repo = "nix-bisect";
-      rev = "35963d9c5c947a12f7bfe18532144ada254d534c";
-      sha256 = "00n7ci3h5kdy0avnf0x10aiayajwg9w41nhfp58cfmpim9sq890z";
-    })
-    { inherit pkgs; });
+  comma = import sources.comma { inherit pkgs; };
+  gccemacs = (import sources.nix-gccemacs-darwin).emacsGccDarwin;
+  nix-bisect = import sources.nix-bisect { inherit pkgs; };
   wrapWeb = pkgs.callPackage ./wrapWeb.nix { };
   wayland-packages = with pkgs; [
     emacsPgtkGcc
@@ -104,12 +83,6 @@ let
     xorg.xkill
     zoom-us
   ] ++ wayland-packages ++ web-shortcuts;
-  gccemacs = (import (pkgs.fetchFromGitHub {
-    owner = "twlz0ne";
-    repo = "nix-gccemacs-darwin";
-    rev = "c10323fd2253d7b73bd6e06dd2cead5b3231df52";
-    sha256 = "0bpm5isv687lf13lhi9ad6zaj820g5144293c114gxxlhl32f1wh";
-  })).emacsGccDarwin;
   darwinPackages = with pkgs; [
     coreutils
     gccemacs
@@ -126,7 +99,6 @@ let
     borgbackup
     cabal-install
     cachix
-    cargo2nix
     ccls
     chez
     clang-tools
