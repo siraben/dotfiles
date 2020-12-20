@@ -129,7 +129,7 @@ let
     ccls
     chez
     clang-tools
-    clang_11
+    clang_10
     cmake
     comma
     coq
