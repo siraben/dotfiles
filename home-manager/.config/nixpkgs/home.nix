@@ -65,11 +65,11 @@ let
   ];
   linuxPackages = with pkgs; [
     anki
-    arc-theme
+    bemenu
     discord
-    dmenu
     docker
     docker-compose
+    dragon-drop
     evince
     exfat
     feh
