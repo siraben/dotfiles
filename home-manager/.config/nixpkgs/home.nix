@@ -84,6 +84,7 @@ let
     musescore
     networkmanager
     nextcloud-client
+    nix-update
     offlineimap
     paper-icon-theme
     poppler_utils
