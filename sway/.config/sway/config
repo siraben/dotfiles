@@ -24,7 +24,7 @@ bindsym $mod+Tab exec rofi -dpi 1 -show window
 # bindsym $mod+Tab exec ~/.config/sway/wofi.sh
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id exe=`dmenu_path | dmenu -b -nb '#000000' -sb '#ffffff' -sf '#000000' -fn Hack-11X -nf '#888888' -p '>'` && "${exe}"
+bindsym $mod+d exec --no-startup-id bemenu-run
 
 # bindsym $mod+d exec --no-startup-id sway-dmenu-desktop
 
