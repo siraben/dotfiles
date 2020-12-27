@@ -96,6 +96,7 @@ let
     aspellDicts.en-computers
     autojump
     bat
+    binutils
     borgbackup
     cabal-install
     cachix
@@ -206,7 +207,6 @@ in
     };
     zsh = {
       enable = true;
-      enableAutosuggestions = true;
       oh-my-zsh = {
         enable = true;
         theme = "robbyrussell";
