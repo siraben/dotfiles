@@ -59,11 +59,14 @@ in
     enableRedistributableFirmware = true;
     cpu.intel.updateMicrocode = true;
   };
+  hardware.opengl.driSupport32Bit = true;
+  hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
+  hardware.pulseaudio.support32Bit = true;
   services.blueman.enable = true;
   services.mbpfan = {
     enable = true;
-    lowTemp = 55;
-    highTemp = 60;
+    lowTemp = 57;
+    highTemp = 62;
   };
 
   powerManagement.enable = true;
@@ -111,6 +114,7 @@ in
   environment.systemPackages = with pkgs; [ i3status brightnessctl ];
 
   virtualisation.docker.enable = true;
+  virtualisation.virtualbox.host.enable = true;
 
   programs.zsh.enable = true;
   programs.zsh.promptInit = "";
@@ -119,13 +123,12 @@ in
 
   programs.sway = {
     enable = true;
-    wrapperFeatures.gtk = true; # so that gtk works properly
+    wrapperFeatures.gtk = true;
     extraPackages = with pkgs; [
       swaylock
       swayidle
       wl-clipboard
-      mako # notification daemon
-      dmenu # Dmenu is the default in the config but i recommend wofi since its wayland native
+      mako
       xwayland
     ];
   };
