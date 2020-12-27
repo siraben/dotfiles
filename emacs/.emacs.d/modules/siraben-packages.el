@@ -1,3 +1,4 @@
+
 ;;; siraben-packages.el --- Set up MELPA packages
 
 ;;; License:
@@ -79,7 +80,9 @@
 
 (use-package yasnippet
   :config
-  (yas-global-mode t))
+  (setq yas-snippet-dirs `(,(concat siraben-root-dir "snippets")))
+  (add-hook after-init-hook 'yas-global-mode))
+
 (use-package yasnippet-snippets)
 
 (use-package ledger-mode
