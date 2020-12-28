@@ -206,5 +206,9 @@ bindsym --to-code {
 titlebar_border_thickness 1
 titlebar_padding 1
 
+set $laptop eDP-1
+bindswitch lid:on output $laptop disable
+bindswitch lid:off output $laptop enable
+
 exec --no-startup-id wlsunset -l 13 -L 100
 exec --no-startup-id swaybg -m fill -i ~/Pictures/nix-wallpaper-dracula.png
