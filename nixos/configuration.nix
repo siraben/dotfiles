@@ -65,8 +65,8 @@ in
   services.blueman.enable = true;
   services.mbpfan = {
     enable = true;
-    lowTemp = 57;
-    highTemp = 62;
+    lowTemp = 58;
+    highTemp = 63;
   };
 
   powerManagement.enable = true;
