@@ -161,7 +161,13 @@ in
     layout = "us";
   };
 
-  nix.trustedUsers = [ "root" "siraben" ];
+  nix = {
+    trustedUsers = [ "root" "siraben" ];
+    package = pkgs.nixFlakes;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+  };
 
   users = {
     users.siraben = {
