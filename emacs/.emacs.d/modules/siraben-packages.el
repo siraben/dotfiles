@@ -70,7 +70,7 @@
   :config
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
-  (add-hook after-init-hook 'global-diff-hl-mode))
+  (add-hook 'after-init-hook 'global-diff-hl-mode))
 
 (use-package forge
   :after magit)
@@ -81,7 +81,7 @@
 (use-package yasnippet
   :config
   (setq yas-snippet-dirs `(,(concat siraben-root-dir "snippets")))
-  (add-hook after-init-hook 'yas-global-mode))
+  (add-hook 'after-init-hook 'yas-global-mode))
 
 (use-package yasnippet-snippets)
 
