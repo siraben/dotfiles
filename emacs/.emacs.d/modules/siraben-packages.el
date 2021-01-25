@@ -202,5 +202,15 @@
 (use-package editorconfig
   :config
   (editorconfig-mode 1))
+
+(use-package dart-mode)
+(use-package lsp-dart
+  :hook (dart-mode . lsp)
+  :config
+  (setq lsp-dart-sdk-dir "/usr/local/Caskroom/flutter/1.22.5/flutter/bin/cache/dart-sdk"
+        lsp-dart-flutter-widget-guides nil))
+
+(use-package flutter)
+
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here
