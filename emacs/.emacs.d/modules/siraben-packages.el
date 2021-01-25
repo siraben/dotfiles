@@ -56,7 +56,12 @@
 
 (use-package rainbow-delimiters)
 (use-package writeroom-mode)
-(use-package markdown-mode)
+(use-package markdown-mode
+  :hook
+  (markdown-mode . (lambda ()
+                     (auto-fill-mode -1)
+                     (visual-line-mode +1)
+                     (visual-fill-column-mode +1))))
 (use-package magit
   :bind (("C-x g"   . 'magit-status)
          ("C-x M-g" . 'magit-dispatch))
@@ -150,7 +155,8 @@
   :hook
   (after-init . helm-mode))
 
-(use-package helm-rg)
+(use-package helm-rg
+  :bind (("M-G" . 'helm-rg)))
 
 (use-package geiser
   :config
