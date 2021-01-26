@@ -46,5 +46,7 @@
 
 (global-set-key (kbd "C-:") 'eval-print-last-sexp)
 
+(global-set-key (kbd "M-W") 'whitespace-cleanup)
+
 (provide 'siraben-keybindings)
 ;;; siraben-keybindings.el ends here
