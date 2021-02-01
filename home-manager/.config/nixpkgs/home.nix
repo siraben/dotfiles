@@ -59,6 +59,7 @@ let
     killall
     libreoffice
     lightlocker
+    mpv
     msmtp
     musescore
     networkmanager
@@ -89,14 +90,12 @@ let
   ];
   sharedPackages = with pkgs; [
     ag
-    agda
     alacritty
     aspell
     aspellDicts.en
     aspellDicts.en-computers
     autojump
     bat
-    binutils
     borgbackup
     cabal-install
     cachix
@@ -120,7 +119,6 @@ let
     kitty
     ledger
     manix
-    mpv
     mu
     niv
     nix-bisect
@@ -171,13 +169,6 @@ let
     bb-gc = "brew bundle cleanup --global --force";
     bb-switch = "brew bundle install --global --verbose";
     bb-upgrade = "brew bundle install --global --verbose --upgrade";
-    # linuxkit-builder.  Unfortunately I'll have to install it
-    # imperatively due to it lacking a bootstrap from darwin.
-    lb-gc = "rm -rf ~/.cache/nix-linuxkit-builder/";
-    lb-init = "nix-linuxkit-configure";
-    lb-reset = "lb-stop; lb-gc; lb-init;";
-    lb-start = "launchctl stop org.nix-community.linuxkit-builder";
-    lb-stop = "launchctl stop org.nix-community.linuxkit-builder";
   };
 in
 {
