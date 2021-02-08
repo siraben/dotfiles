@@ -84,9 +84,9 @@
   :commands free-keys)
 
 (use-package yasnippet
+  :hook (after-init . yas-global-mode)
   :config
-  (setq yas-snippet-dirs `(,(concat siraben-root-dir "snippets")))
-  (add-hook 'after-init-hook 'yas-global-mode))
+  (setq yas-snippet-dirs `(,(concat siraben-root-dir "snippets"))))
 
 (use-package yasnippet-snippets)
 
@@ -213,8 +213,9 @@
 (use-package lsp-dart
   :hook (dart-mode . lsp)
   :config
-  (setq lsp-dart-sdk-dir "/usr/local/Caskroom/flutter/1.22.5/flutter/bin/cache/dart-sdk"
-        lsp-dart-flutter-widget-guides nil))
+  (setq lsp-dart-sdk-dir "/usr/local/Caskroom/flutter/1.22.6/flutter/bin/cache/dart-sdk"
+        lsp-dart-flutter-widget-guides nil
+        lsp-dart-line-length 120))
 
 (use-package flutter)
 
