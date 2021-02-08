@@ -1,0 +1,50 @@
+# -*- mode: snippet -*-
+# name: meta
+# key: meta
+# --
+meta = with lib; {
+  description = "$1";
+  homepage = "https://${2:github.com/$3/$4}";
+  license = licenses.${5:$$
+(yas-choose-value '(
+"asl20"
+"bsd2"
+"bsd3"
+"free"
+"gpl2Only"
+"gpl2Plus"
+"gpl3Only"
+"gpl3Plus"
+"isc"
+"lgpl21Only"
+"lgpl21Plus"
+"lgpl2Only"
+"lgpl2Plus"
+"lgpl3Only"
+"mit"
+"mpl20"
+"ofl"
+"unfree"
+))};
+  maintainers = with maintainers; [ $6 ];
+  platforms = platforms.${7:$$
+(yas-choose-value '(
+"linux"
+"unix"
+"all"
+"darwin"
+"gnu"
+"freebsd"
+"openbsd"
+"netbsd"
+"cygwin"
+"illumos"
+"none"
+"allBut"
+"mesaPlatforms"
+"x86"
+"i686"
+"arm"
+"mips"
+))};
+};
