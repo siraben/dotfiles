@@ -1,16 +1,4 @@
 {
-    "comma": {
-        "branch": "master",
-        "description": null,
-        "homepage": null,
-        "owner": "SuperSandro2000",
-        "repo": "comma",
-        "rev": "28f94a11114893506ea2c5c5bdbc1dae1d1d8159",
-        "sha256": "05157wn3f1whq6krcijhipkjw5zjml5h4xbf06ibd77kc57lqw8z",
-        "type": "tarball",
-        "url": "https://github.com/SuperSandro2000/comma/archive/28f94a11114893506ea2c5c5bdbc1dae1d1d8159.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
     "emacs-overlay": {
         "branch": "master",
         "description": "Bleeding edge emacs overlay [maintainer=@adisbladis] ",

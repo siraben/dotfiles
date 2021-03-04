@@ -21,8 +21,6 @@ let
     "zoom-us"
     "faac" # part of zoom
   ];
-  # Fork of comma that uses local nix-index if possible.
-  comma = import sources.comma { inherit pkgs; };
   gccemacs = (import sources.nix-gccemacs-darwin).emacsGccDarwin;
   nix-bisect = import sources.nix-bisect { inherit pkgs; };
   wrapWeb = pkgs.callPackage ./wrapWeb.nix { };
@@ -104,7 +102,6 @@ let
     clang-tools
     clang_10
     cmake
-    comma
     coq
     exiftool
     ghc
@@ -135,6 +132,7 @@ let
     python38Packages.nix-prefetch-github
     ranger
     ripgrep
+    rmview
     rustup
     shellcheck
     stow
@@ -156,6 +154,7 @@ let
   ];
   darwinShellExtra = ''
     source $HOME/.nix-profile/etc/profile.d/nix.sh
+    source $HOME/.nix/remote-build-env
   '';
   linuxShellExtra = "";
   sharedShellExtra = ''
