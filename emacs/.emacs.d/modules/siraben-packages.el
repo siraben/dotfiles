@@ -219,5 +219,8 @@
 
 (use-package flutter)
 
+(use-package tree-sitter)
+(use-package tree-sitter-langs)
+
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here
