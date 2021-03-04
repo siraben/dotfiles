@@ -2,7 +2,7 @@
 # name: package github
 # key: pg
 # --
-{ stdenv, fetchFromGitHub$1 }:
+{ lib, stdenv, fetchFromGitHub$1 }:
 
 stdenv.mkDerivation rec {
   pname = "$2";
@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ $1 ];
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "$7";
     homepage = "https://${8:github.com/$4/$2}";
 
