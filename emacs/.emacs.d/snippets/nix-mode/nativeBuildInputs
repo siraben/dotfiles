@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: nativeBuildInputs
+# key: nbi
+# --
+nativeBuildInputs = [ $1 ];
