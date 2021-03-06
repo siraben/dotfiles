@@ -18,8 +18,7 @@ let
     "slack"
     "spotify"
     "spotify-unwrapped"
-    "zoom-us"
-    "faac" # part of zoom
+    "zoom"
   ];
   gccemacs = (import sources.nix-gccemacs-darwin).emacsGccDarwin;
   nix-bisect = import sources.nix-bisect { inherit pkgs; };
