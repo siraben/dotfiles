@@ -47,7 +47,10 @@ in
     bluetooth = {
       enable = true;
       config = {
-        General.Enable = lib.concatStringsSep "," [ "Source" "Sink" "Media" "Socket" ];
+        General = {
+          ControllerMode = "dual";
+          Enable = lib.concatStringsSep "," [ "Source" "Sink" "Media" "Socket" ];
+        };
       };
     };
     facetimehd.enable = true;
