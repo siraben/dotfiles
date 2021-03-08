@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: substituteInPlace
+# key: sip
+# --
+substituteInPlace $1 --replace "$2" "$3"

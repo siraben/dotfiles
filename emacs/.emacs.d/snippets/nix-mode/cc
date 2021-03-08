@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: C compiler
+# key: cc
+# --
+\${stdenv.cc.targetPrefix}cc
