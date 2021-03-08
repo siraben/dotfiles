@@ -213,7 +213,7 @@ in
         nc = "nix channel";
         ncg = "nix-collect-garbage";
         ne = "nix edit";
-        nix-review-post = "nix-review pr --post-result";
+        nrep = "nix-review pr --post-result";
         nr = "nix repl";
         nrp = "nix repl '<nixpkgs>'";
         ns = "nix-shell";
