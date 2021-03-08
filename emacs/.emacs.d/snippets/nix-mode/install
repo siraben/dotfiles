@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: install
+# key: install
+# --
+install -Dm755 -t $out/bin $1
