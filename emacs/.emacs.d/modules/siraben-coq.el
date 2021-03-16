@@ -27,7 +27,9 @@
 (add-hook 'coq-mode-hook
           (lambda ()
             (siraben-prog-mode-defaults)
-            (company-coq-mode t)))
+            (company-coq-mode t)
+            (undo-tree-mode t)
+            ))
 
 
 (provide 'siraben-coq)
