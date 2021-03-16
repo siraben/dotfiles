@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: expand platforms
+# key: exp
+# --
+$1: expand platforms to $2
