@@ -212,9 +212,10 @@ in
         nb = "nix build";
         nc = "nix channel";
         ncg = "nix-collect-garbage";
+        nd = "nix develop";
         ne = "nix edit";
-        nrep = "nix-review pr --post-result";
         nr = "nix repl";
+        nrep = "nix-review pr --post-result";
         nrp = "nix repl '<nixpkgs>'";
         ns = "nix-shell";
         tb = "tput bel";
