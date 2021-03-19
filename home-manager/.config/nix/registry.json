@@ -1,0 +1,31 @@
+{
+  "flakes": [
+    {
+      "from": {
+        "id": "stable",
+        "type": "indirect"
+      },
+      "to": {
+        "owner": "NixOS",
+        "ref": "nixos-20.09",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    {
+      "from": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      },
+      "to": {
+        "lastModified": 1614614915,
+        "narHash": "sha256-RxG7vCeVVutDztZFwUcrFWTiL5B+2g/acG9+NdtXG1g=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "81e6cf3d1c2035bd10d37b6c61a647ed68306aaa",
+        "type": "github"
+      }
+    }
+  ],
+  "version": 2
+}
