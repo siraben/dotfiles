@@ -22,6 +22,7 @@ let
   ];
   gccemacs = (import sources.nix-gccemacs-darwin).emacsGccDarwin;
   nix-bisect = import sources.nix-bisect { inherit pkgs; };
+  nixpkgs-review = import sources.nixpkgs-review { inherit pkgs; };
   wrapWeb = pkgs.callPackage ./wrapWeb.nix { };
   wayland-packages = with pkgs; [
     emacsPgtkGcc
