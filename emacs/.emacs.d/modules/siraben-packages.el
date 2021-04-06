@@ -213,7 +213,7 @@
 (use-package lsp-dart
   :hook (dart-mode . lsp)
   :config
-  (setq lsp-dart-sdk-dir "/usr/local/Caskroom/flutter/1.22.6/flutter/bin/cache/dart-sdk"
+  (setq lsp-dart-sdk-dir "/usr/local/Caskroom/flutter/2.0.2/flutter/bin/cache/dart-sdk"
         lsp-dart-flutter-widget-guides nil
         lsp-dart-line-length 120))
 
