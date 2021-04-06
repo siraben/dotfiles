@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: stdenv no cc
+# key: nocc
+# --
+stdenvNoCC
