@@ -1,0 +1,46 @@
+# -*- mode: snippet -*-
+# name: go github
+# key: gg
+# --
+{ lib, buildGoModule, fetchFromGitHub }:
+
+buildGoModule rec {
+  pname = "$1";
+  version = "$2";
+
+  src = fetchFromGitHub {
+    owner = "$3";
+    repo = "$1";
+    rev = "${4:v\$\{version\}}";
+    sha256 = lib.fakeSha256;
+  };
+
+  vendorSha256 = lib.fakeSha256;
+
+  meta = with lib; {
+    description = "$5";
+    homepage = "https://${6:github.com/$3/$1}";
+    license = licenses.${7:$$
+  (yas-choose-value '(
+  "asl20"
+  "bsd2"
+  "bsd3"
+  "free"
+  "gpl2Only"
+  "gpl2Plus"
+  "gpl3Only"
+  "gpl3Plus"
+  "isc"
+  "lgpl21Only"
+  "lgpl21Plus"
+  "lgpl2Only"
+  "lgpl2Plus"
+  "lgpl3Only"
+  "mit"
+  "mpl20"
+  "ofl"
+  "unfree"
+  ))};
+    maintainers = with maintainers; [ $10 ];
+  };
+}
