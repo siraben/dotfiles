@@ -2,25 +2,25 @@
 # name: rust github
 # key: rg
 # --
-{ lib, stdenv, fetchFromGitHub, rustPlatform$1 }:
+{ lib, fetchFromGitHub, rustPlatform }:
 
 rustPlatform.buildRustPackage rec {
-  pname = "$2";
-  version = "$3";
+  pname = "$1";
+  version = "$2";
 
   src = fetchFromGitHub {
-    owner = "$4";
-    repo = "$2";
-    rev = "${5:v\$\{version\}}";
+    owner = "$3";
+    repo = "$1";
+    rev = "${4:v\$\{version\}}";
     sha256 = lib.fakeSha256;
   };
 
   cargoSha256 = lib.fakeSha256;
 
   meta = with lib; {
-    description = "$7";
-    homepage = "https://${8:github.com/$4/$2}";
-    license = licenses.${9:$$
+    description = "$5";
+    homepage = "https://${6:github.com/$3/$1}";
+    license = licenses.${7:$$
   (yas-choose-value '(
   "asl20"
   "bsd2"
