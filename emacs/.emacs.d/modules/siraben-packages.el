@@ -182,7 +182,7 @@
 
 (use-package lsp-mode
   :config
-  (setq lsp-clients-clangd-args '("-j=4" "-background-index" "-log=error")))
+  (setq lsp-clients-clangd-args '("-j=4" "-log=error")))
 
 (use-package lsp-ui)
 
