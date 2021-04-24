@@ -139,7 +139,7 @@ let
     shellcheck
     stow
     (texlive.combine {
-      inherit (texlive) scheme-medium latexmk wrapfig rotfloat capt-of minted fvextra upquote catchfile xstring framed biblatex csquotes;
+      inherit (texlive) scheme-small latexmk wrapfig rotfloat capt-of minted fvextra upquote catchfile xstring framed biblatex csquotes;
     })
     the-powder-toy
     tldr
