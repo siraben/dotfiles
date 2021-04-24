@@ -103,9 +103,11 @@ let
     clang_10
     cmake
     coq
+    coqPackages.coquelicot
     exiftool
-    ghc
+    (haskellPackages.ghcWithHoogle (h: [ h.arithmoi h.QuickCheck h.vector ]))
     github-cli
+    gnumake
     graphviz
     guile
     haskellPackages.ghcide
@@ -153,7 +155,8 @@ let
     zip
   ];
   darwinShellExtra = ''
-    source $HOME/.nix-profile/etc/profile.d/nix.sh
+    # For multi-user installation
+    export NIX_PATH=$NIX_PATH:$HOME/.nix-defexpr/channels
     source $HOME/.nix/remote-build-env
   '';
   linuxShellExtra = "";
