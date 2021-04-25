@@ -102,7 +102,7 @@ let
     clang-tools
     clang_10
     cmake
-    coq
+    coq_8_12
     coqPackages.coquelicot
     exiftool
     (haskellPackages.ghcWithHoogle (h: [ h.arithmoi h.QuickCheck h.vector ]))
