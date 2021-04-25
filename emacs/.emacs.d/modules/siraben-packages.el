@@ -186,7 +186,6 @@
 
 (use-package lsp-ui)
 
-(use-package company-lsp :commands company-lsp)
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
 (use-package company-auctex)
