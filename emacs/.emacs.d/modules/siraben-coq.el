@@ -29,7 +29,7 @@
             (siraben-prog-mode-defaults)
             (company-coq-mode t)
             (undo-tree-mode t)
-            ))
+            (direnv-update-environment)))
 
 
 (provide 'siraben-coq)
