@@ -5,10 +5,10 @@
         "homepage": "",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "2f642c786af6db43760f0d82d345743d9dccf981",
-        "sha256": "0vmp83i8hf67pw80dk6whmib88mkdx1r2m2va1yaj9kcn951jpxy",
+        "rev": "8e56d29d2b766d9fd44afc38a9447413cec76d5d",
+        "sha256": "1fgdb0fm14y58r2nckky5lgg10a0v17qj3g37k4kvlxdsvdbq1kr",
         "type": "tarball",
-        "url": "https://github.com/nix-community/emacs-overlay/archive/2f642c786af6db43760f0d82d345743d9dccf981.tar.gz",
+        "url": "https://github.com/nix-community/emacs-overlay/archive/8e56d29d2b766d9fd44afc38a9447413cec76d5d.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {
@@ -35,6 +35,18 @@
         "url": "https://github.com/timokau/nix-bisect/archive/35963d9c5c947a12f7bfe18532144ada254d534c.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "nix-eval-lsp": {
+        "branch": "main",
+        "description": "Nix language server that evaluates code",
+        "homepage": "https://github.com/nix-community/rnix-lsp",
+        "owner": "aaronjanse",
+        "repo": "nix-eval-lsp",
+        "rev": "0c263b802d83b3988924d6db55a6a0ca60faf578",
+        "sha256": "0qgh7xmbyb4d426d4nwywmvfrs51smjkrbsjq6v9gplpp70ivp3z",
+        "type": "tarball",
+        "url": "https://github.com/aaronjanse/nix-eval-lsp/archive/0c263b802d83b3988924d6db55a6a0ca60faf578.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "nix-gccemacs-darwin": {
         "branch": "master",
         "description": "Build gccemacs for macOS 10.15 or newer using Nix.",
@@ -53,10 +65,10 @@
         "homepage": "",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "8d0340aee5caac3807c58ad7fa4ebdbbdd9134d6",
-        "sha256": "0r00azbz64fz8yylm8x37imnrsm5cdzshd5ma8gwfwjyw166n3r1",
+        "rev": "e62feb3bf4a603e26755238303bda0c24651e155",
+        "sha256": "1gkamm044jrksjrisr7h9grg8p2y6rk01x6391asrx988hm2rh9s",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/8d0340aee5caac3807c58ad7fa4ebdbbdd9134d6.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs/archive/e62feb3bf4a603e26755238303bda0c24651e155.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs-review": {
@@ -65,10 +77,10 @@
         "homepage": "",
         "owner": "Mic92",
         "repo": "nixpkgs-review",
-        "rev": "6edaaeb94fbe1c39a68c2838c20caa9d9f80747d",
-        "sha256": "1h8v6nld7113qqr8ivzp9lkca351gz55wk8kvm8lbbzhsqy5dbcs",
+        "rev": "a0f90bc3c953b05aa245c593f49261759a3bfc19",
+        "sha256": "05nwcib659rfp3jakbykzmw8gy2q30w2bi6m8chb62fwsc1nw522",
         "type": "tarball",
-        "url": "https://github.com/Mic92/nixpkgs-review/archive/6edaaeb94fbe1c39a68c2838c20caa9d9f80747d.tar.gz",
+        "url": "https://github.com/Mic92/nixpkgs-review/archive/a0f90bc3c953b05aa245c593f49261759a3bfc19.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs-wayland": {
@@ -77,10 +89,10 @@
         "homepage": "",
         "owner": "colemickens",
         "repo": "nixpkgs-wayland",
-        "rev": "2eab01776a6eb65b17c134a5d810ecde595221d4",
-        "sha256": "0395k8ms6d0ixz9805kyypcga4yrkb7yyldq292dk9y1h8ch7cv6",
+        "rev": "e37612eb6bea1a300d9165fe323fe9ab429bea9a",
+        "sha256": "1w9xfh7ihbl58b4jcjb868i1q3ncfwzpagcng33bd478xj89pd65",
         "type": "tarball",
-        "url": "https://github.com/colemickens/nixpkgs-wayland/archive/2eab01776a6eb65b17c134a5d810ecde595221d4.tar.gz",
+        "url": "https://github.com/colemickens/nixpkgs-wayland/archive/e37612eb6bea1a300d9165fe323fe9ab429bea9a.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }

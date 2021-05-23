@@ -23,6 +23,7 @@ let
   gccemacs = (import sources.nix-gccemacs-darwin).emacsGccDarwin;
   nix-bisect = import sources.nix-bisect { inherit pkgs; };
   nixpkgs-review = import sources.nixpkgs-review { inherit pkgs; };
+  nix-eval-lsp = import sources.nix-eval-lsp;
   wrapWeb = pkgs.callPackage ./wrapWeb.nix { };
   wayland-packages = with pkgs; [
     emacsPgtkGcc
@@ -121,6 +122,7 @@ let
     mu
     niv
     nix-bisect
+    nix-eval-lsp
     nix-index
     nix-prefetch-git
     nixfmt
