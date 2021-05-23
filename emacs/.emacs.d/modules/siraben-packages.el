@@ -195,7 +195,14 @@
 (use-package flycheck
   :diminish)
 
-(use-package direnv)
+(use-package direnv
+  :config
+  (direnv-mode)
+  (eval-after-load 'flycheck
+    '(setq flycheck-executable-find
+           (lambda (cmd)
+             (direnv-update-environment default-directory)
+             (executable-find cmd)))))
 
 (use-package esup
   :config (setq esup-user-init-file (file-truename "~/.emacs.d/init.el"))
