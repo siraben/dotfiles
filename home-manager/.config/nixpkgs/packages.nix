@@ -47,7 +47,6 @@ let
     paper-icon-theme
     poppler_utils
     rhythmbox
-    rofi
     slack
     spotify
     system-config-printer

@@ -20,8 +20,8 @@ bindsym $mod+Shift+q kill
 # rofi for window switching binding to mod + space disables switching
 # between floating and tiling windows, but in practice I hardly ever
 # use that key combination anyway.
-bindsym $mod+Tab exec rofi -dpi 1 -show window
-# bindsym $mod+Tab exec ~/.config/sway/wofi.sh
+# bindsym $mod+Tab exec rofi -dpi 1 -show window
+bindsym $mod+Tab exec ~/.config/sway/wofi.sh
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec --no-startup-id bemenu-run
