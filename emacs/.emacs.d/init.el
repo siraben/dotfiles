@@ -89,12 +89,12 @@
 (setq default-directory "~/")
 
 ;; Keep some things out of version control.
-(let ((secret.el "~/Nextcloud/secret.el"))
+(let ((secret.el "~/Nextcloud/Scripts/secret.el"))
   (when (file-exists-p secret.el)
     (load secret.el)))
 
-(let ((secret.el "~/Nextcloud/mu4e.el"))
-  (when (file-exists-p secret.el)
-    (load secret.el)))
+;; (let ((secret.el "~/Nextcloud/Scripts/mu4e.el"))
+;;   (when (file-exists-p secret.el)
+;;     (load secret.el)))
 
 ;;; init.el ends here
