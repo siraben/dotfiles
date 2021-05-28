@@ -1,8 +1,8 @@
-{ lib, pkgs, isDarwin, isLinux }:
+{ lib, pkgs }:
 
 {
   wlsunset = {
-    enable = isLinux;
+    enable = true;
     latitude = "13";
     longitude = "100";
   };

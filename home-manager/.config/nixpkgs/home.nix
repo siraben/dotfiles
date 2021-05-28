@@ -31,6 +31,6 @@ in
   });
 
   programs = import ./programs.nix { inherit lib pkgs isDarwin isLinux; };
-  services = import ./services.nix { inherit lib pkgs isDarwin isLinux; };
+  services = lib.optionalAttrs isLinux (import ./services.nix { inherit lib pkgs; });
   home.stateVersion = "20.09";
 }
