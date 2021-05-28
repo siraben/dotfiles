@@ -32,8 +32,8 @@
       gc-cons-threshold 50000000)
 
 (setq byte-compile-warnings nil)
-(when (boundp 'comp-async-report-warnings-errors)
-  (setq comp-async-report-warnings-errors nil))
+(when (boundp 'native-comp-async-report-warnings-errors)
+  (setq native-comp-async-report-warnings-errors nil))
 
 (setq read-process-output-max (* 1024 1024))
 
