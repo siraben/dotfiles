@@ -13,7 +13,6 @@ let
   ];
   pkgs = import sources.nixpkgs {
     overlays = [
-      (import ./nextcloud-overlay.nix)
       (import sources.nixpkgs-wayland)
       (import sources.emacs-overlay)
     ];
