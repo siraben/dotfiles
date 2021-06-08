@@ -38,7 +38,6 @@ let
     killall
     libreoffice
     lightlocker
-    mpv
     msmtp
     musescore
     networkmanager
@@ -100,6 +99,7 @@ let
     kitty
     ledger
     manix
+    mpv
     mu
     niv
     nix-bisect
