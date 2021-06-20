@@ -83,14 +83,14 @@ let
     clang-tools
     clang_10
     cmake
-    coq_8_12
     coqPackages.coquelicot
+    coq_8_12
     exiftool
-    (haskellPackages.ghcWithHoogle (h: [ h.arithmoi h.QuickCheck h.vector ]))
     github-cli
     gnumake
     graphviz
     guile
+    (haskellPackages.ghcWithHoogle (h: [ h.arithmoi h.QuickCheck h.vector ]))
     haskellPackages.ghcide
     haskellPackages.haskell-language-server
     hlint
@@ -122,7 +122,7 @@ let
     shellcheck
     stow
     (texlive.combine {
-      inherit (texlive) scheme-small latexmk wrapfig rotfloat capt-of minted fvextra upquote catchfile xstring framed biblatex csquotes;
+      inherit (texlive) amsmath scheme-small latexmk wrapfig rotfloat capt-of minted fvextra upquote catchfile xstring framed biblatex csquotes;
     })
     the-powder-toy
     tldr
