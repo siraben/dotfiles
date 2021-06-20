@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: MAIN
+# expand-env: ((yas-indent-line 'fixed))
+# key: MAIN
+# --
+Definition main_spec :=
+ DECLARE _main
+  WITH gv : globals
+  PRE  [] main_pre prog tt gv
+  POST [ tint ]  
+     PROP() 
+     RETURN ($1)
+     SEP(TT).
