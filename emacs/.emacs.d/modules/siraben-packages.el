@@ -60,8 +60,9 @@
   :hook
   (markdown-mode . (lambda ()
                      (auto-fill-mode -1)
-                     (visual-line-mode +1)
-                     (visual-fill-column-mode +1))))
+                     ;; (visual-line-mode +1)
+                     ;; (visual-fill-column-mode +1)
+                     )))
 (use-package magit
   :bind (("C-x g"   . 'magit-status)
          ("C-x M-g" . 'magit-dispatch))
