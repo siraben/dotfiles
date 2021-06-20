@@ -89,5 +89,6 @@
 
 (setq org-export-backends '(ascii beamer html icalendar latex odt))
 
+(setq org-list-allow-alphabetical 't)
 (provide 'siraben-org)
 ;;; siraben-org.el ends here
