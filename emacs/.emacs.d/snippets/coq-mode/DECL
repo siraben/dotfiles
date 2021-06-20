@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: DECL
+# expand-env: ((yas-indent-line 'fixed))
+# key: DECL
+# --
+Definition $1_spec : ident * funspec :=
+DECLARE _$1
+ WITH $2
+ PRE [ $3 ]
+  PROP  ($4)
+  PARAMS ($5)
+  SEP   ($6)
+ POST [ $7 ]
+  PROP ($8)
+  RETURN ($9)
+  SEP ($10).

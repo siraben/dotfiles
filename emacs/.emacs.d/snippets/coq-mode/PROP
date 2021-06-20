@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: PROP
+# expand-env: ((yas-indent-line 'fixed))
+# key: PROP
+# --
+(PROP  ($1)
+ LOCAL ($2)
+ SEP   ($3))
