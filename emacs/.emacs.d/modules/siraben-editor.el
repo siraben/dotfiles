@@ -106,5 +106,18 @@ Enables auto-fill mode, spell checking and disables company mode."
         (emacs-lisp-docstring-fill-column t))
     (fill-paragraph nil region)))
 
+;; By MysteriousSilver on #emacs, Friday, June 18, 2021 at 07:34 UTC
+
+(defun anon-new-empty-buffer ()
+  "Create a new empty buffer."
+  (interactive)
+  (let (($buf (generate-new-buffer "untitled")))
+    (switch-to-buffer $buf)
+    (funcall initial-major-mode)
+    (setq buffer-offer-save t)
+    $buf))
+
+(global-set-key (kbd "M-n") #'anon-new-empty-buffer)
+
 (provide 'siraben-editor)
 ;;; siraben-editor.el ends here
