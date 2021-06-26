@@ -135,6 +135,11 @@ in
       xwayland
     ];
   };
+  xdg.portal = {
+    enable = true;
+    gtkUsePortal = false;
+    extraPortals = with pkgs; [ xdg-desktop-portal-wlr ];
+  };
 
   services.logind.extraConfig = ''
     HandlePowerKey=suspend
