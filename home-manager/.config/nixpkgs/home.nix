@@ -29,6 +29,7 @@ in
     COQPATH="$HOME/.nix-profile/lib/coq/8.13/user-contrib";
   } // (lib.optionalAttrs isLinux {
     XDG_CURRENT_DESKTOP = "sway";
+    MOZ_ENABLE_WAYLAND = 1;
   });
 
   programs = import ./programs.nix { inherit lib pkgs isDarwin isLinux; };
