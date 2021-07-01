@@ -14,8 +14,12 @@ in
 
 {
   home-manager.enable = true;
-  direnv.enable = true;
-  direnv.enableNixDirenvIntegration = true;
+  direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+    nix-direnv.enableFlakes = true;
+    enableZshIntegration = true;
+  };
   broot.enable = true;
   git = {
     enable = true;
