@@ -65,7 +65,7 @@ let
   darwinPackages = with pkgs; [
     cocoapods
     coreutils
-    emacsGcc
+    gccemacs
   ];
   sharedPackages = with pkgs; [
     ag
@@ -116,7 +116,7 @@ let
     python38Packages.nix-prefetch-github
     ranger
     ripgrep
-    rmview
+    # rmview # re-enable when pycairo is back
     rustup
     shellcheck
     stow
