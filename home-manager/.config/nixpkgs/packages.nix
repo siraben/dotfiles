@@ -84,7 +84,7 @@ let
     clang_10
     cmake
     coqPackages.coquelicot
-    coq_8_12
+    coq_8_13
     exiftool
     github-cli
     gnumake
@@ -104,7 +104,6 @@ let
     niv
     nix-bisect
     nix-eval-lsp
-    nix-index
     nix-prefetch-git
     nixfmt
     nixpkgs-fmt
