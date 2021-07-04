@@ -33,6 +33,10 @@ in
       github.user = "siraben";
     };
   };
+  # emacs = {
+  #   enable = true;
+  #   package = if isDarwin then pkgs.emacsGcc else pkgs.emacsPgtkGcc;
+  # };
   zsh = {
     enable = true;
     oh-my-zsh = {
