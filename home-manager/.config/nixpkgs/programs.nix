@@ -3,17 +3,20 @@
 let
   darwinShellExtra = ''
     # For multi-user installation
-    export NIX_PATH=$NIX_PATH:$HOME/.nix-defexpr/channels
+    export NIX_PATH=$HOME/.nix-defexpr/channels:$NIX_PATH
+
+    if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix.sh' ]; then . '/nix/var/nix/profiles/default/etc/profile.d/nix.sh'; fi
+
     source $HOME/.nix/remote-build-env
   '';
   linuxShellExtra = "";
   sharedShellExtra = ''
-      source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
   '';
 in
 
 {
   home-manager.enable = true;
+  nix-index.enable = true;
   direnv = {
     enable = true;
     nix-direnv.enable = true;
