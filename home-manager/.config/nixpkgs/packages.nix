@@ -73,7 +73,6 @@ let
     aspell
     aspellDicts.en
     aspellDicts.en-computers
-    autojump
     bat
     borgbackup
     cabal-install
@@ -84,6 +83,7 @@ let
     clang_10
     cmake
     coqPackages.coquelicot
+    coqPackages.mathcomp
     coq_8_13
     exiftool
     github-cli
@@ -116,7 +116,7 @@ let
     python38Packages.nix-prefetch-github
     ranger
     ripgrep
-    # rmview # re-enable when pycairo is back
+    rmview
     rustup
     shellcheck
     stow

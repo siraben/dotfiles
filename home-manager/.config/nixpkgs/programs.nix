@@ -37,16 +37,16 @@ in
   #   enable = true;
   #   package = if isDarwin then pkgs.emacsGcc else pkgs.emacsPgtkGcc;
   # };
+  autojump.enable = true;
   zsh = {
     enable = true;
     oh-my-zsh = {
       enable = true;
-      theme = "robbyrussell";
-      plugins = [ "git" "autojump" ];
     };
     history = {
       size = 100000;
       save = 100000;
+      extended = true;
     };
     shellAliases = {
       hm = "home-manager";
