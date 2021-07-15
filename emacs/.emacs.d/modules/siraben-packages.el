@@ -126,7 +126,7 @@
                     (setenv "SHELL" "/bin/zsh")
                     (exec-path-from-shell-initialize)
                     (exec-path-from-shell-copy-envs
-                     '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE"))))))
+                     '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE" "COQPATH"))))))
 
 (use-package auto-package-update
   :config
