@@ -82,8 +82,11 @@ let
     clang-tools
     clang_10
     cmake
-    coqPackages.coquelicot
-    coqPackages.mathcomp
+    coqPackages_8_13.coquelicot
+    coqPackages_8_13.mathcomp
+    coqPackages_8_13.mathcomp-ssreflect
+    coqPackages_8_13.mathcomp-algebra
+    coqPackages_8_13.hierarchy-builder
     coq_8_13
     exiftool
     github-cli

@@ -26,11 +26,12 @@ in
 
   home.sessionVariables = {
     EDITOR = "emacsclient";
+    COQPATH="$HOME/.nix-profile/lib/coq/8.13/user-contrib";
   } // (lib.optionalAttrs isLinux {
     XDG_CURRENT_DESKTOP = "sway";
   });
 
   programs = import ./programs.nix { inherit lib pkgs isDarwin isLinux; };
   services = lib.optionalAttrs isLinux (import ./services.nix { inherit lib pkgs; });
-  home.stateVersion = "20.09";
+  home.stateVersion = "21.05";
 }

@@ -21,15 +21,25 @@
 
 ;;; Code:
 
-(use-package proof-general)
-(use-package company-coq)
+(use-package proof-general
+  :init
+  (setq proof-splash-enable nil)
+  (setq proof-three-window-mode-policy 'hybrid))
+
+(use-package company-coq
+  :after coq
+  :commands company-coq-mode
+  :bind ("C-M-h" . company-coq-toggle-definition-overlay)
+  :config
+  (setq company-coq-live-on-the-edge t))
 
 (add-hook 'coq-mode-hook
           (lambda ()
             (siraben-prog-mode-defaults)
             (company-coq-mode t)
             (undo-tree-mode t)
-            (direnv-update-environment)))
+            (direnv-update-environment)
+            (electric-indent-mode -1)))
 
 
 (provide 'siraben-coq)
