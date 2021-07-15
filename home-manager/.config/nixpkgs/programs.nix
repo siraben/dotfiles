@@ -10,8 +10,7 @@ let
     source $HOME/.nix/remote-build-env
   '';
   linuxShellExtra = "";
-  sharedShellExtra = ''
-  '';
+  sharedShellExtra = "";
 in
 
 {
@@ -33,10 +32,6 @@ in
       github.user = "siraben";
     };
   };
-  # emacs = {
-  #   enable = true;
-  #   package = if isDarwin then pkgs.emacsGcc else pkgs.emacsPgtkGcc;
-  # };
   autojump.enable = true;
   zsh = {
     enable = true;
@@ -48,6 +43,18 @@ in
       save = 100000;
       extended = true;
     };
+    plugins = [
+      {
+        name = "powerlevel10k";
+        src = pkgs.zsh-powerlevel10k;
+        file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+      }
+      {
+        name = "powerlevel10k-config";
+        src = pkgs.lib.cleanSource ./p10k;
+        file = "p10k-pure.zsh";
+      }
+    ];
     shellAliases = {
       hm = "home-manager";
       hms = "home-manager switch";
