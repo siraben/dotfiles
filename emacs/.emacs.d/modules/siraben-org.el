@@ -21,74 +21,70 @@
 ;; features.
 
 ;;; Code:
-(global-set-key (kbd "C-c c") 'org-capture)
-(global-set-key (kbd "C-c l") 'org-store-link)
-(global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c b") 'org-iswitchb)
 
-(setq org-modules '(org-mu4e
-                    org-habit
-                    org-crypt
-                    org-bbdb
-                    org-bibtex
-                    org-docview
-                    org-gnus
-                    org-info
-                    org-irc
-                    org-mhe
-                    org-rmail))
+(use-package org
+  :bind
+  (("C-c c" . org-capture) ("C-c l" . org-store-link) ("C-c a" . org-agenda))
+  :config
+  (setq org-hide-emphasis-markers t
+        org-fontify-emphasized-text t
+        ;; org-image-actual-width nil
+        org-src-fontify-natively t
+        org-startup-with-inline-images t
+        org-startup-truncated t
+        org-adapt-indentation nil
+        org-edit-src-content-indentation 0
+        org-src-preserve-indentation nil
+        org-agenda-diary-file nil
+        org-habit-graph-column 50
+        org-habit-preceding-days 20
+        org-habit-following-days 4
+        org-habit-show-habits-only-for-today t)
 
-(setq org-habit-show-habits-only-for-today t)
+  ;; Org mode code block languages
+  ;; (require 'ob-sh)
+  ;; (org-babel-do-load-languages
+  ;;  'org-babel-load-languages
+  ;;  `((emacs-lisp . t)
+  ;;    (gnuplot . t)
+  ;;    (,(if (version< emacs-version "26") 'sh 'shell) . t)
+  ;;    (calc . t)
+  ;;    (python . t)
+  ;;    (scheme . t)
+  ;;    (dot . t)
+  ;;    (octave . t)))
+  ;; I want to have source code syntax highlighting for LaTeX export as well.
+  (setq org-latex-listings 'minted)
+  (setq org-latex-pdf-process
+        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+  ;; These are code blocks that are "safe" to evaluate.
+  (defun my-org-confirm-babel-evaluate (lang body)
+    (not (or (string= lang "dot")
+             (string= lang "gnuplot")
+             (string= lang "octave"))))
 
-(setq org-agenda-diary-file nil)
-(setq org-habit-graph-column 50)
-(setq org-habit-preceding-days 20)
-(setq org-habit-following-days 4)
+  (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+  (setq org-modules '(org-mu4e
+                      org-habit
+                      org-crypt
+                      org-bbdb
+                      org-bibtex
+                      org-docview
+                      org-gnus
+                      org-info
+                      org-irc
+                      org-mhe
+                      org-rmail))
 
-(setq org-log-done t)
-
-;; Org mode code block languages
-;; (org-babel-do-load-languages
-;;  'org-babel-load-languages
-;;  `((emacs-lisp . t)
-;;    (gnuplot . t)
-;;    (,(if (version< emacs-version "26") 'sh 'shell) . t)
-;;    (calc . t)
-;;    (python . t)
-;;    (scheme . t)
-;;    (dot . t)
-;;    (octave . t)))
-
-;; These are code blocks that are "safe" to evaluate.
-(defun my-org-confirm-babel-evaluate (lang body)
-  (not (or (string= lang "dot")
-           (string= lang "gnuplot")
-           (string= lang "octave"))))
-
-(setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
-
-(defun my-org-archive-done-tasks ()
-  (interactive)
-  (org-map-entries 'org-archive-subtree "/DONE" 'file))
+  (setq org-export-backends '(ascii beamer html icalendar latex odt))
+  (setq org-list-allow-alphabetical t))
 
 (use-package gnuplot)
 (use-package htmlize)
 (use-package edit-indirect)
 (use-package org-wc)
 
-;; I want to have source code syntax highlighting for LaTeX export as well.
-(setq org-latex-listings 'minted)
-;; (require 'ox-latex)
-;; (add-to-list 'org-latex-packages-alist '("" "minted"))
-
-
-(setq org-latex-pdf-process
-      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-
-(setq org-export-backends '(ascii beamer html icalendar latex odt))
-
-(setq org-list-allow-alphabetical 't)
 (provide 'siraben-org)
 ;;; siraben-org.el ends here
