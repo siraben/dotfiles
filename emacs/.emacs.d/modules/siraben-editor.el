@@ -18,7 +18,7 @@
 
 ;;; Code:
 
-(global-auto-revert-mode t)
+(add-hook 'after-init-hook '(lambda () (global-auto-revert-mode t)))
 ;; Dynamic binding sucks.
 (setq lexical-binding t)
 
