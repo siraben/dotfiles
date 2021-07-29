@@ -32,6 +32,8 @@
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 (add-to-list 'default-frame-alist '(ns-appearance . dark))
 
+(set-fontset-font t 'unicode "Apple Color Emoji" nil 'append)
+
 (provide 'siraben-macos)
 
 ;;; siraben-macos.el ends here
