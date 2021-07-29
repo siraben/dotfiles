@@ -113,7 +113,7 @@ Enables auto-fill mode, spell checking and disables company mode."
   (interactive)
   (let (($buf (generate-new-buffer "untitled")))
     (switch-to-buffer $buf)
-    (funcall initial-major-mode)
+    (text-mode)
     (setq buffer-offer-save t)
     $buf))
 
