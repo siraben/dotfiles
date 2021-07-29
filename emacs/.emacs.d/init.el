@@ -88,7 +88,6 @@
 (require 'siraben-org)
 (require 'siraben-tramp)
 (require 'siraben-calc)
-(require 'siraben-midnight)
 
 ;; Load OS-specific configuration.
 (require
