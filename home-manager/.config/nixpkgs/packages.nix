@@ -62,7 +62,6 @@ let
     zoom-us
   ] ++ wayland-packages ++ web-shortcuts;
   darwinPackages = with pkgs; [
-    cocoapods
     coreutils
     gccemacs
   ];
