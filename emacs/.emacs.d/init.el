@@ -28,8 +28,7 @@
 
 (defvar file-name-handler-alist-old file-name-handler-alist)
 
-(setq package-enable-at-startup nil
-      file-name-handler-alist nil
+(setq file-name-handler-alist nil
       message-log-max 16384
       gc-cons-threshold 402653184
       gc-cons-percentage 0.6
@@ -44,11 +43,7 @@
 
 (setq byte-compile-warnings nil)
 
-(when (boundp 'native-comp-async-report-warnings-errors)
-  (setq native-comp-async-report-warnings-errors nil))
-
-(when (boundp 'comp-async-report-warnings-errors)
-  (setq comp-async-report-warnings-errors nil))
+(setq native-comp-async-report-warnings-errors nil)
 
 (setq read-process-output-max (* 1024 1024))
 
