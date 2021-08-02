@@ -25,6 +25,7 @@ in
   broot.enable = true;
   git = {
     enable = true;
+    lfs.enable = true;
     userName = "Ben Siraphob";
     userEmail = "bensiraphob@gmail.com";
     extraConfig = {
@@ -70,7 +71,6 @@ in
       ns = "nix-shell";
       tb = "tput bel";
       ix = ''curl -n -F 'f:1=<-' http://ix.io'';
-      ssh = "kitty +kitten ssh";
     } // (lib.optionalAttrs isDarwin (import ./darwin-aliases.nix {}));
     initExtra = lib.concatStringsSep "\n"
       [
