@@ -2,7 +2,9 @@
 *.elc
 .DS_Store
 nixos/hardware-configuration.nix
-emacs/.emacs.d/*
-!emacs/.emacs.d/snippets
 
 
+/emacs/.emacs.d/recentf
+/emacs/.emacs.d/transient/
+/emacs/.emacs.d/org-roam.db
+/emacs/.emacs.d/eln-cache/

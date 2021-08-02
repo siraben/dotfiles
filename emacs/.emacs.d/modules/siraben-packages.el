@@ -24,14 +24,23 @@
 ;;; Code:
 
 ;; Initialize package.el
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
 ;; Ensure `use-package' is installed.
-(unless (package-installed-p 'use-package)
-  (progn (package-refresh-contents)
-	 (package-install 'use-package)))
+(straight-use-package 'use-package)
+
+(setq straight-use-package-by-default t)
 
 (require 'use-package)
 
@@ -39,7 +48,6 @@
 
 ;; Ensure that all packages are downloaded to their latest version,
 ;; but also defer them to speed up init.
-(setq use-package-always-ensure t)
 (setq use-package-always-defer t)
 (setq use-package-verbose t)
 
@@ -60,16 +68,19 @@
   :hook
   (markdown-mode . (lambda ()
                      (auto-fill-mode -1)
-                     ;; (visual-line-mode +1)
-                     ;; (visual-fill-column-mode +1)
-                     )))
+                     (markdown-toggle-wiki-links t)))
+  :config
+  (setq markdown-link-space-sub-char " "
+        markdown-wiki-link-alias-first nil
+        markdown-enable-math t))
+
 (use-package magit
   :bind (("C-x g"   . 'magit-status)
          ("C-x M-g" . 'magit-dispatch))
   :config
   (when (eq system-type 'darwin)
-    (setq magit-git-executable (executable-find "git")))
-  )
+    (setq magit-git-executable (executable-find "git"))))
+
 
 (use-package diff-hl
   :after magit
