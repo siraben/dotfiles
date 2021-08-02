@@ -32,18 +32,6 @@
   (siraben-insert-time)
   (goto-char (point-max)))
 
-(defun siraben-update ()
-  "Update my config to the latest version, along with packages."
-  (interactive)
-  (when (y-or-n-p "Confirm update config? Any changes made locally will be discarded.")
-    (message "Updating installed packages...")
-    (auto-package-update-now)
-    (message "Updating siraben's Emacs config...")
-    (cd siraben-root-dir)
-    (shell-command "git reset --hard")
-    (shell-command "git pull")
-    (message "Update finished. Restart Emacs to complete the process.")))
-
 (defun siraben-reset-packages ()
   "Deletes all packages from the directory `siraben-root-dir'."
   (interactive)
