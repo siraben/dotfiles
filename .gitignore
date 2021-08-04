@@ -9,3 +9,11 @@ nixos/hardware-configuration.nix
 /emacs/.emacs.d/org-roam.db
 /emacs/.emacs.d/eln-cache/
 /emacs/.emacs.d/straight/repos/
+/emacs/.emacs.d/.lsp-session-v1
+/emacs/.emacs.d/.mc-lists.el
+/emacs/.emacs.d/custom.el
+/emacs/.emacs.d/forge-database.sqlite
+/emacs/.emacs.d/games/
+/emacs/.emacs.d/straight/build-cache.el
+/emacs/.emacs.d/straight/build/
+/emacs/.emacs.d/tramp
