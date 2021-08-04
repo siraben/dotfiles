@@ -40,7 +40,8 @@
 ;; Ensure `use-package' is installed.
 (straight-use-package 'use-package)
 
-(setq straight-use-package-by-default t)
+(setq straight-use-package-by-default t
+      straight-vc-git-default-clone-depth 1)
 
 (require 'use-package)
 
