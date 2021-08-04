@@ -19,9 +19,5 @@
 
 ;;; Code:
 
-(add-hook 'sh-mode-hook (lambda ()
-                          (lsp)))
-
-
 (provide 'siraben-bash)
 ;;; siraben-bash.el ends here
