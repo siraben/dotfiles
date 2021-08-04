@@ -46,7 +46,7 @@ in
   hardware = {
     bluetooth = {
       enable = true;
-      config = {
+      settings = {
         General = {
           ControllerMode = "dual";
           Enable = lib.concatStringsSep "," [ "Source" "Sink" "Media" "Socket" ];
@@ -99,14 +99,14 @@ in
       monospace = [
         "Hack"
       ];
-      sansSerif = [
-        "DejaVu Sans"
-        "Noto Sans"
-      ];
-      serif = [
-        "DejaVu Serif"
-        "Noto Serif"
-      ];
+      # sansSerif = [
+      #   "DejaVu Sans"
+      #   "Noto Sans"
+      # ];
+      # serif = [
+      #   "DejaVu Serif"
+      #   "Noto Serif"
+      # ];
     };
 
   };
@@ -133,13 +133,20 @@ in
       wl-clipboard
       mako
       xwayland
+      wlsunset
     ];
   };
-  xdg.portal = {
-    enable = true;
-    gtkUsePortal = false;
-    extraPortals = with pkgs; [ xdg-desktop-portal-wlr ];
+
+  xdg = {
+    portal = {
+      enable = true;
+      # extraPortals = with pkgs; [
+      #   xdg-desktop-portal-gtk
+      # ];
+      # gtkUsePortal = true;
+    };
   };
+  services.pipewire.enable = true;
 
   services.logind.extraConfig = ''
     HandlePowerKey=suspend
@@ -160,7 +167,7 @@ in
     gutenprintBin
   ];
 
-  services.gnome3.gnome-keyring.enable = true;
+  services.gnome.gnome-keyring.enable = true;
   services.xserver = {
     enable = true;
     displayManager.defaultSession = "sway";
@@ -187,6 +194,6 @@ in
     };
   };
 
-  system.stateVersion = "20.09";
+  system.stateVersion = "21.05";
 
 }

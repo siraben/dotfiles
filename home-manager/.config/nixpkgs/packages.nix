@@ -11,9 +11,8 @@ let
     grim
     slurp
     swaylock-fancy
-    wlsunset
+    # wlsunset
     wofi
-    xdg-desktop-portal-wlr
   ];
   web-shortcuts = with pkgs; [
     (wrapWeb "element" "https://app.element.io")
@@ -52,7 +51,7 @@ let
     system-config-printer
     tdesktop
     thunderbird
-    tor-browser-bundle-bin
+    # tor-browser-bundle-bin
     transmission-gtk
     ungoogled-chromium
     vlc
