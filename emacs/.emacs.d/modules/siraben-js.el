@@ -30,7 +30,6 @@
 
 (add-hook 'js2-mode-hook
           #'(lambda ()
-              (lsp)
               (setq-local electric-layout-rules '((?\; . after)))))
 
 (provide 'siraben-js)
