@@ -97,6 +97,7 @@
   :commands free-keys)
 
 (use-package yasnippet
+  :diminish yas-minor-mode
   :hook (after-init . yas-global-mode)
   :config
   (setq yas-snippet-dirs `(,(concat siraben-root-dir "snippets"))))
@@ -149,6 +150,7 @@
   :magic ("%PDF" . pdf-view-mode))
 
 (use-package helm
+  :diminish helm-mode
   :config
   (setq helm-split-window-in-side-p           t
         helm-buffers-fuzzy-matching           t
