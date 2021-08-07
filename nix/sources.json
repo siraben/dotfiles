@@ -65,10 +65,10 @@
         "homepage": "",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f51caec3fc179127011da5568d572f096971ac63",
-        "sha256": "15rry0xwsyrck3pkms7c57lyldv21r2kich6j4180731x9m7hxf5",
+        "rev": "bd807ed5dec14377f87f63c3f467adf93f03de2e",
+        "sha256": "0dfpg31ikhw0acqfpdkir6pq4cjvfwnmispik3ysvy0pvgzqy75x",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/f51caec3fc179127011da5568d572f096971ac63.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs/archive/bd807ed5dec14377f87f63c3f467adf93f03de2e.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs-review": {
@@ -77,10 +77,10 @@
         "homepage": "",
         "owner": "Mic92",
         "repo": "nixpkgs-review",
-        "rev": "662fc7d680f2cd9c65e509163ffdd9ff7746e009",
-        "sha256": "1ihsrkjl9jbw18w751kk3gk8y23rv33glq465fi20snyxjbbln5z",
+        "rev": "4f77205bb1a8a88bef385773602ed53fbc8b6e1a",
+        "sha256": "0991jz2l834pyzwcrkvjf3wlp122fkkz6avs4j5n9idv549c5xc0",
         "type": "tarball",
-        "url": "https://github.com/Mic92/nixpkgs-review/archive/662fc7d680f2cd9c65e509163ffdd9ff7746e009.tar.gz",
+        "url": "https://github.com/Mic92/nixpkgs-review/archive/4f77205bb1a8a88bef385773602ed53fbc8b6e1a.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs-wayland": {
@@ -89,10 +89,10 @@
         "homepage": "",
         "owner": "colemickens",
         "repo": "nixpkgs-wayland",
-        "rev": "c53d6a085f24b1fc4c5d8984944317a5326311d2",
-        "sha256": "15rfcmhd01xcrvyn6c0lvkddrw392wwq13mxrj2sidl3vnzfglx4",
+        "rev": "f2326348eee7a392e629075eed7430d87dc7dcee",
+        "sha256": "04j39bz4dc8bq5yr7qxsnh03p7gpz5xgnlibl5rssir9v6ldi0na",
         "type": "tarball",
-        "url": "https://github.com/colemickens/nixpkgs-wayland/archive/c53d6a085f24b1fc4c5d8984944317a5326311d2.tar.gz",
+        "url": "https://github.com/colemickens/nixpkgs-wayland/archive/f2326348eee7a392e629075eed7430d87dc7dcee.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }
