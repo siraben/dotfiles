@@ -23,6 +23,11 @@ in
   home.username = "siraben";
   home.homeDirectory = if isDarwin then "/Users/siraben" else "/home/siraben";
   home.packages = import ./packages.nix { inherit lib sources pkgs isDarwin isLinux; };
+  home.file.".tree-sitter".source = (pkgs.runCommand "grammars" {} ''
+    mkdir -p $out/bin
+    ${lib.concatStringsSep "\n"
+      (lib.mapAttrsToList (name: src: "name=${name}; ln -s ${src}/parser $out/bin/\${name#tree-sitter-}.${if isDarwin then "dylib" else "so"}") pkgs.tree-sitter.builtGrammars)};
+  '');
 
   home.sessionVariables = {
     EDITOR = "emacsclient";
