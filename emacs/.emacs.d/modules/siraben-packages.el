@@ -235,8 +235,24 @@
 
 (use-package flutter)
 
-(use-package tree-sitter)
-(use-package tree-sitter-langs)
+(use-package tree-sitter-langs
+  :demand)
+
+(use-package tree-sitter
+  :demand
+  :after tree-sitter-langs
+  :config
+  (push (expand-file-name "~/.tree-sitter") tree-sitter-load-path)
+  (require 'tree-sitter-langs)
+  (global-tree-sitter-mode)
+  (setq tree-sitter-major-mode-language-alist
+        `((nix-mode . nix)
+          (markdown-mode . markdown)
+          (latex-mode . latex)
+          (yaml-mode . yaml)
+          (toml-mode . toml)
+          ,@tree-sitter-major-mode-language-alist))
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here
