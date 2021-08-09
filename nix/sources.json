@@ -48,15 +48,15 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nix-gccemacs-darwin": {
-        "branch": "master",
+        "branch": "flake",
         "description": "Build gccemacs for macOS 10.15 or newer using Nix.",
         "homepage": "",
         "owner": "siraben",
         "repo": "nix-gccemacs-darwin",
-        "rev": "6e1f2bc97c2287e67a48de89ea1be53349cc76ee",
-        "sha256": "1726kznxcavdsd3n1fn3wxifq39c7nx72n6jmm88xgy2zm5l473c",
+        "rev": "c3800c44331dca424fa525d8bb08e49ee37fdfb3",
+        "sha256": "1m8qqhfij37q7sjqa91cmymr6az2vva15jghzywhpq3j73ipmqy1",
         "type": "tarball",
-        "url": "https://github.com/siraben/nix-gccemacs-darwin/archive/6e1f2bc97c2287e67a48de89ea1be53349cc76ee.tar.gz",
+        "url": "https://github.com/siraben/nix-gccemacs-darwin/archive/c3800c44331dca424fa525d8bb08e49ee37fdfb3.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs": {
