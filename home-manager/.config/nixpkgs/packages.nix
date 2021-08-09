@@ -1,6 +1,6 @@
 { lib, sources, pkgs, isDarwin, isLinux }:
 let
-  gccemacs = (import sources.nix-gccemacs-darwin).emacsGccDarwin;
+  gccemacs = (import sources.nix-gccemacs-darwin).pkgs.x86_64-darwin.emacsGccDarwin;
   nix-bisect = import sources.nix-bisect { inherit pkgs; };
   nixpkgs-review = import sources.nixpkgs-review { inherit pkgs; };
   nix-eval-lsp = import sources.nix-eval-lsp;
