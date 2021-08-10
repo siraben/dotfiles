@@ -22,6 +22,7 @@
 
 ;;; Code:
 
+(setq tramp-default-method "ssh")
 (setq explicit-shell-file-name "/bin/sh")
 (setq password-cache-expiry nil)
 (setq tramp-histfile-override t)
