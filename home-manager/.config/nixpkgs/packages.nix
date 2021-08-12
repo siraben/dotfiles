@@ -98,6 +98,7 @@ let
     haskellPackages.haskell-language-server
     hlint
     htop
+    hyperfine
     jq
     kitty
     ledger
@@ -134,7 +135,9 @@ let
     tree
     unzip
     vim
+    w3m
     watch
+    wget
     youtube-dl
     zathura
     zip
