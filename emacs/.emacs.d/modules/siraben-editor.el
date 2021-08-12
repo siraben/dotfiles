@@ -85,8 +85,8 @@ Enables auto-fill mode, spell checking and disables company mode."
 ;;; Dired stuff
 ;; In case we want to restore the file we deleted..
 (setq delete-by-moving-to-trash t)
-(add-hook 'after-init-hook 'dired-async-mode)
-
+(use-package async
+  :hook (after-init . dired-async-mode))
 
 (setq ffap-machine-p-known 'reject)
 
