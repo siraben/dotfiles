@@ -73,7 +73,7 @@
 (add-to-list 'load-path siraben-modules-dir)
 
 (require 'siraben-core)
-(require 'siraben-packages)
+(load "siraben-packages.el")
 (require 'siraben-ui)
 (require 'siraben-fonts)
 (require 'siraben-keybindings)
