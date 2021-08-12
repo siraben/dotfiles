@@ -39,5 +39,5 @@ in
 
   programs = import ./programs.nix { inherit lib pkgs isDarwin isLinux; };
   services = lib.optionalAttrs isLinux (import ./services.nix { inherit lib pkgs; });
-  home.stateVersion = "21.05";
+  home.stateVersion = "21.11";
 }
