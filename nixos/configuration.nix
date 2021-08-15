@@ -75,7 +75,7 @@ in
   powerManagement.enable = true;
   powerManagement.powertop.enable = true;
 
-  time.timeZone = "Asia/Bangkok";
+  time.timeZone = "America/Chicago";
 
   fonts = {
     fontDir.enable = true;
