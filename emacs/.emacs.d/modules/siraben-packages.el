@@ -106,7 +106,7 @@
 
 (use-package ledger-mode
   :config
-  (setq ledger-reconcile-default-commodity "THB"))
+  (setq ledger-reconcile-default-commodity "USD"))
 
 (use-package paredit
   :diminish paredit-mode)
