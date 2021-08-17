@@ -185,10 +185,10 @@
 
 (use-package auctex
   :config
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t)
-  (setq TeX-master nil)
-  (setq TeX-PDF-mode t)
+  (setq TeX-auto-save t
+        TeX-parse-self t
+        TeX-master nil
+        TeX-PDF-mode t)
   :hook
   (LaTeX-mode . (lambda ()
                   (company-auctex-init)
