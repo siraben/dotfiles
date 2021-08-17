@@ -159,8 +159,9 @@
         helm-ff-file-name-history-use-recentf t
         helm-autoresize-max-height            0
         helm-autoresize-min-height            40
+        helm-autoresize-mode                  t
         recentf-max-saved-items               1000
-        helm-autoresize-mode                  t)
+        recentf-keep                          nil)
   :bind (("C-h a"   . 'helm-apropos)
          ("C-h f"   . 'helm-apropos)
          ("C-h r"   . 'helm-info-emacs)
