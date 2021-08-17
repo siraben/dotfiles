@@ -117,7 +117,11 @@ Enables auto-fill mode, spell checking and disables company mode."
     (setq buffer-offer-save t)
     $buf))
 
-(global-set-key (kbd "M-n") #'anon-new-empty-buffer)
+(global-set-key (kbd "M-p") #'backward-paragraph)
+(global-set-key (kbd "M-n") #'forward-paragraph)
+(global-set-key (kbd "M-N") #'anon-new-empty-buffer)
+
+(setq auto-save-interval 30)
 
 (provide 'siraben-editor)
 ;;; siraben-editor.el ends here
