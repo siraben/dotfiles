@@ -252,6 +252,8 @@
           (latex-mode . latex)
           (yaml-mode . yaml)
           (toml-mode . toml)
+          (typescript-mode . tsx)
+          (haskell-mode . haskell)
           ,@tree-sitter-major-mode-language-alist))
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
 
