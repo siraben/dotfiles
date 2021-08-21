@@ -5,10 +5,10 @@
         "homepage": "",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "d86e69bab8ad2db968060c012566a27b1022f6d6",
-        "sha256": "09ilzlzfbfqgz8mj036y6f48jai3pdlk86knx0d318jdccygz2b8",
+        "rev": "069e2b93522c4b4e09f3a6f21c545125fa3cd79e",
+        "sha256": "0na4f51msky7miwsvdk2454bw3lnq8652z5c8d8y270fsdq286sk",
         "type": "tarball",
-        "url": "https://github.com/nix-community/emacs-overlay/archive/d86e69bab8ad2db968060c012566a27b1022f6d6.tar.gz",
+        "url": "https://github.com/nix-community/emacs-overlay/archive/069e2b93522c4b4e09f3a6f21c545125fa3cd79e.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {
@@ -65,10 +65,10 @@
         "homepage": "",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "6525bbc06a39f26750ad8ee0d40000ddfdc24acb",
-        "sha256": "1irrvwzfj37awf0l7ww4n5dbs7scf7jkb436gwgyzs1bn4r5w7nq",
+        "rev": "14b0f20fa1f56438b74100513c9b1f7c072cf789",
+        "sha256": "0lzirqazbpx5jda2sppa3ylkn1ywcq1z8v9510pxdpmkp969d1ck",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/6525bbc06a39f26750ad8ee0d40000ddfdc24acb.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs/archive/14b0f20fa1f56438b74100513c9b1f7c072cf789.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs-review": {
@@ -77,10 +77,10 @@
         "homepage": "",
         "owner": "Mic92",
         "repo": "nixpkgs-review",
-        "rev": "853069224004575dde7ed9129153a2c745a81728",
-        "sha256": "12fmgs697657a4abm92i4d2gdqlp71v5z1nqgvxqgf0k5wrd8l2g",
+        "rev": "538b4b3c8499830f4a146140d9216e02863e2355",
+        "sha256": "1l497p369wpf8sl2l67a7xvaxhv69pq3gq8ypny74ghb9v0qhm83",
         "type": "tarball",
-        "url": "https://github.com/Mic92/nixpkgs-review/archive/853069224004575dde7ed9129153a2c745a81728.tar.gz",
+        "url": "https://github.com/Mic92/nixpkgs-review/archive/538b4b3c8499830f4a146140d9216e02863e2355.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs-wayland": {
@@ -89,10 +89,10 @@
         "homepage": "",
         "owner": "colemickens",
         "repo": "nixpkgs-wayland",
-        "rev": "a101af9bc48b65aa29056c016c9b2d20689b8c43",
-        "sha256": "08dylqynx8xvh39gsjrvkcjfs5hw8k79bc0dallnhwrrz4pq2yin",
+        "rev": "6bba2e2c723b7691d6341dda1f263172216e507f",
+        "sha256": "0yj47brj38a2sb3j5g4cir2hmqn6ayffh5mizvzf6p8zgqj36453",
         "type": "tarball",
-        "url": "https://github.com/colemickens/nixpkgs-wayland/archive/a101af9bc48b65aa29056c016c9b2d20689b8c43.tar.gz",
+        "url": "https://github.com/colemickens/nixpkgs-wayland/archive/6bba2e2c723b7691d6341dda1f263172216e507f.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "tree-sitter-nix": {
