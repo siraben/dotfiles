@@ -17,3 +17,4 @@ emacs/.emacs.d/straight/repos/
 emacs/.emacs.d/straight/build-cache.el
 emacs/.emacs.d/straight/build/
 emacs/.emacs.d/tramp
+emacs/.emacs.d/.dap-breakpoints
