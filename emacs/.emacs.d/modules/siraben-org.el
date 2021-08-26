@@ -39,7 +39,8 @@
         org-habit-graph-column 50
         org-habit-preceding-days 20
         org-habit-following-days 4
-        org-habit-show-habits-only-for-today t)
+        org-habit-show-habits-only-for-today t
+        org-log-done 'time)
 
   ;; Org mode code block languages
   ;; (require 'ob-sh)
