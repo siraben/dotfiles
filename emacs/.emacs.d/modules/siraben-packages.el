@@ -241,6 +241,7 @@
 
 (use-package tree-sitter
   :demand
+  :diminish "ts"
   :after tree-sitter-langs
   :config
   (push (expand-file-name "~/.tree-sitter") tree-sitter-load-path)
