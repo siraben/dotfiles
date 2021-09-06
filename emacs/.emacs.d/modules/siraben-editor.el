@@ -64,6 +64,7 @@ Enables auto-fill mode, spell checking and disables company mode."
          (visual-line-mode 1)    ;; Org mode headings don't wrap.
          (company-mode -1)))
 
+(add-hook 'after-init-hook (lambda () (diminish 'visual-line-mode "vl")))
 
 (add-hook 'markdown-mode-hook #'siraben-enable-writing-modes)
 (add-hook 'org-mode-hook #'siraben-enable-writing-modes)
