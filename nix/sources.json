@@ -94,17 +94,5 @@
         "type": "tarball",
         "url": "https://github.com/colemickens/nixpkgs-wayland/archive/a6344685b6c895db46ab5f59040d1f9e10b29aa1.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "tree-sitter-nix": {
-        "branch": "master",
-        "description": "Nix grammar for tree-sitter",
-        "homepage": null,
-        "owner": "cstrahan",
-        "repo": "tree-sitter-nix",
-        "rev": "83ee5993560bf15854c69b77d92e34456f8fb655",
-        "sha256": "03jhvyrsxq49smk9p2apjj839wmzjmrzy045wcxawz1g7xssp9pr",
-        "type": "tarball",
-        "url": "https://github.com/cstrahan/tree-sitter-nix/archive/83ee5993560bf15854c69b77d92e34456f8fb655.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }
