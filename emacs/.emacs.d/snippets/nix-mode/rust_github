@@ -2,7 +2,7 @@
 # name: rust github
 # key: rg
 # --
-{ lib, fetchFromGitHub, rustPlatform }:
+{ lib, stdenv, fetchFromGitHub, rustPlatform, Security }:
 
 rustPlatform.buildRustPackage rec {
   pname = "$1";
@@ -16,6 +16,8 @@ rustPlatform.buildRustPackage rec {
   };
 
   cargoSha256 = lib.fakeSha256;
+
+  buildInputs = lib.optionals stdenv.isDarwin [ Security ];
 
   meta = with lib; {
     description = "$5";
