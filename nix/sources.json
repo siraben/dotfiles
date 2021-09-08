@@ -94,5 +94,17 @@
         "type": "tarball",
         "url": "https://github.com/colemickens/nixpkgs-wayland/archive/64e98c7cf5d8586a267b9fcdf63f801bf3405feb.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "siraben-overlay": {
+        "branch": "master",
+        "description": "@siraben's eclectic collection of software",
+        "homepage": "",
+        "owner": "siraben",
+        "repo": "siraben-overlay",
+        "rev": "cd803298c560010643d2f92aca4ab15dd92228f4",
+        "sha256": "1ha4r27bcv6cq975jidnw5qp4p7lcxilikp7ry8sfpi6w7w13gn0",
+        "type": "tarball",
+        "url": "https://github.com/siraben/siraben-overlay/archive/cd803298c560010643d2f92aca4ab15dd92228f4.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }
