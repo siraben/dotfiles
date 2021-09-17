@@ -226,15 +226,19 @@
   :config
   (editorconfig-mode 1))
 
-(use-package dart-mode)
+(use-package dart-mode
+  :disabled)
+
 (use-package lsp-dart
+  :disabled
   :hook (dart-mode . lsp)
   :config
   (setq lsp-dart-sdk-dir "/usr/local/Caskroom/flutter/2.2.3/flutter/bin/cache/dart-sdk"
         lsp-dart-flutter-widget-guides nil
         lsp-dart-line-length 120))
 
-(use-package flutter)
+(use-package flutter
+  :disabled)
 
 (use-package tree-sitter-langs
   :demand)
