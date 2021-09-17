@@ -240,6 +240,8 @@
 (use-package flutter
   :disabled)
 
+(use-package graphviz-dot-mode)
+
 (use-package tree-sitter-langs
   :demand)
 
@@ -259,6 +261,7 @@
           (toml-mode . toml)
           (typescript-mode . tsx)
           (haskell-mode . haskell)
+          (graphviz-dot-mode . dot)
           ,@tree-sitter-major-mode-language-alist))
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
 
