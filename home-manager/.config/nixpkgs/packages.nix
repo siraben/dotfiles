@@ -35,6 +35,7 @@ let
     gnupg
     keepassxc
     killall
+    kitty
     libreoffice
     lightlocker
     msmtp
@@ -100,7 +101,6 @@ let
     htop
     hyperfine
     jq
-    kitty
     ledger
     manix
     mpv
