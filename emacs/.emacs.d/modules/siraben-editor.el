@@ -123,6 +123,22 @@ Enables auto-fill mode, spell checking and disables company mode."
 (global-set-key (kbd "M-N") #'anon-new-empty-buffer)
 
 (setq auto-save-interval 30)
+(setq kept-new-versions 10
+      kept-old-verisons 0)
+
+(setq delete-old-versions t
+      backup-by-copying t
+      vc-make-backup-files t)
+
+(show-paren-mode 1)
+(setq show-paren-delay 0)
+
+(require 'paren)
+(set-face-background 'show-paren-match nil)
+(set-face-background 'show-paren-mismatch nil)
+(set-face-foreground 'show-paren-match "#ff0")
+(set-face-foreground 'show-paren-mismatch "#f00")
+(set-face-attribute 'show-paren-match nil :weight 'extra-bold)
 
 (provide 'siraben-editor)
 ;;; siraben-editor.el ends here
