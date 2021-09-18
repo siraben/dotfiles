@@ -31,6 +31,7 @@ in
     extraConfig = {
       pull.rebase = true;
       github.user = "siraben";
+      advice.detachedHead = false;
     };
   };
   autojump.enable = true;
