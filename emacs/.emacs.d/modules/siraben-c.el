@@ -27,11 +27,13 @@
 (add-hook 'c-mode-hook (lambda ()
                          (electric-pair-local-mode t)
                          (electric-indent-mode t)
-                         (clang-format+-mode)))
+                         (clang-format+-mode)
+                         (lsp)))
 
 (add-hook 'c++-mode-hook (lambda ()
                            (clang-format+-mode)
-                           (electric-pair-local-mode t)))
+                           (electric-pair-local-mode t)
+                           (lsp)))
 
 (define-key c-mode-base-map (kbd "s-b") 'recompile)
 

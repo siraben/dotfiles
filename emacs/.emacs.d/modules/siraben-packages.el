@@ -162,14 +162,13 @@
         helm-autoresize-mode                  t
         recentf-max-saved-items               1000
         recentf-keep                          nil)
+  (helm-mode 1)
   :bind (("C-h a"   . 'helm-apropos)
          ("C-h f"   . 'helm-apropos)
          ("C-h r"   . 'helm-info-emacs)
          ("C-x C-f" . 'helm-find-files)
          ("M-x"     . 'helm-M-x)
-         ("C-x b"   . 'helm-mini))
-  :hook
-  (after-init . helm-mode))
+         ("C-x b"   . 'helm-mini)))
 
 (use-package helm-rg
   :bind (("M-G" . 'helm-rg)))
@@ -212,6 +211,7 @@
   :diminish)
 
 (use-package envrc
+  :diminish
   :hook (after-init . envrc-global-mode)
   :bind (("C-c e" . envrc-command-map)))
 
