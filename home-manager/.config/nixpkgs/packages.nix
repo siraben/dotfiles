@@ -60,7 +60,6 @@ let
     coreutils
     gccemacs
     spoof-mac
-    (racket.overrideAttrs (oA: { meta.broken = false; }))
   ];
   sharedPackages = with pkgs; [
     ag
