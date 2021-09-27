@@ -36,7 +36,8 @@
   '(clojure-mode-hook
     emacs-lisp-mode-hook
     lisp-mode-hook
-    scheme-mode-hook))
+    scheme-mode-hook
+    racket-mode-hook))
 
 (dolist (hook siraben-lispy-mode-hooks)
   (add-hook hook #'(lambda ()
