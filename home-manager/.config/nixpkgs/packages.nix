@@ -8,11 +8,6 @@ let
   wayland-packages = with pkgs; [
     emacsPgtkGcc
     firefox-wayland
-    grim
-    slurp
-    swaylock-fancy
-    # wlsunset
-    wofi
   ];
   web-shortcuts = with pkgs; [
     (wrapWeb "element" "https://app.element.io")
