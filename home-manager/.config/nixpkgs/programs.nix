@@ -9,7 +9,9 @@ let
 
     source $HOME/.nix/remote-build-env
   '';
-  linuxShellExtra = "";
+  linuxShellExtra = ''
+    export NIX_PATH=$HOME/.nix-defexpr/channels:$NIX_PATH
+  '';
   sharedShellExtra = "";
 in
 
