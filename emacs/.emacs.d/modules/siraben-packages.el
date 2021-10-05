@@ -76,7 +76,7 @@
         markdown-enable-math t))
 
 (use-package magit
-  :bind (("C-x g"   . 'magit-status)
+  :bind (("C-x g"   . 'magit-status-quick)
          ("C-x M-g" . 'magit-dispatch))
   :config
   (when (eq system-type 'darwin)
