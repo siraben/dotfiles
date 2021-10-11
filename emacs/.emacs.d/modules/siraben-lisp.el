@@ -65,7 +65,8 @@
 
 (use-package racket-mode
   :config
-  (add-to-list 'auto-mode-alist '("\\.rkt\\'" . racket-mode)))
+  (add-to-list 'auto-mode-alist '("\\.rkt\\'" . racket-mode))
+  :hook (racket-mode . racket-xp-mode))
 
 (provide 'siraben-lisp)
 ;;; siraben-lisp.el ends here

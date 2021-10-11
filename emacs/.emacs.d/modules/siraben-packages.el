@@ -63,7 +63,10 @@
          ("C-M-m" . mc/mark-more-like-this)
          ("s-G" . mc/mark-all-like-this)))
 
-(use-package rainbow-delimiters)
+(use-package rainbow-delimiters
+  :hook
+  ((racket-mode . rainbow-delimiters-mode)))
+
 (use-package writeroom-mode)
 (use-package markdown-mode
   :hook
@@ -109,7 +112,8 @@
   (setq ledger-reconcile-default-commodity "USD"))
 
 (use-package paredit
-  :diminish paredit-mode)
+  :diminish paredit-mode
+  :hook ((racket-repl-mode . paredit-mode)))
 
 (use-package undo-tree
   :diminish undo-tree-mode
