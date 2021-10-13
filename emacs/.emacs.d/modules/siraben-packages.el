@@ -265,7 +265,6 @@
           (yaml-mode . yaml)
           (toml-mode . toml)
           (typescript-mode . tsx)
-          (haskell-mode . haskell)
           (graphviz-dot-mode . dot)
           (sml-mode . ocaml)
           ,@tree-sitter-major-mode-language-alist))
