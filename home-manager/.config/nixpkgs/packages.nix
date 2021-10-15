@@ -68,6 +68,7 @@ let
     aspellDicts.en
     aspellDicts.en-computers
     bat
+    bash
     borgbackup
     cabal-install
     cachix
