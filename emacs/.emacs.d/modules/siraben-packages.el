@@ -94,6 +94,7 @@
   (add-hook 'after-init-hook 'global-diff-hl-mode))
 
 (use-package forge
+  :disabled
   :after magit)
 
 (use-package free-keys
@@ -267,8 +268,18 @@
           (typescript-mode . tsx)
           (graphviz-dot-mode . dot)
           (sml-mode . ocaml)
+          (makefile-bsdmake-mode . make)
           ,@tree-sitter-major-mode-language-alist))
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+
+(use-package vterm
+  :if (require 'vterm-module nil t)
+  :demand)
+
+(use-package vterm-toggle
+  :after vterm
+  :demand
+  :bind (("<f8>" . vterm-toggle)))
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here
