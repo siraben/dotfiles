@@ -12,7 +12,28 @@ let
   linuxShellExtra = ''
     export NIX_PATH=$HOME/.nix-defexpr/channels:$NIX_PATH
   '';
-  sharedShellExtra = "";
+  sharedShellExtra = ''
+    fpath+=("${pkgs.pure-prompt}/share/zsh/site-functions")
+    if [ "$TERM" != dumb ]; then
+      autoload -U promptinit && promptinit && prompt pure
+    fi
+    vterm_printf(){
+        if [ -n "$TMUX" ] && ([ "''${TERM%%-*}" = "tmux" ] || [ "''${TERM%%-*}" = "screen" ] ); then
+            # Tell tmux to pass the escape sequences through
+            printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+        elif [ "''${TERM%%-*}" = "screen" ]; then
+            # GNU screen (screen, screen-256color, screen-256color-bce)
+            printf "\eP\e]%s\007\e\\" "$1"
+        else
+            printf "\e]%s\e\\" "$1"
+        fi
+    }
+    vterm_prompt_end() {
+        vterm_printf "51;A$(whoami)@$(hostname):$(pwd)";
+    }
+    setopt PROMPT_SUBST
+    PROMPT=$PROMPT'%{$(vterm_prompt_end)%}'
+  '';
 in
 
 {
@@ -47,18 +68,10 @@ in
       save = 100000;
       extended = true;
     };
-    plugins = [
-      {
-        name = "powerlevel10k";
-        src = pkgs.zsh-powerlevel10k;
-        file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-      }
-      {
-        name = "powerlevel10k-config";
-        src = pkgs.lib.cleanSource ./p10k;
-        file = "p10k-pure.zsh";
-      }
-    ];
+    oh-my-zsh.theme = lib.mkForce "";
+    oh-my-zsh.extraConfig = ''
+      ZSH_THEME=""
+    '';
     shellAliases = {
       hm = "home-manager";
       hms = "home-manager switch";
