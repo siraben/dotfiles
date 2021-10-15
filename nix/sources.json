@@ -53,10 +53,10 @@
         "homepage": "",
         "owner": "siraben",
         "repo": "nix-gccemacs-darwin",
-        "rev": "2d6dfdb1fec29a346f0e5b3fc6b4f4eb3fbdf1d3",
-        "sha256": "0mfcjk665x3y1sz4z4a13jajs1shs7gdzrmm14dwbman2f75x14x",
+        "rev": "73201db3e79ef54edda35962a60f160bf5660819",
+        "sha256": "16azh3q9ml1kyi3qkw3lkjc286r7kcz893s4dddhy1hs8chwna8p",
         "type": "tarball",
-        "url": "https://github.com/siraben/nix-gccemacs-darwin/archive/2d6dfdb1fec29a346f0e5b3fc6b4f4eb3fbdf1d3.tar.gz",
+        "url": "https://github.com/siraben/nix-gccemacs-darwin/archive/73201db3e79ef54edda35962a60f160bf5660819.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs": {
