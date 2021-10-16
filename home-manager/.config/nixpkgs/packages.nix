@@ -85,6 +85,7 @@ let
     coqPackages_8_13.mathcomp-fingroup
     coqPackages_8_13.mathcomp-ssreflect
     coq_8_13
+    dejavu_fonts
     exiftool
     github-cli
     gnumake
