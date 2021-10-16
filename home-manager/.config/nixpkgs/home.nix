@@ -36,6 +36,11 @@ in
     MOZ_ENABLE_WAYLAND = 1;
   });
 
+  home.language = {
+    ctype = "en_US.UTF-8";
+    base = "en_US.UTF-8";
+  };
+
   programs = import ./programs.nix { inherit lib pkgs isDarwin isLinux; };
   services = lib.optionalAttrs isLinux (import ./services.nix { inherit lib pkgs; });
   home.stateVersion = "21.11";
