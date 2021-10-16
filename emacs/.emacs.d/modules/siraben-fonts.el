@@ -24,7 +24,7 @@
 
 ;;; Code:
 
-(defvar siraben-default-font "Hack" "The default font type.")
+(defvar siraben-default-font "DejaVu Sans Mono" "The default font type.")
 (defvar siraben-default-font-size
   (cond
    ((eq system-type 'darwin) 13)
