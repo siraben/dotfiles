@@ -72,16 +72,16 @@ in
     enable = true;
     oh-my-zsh = {
       enable = true;
+      theme = lib.mkForce "";
+      extraConfig = ''
+        ZSH_THEME=""
+      '';
     };
     history = {
       size = 100000;
       save = 100000;
       extended = true;
     };
-    oh-my-zsh.theme = lib.mkForce "";
-    oh-my-zsh.extraConfig = ''
-      ZSH_THEME=""
-    '';
     shellAliases = {
       hm = "home-manager";
       hms = "home-manager switch";
