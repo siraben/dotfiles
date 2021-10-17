@@ -76,6 +76,7 @@ in
       extraConfig = ''
         ZSH_THEME=""
       '';
+      plugins = [ "git" ];
     };
     history = {
       size = 100000;
