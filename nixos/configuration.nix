@@ -37,7 +37,6 @@ in
       noto-fonts
       noto-fonts-cjk
       noto-fonts-extra
-      hack-font
       inconsolata
       material-icons
       liberation_ttf
@@ -48,7 +47,7 @@ in
     ];
     fontconfig.defaultFonts = {
       monospace = [
-        "Hack"
+        "DejaVu Sans Mono"
       ];
       sansSerif = [
         "DejaVu Sans"
