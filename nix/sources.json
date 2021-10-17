@@ -35,18 +35,6 @@
         "url": "https://github.com/timokau/nix-bisect/archive/35963d9c5c947a12f7bfe18532144ada254d534c.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
-    "nix-eval-lsp": {
-        "branch": "main",
-        "description": "Nix language server that evaluates code",
-        "homepage": "https://github.com/nix-community/rnix-lsp",
-        "owner": "aaronjanse",
-        "repo": "nix-eval-lsp",
-        "rev": "3e42793fc43cc1a2ebe0f9f857e798ae3cca16e5",
-        "sha256": "1f2ifi2rwjz73azvk71p5k33vjvdbghlmc1xq85vyb1kxkx5kdpq",
-        "type": "tarball",
-        "url": "https://github.com/aaronjanse/nix-eval-lsp/archive/3e42793fc43cc1a2ebe0f9f857e798ae3cca16e5.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
     "nix-gccemacs-darwin": {
         "branch": "flake",
         "description": "Build gccemacs for macOS 10.15 or newer using Nix.",
