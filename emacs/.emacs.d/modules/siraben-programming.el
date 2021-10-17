@@ -51,7 +51,7 @@
     (ansi-color-apply-on-region (point-min) (point-max))))
 (add-hook 'compilation-filter-hook 'siraben-ansi-colorize-buffer)
 
-(add-hook 'after-init-hook '(lambda () (require 'siraben-c)))
+(add-hook 'after-init-hook #'(lambda () (require 'siraben-c)))
 ;; (require 'siraben-common-lisp)
 (require 'siraben-coq)
 (require 'siraben-csharp)
