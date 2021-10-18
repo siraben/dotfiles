@@ -5,7 +5,7 @@ let
   nixpkgs-review = import sources.nixpkgs-review { inherit pkgs; };
   wrapWeb = pkgs.callPackage ./wrapWeb.nix { };
   wayland-packages = with pkgs; [
-    emacsPgtkGcc
+    ((emacsPackagesFor emacsPgtkGcc).emacsWithPackages (e: [ e.vterm ]))
     firefox-wayland
   ];
   web-shortcuts = with pkgs; [
@@ -41,9 +41,11 @@ let
     offlineimap
     paper-icon-theme
     poppler_utils
+    racket
     rhythmbox
     slack
     spotify
+    swiProlog
     system-config-printer
     tdesktop
     thunderbird
