@@ -179,10 +179,6 @@
 (use-package helm-rg
   :bind (("M-G" . 'helm-rg)))
 
-(use-package geiser
-  :config
-  (setq geiser-default-implementation 'guile))
-
 (use-package webpaste
   :config
   (setq webpaste-provider-priority '("dpaste.de" "ix.io"))
@@ -231,20 +227,6 @@
 (use-package editorconfig
   :config
   (editorconfig-mode 1))
-
-(use-package dart-mode
-  :disabled)
-
-(use-package lsp-dart
-  :disabled
-  :hook (dart-mode . lsp)
-  :config
-  (setq lsp-dart-sdk-dir "/usr/local/Caskroom/flutter/2.2.3/flutter/bin/cache/dart-sdk"
-        lsp-dart-flutter-widget-guides nil
-        lsp-dart-line-length 120))
-
-(use-package flutter
-  :disabled)
 
 (use-package graphviz-dot-mode)
 

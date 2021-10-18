@@ -43,6 +43,10 @@
   (add-hook hook #'(lambda ()
                      (siraben-enable-lisp-editing-modes))))
 
+(use-package geiser
+  :config
+  (setq geiser-default-implementation 'guile))
+
 ;; Enable some Lisp modes like paredit and rainbow delimiters, but no
 ;; need to undo and auto complete.
 (add-hook 'geiser-repl-mode-hook
