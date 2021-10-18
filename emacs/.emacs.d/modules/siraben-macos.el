@@ -34,14 +34,6 @@
 
 (set-fontset-font t 'unicode "Apple Color Emoji" nil 'append)
 
-;; Disable native compilation when on battery power
-(require 'battery)
-(when (and battery-status-function
-           (not (string-match-p "AC"
-                                (battery-format "%L"
-                                                (funcall battery-status-function)))))
-  (setq no-native-compile t))
-
 (global-unset-key (kbd "s-t"))
 
 (provide 'siraben-macos)
