@@ -15,6 +15,7 @@ let
     (wrapWeb "mastodon" "https://mastodon.social")
   ];
   linuxPackages = with pkgs; [
+    alacritty
     anki
     bemenu
     discord
@@ -62,7 +63,6 @@ let
   ];
   sharedPackages = with pkgs; [
     ag
-    alacritty
     aspell
     aspellDicts.en
     aspellDicts.en-computers
@@ -74,7 +74,7 @@ let
     ccls
     chez
     clang-tools
-    clang_10
+    clang_12
     cmake
     coqPackages_8_13.coquelicot
     coqPackages_8_13.hierarchy-builder
@@ -98,11 +98,8 @@ let
     hyperfine
     jq
     ledger
-    manix
     mpv
-    mu
     niv
-    nix-bisect
     nix-prefetch-git
     nixfmt
     nixpkgs-fmt
