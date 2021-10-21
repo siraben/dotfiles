@@ -255,13 +255,11 @@
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
 
 (use-package vterm
-  :if (require 'vterm-module nil t)
-  :demand)
+  :if (require 'vterm-module nil t))
 
-(use-package vterm-toggle
-  :after vterm
-  :demand
-  :bind (("<f8>" . vterm-toggle)))
+(use-package multi-vterm
+  :commands (multi-vterm)
+  :bind ("<f8>" . multi-vterm))
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here
