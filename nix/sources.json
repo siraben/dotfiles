@@ -83,6 +83,18 @@
         "url": "https://github.com/nix-community/nixpkgs-wayland/archive/bee12e76e238cbf4dbe83dd2fdaef43057c00275.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "pkgsStable": {
+        "branch": "21.05",
+        "description": "Nix Packages collection",
+        "homepage": "",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "91cba7b0a9841b9e63aaff51cf00ea3d3e2229dd",
+        "sha256": "0ry27i3vk93i3kwc2rv12lynmc3snxyxhgwb14857d3x6i8zavpf",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/91cba7b0a9841b9e63aaff51cf00ea3d3e2229dd.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "siraben-overlay": {
         "branch": "master",
         "description": "@siraben's eclectic collection of software",

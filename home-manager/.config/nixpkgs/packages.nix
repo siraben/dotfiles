@@ -1,4 +1,4 @@
-{ lib, sources, pkgs, isDarwin, isLinux }:
+{ lib, sources, pkgs, pkgsStable, isDarwin, isLinux }:
 let
   gccemacs = (import sources.nix-gccemacs-darwin).pkgs.x86_64-darwin.emacsGccDarwin;
   nix-bisect = import sources.nix-bisect { inherit pkgs; };
@@ -26,7 +26,6 @@ let
     exfat
     feh
     gnome3.cheese
-    gnumake
     gnupg
     keepassxc
     killall
@@ -45,7 +44,6 @@ let
     rhythmbox
     slack
     spotify
-    swiProlog
     system-config-printer
     tdesktop
     thunderbird
@@ -107,7 +105,7 @@ let
     nixpkgs-fmt
     nixpkgs-review
     nodePackages.bash-language-server
-    nodePackages.javascript-typescript-langserver
+    nodePackages.typescript-language-server
     nodePackages.pyright
     nodejs
     python38
@@ -119,6 +117,8 @@ let
     rustup
     shellcheck
     stow
+    swiProlog
+    pkgsStable.texlab
     (texlive.combine {
       inherit (texlive) amsmath scheme-small latexmk wrapfig rotfloat capt-of minted fvextra upquote catchfile xstring framed biblatex csquotes;
     })
