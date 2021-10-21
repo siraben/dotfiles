@@ -155,7 +155,8 @@
   :magic ("%PDF" . pdf-view-mode))
 
 (use-package helm
-  :diminish helm-mode
+  :diminish (helm-mode)
+  :commands (helm-mode helm-resume)
   :config
   (setq helm-split-window-in-side-p           t
         helm-buffers-fuzzy-matching           t
@@ -164,15 +165,14 @@
         helm-ff-file-name-history-use-recentf t
         helm-autoresize-max-height            0
         helm-autoresize-min-height            40
-        helm-autoresize-mode                  t
-        recentf-max-saved-items               1000
-        recentf-keep                          nil)
-  :bind (("C-h a"   . 'helm-apropos)
-         ("C-h f"   . 'helm-apropos)
-         ("C-h r"   . 'helm-info-emacs)
-         ("C-x C-f" . 'helm-find-files)
-         ("M-x"     . 'helm-M-x)
-         ("C-x b"   . 'helm-mini))
+        helm-autoresize-mode                  t)
+  :bind (("C-h a"   . helm-apropos)
+         ("C-h f"   . helm-apropos)
+         ("C-h r"   . helm-info-emacs)
+         ("C-x C-f" . helm-find-files)
+         ("M-x"     . helm-M-x)
+         ("C-x b"   . helm-mini)
+         ("C-x C-b" . helm-resume))
   :hook
   (after-init . helm-mode))
 
