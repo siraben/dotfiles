@@ -130,6 +130,9 @@ Enables auto-fill mode, spell checking and disables company mode."
       backup-by-copying t
       vc-make-backup-files t)
 
+(setq recentf-max-saved-items 2000
+      recentf-keep nil)
+
 (show-paren-mode 1)
 (setq show-paren-delay 0)
 

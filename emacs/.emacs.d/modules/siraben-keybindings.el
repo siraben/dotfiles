@@ -27,9 +27,6 @@
 ;; Custom functions
 (global-set-key (kbd "M-T") 'siraben-insert-time)
 
-;; Retain old ibuffer behavior.
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-
 ;; Fullscreen behavior like iTerm2.
 (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
 
