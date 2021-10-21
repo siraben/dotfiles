@@ -17,11 +17,17 @@ let
     ] ++ lib.optional isLinux (import sources.nixpkgs-wayland);
     config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
   };
+  pkgsStable = import sources.pkgsStable {
+    overlays = [
+      (import sources.emacs-overlay)
+    ] ++ lib.optional isLinux (import sources.nixpkgs-wayland);
+    config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
+  };
 in
 {
   home.username = "siraben";
   home.homeDirectory = if isDarwin then "/Users/siraben" else "/home/siraben";
-  home.packages = import ./packages.nix { inherit lib sources pkgs isDarwin isLinux; };
+  home.packages = import ./packages.nix { inherit lib sources pkgs pkgsStable isDarwin isLinux; };
   home.file.".tree-sitter".source = (pkgs.runCommand "grammars" {} ''
     mkdir -p $out/bin
     ${lib.concatStringsSep "\n"
