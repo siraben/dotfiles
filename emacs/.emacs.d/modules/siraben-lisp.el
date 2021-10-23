@@ -43,19 +43,25 @@
   (add-hook hook #'(lambda ()
                      (siraben-enable-lisp-editing-modes))))
 
-(use-package geiser
-  :config
-  (setq geiser-default-implementation 'guile))
-
-;; Enable some Lisp modes like paredit and rainbow delimiters, but no
-;; need to undo and auto complete.
-(add-hook 'geiser-repl-mode-hook
+(run-at-time 10 nil #'(lambda () (use-package geiser
+                                   :config
+                                   (setq geiserx-default-implementation 'guile)
+                                   ;; Enable some Lisp modes like paredit and rainbow delimiters, but no
+                                   ;; need to undo and auto complete.
+                                   (add-hook 'geiser-repl-mode-hook
+                                             (lambda ()
+                                               (siraben-enable-lisp-editing-modes)
+                                               (undo-tree-mode                 -1)
+                                               (paredit-mode                   +1)
+                                               (aggressive-indent-mode         -1)))))
+             )
+(add-hook 'ielm-mode-hook
           (lambda ()
             (siraben-enable-lisp-editing-modes)
             (undo-tree-mode                 -1)
             (paredit-mode                   +1)
-            ;; (font-lock-mode                 -1)
             (aggressive-indent-mode         -1)))
+
 
 ;; Even with the Chicken Scheme compiler giving error messages it's
 ;; annoying.
