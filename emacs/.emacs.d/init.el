@@ -37,7 +37,7 @@
 (add-hook 'after-init-hook
           `(lambda ()
              (setq file-name-handler-alist file-name-handler-alist-old
-                   gc-cons-threshold 1000000
+                   gc-cons-threshold 100000000
                    gc-cons-percentage 0.1)
              (garbage-collect)) t)
 
@@ -98,9 +98,8 @@
    (darwin     'siraben-macos)))
 
 ;; Initial scratch buffer message.
-(setq initial-scratch-message
-      (format ";; Session started on %s\n"
-	      (shell-command-to-string "date +'%A, %F at %R'")))
+(setq inhibit-startup-message t
+      initial-scratch-message nil)
 
 (setq default-directory "~/")
 
