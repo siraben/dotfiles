@@ -217,8 +217,10 @@
   :bind (("C-c e" . envrc-command-map)))
 
 (use-package esup
-  :config (setq esup-user-init-file (file-truename "~/.emacs.d/init.el"))
-  :commands (esup))
+  :commands (esup)
+  :config
+  (setq esup-user-init-file (file-truename "~/.emacs.d/init.el")
+        esup-depth 0))
 
 (use-package yaml-mode)
 (use-package build-farm)
@@ -229,17 +231,15 @@
 
 (use-package graphviz-dot-mode)
 
-(use-package tree-sitter-langs
-  :demand)
+(use-package tree-sitter-langs)
 
 (use-package tree-sitter
-  :demand
+  :commands (global-tree-sitter-mode)
   :diminish "ts"
-  :after tree-sitter-langs
+  :hook ((after-init . global-tree-sitter-mode)
+         (tree-sitter-after-on . tree-sitter-hl-mode))
   :config
   (push (expand-file-name "~/.tree-sitter") tree-sitter-load-path)
-  (require 'tree-sitter-langs)
-  (global-tree-sitter-mode)
   (setq tree-sitter-major-mode-language-alist
         `((nix-mode . nix)
           (markdown-mode . markdown)
@@ -250,8 +250,7 @@
           (graphviz-dot-mode . dot)
           (sml-mode . ocaml)
           (makefile-bsdmake-mode . make)
-          ,@tree-sitter-major-mode-language-alist))
-  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+          ,@tree-sitter-major-mode-language-alist)))
 
 (use-package vterm
   :if (require 'vterm-module nil t))
