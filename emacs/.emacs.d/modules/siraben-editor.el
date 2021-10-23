@@ -19,8 +19,6 @@
 ;;; Code:
 
 (add-hook 'after-init-hook #'(lambda () (global-auto-revert-mode t) (global-so-long-mode t)))
-;; Dynamic binding sucks.
-(setq lexical-binding t)
 
 ;; Don't use tabs to indent but maintain correct appearance.
 (setq-default indent-tabs-mode nil
@@ -51,8 +49,10 @@
 (require 'windmove)
 (windmove-default-keybindings)
 
-(require 'flyspell)
-(setq flyspell-issue-message-flag nil)
+(use-package flyspell
+  :config
+  (setq flyspell-issue-message-flag nil))
+
 (defun siraben-enable-writing-modes ()
   "Enables writing modes for writing prose.
 Enables auto-fill mode, spell checking and disables company mode."
@@ -92,7 +92,8 @@ Enables auto-fill mode, spell checking and disables company mode."
 (setq ffap-machine-p-known 'reject)
 
 (use-package dashboard
-  :demand
+  :commands (dashboard-mode)
+  :hook (after-init . dashboard-mode)
   :config
   (setq dashboard-set-footer nil)
   (setq dashboard-items '((recents . 10)))
@@ -122,7 +123,7 @@ Enables auto-fill mode, spell checking and disables company mode."
 (global-set-key (kbd "M-n") #'forward-paragraph)
 (global-set-key (kbd "M-N") #'anon-new-empty-buffer)
 
-(setq auto-save-interval 30)
+(setq auto-save-interval 100)
 (setq kept-new-versions 10
       kept-old-verisons 0)
 
