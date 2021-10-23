@@ -79,8 +79,8 @@
         markdown-enable-math t))
 
 (use-package magit
-  :bind (("C-x g"   . 'magit-status-quick)
-         ("C-x M-g" . 'magit-dispatch))
+  :bind (("C-x g"   . magit-status-quick)
+         ("C-x M-g" . magit-dispatch))
   :config
   (when (eq system-type 'darwin)
     (setq magit-git-executable (executable-find "git"))))
@@ -133,15 +133,14 @@
   :config (global-company-mode t))
 
 (use-package which-key
-  :diminish
-  :init (which-key-mode t))
+  :commands (which-key-mode)
+  :hook (after-init . which-key-mode))
 
 (when (memq window-system '(mac ns))
   (use-package exec-path-from-shell
     :demand
     :hook
     (after-init . (lambda ()
-                    (setenv "SHELL" "/bin/zsh")
                     (exec-path-from-shell-initialize)
                     (exec-path-from-shell-copy-envs
                      '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE" "COQPATH"))))))
