@@ -83,7 +83,7 @@
 (require 'siraben-programming)
 (require 'siraben-shell)
 (require 'siraben-org)
-(require 'siraben-tramp)
+;; (require 'siraben-tramp)
 
 ;; Load OS-specific configuration.
 (require
