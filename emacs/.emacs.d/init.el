@@ -72,13 +72,7 @@
 
 (add-to-list 'load-path siraben-modules-dir)
 
-;; Disable native compilation when on battery power
-(require 'battery)
-(when (and battery-status-function
-           (not (string-match-p "AC"
-                                (battery-format "%L"
-                                                (funcall battery-status-function)))))
-  (setq no-native-compile t))
+(setq no-native-compile t)
 
 (require 'siraben-core)
 (load "siraben-packages.el")
@@ -107,5 +101,16 @@
 (let ((secret.el "~/Nextcloud/Scripts/secret.el"))
   (when (file-exists-p secret.el)
     (load secret.el)))
+
+;; Disable native compilation when on battery power
+(run-at-time 1 nil #'(lambda ()
+                       (require 'battery)
+                       (if (and battery-status-function
+                                (not (string-match-p "AC"
+                                                     (battery-format "%L"
+                                                                     (funcall battery-status-function)))))
+                           (setq no-native-compile t)
+                         (setq no-native-compile nil))))
+
 
 ;;; init.el ends here
