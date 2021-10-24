@@ -57,6 +57,7 @@
 (use-package diminish)
 (use-package writegood-mode)
 (use-package multiple-cursors
+  :commands (mc/mark-previous-like-this mc/mark-next-like mc/edit-lines mc/mark-more-like-this mc/mark-all-like-this)
   :bind (("C-<" . mc/mark-previous-like-this)
          ("C->" . mc/mark-next-like-this)
          ("C-S-c C-S-c" . mc/edit-lines)
@@ -79,6 +80,7 @@
         markdown-enable-math t))
 
 (use-package magit
+  :commands (magit-status-quick magit-dispatch)
   :bind (("C-x g"   . magit-status-quick)
          ("C-x M-g" . magit-dispatch))
   :config
