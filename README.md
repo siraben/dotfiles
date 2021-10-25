@@ -10,7 +10,7 @@ In particular, the build of Emacs is custom and is [built with GitHub Actions](h
 - Shell: `zsh` with [pure prompt](https://github.com/sindresorhus/pure)
 - WM on NixOS: GNOME 40
 - Filesystem: ZFS on NixOS, APFS on macOS
-- Editor: Emacs (bleeding edge), `tomorrow-night` theme
+- Editor: Emacs (bleeding edge), `tomorrow-night` theme, [straight.el](https://github.com/raxod502/straight.el)
 
 ## Installation
 First, [install Home Manager](https://github.com/nix-community/home-manager#installation) on macOS or Linux, then run the following commands.
