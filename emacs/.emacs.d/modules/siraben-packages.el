@@ -147,11 +147,6 @@
                     (exec-path-from-shell-copy-envs
                      '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE" "COQPATH"))))))
 
-(use-package auto-package-update
-  :config
-  (setq auto-package-update-delete-old-versions t
-	auto-package-update-interval 3))
-
 (use-package pdf-tools
   :magic ("%PDF" . pdf-view-mode))
 
