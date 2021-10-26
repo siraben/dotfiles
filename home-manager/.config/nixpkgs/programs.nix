@@ -55,12 +55,16 @@ in
     nix-direnv.enableFlakes = true;
     enableZshIntegration = true;
   };
-  broot.enable = false;
+  gpg.enable = true;
   git = {
     enable = true;
     lfs.enable = true;
     userName = "Ben Siraphob";
     userEmail = "bensiraphob@gmail.com";
+    signing = {
+      key = "45F0E5D788143267";
+      signByDefault = true;
+    };
     extraConfig = {
       pull.rebase = true;
       github.user = "siraben";
