@@ -26,7 +26,6 @@ let
     exfat
     feh
     gnome3.cheese
-    gnupg
     keepassxc
     killall
     kitty
