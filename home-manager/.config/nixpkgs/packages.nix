@@ -15,44 +15,32 @@ let
     (wrapWeb "mastodon" "https://mastodon.social")
   ];
   linuxPackages = with pkgs; [
-    alacritty
-    anki
-    bemenu
     discord
     docker
     docker-compose
-    dragon-drop
     evince
-    exfat
-    feh
     gnome3.cheese
     keepassxc
     killall
     kitty
     libreoffice
-    lightlocker
     msmtp
     musescore
-    networkmanager
     nextcloud-client
     nix-update
     offlineimap
     paper-icon-theme
-    poppler_utils
     racket
     rhythmbox
     slack
     spotify
-    system-config-printer
     tdesktop
     thunderbird
-    # tor-browser-bundle-bin
+    tor-browser-bundle-bin
     transmission-gtk
     ungoogled-chromium
     vlc
     whois
-    wpa_supplicant
-    xorg.xkill
     zoom-us
   ] ++ wayland-packages ++ web-shortcuts;
   darwinPackages = with pkgs; [
@@ -61,7 +49,6 @@ let
     spoof-mac
   ];
   sharedPackages = with pkgs; [
-    ag
     aspell
     aspellDicts.en
     aspellDicts.en-computers
@@ -70,8 +57,6 @@ let
     borgbackup
     cabal-install
     cachix
-    ccls
-    chez
     clang-tools
     clang_12
     cmake
@@ -84,31 +69,22 @@ let
     coqPackages_8_13.mathcomp-ssreflect
     coq_8_13
     dejavu_fonts
-    exiftool
     github-cli
     gnumake
-    graphviz
     guile
-    (haskellPackages.ghcWithHoogle (h: [ h.arithmoi h.QuickCheck h.vector ]))
-    haskellPackages.ghcide
+    (haskellPackages.ghcWithHoogle (h: [ h.QuickCheck h.vector ]))
     haskellPackages.haskell-language-server
     hlint
     htop
-    hyperfine
     jq
-    ledger
     mpv
     niv
-    nix-prefetch-git
-    nixfmt
-    nixpkgs-fmt
     nixpkgs-review
     nodePackages.bash-language-server
     nodePackages.typescript-language-server
     nodePackages.pyright
     nodejs
     python38
-    python38Packages.nix-prefetch-github
     ranger
     ripgrep
     rmview
@@ -124,12 +100,10 @@ let
     the-powder-toy
     tldr
     tmux
-    tnef
     tor
     tree
     unzip
     vim
-    w3m
     watch
     wget
     youtube-dl
