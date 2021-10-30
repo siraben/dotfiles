@@ -57,6 +57,7 @@
 (use-package diminish)
 (use-package writegood-mode)
 (use-package multiple-cursors
+  :defer 3
   :commands (mc/mark-previous-like-this mc/mark-next-like mc/edit-lines mc/mark-more-like-this mc/mark-all-like-this)
   :bind (("C-<" . mc/mark-previous-like-this)
          ("C->" . mc/mark-next-like-this)
@@ -82,18 +83,7 @@
 (use-package magit
   :commands (magit-status-quick magit-dispatch)
   :bind (("C-x g"   . magit-status-quick)
-         ("C-x M-g" . magit-dispatch))
-  :config
-  (when (eq system-type 'darwin)
-    (setq magit-git-executable (executable-find "git"))))
-
-
-(use-package diff-hl
-  :after magit
-  :config
-  (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
-  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
-  (add-hook 'after-init-hook 'global-diff-hl-mode))
+         ("C-x M-g" . magit-dispatch)))
 
 (use-package forge
   :disabled
@@ -140,7 +130,7 @@
 
 (when (memq window-system '(mac ns))
   (use-package exec-path-from-shell
-    :demand
+    :defer 3
     :hook
     (after-init . (lambda ()
                     (exec-path-from-shell-initialize)
@@ -173,7 +163,8 @@
   (after-init . helm-mode))
 
 (use-package helm-rg
-  :bind (("M-G" . 'helm-rg)))
+  :commands (helm-rg)
+  :bind (("M-G" . helm-rg)))
 
 (use-package webpaste
   :config
@@ -243,15 +234,18 @@
 
 (use-package graphviz-dot-mode)
 
-(use-package tree-sitter-langs)
+(use-package tree-sitter-langs
+  :defer 5
+  :demand)
 
 (use-package tree-sitter
-  :commands (global-tree-sitter-mode)
+  :demand
   :diminish "ts"
-  :hook ((after-init . global-tree-sitter-mode)
-         (tree-sitter-after-on . tree-sitter-hl-mode))
+  :after tree-sitter-langs
   :config
   (push (expand-file-name "~/.tree-sitter") tree-sitter-load-path)
+  (require 'tree-sitter-langs)
+  (global-tree-sitter-mode)
   (setq tree-sitter-major-mode-language-alist
         `((nix-mode . nix)
           (markdown-mode . markdown)
@@ -262,7 +256,9 @@
           (graphviz-dot-mode . dot)
           (sml-mode . ocaml)
           (makefile-bsdmake-mode . make)
-          ,@tree-sitter-major-mode-language-alist)))
+          ,@tree-sitter-major-mode-language-alist))
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+
 
 (use-package vterm
   :if (require 'vterm-module nil t))
