@@ -15,10 +15,16 @@
   # Setup Nextcloud virtual host to listen on ports
   virtualHosts = {
     "cloud.siraben.dev" = {
-      ## Force HTTP redirect to HTTPS
       forceSSL = true;
-      ## LetsEncrypt
       enableACME = true;
+    };
+    "siraben.dev" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:4000";
+        extraConfig = "proxy_ssl_server_name on; proxy_pass_header Authorization;";
+      };
     };
   };
 }
