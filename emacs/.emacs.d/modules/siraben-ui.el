@@ -61,20 +61,6 @@
 		   (abbreviate-file-name (buffer-file-name))
 		 "%b"))))
 
-;; Enable my favorite color scheme.
-(use-package color-theme-sanityinc-tomorrow
-  :demand
-  :config (load-theme 'sanityinc-tomorrow-night t))
-
-(use-package spaceline
-  :config (setq powerline-default-separator 'arrow)
-  :hook
-  (after-init . (lambda ()
-                  (progn
-                    (require 'spaceline-config)
-                    (spaceline-emacs-theme)
-                    (spaceline-helm-mode)))))
-
 ;; Remove the auto-revert mode-line
 (require 'diminish)
 (add-hook 'after-init-hook (lambda ()
