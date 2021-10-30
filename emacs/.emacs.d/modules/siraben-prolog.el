@@ -31,7 +31,8 @@
 (add-hook 'after-init-hook
           (lambda ()
             (autoload 'prolog-mode "prolog" "Major mode for editing Prolog programs." t)
-            (add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode))))
+            (add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode))
+            (add-to-list 'auto-mode-alist '("\\.plt\\'" . prolog-mode))))
 
 (provide 'siraben-prolog)
 ;;; siraben-prolog.el ends here
