@@ -20,7 +20,13 @@
 ;;; Code:
 
 (use-package flycheck-ocaml)
-(use-package tuareg)
+(use-package tuareg
+  :hook ((tuareg-mode .
+                      (lambda ()
+                        (add-function :before-while (local 'tree-sitter-hl-face-mapping-function)
+                                      (lambda (capture-name)
+                                        (not (string= capture-name "variable"))))))))
+
 
 (provide 'siraben-ocaml)
 ;;; siraben-ocaml.el ends here
