@@ -166,6 +166,19 @@
   :commands (helm-rg)
   :bind (("M-G" . helm-rg)))
 
+;; Enable my favorite color scheme.
+(use-package color-theme-sanityinc-tomorrow
+  :demand
+  :config (load-theme 'sanityinc-tomorrow-night t))
+
+(use-package spaceline
+  :commands (spaceline-emacs-theme spaceline-helm-mode)
+  :config (setq powerline-default-separator 'arrow)
+  :hook
+  (after-init . (lambda ()
+                  (spaceline-emacs-theme)
+                  (spaceline-helm-mode))))
+
 (use-package webpaste
   :config
   (setq webpaste-provider-priority '("dpaste.de" "ix.io"))
