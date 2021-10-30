@@ -1,5 +1,12 @@
 { config, pkgs, ... }:
 
+let
+  publicKey = pkgs.fetchurl {
+    url = "https://github.com/siraben.keys";
+    sha256 = "sha256-i8gigitlRxiNa8eMPkD6FTOlVEO0p9LxRrBN41d/sJM=";
+  };
+in
+
 {
   imports = [ ./hardware-configuration.nix ];
 
@@ -32,30 +39,9 @@
 
   services.openssh.enable = true;
   services.openssh.passwordAuthentication = false;
-  users.users.siraben.openssh.authorizedKeys.keyFiles = [ ./id_rsa.pub ];
+  users.users.siraben.openssh.authorizedKeys.keyFiles = [ publicKey ];
 
-  services.nginx = {
-    enable = true;
-
-    # Use recommended settings
-    recommendedGzipSettings = true;
-    recommendedOptimisation = true;
-    recommendedProxySettings = true;
-    recommendedTlsSettings = true;
-
-    # Only allow PFS-enabled ciphers with AES256
-    sslCiphers = "AES256+EECDH:AES256+EDH:!aNULL";
-
-    # Setup Nextcloud virtual host to listen on ports
-    virtualHosts = {
-      "cloud.siraben.dev" = {
-        ## Force HTTP redirect to HTTPS
-        forceSSL = true;
-        ## LetsEncrypt
-        enableACME = true;
-      };
-    };
-  };
+  services.nginx = import ./nginx.nix { };
 
   security.acme = {
     acceptTerms = true;
