@@ -54,8 +54,6 @@
 (add-hook 'after-init-hook #'(lambda () (require 'siraben-c)))
 ;; (require 'siraben-common-lisp)
 (require 'siraben-coq)
-(require 'siraben-csharp)
-(require 'siraben-elm)
 (require 'siraben-forth)
 (require 'siraben-haskell)
 (require 'siraben-js)
