@@ -48,7 +48,9 @@
 (setq read-process-output-max (* 1024 1024))
 
 ;; At least remove the eyesores while we wait.
-(tool-bar-mode -1)
+(when (fboundp 'tool-bar-mode)
+  (tool-bar-mode -1))
+
 (menu-bar-mode -1)
 
 (add-hook 'after-init-hook
