@@ -24,7 +24,8 @@
 
 (use-package ediprolog
   :commands (ediprolog-dwim)
-  :bind ("<f10>" . ediprolog-dwim)
+  :bind (:map prolog-mode-map
+              ("C-x C-e" . ediprolog-dwim))
   :config
   (setq ediprolog-system 'swi))
 
