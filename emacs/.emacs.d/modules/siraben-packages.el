@@ -254,6 +254,7 @@
 (use-package tree-sitter
   :demand
   :diminish "ts"
+  :hook (tree-sitter-after-on . tree-sitter-hl-mode)
   :after tree-sitter-langs
   :config
   (push (expand-file-name "~/.tree-sitter") tree-sitter-load-path)
@@ -269,8 +270,7 @@
           (graphviz-dot-mode . dot)
           (sml-mode . ocaml)
           (makefile-bsdmake-mode . make)
-          ,@tree-sitter-major-mode-language-alist))
-  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+          ,@tree-sitter-major-mode-language-alist)))
 
 
 (use-package vterm
