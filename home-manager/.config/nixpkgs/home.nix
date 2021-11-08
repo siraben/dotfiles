@@ -11,18 +11,14 @@ let
     "spotify-unwrapped"
     "zoom"
   ];
-  pkgs = import sources.nixpkgs {
+  pkgsOptions = {
     overlays = [
       (import sources.emacs-overlay)
     ] ++ lib.optional isLinux (import sources.nixpkgs-wayland);
     config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
   };
-  pkgsStable = import sources.pkgsStable {
-    overlays = [
-      (import sources.emacs-overlay)
-    ] ++ lib.optional isLinux (import sources.nixpkgs-wayland);
-    config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
-  };
+  pkgs = import sources.nixpkgs pkgsOptions;
+  pkgsStable = import sources.pkgsStable pkgsOptions;
 in
 {
   home.username = "siraben";
