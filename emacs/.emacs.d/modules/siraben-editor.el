@@ -22,7 +22,7 @@
 
 ;; Don't use tabs to indent but maintain correct appearance.
 (setq-default indent-tabs-mode nil
-              tab-width        8)
+              tab-width        4)
 (setq tab-always-indent 'complete)
 
 ;; Require newline at end of file.
