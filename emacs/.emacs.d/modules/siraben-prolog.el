@@ -22,10 +22,14 @@
 
 ;;; Code:
 
+(use-package prolog)
+
 (use-package ediprolog
   :commands (ediprolog-dwim)
+  :after prolog
   :bind (:map prolog-mode-map
-              ("C-x C-e" . ediprolog-dwim))
+              ("C-c C-c" . ediprolog-dwim)
+	          ("C-c M-o" . ediprolog-remove-interactions))
   :config
   (setq ediprolog-system 'swi))
 
