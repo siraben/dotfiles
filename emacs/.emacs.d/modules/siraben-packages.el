@@ -235,8 +235,7 @@
 (use-package esup
   :commands (esup)
   :config
-  (setq esup-user-init-file (file-truename "~/.emacs.d/init.el")
-        esup-depth 0))
+  (setq esup-user-init-file (file-truename "~/.emacs.d/init.el")))
 
 (use-package yaml-mode)
 (use-package build-farm)
