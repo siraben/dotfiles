@@ -37,12 +37,6 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-(require 'undo-tree)
-;; Auto-save the undo-tree history.
-(setq undo-tree-history-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq undo-tree-auto-save-history t)
-
 ;; Blinking parens are ugly.
 (setq blink-matching-paren nil)
 

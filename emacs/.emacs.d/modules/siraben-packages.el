@@ -110,12 +110,14 @@
 
 (use-package undo-tree
   :diminish undo-tree-mode
-  :config (progn
-            (defadvice undo-tree-make-history-save-file-name
-                (after undo-tree activate)
-              (setq ad-return-value (concat ad-return-value ".gz")))
-            (global-undo-tree-mode)
-            ))
+  :config
+  (defadvice undo-tree-make-history-save-file-name
+      (after undo-tree activate)
+    (setq ad-return-value (concat ad-return-value ".gz")))
+  (setq undo-tree-history-directory-alist
+        `((".*" . ,temporary-file-directory)))
+  (setq undo-tree-auto-save-history t)
+  (global-undo-tree-mode))
 
 (use-package aggressive-indent
   :diminish aggressive-indent-mode)
