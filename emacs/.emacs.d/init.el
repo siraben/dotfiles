@@ -30,7 +30,7 @@
 
 (setq file-name-handler-alist nil
       message-log-max 16384
-      gc-cons-threshold 402653184
+      gc-cons-threshold (ash 1 25)
       gc-cons-percentage 0.6
       auto-window-vscroll nil)
 
