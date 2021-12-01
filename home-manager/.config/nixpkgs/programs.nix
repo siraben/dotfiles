@@ -52,7 +52,6 @@ in
       }
     '';
     nix-direnv.enable = true;
-    nix-direnv.enableFlakes = true;
     enableZshIntegration = true;
   };
   gpg.enable = true;
