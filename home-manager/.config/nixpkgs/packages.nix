@@ -80,6 +80,7 @@ let
     niv
     nixpkgs-review
     nodePackages.bash-language-server
+    nodePackages.typescript
     nodePackages.typescript-language-server
     nodePackages.pyright
     nodejs
