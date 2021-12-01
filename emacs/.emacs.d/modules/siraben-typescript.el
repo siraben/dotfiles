@@ -24,12 +24,13 @@
 
 (require 'use-package)
 
-(use-package typescript-mode)
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
-(add-hook 'typescript-mode-hook #'(lambda ()
-                                    (setq-local tab-width 2)
-                                    (lsp)))
 
+(use-package typescript-mode
+  :hook (typescript-mode . (lambda ()
+                             (setq-local tab-width 4)
+                             (lsp-deferred)))
+  :mode (("\\.ts\\'" . typescript-mode)
+         ("\\.tsx\\'" . typescript-mode)))
 
 
 (provide 'siraben-typescript)
