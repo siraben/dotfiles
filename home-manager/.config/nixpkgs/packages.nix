@@ -2,7 +2,7 @@
 let
   gccemacs = (import sources.nix-gccemacs-darwin).pkgs.x86_64-darwin.emacsGccDarwin;
   nix-bisect = import sources.nix-bisect { inherit pkgs; };
-  nixpkgs-review = import sources.nixpkgs-review { inherit pkgs; };
+  # nixpkgs-review = import sources.nixpkgs-review { inherit pkgs; };
   wrapWeb = pkgs.callPackage ./wrapWeb.nix { };
   wayland-packages = with pkgs; [
     ((emacsPackagesFor emacsPgtkGcc).emacsWithPackages (e: [ e.vterm ]))
@@ -57,7 +57,6 @@ let
     borgbackup
     cabal-install
     cachix
-    clang-tools
     clang_12
     cmake
     coqPackages_8_13.coquelicot
@@ -88,7 +87,7 @@ let
     ranger
     ripgrep
     rmview
-    rnix-lsp
+    # rnix-lsp
     rustup
     shellcheck
     stow
