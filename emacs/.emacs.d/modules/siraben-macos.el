@@ -23,10 +23,6 @@
 
 (require 'ispell)
 (setq ispell-program-name  "aspell")
-
-;; (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
-;; (require 'mu4e)
-
 (setq system-uses-terminfo nil)
 
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
