@@ -52,10 +52,7 @@
 (setq use-package-always-defer t)
 (setq use-package-verbose t)
 
-;; These packages don't require any configuration, so let's just clump
-;; them together.
 (use-package diminish)
-(use-package writegood-mode)
 (use-package multiple-cursors
   :defer 3
   :commands (mc/mark-previous-like-this mc/mark-next-like mc/edit-lines mc/mark-more-like-this mc/mark-all-like-this)
@@ -69,7 +66,6 @@
   :hook
   ((racket-mode . rainbow-delimiters-mode)))
 
-(use-package writeroom-mode)
 (use-package markdown-mode
   :hook
   (markdown-mode . (lambda ()
@@ -85,10 +81,6 @@
   :bind (("C-x g"   . magit-status-quick)
          ("C-x M-g" . magit-dispatch)))
 
-(use-package forge
-  :disabled
-  :after magit)
-
 (use-package free-keys
   :commands free-keys)
 
@@ -99,10 +91,6 @@
   (setq yas-snippet-dirs `(,(concat siraben-root-dir "snippets"))))
 
 (use-package yasnippet-snippets)
-
-(use-package ledger-mode
-  :config
-  (setq ledger-reconcile-default-commodity "USD"))
 
 (use-package paredit
   :diminish paredit-mode
@@ -138,9 +126,6 @@
                     (exec-path-from-shell-initialize)
                     (exec-path-from-shell-copy-envs
                      '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE" "COQPATH"))))))
-
-(use-package pdf-tools
-  :magic ("%PDF" . pdf-view-mode))
 
 (use-package helm
   :diminish (helm-mode)
@@ -223,8 +208,6 @@
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
 (use-package company-auctex)
-
-(use-package vyper-mode)
 
 (use-package flycheck
   :diminish)
