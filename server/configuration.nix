@@ -5,10 +5,17 @@ let
     url = "https://github.com/siraben.keys";
     sha256 = "sha256-i8gigitlRxiNa8eMPkD6FTOlVEO0p9LxRrBN41d/sJM=";
   };
+  release = "master";
 in
 
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    (builtins.fetchTarball {
+      url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver/-/archive/${release}/nixos-mailserver-${release}.tar.gz";
+      sha256 = "sha256:1a0g2zmqms0i98n6zavzw4cw2b9c2li6h06afkl42zngmgxl0k78";
+    })
+  ];
 
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
@@ -51,6 +58,8 @@ in
   services.nextcloud = import ./nextcloud.nix { inherit pkgs; };
 
   services.postgresql = import ./postgresql.nix { };
+
+  mailserver = import ./mailserver.nix { };
 
   systemd.services."nextcloud-setup" = {
     requires = ["postgresql.service"];
