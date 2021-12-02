@@ -31,7 +31,8 @@
   :commands company-coq-mode
   :bind ("C-M-h" . company-coq-toggle-definition-overlay)
   :config
-  (setq company-coq-live-on-the-edge t))
+  (setq company-coq-live-on-the-edge t)
+  (setq company-coq-disabled-features '(pg-improvements spinner)))
 
 (add-hook 'coq-mode-hook
           (lambda ()
