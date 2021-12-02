@@ -21,8 +21,6 @@
 
 ;;; Code:
 
-(require 'ispell)
-(setq ispell-program-name  "aspell")
 (setq system-uses-terminfo nil)
 
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
