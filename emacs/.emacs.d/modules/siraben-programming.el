@@ -21,15 +21,13 @@
 ;; need to be loaded easier.
 
 ;;; Code:
-(require 'ispell)
 
 (global-set-key (kbd "M-C") 'comment-or-uncomment-region)
 
 (defun siraben-prog-mode-defaults ()
   "Default programming mode hook, useful with any programming language."
-  (when (executable-find ispell-program-name)
-    (flyspell-prog-mode)
-    (diminish 'flyspell-mode))
+  (flyspell-prog-mode)
+  (diminish 'flyspell-mode)
 
   (electric-pair-mode +1)
   
