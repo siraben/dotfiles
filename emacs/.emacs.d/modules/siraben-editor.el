@@ -90,7 +90,9 @@ Enables auto-fill mode, spell checking and disables company mode."
   :hook (after-init . dashboard-mode)
   :config
   (setq dashboard-set-footer nil)
+  (setq dashboard-startup-banner 'logo)
   (setq dashboard-items '((recents . 10)))
+  (setq dashboard-center-content t)
   (dashboard-setup-startup-hook))
 
 ;;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph
