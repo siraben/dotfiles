@@ -103,7 +103,7 @@
     (load secret.el)))
 
 ;; Disable native compilation when on battery power
-(run-at-time 1 nil #'(lambda ()
+(run-at-time 1 300 #'(lambda ()
                        (require 'battery)
                        (if (and battery-status-function
                                 (not (string-match-p "AC"
