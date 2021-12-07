@@ -91,6 +91,7 @@ let
     # rnix-lsp
     rustup
     shellcheck
+    solargraph
     stow
     swiProlog
     pkgsStable.texlab
