@@ -5,19 +5,19 @@
         "revision": "5ef564ceb7e6e55dadc59c41961808f79a18d34c"
       },
       "homebrew/bundle": {
-        "revision": "c6ede5d09ce03784bbd257352494d69d8449e1a5"
+        "revision": "44a1e064d0cf9c3ef8d1820be7988f762f222cf5"
       },
       "homebrew/cask": {
-        "revision": "5730bae2aaa0199117b4a693849ff511fb57ad58"
+        "revision": "e7bdec90eaf2b5b9a07486ee1af6819ec88159a2"
       },
       "homebrew/cask-versions": {
-        "revision": "d1055c386565e2f86898ef512023acd2adf4f5bd"
+        "revision": "5db632d42bcb535aec4dca27d828179f60f585ed"
       },
       "homebrew/core": {
-        "revision": "719ab1ab0fcd987125d2850c612a14a47fa7a2af"
+        "revision": "9125656a8027724a6523891808d0212c48d73b40"
       },
       "homebrew/services": {
-        "revision": "b8ea0a9cb3f8b28d8444d46d5b9346fad9333c4a"
+        "revision": "5060c727f067790b55e93a044e4f48909c8363e9"
       }
     },
     "cask": {
@@ -28,7 +28,7 @@
         }
       },
       "balenaetcher": {
-        "version": "1.6.0",
+        "version": "1.7.1",
         "options": {
           "full_name": "balenaetcher"
         }
@@ -39,6 +39,12 @@
           "full_name": "blackhole-2ch"
         }
       },
+      "coconutbattery": {
+        "version": "3.9.6,06a285a9",
+        "options": {
+          "full_name": "coconutbattery"
+        }
+      },
       "discord": {
         "version": "0.0.264",
         "options": {
@@ -46,13 +52,13 @@
         }
       },
       "docker": {
-        "version": "4.1.1,69879",
+        "version": "4.3.1,72247",
         "options": {
           "full_name": "docker"
         }
       },
       "eloston-chromium": {
-        "version": "95.0.4638.69-1.1_x86-64",
+        "version": "96.0.4664.93-1.1_x86-64",
         "options": {
           "full_name": "eloston-chromium"
         }
@@ -82,19 +88,19 @@
         }
       },
       "libreoffice": {
-        "version": "7.2.2",
+        "version": "7.2.4",
         "options": {
           "full_name": "libreoffice"
         }
       },
       "macfuse": {
-        "version": "4.2.1",
+        "version": "4.2.3",
         "options": {
           "full_name": "macfuse"
         }
       },
       "macs-fan-control": {
-        "version": "1.5.10",
+        "version": "1.5.11",
         "options": {
           "full_name": "macs-fan-control"
         }
@@ -130,9 +136,15 @@
         }
       },
       "racket": {
-        "version": "8.2",
+        "version": "8.3",
         "options": {
           "full_name": "racket"
+        }
+      },
+      "remarkable": {
+        "version": "2.10.3.179",
+        "options": {
+          "full_name": "remarkable"
         }
       },
       "ripcord": {
@@ -142,13 +154,13 @@
         }
       },
       "skim": {
-        "version": "1.6.5,135",
+        "version": "1.6.6,136",
         "options": {
           "full_name": "skim"
         }
       },
       "slack": {
-        "version": "4.21.1",
+        "version": "4.23.0",
         "options": {
           "full_name": "slack"
         }
@@ -160,19 +172,19 @@
         }
       },
       "spotify": {
-        "version": "1.1.71.560.gc21c3367,1.1.71.560.gc21c3367-40",
+        "version": "1.1.74.631,0b24d9ad,16",
         "options": {
           "full_name": "spotify"
         }
       },
       "standard-notes": {
-        "version": "3.8.21",
+        "version": "3.9.7",
         "options": {
           "full_name": "standard-notes"
         }
       },
       "telegram": {
-        "version": "8.1.4,222346",
+        "version": "8.3,223729",
         "options": {
           "full_name": "telegram"
         }
@@ -184,7 +196,7 @@
         }
       },
       "tor-browser": {
-        "version": "10.5.10",
+        "version": "11.0.2",
         "options": {
           "full_name": "tor-browser"
         }
@@ -208,7 +220,7 @@
         }
       },
       "wireshark": {
-        "version": "3.4.9",
+        "version": "3.6.0",
         "options": {
           "full_name": "wireshark"
         }
@@ -220,7 +232,7 @@
         }
       },
       "zoom": {
-        "version": "5.8.3.2240",
+        "version": "5.8.6.2879",
         "options": {
           "full_name": "zoom"
         }
@@ -230,24 +242,18 @@
         "options": {
           "full_name": "zulip"
         }
-      },
-      "coconutbattery": {
-        "version": "3.9.6,404cb123",
-        "options": {
-          "full_name": "coconutbattery"
-        }
       }
     }
   },
   "system": {
     "macos": {
-      "monterey": {
-        "HOMEBREW_VERSION": "3.3.2",
+      "big_sur": {
+        "HOMEBREW_VERSION": "3.3.7",
         "HOMEBREW_PREFIX": "/usr/local",
-        "Homebrew/homebrew-core": "719ab1ab0fcd987125d2850c612a14a47fa7a2af",
-        "CLT": "12.0.0.32.29",
-        "Xcode": "12.4",
-        "macOS": "12.0.1"
+        "Homebrew/homebrew-core": "9125656a8027724a6523891808d0212c48d73b40",
+        "CLT": "13.0.0.0.1.1630607135",
+        "Xcode": "13.1",
+        "macOS": "11.6.1"
       }
     }
   }
