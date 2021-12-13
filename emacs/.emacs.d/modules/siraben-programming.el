@@ -63,7 +63,7 @@
 (require 'siraben-sml)
 (require 'siraben-typescript)
 (require 'siraben-ocaml)
-(require 'siraben-ruby)
+;; (require 'siraben-ruby)
 
 (provide 'siraben-programming)
 ;;; siraben-programming.el ends here
