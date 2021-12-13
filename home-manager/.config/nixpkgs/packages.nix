@@ -68,6 +68,7 @@ let
     coqPackages_8_13.mathcomp-ssreflect
     coq_8_13
     dejavu_fonts
+    ghostscript
     github-cli
     gnumake
     guile
@@ -88,13 +89,10 @@ let
     ranger
     ripgrep
     rmview
-    # rnix-lsp
     rustup
     shellcheck
-    solargraph
     stow
     swiProlog
-    pkgsStable.texlab
     (texlive.combine {
       inherit (texlive) amsmath scheme-small latexmk wrapfig rotfloat capt-of minted fvextra upquote catchfile xstring framed biblatex csquotes;
     })
