@@ -77,9 +77,9 @@
         markdown-enable-math t))
 
 (use-package magit
-  :commands (magit-status-quick magit-dispatch)
-  :bind (("C-x g"   . magit-status-quick)
-         ("C-x M-g" . magit-dispatch)))
+  :commands (magit-dispatch)
+  :bind
+  ("C-x g" . magit-dispatch))
 
 (use-package free-keys
   :commands free-keys)
