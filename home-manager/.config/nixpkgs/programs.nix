@@ -68,6 +68,7 @@ in
     };
   };
   autojump.enable = true;
+  mcfly.enable = true;
   zsh = {
     enable = true;
     oh-my-zsh = {
