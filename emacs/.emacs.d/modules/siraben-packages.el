@@ -172,33 +172,19 @@
   (setq webpaste-provider-priority '("dpaste.de" "ix.io"))
   (setq webpaste-paste-raw-text t))
 
-(use-package lsp-latex
-  :config
-  (add-to-list 'lsp-latex-build-args "-pvc"))
-
 (use-package auctex
-  :after lsp-latex
-  :config (require 'lsp-latex)
-  :hook ((TeX-latex-mode . lsp-deferred)
-         (TeX-mode . lsp-deferred)
-         (TeX-latex-mode . flyspell-mode)
-         (TeX-mode . flyspell-mode)
-         (TeX-latex-mode . auto-fill-mode)
-         (TeX-mode . auto-fill-mode)))
-
-
-;; (use-package auctex
-;;   :config
-;;   (setq TeX-auto-save t
-;;         TeX-parse-self t
-;;         TeX-master nil
-;;         TeX-PDF-mode t)
-;;   :hook
-;;   (LaTeX-mode . (lambda ()
-;;                   (company-auctex-init)
-;;                   (setq TeX-command-extra-options "-shell-escape")
-;;                   (auto-fill-mode 1)
-;;                   (flyspell-mode t))))
+  :config
+  (setq TeX-auto-save t
+        TeX-parse-self t
+        TeX-master nil
+        TeX-PDF-mode t)
+  :hook
+  (LaTeX-mode . (lambda ()
+                  (siraben-enable-writing-modes)
+                  (company-auctex-init)
+                  (setq TeX-command-extra-options "-shell-escape")
+                  (auto-fill-mode 1)
+                  (flyspell-mode t))))
 
 (use-package lsp-mode
   :config
