@@ -34,8 +34,7 @@ let
 in
 
 {
-  home-manager.enable = true;
-  nix-index.enable = true;
+  command-not-found.enable = true;
   direnv = {
     enable = true;
     stdlib = ''
