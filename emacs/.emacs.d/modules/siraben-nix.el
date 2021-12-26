@@ -24,12 +24,7 @@
 
 (use-package nix-mode
   :after lsp-mode
-  :config
-  (add-to-list 'lsp-language-id-configuration '(nix-mode . "nix"))
-  (lsp-register-client
-   (make-lsp-client :new-connection (lsp-stdio-connection '("nix-eval-lsp"))
-                    :major-modes '(nix-mode)
-                    :server-id 'nix)))
+  :hook (nix-mode . subword-mode))
 
 (use-package nixpkgs-fmt
   :after nix-mode)
