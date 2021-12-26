@@ -1,4 +1,4 @@
-;;; siraben-programming.el -- siraben's programming configuration
+;;; siraben-haskell.el -- Haskell programming customizations.
 
 ;;; License:
 
@@ -66,7 +66,7 @@
     (setq-local prettify-symbols-alist haskell-prettify-symbols-alist)
     (prettify-symbols-mode 1)
     (haskell-indentation-mode t)
-    (lsp))
+    (lsp-deferred)
 
   (add-hook 'haskell-mode-hook #'my-haskell-mode-hook)
   (add-hook 'inferior-haskell-mode-hook (lambda () (paredit-mode -1)))
