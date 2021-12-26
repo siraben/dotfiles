@@ -45,6 +45,7 @@ let
   ] ++ wayland-packages ++ web-shortcuts;
   darwinPackages = with pkgs; [
     coreutils
+    gnused
     gccemacs
     spoof-mac
   ];
