@@ -69,7 +69,6 @@
 (use-package markdown-mode
   :hook
   (markdown-mode . (lambda ()
-                     (auto-fill-mode -1)
                      (markdown-toggle-wiki-links t)))
   :config
   (setq markdown-link-space-sub-char " "
