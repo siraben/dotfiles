@@ -106,7 +106,7 @@ let
     vim
     watch
     wget
-    youtube-dl
+    yt-dlp
     zathura
     zip
   ];
