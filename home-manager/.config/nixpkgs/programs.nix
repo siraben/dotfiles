@@ -34,7 +34,7 @@ let
 in
 
 {
-  command-not-found.enable = true;
+  nix-index.enable = true;
   direnv = {
     enable = true;
     stdlib = ''
