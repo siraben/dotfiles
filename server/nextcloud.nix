@@ -2,7 +2,7 @@
 
 {
   enable = true;
-  package = pkgs.nextcloud21;
+  package = pkgs.nextcloud22;
   hostName = "cloud.siraben.dev";
   https = true;
   config = {
