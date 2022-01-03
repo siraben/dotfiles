@@ -2,7 +2,7 @@
 
 {
   enable = true;
-  fqdn = "siraben.dev";
+  fqdn = "mail.siraben.dev";
   domains = [ "siraben.dev" ];
   loginAccounts = {
     "siraben@siraben.dev" = {
