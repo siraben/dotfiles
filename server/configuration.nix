@@ -16,9 +16,7 @@ in
 
   networking.hostName = "siraben-land";
 
-  networking.useDHCP = false;
-  networking.interfaces.ens3.useDHCP = true;
-  networking.interfaces.ens7.useDHCP = true;
+  networking.useDHCP = true;
 
   users.users.siraben = {
     isNormalUser = true;
