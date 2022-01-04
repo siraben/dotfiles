@@ -93,7 +93,8 @@ in
       nd = "nix develop";
       ne = "nix edit";
       nr = "nix repl";
-      nrep = "nix-review pr --post-result";
+      nreps = "nix-review pr --post-result";
+      nrep = "nix-review pr --post-result --no-shell";
       nrp = "nix repl '<nixpkgs>'";
       ns = "nix-shell";
       tb = "tput bel";
