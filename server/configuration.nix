@@ -3,7 +3,7 @@
 let
   publicKey = pkgs.fetchurl {
     url = "https://github.com/siraben.keys";
-    sha256 = "sha256-i8gigitlRxiNa8eMPkD6FTOlVEO0p9LxRrBN41d/sJM=";
+    sha256 = "sha256-hKkjnuGbhBjPv+V8XSRii/rOWTA4mL4rGIcu651wuR8=";
   };
 in
 
@@ -46,9 +46,27 @@ in
     email = "bensiraphob@gmail.com";
   };
 
+  security.sudo.wheelNeedsPassword = false;
+
   services.nextcloud = import ./nextcloud.nix { inherit pkgs; };
 
   services.postgresql = import ./postgresql.nix { };
+
+  # services.jitsi-meet = {
+  #   enable = true;
+  #   hostName = "meet.siraben.dev";
+  # };
+  # services.jitsi-videobridge.openFirewall = true;
+  # services.prosody = {
+  #   allowRegistration = true;
+  #   admins = [ "siraben@siraben.dev" ];
+  #   virtualHosts."meet.siraben.dev" = {
+  #     enabled = true;
+  #     extraConfig = ''
+  #       authentication = "internal_hashed"
+  #     '';
+  #   };
+  # };
 
   systemd.services."nextcloud-setup" = {
     requires = ["postgresql.service"];
