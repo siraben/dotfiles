@@ -11,5 +11,12 @@
         { mailserver = import ./mailserver.nix {}; }
       ];
     };
+    deploy.hosts = {
+      siraben-land = {
+        identity = "ObVbx/6AthjDGx1R28d8HQxypAyTKm8LUY5LZHotdIo";
+        host = "45.77.156.171";
+        user = "siraben";
+      };
+    };
   };
 }
