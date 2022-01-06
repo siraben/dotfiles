@@ -78,6 +78,7 @@ let
     hlint
     htop
     jq
+    ledger
     mpv
     niv
     nixpkgs-review
