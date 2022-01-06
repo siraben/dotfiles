@@ -26,6 +26,11 @@ in
   nix = {
     trustedUsers = [ "root" "siraben" ];
     package = pkgs.nixUnstable;
+    optimise.automatic = true;
+    gc = {
+      automatic = true;
+      dates = "weekly";
+    };
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
