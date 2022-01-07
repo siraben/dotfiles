@@ -52,7 +52,14 @@
 (setq use-package-always-defer t)
 (setq use-package-verbose t)
 
-(use-package diminish)
+(use-package diminish
+  :hook
+  ((after-init . (lambda ()
+                   (diminish 'auto-revert-mode)
+                   (diminish 'visual-line-mode "Visual Line")
+                   (diminish 'auto-fill-function "Auto Fill")
+                   (diminish 'eldoc-mode)
+                   (diminish 'lisp-interaction-mode)))))
 (use-package multiple-cursors
   :defer 3
   :commands (mc/mark-previous-like-this mc/mark-next-like mc/edit-lines mc/mark-more-like-this mc/mark-all-like-this)
@@ -115,6 +122,7 @@
   :config (global-company-mode t))
 
 (use-package which-key
+  :diminish
   :commands (which-key-mode)
   :hook (after-init . which-key-mode))
 
