@@ -42,8 +42,7 @@
 (size-indication-mode t)
 
 ;; Enable winner mode
-(add-hook 'after-init-hook (lambda ()
-                             (winner-mode t)))
+(add-hook 'after-init-hook (lambda () (winner-mode t)))
 
 ;; Enable short answers
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -54,15 +53,6 @@
   :hook (after-init . fancy-battery-mode))
 
 (display-time-mode t)
-
-;; Remove the auto-revert mode-line
-(require 'diminish)
-(add-hook 'after-init-hook (lambda ()
-                             (diminish 'auto-revert-mode)
-                             (diminish 'visual-line-mode "Visual Line")
-                             (diminish 'auto-fill-function "Auto Fill")
-                             (diminish 'eldoc-mode)
-                             (diminish 'lisp-interaction-mode)))
 
 (provide 'siraben-ui)
 ;;; siraben-ui.el ends here
