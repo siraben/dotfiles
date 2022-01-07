@@ -51,15 +51,17 @@
   "Enables writing modes for writing prose.
 Enables auto-fill mode, spell checking and disables company mode."
   (interactive)
-  (progn (auto-fill-mode 1)
-	 (undo-tree-mode 1)
-	 (flyspell-mode 1)
-         (electric-pair-mode 1)
-         (visual-line-mode 1)    ;; Org mode headings don't wrap.
-         (company-mode -1)))
+  (auto-fill-mode 1)
+  (undo-tree-mode 1)
+  (flyspell-mode 1)
+  (electric-pair-mode 1)
+  (visual-line-mode 1)    ;; Org mode headings don't wrap.
+  (company-mode -1)
+  (flyspell-mode 1))
 
 (add-hook 'after-init-hook (lambda () (diminish 'visual-line-mode "vl")))
 
+(add-hook 'text-mode-hook #'siraben-enable-writing-modes)
 (add-hook 'markdown-mode-hook #'siraben-enable-writing-modes)
 (add-hook 'org-mode-hook #'siraben-enable-writing-modes)
 

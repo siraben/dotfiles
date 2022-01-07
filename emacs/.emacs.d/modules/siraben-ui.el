@@ -55,12 +55,6 @@
 
 (display-time-mode t)
 
-(setq frame-title-format
-      '(""
-	(:eval (if (buffer-file-name)
-		   (abbreviate-file-name (buffer-file-name))
-		 "%b"))))
-
 ;; Remove the auto-revert mode-line
 (require 'diminish)
 (add-hook 'after-init-hook (lambda ()
