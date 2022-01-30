@@ -31,18 +31,14 @@
       scroll-conservatively 100000
       scroll-preserve-screen-position 1)
 
-(add-hook 'after-init-hook (lambda () (scroll-bar-mode -1)))
+(add-hook 'after-init-hook
+          #'(lambda ()
+              (scroll-bar-mode -1)
+              (display-time-mode t)
+              (winner-mode t)))
 
 ;; Warn when opening files bigger than 100MB.
 (setq large-file-warning-threshold 100000000)
-
-;; Mode line settings.
-(line-number-mode t)
-(column-number-mode t)
-(size-indication-mode t)
-
-;; Enable winner mode
-(add-hook 'after-init-hook (lambda () (winner-mode t)))
 
 ;; Enable short answers
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -51,8 +47,6 @@
 (use-package fancy-battery
   :config (setq fancy-battery-show-percentage t)
   :hook (after-init . fancy-battery-mode))
-
-(display-time-mode t)
 
 (provide 'siraben-ui)
 ;;; siraben-ui.el ends here
