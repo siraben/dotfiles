@@ -22,7 +22,6 @@
 
 ;;; Code:
 
-;; Initialize package.el
 (defvar bootstrap-version)
 ;; (setq straight-check-for-modifications nil)
 (let ((bootstrap-file
@@ -83,9 +82,10 @@
         markdown-enable-math t))
 
 (use-package magit
-  :commands (magit-dispatch)
+  :commands (magit-dispatch magit-blame)
   :bind
-  ("C-x g" . magit-dispatch))
+  (("C-x g" . magit-dispatch)
+   ("M-L" . magit-blame)))
 
 (use-package free-keys
   :commands free-keys)
