@@ -39,7 +39,7 @@
             (siraben-prog-mode-defaults)
             (company-coq-mode t)
             (undo-tree-mode t)
-            (electric-indent-mode -1)))
+            (electric-indent-mode t)))
 
 
 (provide 'siraben-coq)
