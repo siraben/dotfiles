@@ -19,11 +19,12 @@ let
   };
   pkgs = import sources.nixpkgs pkgsOptions;
   pkgsStable = import sources.pkgsStable pkgsOptions;
+  x86-darwin-pkgs = import sources.nixpkgs (pkgsOptions // { system = (if isDarwin then "x86_64-darwin" else builtins.currentSystem); });
 in
 {
   home.username = "siraben";
   home.homeDirectory = if isDarwin then "/Users/siraben" else "/home/siraben";
-  home.packages = import ./packages.nix { inherit lib sources pkgs pkgsStable isDarwin isLinux; };
+  home.packages = import ./packages.nix { inherit lib sources pkgs pkgsStable x86-darwin-pkgs isDarwin isLinux; };
   home.file.".tree-sitter".source = (pkgs.runCommand "grammars" {} ''
     mkdir -p $out/bin
     ${lib.concatStringsSep "\n"
@@ -48,6 +49,7 @@ in
   };
 
   programs = import ./programs.nix { inherit lib pkgs isDarwin isLinux; };
+  fonts.fontconfig.enable = true;
   services = lib.optionalAttrs isLinux (import ./services.nix { inherit lib pkgs; });
   home.stateVersion = "21.11";
 }
