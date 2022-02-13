@@ -20,6 +20,7 @@ let
   pkgs = import sources.nixpkgs pkgsOptions;
   pkgsStable = import sources.pkgsStable pkgsOptions;
   x86-darwin-pkgs = import sources.nixpkgs (pkgsOptions // { system = (if isDarwin then "x86_64-darwin" else builtins.currentSystem); });
+  siraben-pkgs = import sources.siraben-pkgs pkgsOptions;
 in
 {
   home.username = "siraben";
@@ -32,7 +33,7 @@ in
           name=${name}
           ln -s ${src}/parser $out/bin/''${name#tree-sitter-}.${if isDarwin then "dylib" else "so"}
         '')
-        pkgs.tree-sitter.builtGrammars)}
+        siraben-pkgs.tree-sitter.builtGrammars)}
   '');
 
   home.sessionVariables = {
