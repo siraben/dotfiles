@@ -142,5 +142,11 @@ Enables auto-fill mode, spell checking and disables company mode."
 (set-face-foreground 'show-paren-mismatch "#f00")
 (set-face-attribute 'show-paren-match nil :weight 'extra-bold)
 
+(use-package helm-swoop
+  :commands (helm-swoop-without-pre-input helm-swoop)
+  :bind
+  (("C-s" . helm-swoop-without-pre-input)
+   ("C-S-s" . helm-swoop)))
+
 (provide 'siraben-editor)
 ;;; siraben-editor.el ends here

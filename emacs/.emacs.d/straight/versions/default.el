@@ -47,6 +47,7 @@
  ("helm" . "cd4add6fae1d9acf8904d93f2f32e37c0737b03d")
  ("helm-lsp" . "c2c6974dadfac459b1a69a1217441283874cea92")
  ("helm-rg" . "ee0a3c09da0c843715344919400ab0a0190cc9dc")
+ ("helm-swoop" . "1b3285791f1dc1fde548fe67aec07214d698fd57")
  ("ht.el" . "c4c1be487d6ecb353d07881526db05d7fc90ea87")
  ("hydra" . "9e9e00cb240ea1903ffd36a54956b3902c379d29")
  ("inheritenv" . "7e4c8b0d0a43b6f1c6c4d6dbd2f3bf5ce7f20067")
