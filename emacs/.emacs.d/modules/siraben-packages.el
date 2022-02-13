@@ -227,7 +227,16 @@
 
 (use-package tree-sitter-langs
   :defer 5
-  :demand)
+  :demand
+  :config
+  (setq tree-sitter-load-path `(,(expand-file-name "~/.tree-sitter/bin"))))
+
+(use-package promela-mode
+  :commands (promela-mode)
+  :config
+  (add-to-list 'auto-mode-alist '("\\.pml\\'" . promela-mode))
+  :straight (promela-mode :type git :host github
+                          :repo "g15ecb/promela-mode"))
 
 (use-package tree-sitter
   :demand
@@ -235,9 +244,9 @@
   :hook (tree-sitter-after-on . tree-sitter-hl-mode)
   :after tree-sitter-langs
   :config
-  (push (expand-file-name "~/.tree-sitter") tree-sitter-load-path)
   (require 'tree-sitter-langs)
   (global-tree-sitter-mode)
+  (setq tree-sitter-load-path `(,(expand-file-name "~/.tree-sitter/bin")))
   (setq tree-sitter-major-mode-language-alist
         `((nix-mode . nix)
           (markdown-mode . markdown)
@@ -248,6 +257,7 @@
           (graphviz-dot-mode . dot)
           (sml-mode . ocaml)
           (makefile-bsdmake-mode . make)
+          (promela-mode . promela)
           ,@tree-sitter-major-mode-language-alist)))
 
 

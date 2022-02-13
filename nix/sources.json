@@ -106,5 +106,17 @@
         "type": "tarball",
         "url": "https://github.com/siraben/siraben-overlay/archive/7889922c8f2a5f52edc7b83b8490888cbe3a3b77.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "siraben-pkgs": {
+        "branch": "promela-grammar",
+        "description": "Nix Packages collection",
+        "homepage": null,
+        "owner": "siraben",
+        "repo": "nixpkgs",
+        "rev": "0cad7821561c2089f21a25127f9fa94655ff99fb",
+        "sha256": "0x32q8zqwf16vzxxy2g0jlm09dshkm83m22y8bxjqzfk55pfqjwb",
+        "type": "tarball",
+        "url": "https://github.com/siraben/nixpkgs/archive/0cad7821561c2089f21a25127f9fa94655ff99fb.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }
