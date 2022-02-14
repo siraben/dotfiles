@@ -62,15 +62,15 @@ let
     cmake
     # (x86-darwin-pkgs.coqPackages_8_13).coquelicot
     # (x86-darwin-pkgs.coqPackages_8_13).hierarchy-builder
-    (x86-darwin-pkgs.coqPackages_8_13).QuickChick
-    (x86-darwin-pkgs.coqPackages_8_13).simple-io
-    (x86-darwin-pkgs.coqPackages_8_13).coq-ext-lib
-    (x86-darwin-pkgs.coqPackages_8_13).mathcomp
+    coqPackages_8_13.QuickChick
+    coqPackages_8_13.simple-io
+    coqPackages_8_13.coq-ext-lib
+    coqPackages_8_13.mathcomp
     # (x86-darwin-pkgs.coqPackages_8_13).mathcomp-algebra
     # (x86-darwin-pkgs.coqPackages_8_13).mathcomp-analysis
     # (x86-darwin-pkgs.coqPackages_8_13).mathcomp-fingroup
-    (x86-darwin-pkgs.coqPackages_8_13).mathcomp-ssreflect
-    x86-darwin-pkgs.coq_8_13
+    coqPackages_8_13.mathcomp-ssreflect
+    coq_8_13
     dejavu_fonts
     ghostscript
     github-cli
