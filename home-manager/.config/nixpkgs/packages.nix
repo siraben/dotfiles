@@ -49,26 +49,27 @@ let
     gccemacs
     spoof-mac
   ];
+  # Package set to use when wanting to use x86-darwin packages on
+  # aarch64-darwin.
+  pkgs' = if isDarwin then x86-darwin-pkgs else pkgs;
   sharedPackages = with pkgs; [
-    aspell
-    aspellDicts.en
-    aspellDicts.en-computers
+    (aspellWithDicts (d: with d; [ en en-computers en-science ]))
     bat
     bash
     borgbackup
     cabal-install
     cachix
-    clang_12
+    clang_13
     cmake
-    # (x86-darwin-pkgs.coqPackages_8_13).coquelicot
-    # (x86-darwin-pkgs.coqPackages_8_13).hierarchy-builder
+    # coqPackages_8_13.coquelicot
+    # coqPackages_8_13.hierarchy-builder
     coqPackages_8_13.QuickChick
     coqPackages_8_13.simple-io
     coqPackages_8_13.coq-ext-lib
     coqPackages_8_13.mathcomp
-    # (x86-darwin-pkgs.coqPackages_8_13).mathcomp-algebra
-    # (x86-darwin-pkgs.coqPackages_8_13).mathcomp-analysis
-    # (x86-darwin-pkgs.coqPackages_8_13).mathcomp-fingroup
+    # coqPackages_8_13.mathcomp-algebra
+    # coqPackages_8_13.mathcomp-analysis
+    # coqPackages_8_13.mathcomp-fingroup
     coqPackages_8_13.mathcomp-ssreflect
     coq_8_13
     dejavu_fonts
@@ -76,7 +77,7 @@ let
     github-cli
     gnumake
     guile
-    (haskellPackages.ghcWithHoogle (h: [ h.QuickCheck h.vector ]))
+    (import ./haskell-packages.nix { inherit pkgs; })
     haskellPackages.haskell-language-server
     hlint
     htop
@@ -92,19 +93,16 @@ let
     nodePackages.typescript-language-server
     nodePackages.pyright
     nodejs
-    python38
-    python3Packages.pylint
+    (import ./python-packages.nix { pkgs = pkgs'; })
     ranger
     ripgrep
-    x86-darwin-pkgs.rmview
+    pkgs'.rmview
     rustup
     shellcheck
     stow
     swiProlog
-    (texlive.combine {
-      inherit (texlive) amsmath scheme-small latexmk wrapfig rotfloat capt-of minted fvextra upquote catchfile xstring framed biblatex csquotes preprint;
-    })
-    x86-darwin-pkgs.the-powder-toy
+    (import ./texlive-packages.nix { inherit pkgs; })
+    pkgs'.the-powder-toy
     tldr
     tmux
     tor
