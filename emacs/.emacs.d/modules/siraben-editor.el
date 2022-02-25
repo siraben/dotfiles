@@ -55,6 +55,9 @@ Enables auto-fill mode, spell checking and disables company mode."
   (undo-tree-mode 1)
   (flyspell-mode 1)
   (electric-pair-mode 1)
+  (setq electric-pair-inhibit-predicate
+        `(lambda (c)
+           (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))
   (visual-line-mode 1)    ;; Org mode headings don't wrap.
   (company-mode -1)
   (flyspell-mode 1))
