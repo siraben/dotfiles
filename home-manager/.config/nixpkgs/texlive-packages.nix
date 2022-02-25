@@ -7,7 +7,7 @@ pkgs.texlive.combine {
     biblatex # citations
     capt-of
     catchfile
-    cm-super # vectorized
+    cm-super # vectorized fonts
     collection-latex # pdflatex
     csquotes
     dvipng
