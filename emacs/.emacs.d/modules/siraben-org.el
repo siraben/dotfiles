@@ -43,17 +43,16 @@
         org-log-done 'time)
 
   ;; Org mode code block languages
-  ;; (require 'ob-sh)
-  ;; (org-babel-do-load-languages
-  ;;  'org-babel-load-languages
-  ;;  `((emacs-lisp . t)
-  ;;    (gnuplot . t)
-  ;;    (,(if (version< emacs-version "26") 'sh 'shell) . t)
-  ;;    (calc . t)
-  ;;    (python . t)
-  ;;    (scheme . t)
-  ;;    (dot . t)
-  ;;    (octave . t)))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   `((emacs-lisp . t)
+     (gnuplot . t)
+     (,(if (version< emacs-version "26") 'sh 'shell) . t)
+     (calc . t)
+     (python . t)
+     (scheme . t)
+     (dot . t)
+     (octave . t)))
   ;; I want to have source code syntax highlighting for LaTeX export as well.
   (setq org-latex-listings 'minted)
   (setq org-latex-pdf-process
@@ -80,12 +79,48 @@
                       org-rmail))
 
   (setq org-export-backends '(ascii beamer html icalendar latex odt))
-  (setq org-list-allow-alphabetical t))
+  (setq org-list-allow-alphabetical t)
+  (defvar org-electric-pairs '((?$ . ?$)))
+  (defun org-add-electric-pairs ()
+    (setq-local electric-pair-pairs (append electric-pair-pairs org-electric-pairs))
+    (setq-local electric-pair-text-pairs electric-pair-pairs))
+  (add-hook 'org-mode-hook 'org-add-electric-pairs)
+  )
 
 (use-package gnuplot)
 (use-package htmlize)
 (use-package edit-indirect)
 (use-package org-wc)
+
+(use-package laas
+  :hook ((LaTeX-mode org-mode) . laas-mode)
+  :config ; do whatever here
+  (aas-set-snippets 'laas-mode
+    :cond #'laas-org-mathp
+    "supp" "\\supp"
+    "On" "O(n)"
+    "O1" "O(1)"
+    "Olog" "O(\\log n)"
+    "Olon" "O(n \\log n)"
+    ;; bind to functions!
+    "Sum" (lambda () (interactive)
+            (yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+    )
+  (aas-set-snippets 'laas-mode
+    :cond #'texmathp
+    "supp" "\\supp"
+    "On" "O(n)"
+    "O1" "O(1)"
+    "Olog" "O(\\log n)"
+    "Olon" "O(n \\log n)"
+    ;; bind to functions!
+    "Sum" (lambda () (interactive)
+            (yas-expand-snippet "\\sum_{$1}^{$2} $0"))
+    "lr" (lambda () (interactive)
+           (yas-expand-snippet "\\left($0\\right)"))
+    )
+  (apply #'aas-set-snippets 'laas-mode laas-basic-snippets)
+  )
 
 (provide 'siraben-org)
 ;;; siraben-org.el ends here
