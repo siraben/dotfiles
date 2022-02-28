@@ -77,6 +77,7 @@ let
     github-cli
     gnumake
     guile
+    graphviz
     (import ./haskell-packages.nix { inherit pkgs; })
     haskellPackages.haskell-language-server
     hlint
