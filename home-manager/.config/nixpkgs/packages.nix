@@ -108,6 +108,7 @@ let
     tmux
     tor
     tree
+    (tree-sitter.overrideAttrs (oA: { webUISupport = true; }))
     unzip
     vim
     watch
