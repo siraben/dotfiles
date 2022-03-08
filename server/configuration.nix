@@ -56,7 +56,6 @@ in
   services.nextcloud = import ./nextcloud.nix { inherit pkgs; };
 
   services.postgresql = import ./postgresql.nix { };
-
   # services.jitsi-meet = {
   #   enable = true;
   #   hostName = "meet.siraben.dev";
@@ -73,13 +72,14 @@ in
   #   };
   # };
 
+  programs.mosh.enable = true;
   systemd.services."nextcloud-setup" = {
     requires = ["postgresql.service"];
     after = ["postgresql.service"];
   };
 
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
-
+  networking.firewall.allowedTCPPorts = [ 80 443 53 ];
+  networking.firewall.allowedUDPPorts = [ 80 443 53 ];
   system.stateVersion = "21.05";
 
 }

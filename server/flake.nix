@@ -6,9 +6,9 @@
     nixosConfigurations.siraben-land = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        simple-nixos-mailserver.nixosModule
+      #  simple-nixos-mailserver.nixosModule
         ./configuration.nix
-        { mailserver = import ./mailserver.nix {}; }
+      #   { mailserver = import ./mailserver.nix {}; }
       ];
     };
     deploy.hosts = {
