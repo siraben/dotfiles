@@ -72,6 +72,7 @@ let
     # coqPackages_8_13.mathcomp-fingroup
     coqPackages_8_13.mathcomp-ssreflect
     coq_8_13
+    curl
     dejavu_fonts
     ghostscript
     github-cli
@@ -89,11 +90,13 @@ let
     ocaml
     ocamlPackages.ocamlbuild
     nixpkgs-review
+    nmap
     nodePackages.bash-language-server
     nodePackages.typescript
     nodePackages.typescript-language-server
     nodePackages.pyright
     nodejs
+    mosh
     (import ./python-packages.nix { pkgs = pkgs'; })
     ranger
     ripgrep
@@ -107,6 +110,7 @@ let
     tldr
     tmux
     tor
+    torsocks
     tree
     (tree-sitter.overrideAttrs (oA: { webUISupport = true; }))
     unzip
