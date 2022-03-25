@@ -65,10 +65,10 @@
         "homepage": "",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "863e8630df64e986730651b2f14302da16ca71e4",
-        "sha256": "11bb0pbdjq9b0gxsc54z75yk4gc55256q6nvgf8caqx51lafha6g",
+        "rev": "4d60081494259c0785f7e228518fee74e0792c1b",
+        "sha256": "15vxvzy9sxsnnxn53w2n44vklv7irzxvqv8xj9dn78z9zwl17jhq",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/863e8630df64e986730651b2f14302da16ca71e4.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs/archive/4d60081494259c0785f7e228518fee74e0792c1b.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs-review": {
@@ -105,18 +105,6 @@
         "sha256": "0s1xv90rpzw1mw87n0rs5dc4hdmjhb4xqdrnwdsy6g9sz9k68yn6",
         "type": "tarball",
         "url": "https://github.com/siraben/siraben-overlay/archive/7889922c8f2a5f52edc7b83b8490888cbe3a3b77.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "siraben-pkgs": {
-        "branch": "tree-sitter-overridable",
-        "description": "Nix Packages collection",
-        "homepage": null,
-        "owner": "siraben",
-        "repo": "nixpkgs",
-        "rev": "5b55eb42f1b14fdab2a09669fa27d44f492eb7e4",
-        "sha256": "0wxpr4215h331xcpcgdfkfgigv87mya4wdcz9kvvpngryms79qpp",
-        "type": "tarball",
-        "url": "https://github.com/siraben/nixpkgs/archive/5b55eb42f1b14fdab2a09669fa27d44f492eb7e4.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }

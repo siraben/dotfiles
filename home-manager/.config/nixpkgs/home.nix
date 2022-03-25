@@ -20,8 +20,7 @@ let
   pkgs = import sources.nixpkgs pkgsOptions;
   pkgsStable = import sources.pkgsStable pkgsOptions;
   x86-darwin-pkgs = import sources.nixpkgs (pkgsOptions // { system = (if isDarwin then "x86_64-darwin" else builtins.currentSystem); });
-  siraben-pkgs = import sources.siraben-pkgs pkgsOptions;
-  grammars = (siraben-pkgs.tree-sitter.override (with siraben-pkgs; {
+  grammars = (pkgs.tree-sitter.override (with pkgs; {
     extraGrammars = {
       tree-sitter-promela = {
         src = fetchFromGitHub {
@@ -35,8 +34,8 @@ let
         src = fetchFromGitHub {
           repo = "tree-sitter-formula";
           owner = "siraben";
-          rev = "d67e98939f996c9f6169f6fea134c33ef3143765";
-          sha256 = "sha256-oNizh4fY/N8i+IV5vfDoUqDSzbLaerfh7vvJtBiAALc=";
+          rev = "61f4741d5aad6e21fcb20412583b239fbcf28b4c";
+          sha256 = "sha256-hPpeDjMnQwTOfxII2KGHqMN1GlPLCB5hjJPj3dkidxA=";
         };
       };
     };
