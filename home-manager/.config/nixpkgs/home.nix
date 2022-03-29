@@ -23,20 +23,10 @@ let
   grammars = (pkgs.tree-sitter.override (with pkgs; {
     extraGrammars = {
       tree-sitter-promela = {
-        src = fetchFromGitHub {
-          repo = "tree-sitter-promela";
-          owner = "siraben";
-          rev = "91da8f141c3c4c695eb71018c8a7b2e7ea39c167";
-          sha256 = "sha256-JK7+ZfR6uHdhDlnVJLwNtu5UbruClaIqlaRREG1iVG0=";
-        };
+        src = sources.tree-sitter-promela.outPath;
       };
       tree-sitter-formula = {
-        src = fetchFromGitHub {
-          repo = "tree-sitter-formula";
-          owner = "siraben";
-          rev = "61f4741d5aad6e21fcb20412583b239fbcf28b4c";
-          sha256 = "sha256-hPpeDjMnQwTOfxII2KGHqMN1GlPLCB5hjJPj3dkidxA=";
-        };
+        src = sources.tree-sitter-formula.outPath;
       };
     };
   })).builtGrammars;

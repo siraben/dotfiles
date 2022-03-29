@@ -106,5 +106,29 @@
         "type": "tarball",
         "url": "https://github.com/siraben/siraben-overlay/archive/7889922c8f2a5f52edc7b83b8490888cbe3a3b77.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "tree-sitter-formula": {
+        "branch": "master",
+        "description": "Formula grammar for tree-sitter",
+        "homepage": "",
+        "owner": "siraben",
+        "repo": "tree-sitter-formula",
+        "rev": "230cd59886386193003c64ed094e49d8cbe460cc",
+        "sha256": "0n30rglkbridh4qdg91fvqvl97dsjrzz29i54bjj3cyg7f5aa36z",
+        "type": "tarball",
+        "url": "https://github.com/siraben/tree-sitter-formula/archive/230cd59886386193003c64ed094e49d8cbe460cc.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "tree-sitter-promela": {
+        "branch": "master",
+        "description": "Promela grammar for tree-sitter",
+        "homepage": null,
+        "owner": "siraben",
+        "repo": "tree-sitter-promela",
+        "rev": "91da8f141c3c4c695eb71018c8a7b2e7ea39c167",
+        "sha256": "0valc9ni0ld4jlma55c2pdp59vmn1ny29mar1rhpgf3syijzxbi4",
+        "type": "tarball",
+        "url": "https://github.com/siraben/tree-sitter-promela/archive/91da8f141c3c4c695eb71018c8a7b2e7ea39c167.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }
