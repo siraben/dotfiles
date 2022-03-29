@@ -226,27 +226,154 @@
 (use-package graphviz-dot-mode)
 
 (use-package tree-sitter-langs
-  :defer 5
+  :defer 3
   :demand
   :config
   (setq tree-sitter-load-path `(,(expand-file-name "~/.tree-sitter/bin"))))
 
 (use-package promela-mode
   :commands (promela-mode)
+  :after tree-sitter-langs
+  :mode (("\\.pml\\'" . promela-mode))
   :config
   (add-to-list 'auto-mode-alist '("\\.pml\\'" . promela-mode))
+  (defun promela-tree-sitter-setup ()
+    (interactive)
+    (setq tree-sitter-hl-default-patterns "
+(number) @number
+(comment) @comment
+(uname) @variable.builtin
+(varref) @variable.builtin
+[\"bit\" \"bool\" \"byte\" \"chan\" \"int\" \"mtype\" \"pid\" \"short\"] @type
+[
+\"active\"
+\"assert\"
+\"atomic\"
+(break)
+\"d_step\"
+\"do\"
+\"else\"
+\"enabled\"
+\"fi\"
+\"hidden\"
+\"if\"
+\"init\"
+\"len\"
+\"never\"
+\"od\"
+\"of\"
+\"pc_value\"
+\"printf\"
+\"priority\"
+\"proctype\"
+\"provided\"
+\"run\"
+(skip)
+\"timeout\"
+\"typedef\"
+\"unless\"
+\"xr\"
+\"xs\"
+] @keyword")
+    (tree-sitter-require 'promela))
+  (add-hook 'promela-mode-hook
+            (lambda ()
+              (promela-tree-sitter-setup)
+              (font-lock-fontify-buffer)))
+  ;; :hook (promela-mode . promela-tree-sitter-setup)
   :straight (promela-mode :type git :host github
                           :repo "g15ecb/promela-mode"))
+
+(load "siraben-formula.el")
+(add-to-list 'auto-mode-alist '("\\.4ml\\'" . formula-mode))
+(defun formula-tree-sitter-setup ()
+  (interactive)
+  (setq tree-sitter-hl-default-patterns
+        "[
+ \"domain\"
+ \"model\"
+ \"transform\"
+ \"system\"
+ \"machine\"
+ \"partial\"
+ \"ensures\"
+ \"requires\"
+ \"conforms\"
+ \"includes\"
+ \"extends\"
+ \"of\"
+ \"returns\"
+ \"at\"
+ \"some\"
+ \"atleast\"
+ \"atmost\"
+ \"initially\"
+ \"next\"
+ \"property\"
+ \"boot\"
+ \"no\"
+ \"is\"
+ \"new\"
+ \"inj\"
+ \"bij\"
+ \"sur\"
+ \"fun\"
+ \"any\"
+ ] @keyword
+
+(comment) @comment
+
+[
+ (digits)
+ (real)
+ (frac)
+ ] @number
+
+(string) @string
+
+(type_decl type: _ @type)
+(typeid) @type
+(func_term name: (_) @function.call)
+
+[ \"+\" \"-\" \"*\" \"/\" \":-\" \"::=\" \"::\" \"=>\" \"->\" \"=\" ] @operator
+
+[ \".\" \"|\" \",\" ] @punctuation.delimiter
+
+[ \"(\" \")\" \"{\" \"}\" \"[\" \"]\" ] @punctuation.bracket
+
+(id) @variable.builtin
+
+(enum_cnst) @constant.builtin
+
+(field name: _ @property.definition)
+(val_or_model_program name: _ @property)
+
+(domain_sig name: _ @type)
+(mod_ref_rename name: _ @property (bareid) @type)
+(mod_ref_no_rename (bareid) @type)
+
+(transform name: (bareid) @function)
+
+(model_intro (bareid) @constructor)
+(model_fact (bareid) @variable)
+
+(constraint (id) (func_term (atom (id))) @type)
+")
+  (tree-sitter-require 'formula)
+  )
+(add-hook 'formula-mode-hook
+          (lambda ()
+            (formula-tree-sitter-setup)
+            (font-lock-fontify-buffer)))
 
 (use-package tree-sitter
   :demand
   :diminish "ts"
   :hook (tree-sitter-after-on . tree-sitter-hl-mode)
-  :after tree-sitter-langs
   :config
+  (setq tree-sitter-load-path `(,(expand-file-name "~/.tree-sitter/bin")))
   (require 'tree-sitter-langs)
   (global-tree-sitter-mode)
-  (setq tree-sitter-load-path `(,(expand-file-name "~/.tree-sitter/bin")))
   (setq tree-sitter-major-mode-language-alist
         `((nix-mode . nix)
           (markdown-mode . markdown)
@@ -255,9 +382,9 @@
           (typescript-mode . tsx)
           (conf-toml-mode . toml)
           (graphviz-dot-mode . dot)
-          (sml-mode . ocaml)
           (makefile-bsdmake-mode . make)
           (promela-mode . promela)
+          (formula-mode . formula)
           ,@tree-sitter-major-mode-language-alist)))
 
 
