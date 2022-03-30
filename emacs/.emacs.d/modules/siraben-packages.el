@@ -383,6 +383,7 @@
           (conf-toml-mode . toml)
           (graphviz-dot-mode . dot)
           (makefile-bsdmake-mode . make)
+          (sml-mode . sml)
           (promela-mode . promela)
           (formula-mode . formula)
           ,@tree-sitter-major-mode-language-alist)))

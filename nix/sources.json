@@ -130,5 +130,17 @@
         "type": "tarball",
         "url": "https://github.com/siraben/tree-sitter-promela/archive/91da8f141c3c4c695eb71018c8a7b2e7ea39c167.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "tree-sitter-sml": {
+        "branch": "update",
+        "description": "Standard ML Grammar for Tree-sitter",
+        "homepage": "",
+        "owner": "siraben",
+        "repo": "tree-sitter-sml",
+        "rev": "45699c3394c3c7741dda0d54fdb5af60f1ca3d25",
+        "sha256": "110dk6i5hc1i4kmss588bq06ybbw2fi9x7dr4xckfxsa5i9x76dn",
+        "type": "tarball",
+        "url": "https://github.com/siraben/tree-sitter-sml/archive/45699c3394c3c7741dda0d54fdb5af60f1ca3d25.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }

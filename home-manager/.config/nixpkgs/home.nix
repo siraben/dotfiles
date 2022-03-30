@@ -22,12 +22,9 @@ let
   x86-darwin-pkgs = import sources.nixpkgs (pkgsOptions // { system = (if isDarwin then "x86_64-darwin" else builtins.currentSystem); });
   grammars = (pkgs.tree-sitter.override (with pkgs; {
     extraGrammars = {
-      tree-sitter-promela = {
-        src = sources.tree-sitter-promela.outPath;
-      };
-      tree-sitter-formula = {
-        src = sources.tree-sitter-formula.outPath;
-      };
+      tree-sitter-promela = { src = sources.tree-sitter-promela.outPath; };
+      tree-sitter-formula = { src = sources.tree-sitter-formula.outPath; };
+      tree-sitter-sml = { src = sources.tree-sitter-sml.outPath; };
     };
   })).builtGrammars;
 
