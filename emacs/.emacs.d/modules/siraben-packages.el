@@ -390,7 +390,9 @@
 
 
 (use-package vterm
-  :if (require 'vterm-module nil t))
+  :if (require 'vterm-module nil t)
+  :config
+  (setq vterm-timer-delay nil))
 
 (use-package multi-vterm
   :commands (multi-vterm)
