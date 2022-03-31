@@ -48,5 +48,10 @@
   :config (setq fancy-battery-show-percentage t)
   :hook (after-init . fancy-battery-mode))
 
+;; Make viewing PDFs better on HiDPI displays
+(setq doc-view-resolution 230)
+
+(pixel-scroll-precision-mode)
+
 (provide 'siraben-ui)
 ;;; siraben-ui.el ends here
