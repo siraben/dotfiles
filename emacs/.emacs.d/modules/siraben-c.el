@@ -17,8 +17,9 @@
 
 ;;; Commentary:
 
-;;; Code:
+;; Configures packages and various modes for C programming.
 
+;;; Code:
 
 ;; Code auto completion packages for C code.
 (use-package clang-format+)

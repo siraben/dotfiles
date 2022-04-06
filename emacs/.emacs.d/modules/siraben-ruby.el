@@ -17,6 +17,8 @@
 
 ;;; Commentary:
 
+;; Configures packages and various modes for Ruby programming.
+
 ;;; Code:
 
 (use-package lsp-ruby)
