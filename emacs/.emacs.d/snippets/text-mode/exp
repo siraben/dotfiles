@@ -2,4 +2,4 @@
 # name: expand platforms
 # key: exp
 # --
-$1: expand platforms to $2
+$1: expand platforms to ${2:unix}
