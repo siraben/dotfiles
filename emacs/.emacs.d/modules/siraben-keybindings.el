@@ -45,5 +45,8 @@
 
 (global-set-key (kbd "M-W") 'whitespace-cleanup)
 
+(global-unset-key (kbd "C-<wheel-down>"))
+(global-unset-key (kbd "C-<wheel-up>"))
+
 (provide 'siraben-keybindings)
 ;;; siraben-keybindings.el ends here

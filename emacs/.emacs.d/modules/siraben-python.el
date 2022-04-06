@@ -17,8 +17,7 @@
 
 ;;; Commentary:
 
-;; This file fixes the broken built-in Python editing modes that
-;; Emacs provides.
+;; Configures packages and various modes for Python programming.
 
 ;;; Code:
 

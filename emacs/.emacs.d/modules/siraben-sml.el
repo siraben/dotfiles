@@ -16,6 +16,8 @@
 
 ;;; Commentary:
 
+;; Configures packages and various modes for Standard ML programming.
+
 ;;; Code:
 
 (use-package sml-mode
