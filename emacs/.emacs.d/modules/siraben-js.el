@@ -17,7 +17,7 @@
 
 ;;; Commentary:
 
-;; This file handles working with JavaScript.
+;; Configures packages and various modes for JavaScript programming.
 
 ;;; Code:
 

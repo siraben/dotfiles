@@ -17,13 +17,9 @@
 
 ;;; Commentary:
 
-;; This file fixes the broken built-in Typescript editing modes that
-;; Emacs provides.
+;; Configures packages and various modes for TypeScript programming.
 
 ;;; Code:
-
-(require 'use-package)
-
 
 (use-package typescript-mode
   :hook (typescript-mode . (lambda ()

@@ -17,7 +17,7 @@
 
 ;;; Commentary:
 
-;; This file installs Haskell related packages and hooks for various modes.
+;; Configures packages and various modes for Haskell programming.
 
 ;;; Code:
 
