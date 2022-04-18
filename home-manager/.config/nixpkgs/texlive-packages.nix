@@ -4,6 +4,7 @@ pkgs.texlive.combine {
   inherit (pkgs.texlive)
     scheme-minimal # base
     amsmath # math symbols
+    beamer # beamer
     biblatex # citations
     capt-of
     catchfile
@@ -22,5 +23,7 @@ pkgs.texlive.combine {
     upquote
     wrapfig
     xstring
+    endnotes
+    caption
   ;
 }
