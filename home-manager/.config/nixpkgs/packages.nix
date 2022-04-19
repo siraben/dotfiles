@@ -1,6 +1,9 @@
 { lib, sources, pkgs, pkgsStable, x86-darwin-pkgs, isDarwin, isLinux }:
 let
-  gccemacs = (import sources.nix-gccemacs-darwin).pkgs.aarch64-darwin.emacsGccDarwin;
+  gccemacs = if
+    builtins.currentSystem == "aarch64-darwin"
+    then (import sources.nix-gccemacs-darwin).pkgs.aarch64-darwin.emacsGccDarwin
+    else pkgs.emacsNativeComp;
   nix-bisect = import sources.nix-bisect { inherit pkgs; };
   # nixpkgs-review = import sources.nixpkgs-review { inherit pkgs; };
   wrapWeb = pkgs.callPackage ./wrapWeb.nix { };
