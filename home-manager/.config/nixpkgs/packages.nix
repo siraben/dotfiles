@@ -121,6 +121,7 @@ let
     watch
     wget
     yt-dlp
+    z3-tptp
     zathura
     zip
   ];
