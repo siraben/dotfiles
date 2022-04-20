@@ -66,18 +66,27 @@ let
     cmake
     # coqPackages_8_13.coquelicot
     # coqPackages_8_13.hierarchy-builder
-    coqPackages_8_13.QuickChick
-    coqPackages_8_13.simple-io
-    coqPackages_8_13.coq-ext-lib
-    coqPackages_8_13.mathcomp
+    masterPkgs.coqPackages_8_13.QuickChick
+    masterPkgs.coqPackages_8_13.simple-io
+    masterPkgs.coqPackages_8_13.coq-ext-lib
+    masterPkgs.coqPackages_8_13.mathcomp
+    masterPkgs.coqPackages_8_13.coqhammer
+    masterPkgs.coqPackages_8_13.coq-elpi
+    masterPkgs.coqPackages_8_13.trakt
+    masterPkgs.coqPackages_8_13.stdpp
+    # masterPkgs.coqPackages_8_13.smtcoq
     # coqPackages_8_13.mathcomp-algebra
     # coqPackages_8_13.mathcomp-analysis
     # coqPackages_8_13.mathcomp-fingroup
-    coqPackages_8_13.mathcomp-ssreflect
-    coq_8_13
+    masterPkgs.coqPackages_8_13.mathcomp-ssreflect
+    masterPkgs.coq_8_13
     curl
+    ((import (builtins.fetchTarball {
+        url = "https://github.com/NixOS/nixpkgs/archive/a3e1e9271e0ff87309d44f9817baadb09b305757.tar.gz";
+    }) {}).cvc4)
     dejavu_fonts
     emscripten
+    eprover
     ghostscript
     github-cli
     gnumake
@@ -118,6 +127,7 @@ let
     tree
     (tree-sitter.overrideAttrs (oA: { webUISupport = true; }))
     unzip
+    vampire
     vim
     watch
     wget
