@@ -77,6 +77,7 @@ let
     coq_8_13
     curl
     dejavu_fonts
+    emscripten
     ghostscript
     github-cli
     gnumake
