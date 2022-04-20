@@ -19,7 +19,7 @@ let
     config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
   };
   pkgs = import sources.nixpkgs pkgsOptions;
-  pkgsStable = import sources.pkgsStable pkgsOptions;
+  masterPkgs = import sources.masterPkgs pkgsOptions;
   x86-darwin-pkgs = import sources.nixpkgs (pkgsOptions // { system = (if isDarwin then "x86_64-darwin" else builtins.currentSystem); });
   grammars = (pkgs.tree-sitter.override (with pkgs; {
     extraGrammars = {
@@ -33,7 +33,7 @@ in
 {
   home.username = "siraben";
   home.homeDirectory = if isDarwin then "/Users/siraben" else "/home/siraben";
-  home.packages = import ./packages.nix { inherit lib sources pkgs pkgsStable x86-darwin-pkgs isDarwin isLinux; };
+  home.packages = import ./packages.nix { inherit lib sources pkgs x86-darwin-pkgs masterPkgs isDarwin isLinux; };
   home.file.".tree-sitter".source = (pkgs.runCommand "grammars" {} ''
     mkdir -p $out/bin
     ${lib.concatStringsSep "\n"
