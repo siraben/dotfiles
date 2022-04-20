@@ -23,6 +23,18 @@
         "url": "https://github.com/nix-community/home-manager/archive/888eac32bd657bfe0d024c8770130d80d1c02cd3.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "masterPkgs": {
+        "branch": "master",
+        "description": "Nix Packages collection",
+        "homepage": "",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "4edc1d22b90e364a098d2a5be17c450e9a829708",
+        "sha256": "1p5b752lp2lc3ylf1x1rpzh1aaxkf8mrx4wnnxsjdnzzalw23kjk",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/4edc1d22b90e364a098d2a5be17c450e9a829708.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "niv": {
         "branch": "master",
         "description": "Easy dependency management for Nix projects",
