@@ -1,9 +1,7 @@
-{ lib, sources, pkgs, pkgsStable, x86-darwin-pkgs, isDarwin, isLinux }:
+{ lib, sources, pkgs, x86-darwin-pkgs, masterPkgs, isDarwin, isLinux }:
 let
-  gccemacs = if
-    builtins.currentSystem == "aarch64-darwin"
-    then (import sources.nix-gccemacs-darwin).pkgs.aarch64-darwin.emacsGccDarwin
-    else pkgs.emacsNativeComp;
+  # gccemacs = (import sources.nix-gccemacs-darwin).pkgs.aarch64-darwin.emacsGccDarwin;
+  gccemacs = with pkgs; (emacsPackagesFor emacsNativeComp).emacsWithPackages (e: [ e.vterm ]);
   nix-bisect = import sources.nix-bisect { inherit pkgs; };
   # nixpkgs-review = import sources.nixpkgs-review { inherit pkgs; };
   wrapWeb = pkgs.callPackage ./wrapWeb.nix { };
@@ -55,17 +53,9 @@ let
   # Package set to use when wanting to use x86-darwin packages on
   # aarch64-darwin.
   pkgs' = if isDarwin then x86-darwin-pkgs else pkgs;
-  sharedPackages = with pkgs; [
-    (aspellWithDicts (d: with d; [ en en-computers en-science ]))
-    bat
-    bash
-    borgbackup
-    cabal-install
-    cachix
-    clang_13
-    cmake
+  coqPackages = with pkgs; [
     # coqPackages_8_13.coquelicot
-    # coqPackages_8_13.hierarchy-builder
+    masterPkgs.coqPackages_8_13.hierarchy-builder
     masterPkgs.coqPackages_8_13.QuickChick
     masterPkgs.coqPackages_8_13.simple-io
     masterPkgs.coqPackages_8_13.coq-ext-lib
@@ -80,13 +70,26 @@ let
     # coqPackages_8_13.mathcomp-fingroup
     masterPkgs.coqPackages_8_13.mathcomp-ssreflect
     masterPkgs.coq_8_13
-    curl
+    # External provers for coq-hammer
+    eprover
+    vampire
+    z3-tptp
     ((import (builtins.fetchTarball {
-        url = "https://github.com/NixOS/nixpkgs/archive/a3e1e9271e0ff87309d44f9817baadb09b305757.tar.gz";
+      url = "https://github.com/NixOS/nixpkgs/archive/a3e1e9271e0ff87309d44f9817baadb09b305757.tar.gz";
     }) {}).cvc4)
+  ];
+  sharedPackages = with pkgs; [
+    (aspellWithDicts (d: with d; [ en en-computers en-science ]))
+    bat
+    bash
+    borgbackup
+    cabal-install
+    cachix
+    clang_13
+    cmake
+    curl
     dejavu_fonts
     emscripten
-    eprover
     ghostscript
     github-cli
     gnumake
@@ -113,6 +116,7 @@ let
     (import ./python-packages.nix { pkgs = pkgs'; })
     ranger
     ripgrep
+    rnix-lsp
     pkgs'.rmview
     rustup
     shellcheck
@@ -127,14 +131,12 @@ let
     tree
     (tree-sitter.overrideAttrs (oA: { webUISupport = true; }))
     unzip
-    vampire
     vim
     watch
     wget
     yt-dlp
-    z3-tptp
     zathura
     zip
-  ];
+  ] ++ coqPackages;
 in
 sharedPackages ++ (lib.optionals isLinux linuxPackages) ++ (lib.optionals isDarwin darwinPackages)
