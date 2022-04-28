@@ -78,6 +78,13 @@ let
       url = "https://github.com/NixOS/nixpkgs/archive/a3e1e9271e0ff87309d44f9817baadb09b305757.tar.gz";
     }) {}).cvc4)
   ];
+  languageServers = with pkgs; [
+    haskellPackages.haskell-language-server
+    nodePackages.bash-language-server
+    nodePackages.typescript-language-server
+    nodePackages.pyright
+    rnix-lsp
+  ];
   sharedPackages = with pkgs; [
     (aspellWithDicts (d: with d; [ en en-computers en-science ]))
     bat
@@ -96,7 +103,6 @@ let
     guile
     graphviz
     (import ./haskell-packages.nix { inherit pkgs; })
-    haskellPackages.haskell-language-server
     hlint
     htop
     jq
@@ -107,16 +113,12 @@ let
     ocamlPackages.ocamlbuild
     nixpkgs-review
     nmap
-    nodePackages.bash-language-server
     nodePackages.typescript
-    nodePackages.typescript-language-server
-    nodePackages.pyright
     nodejs
     mosh
     (import ./python-packages.nix { pkgs = pkgs'; })
     ranger
     ripgrep
-    rnix-lsp
     pkgs'.rmview
     rustup
     shellcheck
@@ -137,6 +139,6 @@ let
     yt-dlp
     zathura
     zip
-  ] ++ coqPackages;
+  ] ++ coqPackages ++ languageServers;
 in
 sharedPackages ++ (lib.optionals isLinux linuxPackages) ++ (lib.optionals isDarwin darwinPackages)
