@@ -62,9 +62,8 @@ in
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  # GNOME 40
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  # KDE
+  services.xserver.desktopManager.plasma5.enable = true;
 
   services.printing.enable = true;
 
