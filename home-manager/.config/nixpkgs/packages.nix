@@ -6,7 +6,7 @@ let
   # nixpkgs-review = import sources.nixpkgs-review { inherit pkgs; };
   wrapWeb = pkgs.callPackage ./wrapWeb.nix { };
   wayland-packages = with pkgs; [
-    ((emacsPackagesFor emacsPgtkGcc).emacsWithPackages (e: [ e.vterm ]))
+    gccemacs
     firefox-wayland
   ];
   web-shortcuts = with pkgs; [
@@ -74,9 +74,10 @@ let
     eprover
     vampire
     z3-tptp
+    (if isDarwin then
     ((import (builtins.fetchTarball {
       url = "https://github.com/NixOS/nixpkgs/archive/a3e1e9271e0ff87309d44f9817baadb09b305757.tar.gz";
-    }) {}).cvc4)
+    }) {}).cvc4) else cvc4)
   ];
   languageServers = with pkgs; [
     haskellPackages.haskell-language-server
