@@ -79,6 +79,9 @@ in
   };
 
   services.xserver.libinput.enable = true;
+  services.tailscale.enable = true;
+  services.openssh.enable = true;
+  programs.mosh.enable = true;
 
   environment.pathsToLink = [ "/share/zsh" ];
   environment.shells = with pkgs; [ bashInteractive zsh ];
