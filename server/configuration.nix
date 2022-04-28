@@ -73,6 +73,7 @@ in
   # };
 
   programs.mosh.enable = true;
+  services.tailscale.enable = true;
   systemd.services."nextcloud-setup" = {
     requires = ["postgresql.service"];
     after = ["postgresql.service"];
