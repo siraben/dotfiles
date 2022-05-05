@@ -28,21 +28,12 @@ let
       tree-sitter-sml = { src = sources.tree-sitter-sml.outPath; };
     };
   })).builtGrammars;
-
+  minimal = false;
 in
-{
+lib.recursiveUpdate ({
   home.username = "siraben";
   home.homeDirectory = if isDarwin then "/Users/siraben" else "/home/siraben";
-  home.packages = import ./packages.nix { inherit lib sources pkgs x86-darwin-pkgs masterPkgs isDarwin isLinux; };
-  home.file.".tree-sitter".source = (pkgs.runCommand "grammars" {} ''
-    mkdir -p $out/bin
-    ${lib.concatStringsSep "\n"
-      (lib.mapAttrsToList (name: src: ''
-          name=${name}
-          ln -s ${src}/parser $out/bin/''${name#tree-sitter-}.so
-        '')
-        grammars)}
-  '');
+  home.packages = import ./packages.nix { inherit lib sources pkgs x86-darwin-pkgs masterPkgs isDarwin isLinux minimal; };
 
   home.sessionVariables = {
     EDITOR = "emacsclient";
@@ -61,4 +52,15 @@ in
   fonts.fontconfig.enable = true;
   services = lib.optionalAttrs isLinux (import ./services.nix { inherit lib pkgs; });
   home.stateVersion = "21.11";
-}
+})
+(lib.optionalAttrs (!minimal) {
+    home.file.".tree-sitter".source = (pkgs.runCommand "grammars" {} ''
+    mkdir -p $out/bin
+    ${lib.concatStringsSep "\n"
+      (lib.mapAttrsToList (name: src: ''
+          name=${name}
+          ln -s ${src}/parser $out/bin/''${name#tree-sitter-}.so
+        '')
+        grammars)}
+  '');
+})
