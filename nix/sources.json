@@ -113,10 +113,10 @@
         "homepage": "",
         "owner": "siraben",
         "repo": "tree-sitter-formula",
-        "rev": "867a48f0cc73bfdda8a6bb181988d847049e7cd7",
-        "sha256": "0nrflycxsdp9hznhifa0wzpdfgjzs66hza5vzfp2ghcsv733xcv2",
+        "rev": "351159cf66f0e7f8d86fa06fc44ab3c2055082df",
+        "sha256": "0v4rhwsn8hnc2wzzcl4khbr7s675kzb18blxy072dzsvzqfkzd00",
         "type": "tarball",
-        "url": "https://github.com/siraben/tree-sitter-formula/archive/867a48f0cc73bfdda8a6bb181988d847049e7cd7.tar.gz",
+        "url": "https://github.com/siraben/tree-sitter-formula/archive/351159cf66f0e7f8d86fa06fc44ab3c2055082df.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "tree-sitter-promela": {
