@@ -5,4 +5,5 @@ pkgs.haskellPackages.ghcWithHoogle (h: with h; [
   vector # efficient arrays
   criterion # benchmarking
   aeson # JSON
+  recursion-schemes # recursion schemes
 ])
