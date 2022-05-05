@@ -19,6 +19,8 @@ in
   networking.useDHCP = true;
 
   users.users.siraben = {
+    shell = pkgs.zsh;
+    useDefaultShell = false;
     isNormalUser = true;
     extraGroups = [ "wheel" ];
   };
@@ -71,6 +73,9 @@ in
   #     '';
   #   };
   # };
+
+  environment.pathsToLink = [ "/share/zsh" ];
+  environment.shells = with pkgs; [ bashInteractive zsh ];
 
   programs.mosh.enable = true;
   services.tailscale.enable = true;
