@@ -79,7 +79,8 @@
   :config
   (setq markdown-link-space-sub-char " "
         markdown-wiki-link-alias-first nil
-        markdown-enable-math t))
+        markdown-enable-math t
+        markdown-fontify-code-blocks-natively t))
 
 (use-package magit
   :commands (magit-dispatch magit-blame)
