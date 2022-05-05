@@ -15,7 +15,7 @@ let
     overlays = [
       (import sources.emacs-overlay)
       (import ./overlay.nix)
-    ] ++ lib.optional isLinux (import sources.nixpkgs-wayland);
+    ];
     config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
   };
   pkgs = import sources.nixpkgs pkgsOptions;

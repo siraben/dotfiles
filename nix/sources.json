@@ -95,18 +95,6 @@
         "url": "https://github.com/Mic92/nixpkgs-review/archive/d8c01b48b6189287bb7b70c0a67399991f227163.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
-    "nixpkgs-wayland": {
-        "branch": "master",
-        "description": "Automated, pre-built packages for Wayland (sway/wlroots) tools for NixOS.",
-        "homepage": "",
-        "owner": "nix-community",
-        "repo": "nixpkgs-wayland",
-        "rev": "88149a65d213dd011751bbdf8f3053a76971669b",
-        "sha256": "0w5gw7cjy0hc9ms94l7jaja96153g5r9gwljy7f9gfy8cqd3knj5",
-        "type": "tarball",
-        "url": "https://github.com/nix-community/nixpkgs-wayland/archive/88149a65d213dd011751bbdf8f3053a76971669b.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
     "siraben-overlay": {
         "branch": "master",
         "description": "@siraben's eclectic collection of software",
