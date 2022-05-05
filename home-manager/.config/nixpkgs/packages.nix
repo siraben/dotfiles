@@ -1,21 +1,22 @@
-{ lib, sources, pkgs, x86-darwin-pkgs, masterPkgs, isDarwin, isLinux }:
+{ lib, sources, pkgs, x86-darwin-pkgs, masterPkgs, isDarwin, isLinux, minimal }:
 let
+  whenNotMinimal = lib.optionals (!minimal);
   # gccemacs = (import sources.nix-gccemacs-darwin).pkgs.aarch64-darwin.emacsGccDarwin;
   gccemacs = with pkgs; (emacsPackagesFor emacsNativeComp).emacsWithPackages (e: [ e.vterm ]);
   nix-bisect = import sources.nix-bisect { inherit pkgs; };
   # nixpkgs-review = import sources.nixpkgs-review { inherit pkgs; };
   wrapWeb = pkgs.callPackage ./wrapWeb.nix { };
-  wayland-packages = with pkgs; [
+  wayland-packages = whenNotMinimal (with pkgs; [
     gccemacs
     firefox-wayland
-  ];
-  web-shortcuts = with pkgs; [
+  ]);
+  web-shortcuts = whenNotMinimal (with pkgs; [
     (wrapWeb "element" "https://app.element.io")
     (wrapWeb "hn" "https://news.ycombinator.com")
     (wrapWeb "neverssl" "http://neverssl.com")
     (wrapWeb "mastodon" "https://mastodon.social")
-  ];
-  linuxPackages = with pkgs; [
+  ]);
+  linuxPackages = whenNotMinimal (with pkgs; [
     discord
     docker
     docker-compose
@@ -43,7 +44,7 @@ let
     vlc
     whois
     zoom-us
-  ] ++ wayland-packages ++ web-shortcuts;
+  ]) ++ wayland-packages ++ web-shortcuts;
   darwinPackages = with pkgs; [
     coreutils
     gnused
@@ -64,6 +65,7 @@ let
     masterPkgs.coqPackages_8_13.coq-elpi
     masterPkgs.coqPackages_8_13.trakt
     masterPkgs.coqPackages_8_13.stdpp
+    masterPkgs.coqPackages_8_13.serapi
     # masterPkgs.coqPackages_8_13.smtcoq
     # coqPackages_8_13.mathcomp-algebra
     # coqPackages_8_13.mathcomp-analysis
@@ -87,15 +89,22 @@ let
     rnix-lsp
   ];
   sharedPackages = with pkgs; [
+      bash
+      borgbackup
+      curl
+      htop
+      tmux
+      vim
+      watch
+      wget
+      mosh
+  ] ++ (whenNotMinimal ([
     (aspellWithDicts (d: with d; [ en en-computers en-science ]))
     bat
-    bash
-    borgbackup
     cabal-install
     cachix
     clang_13
     cmake
-    curl
     dejavu_fonts
     emscripten
     ghostscript
@@ -105,7 +114,6 @@ let
     graphviz
     (import ./haskell-packages.nix { inherit pkgs; })
     hlint
-    htop
     jq
     ledger
     mpv
@@ -116,7 +124,6 @@ let
     nmap
     nodePackages.typescript
     nodejs
-    mosh
     (import ./python-packages.nix { pkgs = pkgs'; })
     ranger
     ripgrep
@@ -128,18 +135,14 @@ let
     (import ./texlive-packages.nix { inherit pkgs; })
     pkgs'.the-powder-toy
     tldr
-    tmux
     tor
     torsocks
     tree
     (tree-sitter.overrideAttrs (oA: { webUISupport = true; }))
     unzip
-    vim
-    watch
-    wget
     yt-dlp
     zathura
     zip
-  ] ++ coqPackages ++ languageServers;
+  ] ++ coqPackages ++ languageServers));
 in
 sharedPackages ++ (lib.optionals isLinux linuxPackages) ++ (lib.optionals isDarwin darwinPackages)
