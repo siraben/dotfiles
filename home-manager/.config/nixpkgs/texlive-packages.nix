@@ -25,5 +25,7 @@ pkgs.texlive.combine {
     xstring
     endnotes
     caption
+    subfigure # nested figures
+    biber
   ;
 }
