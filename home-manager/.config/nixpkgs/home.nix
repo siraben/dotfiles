@@ -26,6 +26,7 @@ let
       tree-sitter-promela = { src = sources.tree-sitter-promela.outPath; };
       tree-sitter-formula = { src = sources.tree-sitter-formula.outPath; };
       tree-sitter-sml = { src = sources.tree-sitter-sml.outPath; };
+      tree-sitter-solidity = { src = sources.tree-sitter-solidity.outPath; };
     };
   })).builtGrammars;
   minimal = false;
