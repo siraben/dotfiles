@@ -367,6 +367,8 @@
             (formula-tree-sitter-setup)
             (font-lock-fontify-buffer)))
 
+(use-package solidity-mode)
+
 (use-package tree-sitter
   :demand
   :diminish "ts"
@@ -385,8 +387,10 @@
           (graphviz-dot-mode . dot)
           (makefile-bsdmake-mode . make)
           (sml-mode . sml)
+          (solidity-mode . solidity)
           (promela-mode . promela)
           (formula-mode . formula)
+          (kotlin-mode . kotlin)
           ,@tree-sitter-major-mode-language-alist)))
 
 
@@ -398,6 +402,14 @@
 (use-package multi-vterm
   :commands (multi-vterm)
   :bind ("<f8>" . multi-vterm))
+
+(use-package projectile
+  :commands (projectile-mode)
+  :config
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+
+(use-package kotlin-mode
+  :hook (kotlin-mode . lsp-deferred))
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here
