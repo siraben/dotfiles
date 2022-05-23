@@ -16,7 +16,8 @@ pkgs.texlive.combine {
     fvextra
     latexmk
     lkproof # proof rules
-    minted # source code 
+    minted # source code
+    float # minted depends on float
     preprint
     rotfloat
     ulem
@@ -27,5 +28,13 @@ pkgs.texlive.combine {
     caption
     subfigure # nested figures
     biber
+    parskip
+    # Paper stuff
+    paper
+    fancyvrb
+    lineno
+    algpseudocodex
+    algorithms
+    algorithmicx
   ;
 }

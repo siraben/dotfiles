@@ -76,10 +76,7 @@ let
     eprover
     vampire
     z3-tptp
-    (if isDarwin then
-    ((import (builtins.fetchTarball {
-      url = "https://github.com/NixOS/nixpkgs/archive/a3e1e9271e0ff87309d44f9817baadb09b305757.tar.gz";
-    }) {}).cvc4) else cvc4)
+    cvc4
   ];
   languageServers = with pkgs; [
     haskellPackages.haskell-language-server
