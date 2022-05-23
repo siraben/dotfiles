@@ -55,7 +55,6 @@ let
   # aarch64-darwin.
   pkgs' = if isDarwin then x86-darwin-pkgs else pkgs;
   coqPackages = with pkgs; [
-    # coqPackages_8_13.coquelicot
     masterPkgs.coqPackages_8_13.hierarchy-builder
     masterPkgs.coqPackages_8_13.QuickChick
     masterPkgs.coqPackages_8_13.simple-io
@@ -66,10 +65,6 @@ let
     masterPkgs.coqPackages_8_13.trakt
     masterPkgs.coqPackages_8_13.stdpp
     masterPkgs.coqPackages_8_13.serapi
-    # masterPkgs.coqPackages_8_13.smtcoq
-    # coqPackages_8_13.mathcomp-algebra
-    # coqPackages_8_13.mathcomp-analysis
-    # coqPackages_8_13.mathcomp-fingroup
     masterPkgs.coqPackages_8_13.mathcomp-ssreflect
     masterPkgs.coq_8_13
     # External provers for coq-hammer
@@ -86,15 +81,15 @@ let
     rnix-lsp
   ];
   sharedPackages = with pkgs; [
-      bash
-      borgbackup
-      curl
-      htop
-      tmux
-      vim
-      watch
-      wget
-      mosh
+    bash
+    borgbackup
+    curl
+    htop
+    tmux
+    vim
+    watch
+    wget
+    mosh
   ] ++ (whenNotMinimal ([
     (aspellWithDicts (d: with d; [ en en-computers en-science ]))
     bat
@@ -104,7 +99,6 @@ let
     cmake
     dejavu_fonts
     emscripten
-    ghostscript
     github-cli
     gnumake
     guile
