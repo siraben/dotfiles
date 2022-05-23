@@ -92,7 +92,7 @@ Enables auto-fill mode, spell checking and disables company mode."
 
 (use-package dashboard
   :commands (dashboard-mode)
-  :hook (after-init . dashboard-mode)
+  :hook (after-init . (lambda () (dashboard-mode) (dashboard-refresh-buffer)))
   :config
   (setq dashboard-set-footer nil)
   (setq dashboard-startup-banner 'logo)
