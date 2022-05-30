@@ -70,6 +70,15 @@ in
   };
   autojump.enable = true;
   mcfly.enable = true;
+  tmux = {
+    enable = true;
+    clock24 = true;
+    baseIndex = 1;
+    # open new windows in the same cwd
+    extraConfig = ''
+      bind c new-window -c "#{pane_current_path}"
+    '';
+  };
   zsh = {
     enable = true;
     oh-my-zsh = {
