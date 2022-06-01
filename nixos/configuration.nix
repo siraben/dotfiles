@@ -82,6 +82,7 @@ in
   services.tailscale.enable = true;
   services.openssh.enable = true;
   programs.mosh.enable = true;
+  environment.systemPackages = with pkgs; [ bpftrace ];
 
   environment.pathsToLink = [ "/share/zsh" ];
   environment.shells = with pkgs; [ bashInteractive zsh ];
