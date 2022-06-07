@@ -93,19 +93,20 @@ let
     watch
     wget
     mosh
-  ] ++ (whenNotMinimal ([
-    (aspellWithDicts (d: with d; [ en en-computers en-science ]))
+    dejavu_fonts
+    github-cli
     bat
+    tldr
+  ] ++ languageServers
+  ++ (whenNotMinimal ([
+    (aspellWithDicts (d: with d; [ en en-computers en-science ]))
     cabal-install
     cachix
     clang_13
     cmake
-    dejavu_fonts
     emscripten
-    github-cli
     gnumake
     guile
-    graphviz
     (import ./haskell-packages.nix { inherit pkgs; })
     hlint
     jq
@@ -128,7 +129,6 @@ let
     swiProlog
     (import ./texlive-packages.nix { inherit pkgs; })
     pkgs'.the-powder-toy
-    tldr
     tor
     torsocks
     tree
@@ -137,6 +137,6 @@ let
     yt-dlp
     zathura
     zip
-  ] ++ coqPackages ++ languageServers));
+  ] ++ coqPackages));
 in
 sharedPackages ++ (lib.optionals isLinux linuxPackages) ++ (lib.optionals isDarwin darwinPackages)

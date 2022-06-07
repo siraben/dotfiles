@@ -29,7 +29,7 @@ let
       tree-sitter-solidity = { src = sources.tree-sitter-solidity.outPath; };
     };
   })).builtGrammars;
-  minimal = false;
+  minimal = true;
 in
 lib.recursiveUpdate ({
   home.username = "siraben";
@@ -54,7 +54,7 @@ lib.recursiveUpdate ({
   services = lib.optionalAttrs isLinux (import ./services.nix { inherit lib pkgs; });
   home.stateVersion = "21.11";
 })
-(lib.optionalAttrs (!minimal) {
+({
     home.file.".tree-sitter".source = (pkgs.runCommand "grammars" {} ''
     mkdir -p $out/bin
     ${lib.concatStringsSep "\n"
