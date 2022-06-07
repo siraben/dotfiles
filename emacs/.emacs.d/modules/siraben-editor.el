@@ -148,8 +148,7 @@ Enables auto-fill mode, spell checking and disables company mode."
 (use-package helm-swoop
   :commands (helm-swoop-without-pre-input helm-swoop)
   :bind
-  (("C-s" . helm-swoop-without-pre-input)
-   ("C-S-s" . helm-swoop)))
+  (("C-S-s" . helm-swoop)))
 
 (provide 'siraben-editor)
 ;;; siraben-editor.el ends here
