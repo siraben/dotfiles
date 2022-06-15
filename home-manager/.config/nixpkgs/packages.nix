@@ -112,8 +112,6 @@ let
     ledger
     mpv
     niv
-    ocaml
-    ocamlPackages.ocamlbuild
     nixpkgs-review
     nmap
     nodePackages.typescript
