@@ -128,9 +128,9 @@ Enables auto-fill mode, spell checking and disables company mode."
 (setq kept-new-versions 10
       kept-old-verisons 0)
 
-(setq delete-old-versions t
-      backup-by-copying t
-      vc-make-backup-files t)
+;; No backups
+(setq backup-inhibited 1)
+(setq delete-old-versions t)
 
 (setq recentf-max-saved-items 2000
       recentf-keep nil)
