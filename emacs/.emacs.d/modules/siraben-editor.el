@@ -132,7 +132,7 @@ Enables auto-fill mode, spell checking and disables company mode."
 (setq backup-inhibited 1)
 (setq delete-old-versions t)
 
-(setq recentf-max-saved-items 2000
+(setq recentf-max-saved-items 10000
       recentf-keep nil)
 
 (show-paren-mode 1)
