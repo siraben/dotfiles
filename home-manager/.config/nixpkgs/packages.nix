@@ -89,7 +89,7 @@ let
     borgbackup
     curl
     htop
-    vim
+    # vim
     watch
     wget
     mosh
