@@ -94,6 +94,7 @@ let
     wget
     mosh
   ] ++ (whenNotMinimal ([
+    pkgs'.agda
     (aspellWithDicts (d: with d; [ en en-computers en-science ]))
     bat
     cabal-install
