@@ -18,11 +18,11 @@
         "type": "indirect"
       },
       "to": {
-        "lastModified": 1657292830,
-        "narHash": "sha256-ldfVSTveWceDCmW6gf3B4kR6vwmz/XS80y5wsLLHFJU=",
+        "lastModified": 1657888067,
+        "narHash": "sha256-GnwJoFBTPfW3+mz7QEeJEEQ9OMHZOiIJ/qDhZxrlKh8=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "334ec8b503c3981e37a04b817a70e8d026ea9e84",
+        "rev": "65fae659e31098ca4ac825a6fef26d890aaf3f4e",
         "type": "github"
       }
     }
