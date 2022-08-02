@@ -13,6 +13,7 @@ in
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
   boot.loader.grub.device = "/dev/vda";
+  boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
 
   networking.hostName = "siraben-land";
 
@@ -84,7 +85,7 @@ in
     after = ["postgresql.service"];
   };
 
-  networking.firewall.allowedTCPPorts = [ 80 443 53 ];
+  networking.firewall.allowedTCPPorts = [ 80 443 53 25565 ];
   networking.firewall.allowedUDPPorts = [ 80 443 53 ];
   system.stateVersion = "21.05";
 
