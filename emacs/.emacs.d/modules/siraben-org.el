@@ -55,6 +55,7 @@
      (octave . t)))
   ;; I want to have source code syntax highlighting for LaTeX export as well.
   (setq org-latex-listings 'minted)
+  (setq org-latex-packages-alist '(("" "minted")))
   (setq org-latex-pdf-process
         '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
           "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
@@ -85,6 +86,14 @@
     (setq-local electric-pair-pairs (append electric-pair-pairs org-electric-pairs))
     (setq-local electric-pair-text-pairs electric-pair-pairs))
   (add-hook 'org-mode-hook 'org-add-electric-pairs)
+
+  (require 'ox-latex)
+  (add-to-list 'org-latex-classes '("journal" "\\documentclass[11pt]{journal}"
+                                    ("\\section{%s}" . "\\section*{%s}")
+                                    ("\\subsection{%s}" . "\\subsection*{%s}")
+                                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                                    ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
   )
 
 (use-package gnuplot)
