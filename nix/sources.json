@@ -107,6 +107,18 @@
         "url": "https://github.com/siraben/siraben-overlay/archive/c6a21af8fddc0f9072eeb6b60be107f346fd2979.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "tree-sitter-cool": {
+        "branch": "master",
+        "description": "Tree-sitter grammar for COOL",
+        "homepage": null,
+        "owner": "siraben",
+        "repo": "tree-sitter-cool",
+        "rev": "3bd8f928527c61575de056cf62b4fa0f79bd1fb6",
+        "sha256": "0xrqfb8ihf9qldqkgzpl88wb0sdqc59nq9qhxkw9ifwambrxg6ld",
+        "type": "tarball",
+        "url": "https://github.com/siraben/tree-sitter-cool/archive/3bd8f928527c61575de056cf62b4fa0f79bd1fb6.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "tree-sitter-formula": {
         "branch": "master",
         "description": "Formula grammar for tree-sitter",
