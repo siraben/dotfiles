@@ -50,6 +50,7 @@ let
     gnused
     gccemacs
     spoof-mac
+    cool-osx
   ];
   # Package set to use when wanting to use x86-darwin packages on
   # aarch64-darwin.

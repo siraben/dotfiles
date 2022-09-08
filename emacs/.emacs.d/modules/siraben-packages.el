@@ -383,6 +383,61 @@
             (formula-tree-sitter-setup)
             (font-lock-fontify-buffer)))
 
+(load "siraben-cool.el")
+(add-to-list 'auto-mode-alist '("\\.cl\\'" . cool-mode))
+(defun cool-tree-sitter-setup ()
+  (interactive)
+  (setq tree-sitter-hl-default-patterns
+        "[
+\"if\"
+\"then\"
+\"else\"
+\"fi\"
+\"while\"
+\"loop\"
+\"pool\"
+\"case\"
+\"esac\"
+\"new\"
+\"isvoid\"
+\"not\"
+\"true\"
+\"false\"
+\"class\"
+\"inherits\"
+\"of\"
+\"let\"
+\"in\"
+ ] @keyword
+
+(comment) @comment
+
+(string) @string
+
+(type) @type
+
+(id) @variable.builtin
+
+(int) @number
+
+[ \"(\" \")\" \"{\" \"}\" ] @punctuation.bracket
+
+[ \"+\" \"-\" \"*\" \"/\" \"=>\" \"<-\" \"=\" \"<=\" \"<\" \"~\" ] @operator
+
+(functionCall name: (_) @function.call)
+
+(dispatch name: (_) @method.call)
+
+(feature (method name: (_) @method))
+")
+
+  (tree-sitter-require 'cool)
+  )
+(add-hook 'cool-mode-hook
+          (lambda ()
+            (cool-tree-sitter-setup)
+            (font-lock-fontify-buffer)))
+
 (use-package solidity-mode)
 
 (use-package tree-sitter
@@ -406,6 +461,7 @@
           (solidity-mode . solidity)
           (promela-mode . promela)
           (formula-mode . formula)
+          (cool-mode . cool)
           (kotlin-mode . kotlin)
           ,@tree-sitter-major-mode-language-alist)))
 
@@ -426,6 +482,8 @@
 
 (use-package kotlin-mode
   :hook (kotlin-mode . lsp-deferred))
+
+(use-package writeroom-mode)
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here

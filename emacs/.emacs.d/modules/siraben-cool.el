@@ -1,0 +1,7 @@
+(defun cool-mode ()
+  (interactive)
+  (kill-all-local-variables)
+  (setq mode-name  		"Cool")
+  (setq major-mode 		'cool-mode)
+  (electric-pair-mode t)
+  (run-hooks 'cool-mode-hook))
