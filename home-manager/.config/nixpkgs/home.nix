@@ -27,6 +27,7 @@ let
       tree-sitter-formula = { src = sources.tree-sitter-formula.outPath; };
       tree-sitter-sml = { src = sources.tree-sitter-sml.outPath; };
       tree-sitter-solidity = { src = sources.tree-sitter-solidity.outPath; };
+      tree-sitter-cool = { src = sources.tree-sitter-cool.outPath; };
     };
   })).builtGrammars;
   minimal = false;
