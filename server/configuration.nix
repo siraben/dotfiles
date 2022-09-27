@@ -27,7 +27,7 @@ in
   };
 
   nix = {
-    trustedUsers = [ "root" "siraben" ];
+    settings.trusted-users = [ "root" "siraben" ];
     package = pkgs.nixUnstable;
     optimise.automatic = true;
     gc = {
@@ -51,7 +51,7 @@ in
 
   security.acme = {
     acceptTerms = true;
-    email = "bensiraphob@gmail.com";
+    defaults.email = "bensiraphob@gmail.com";
   };
 
   security.sudo.wheelNeedsPassword = false;
@@ -87,6 +87,6 @@ in
 
   networking.firewall.allowedTCPPorts = [ 80 443 53 25565 ];
   networking.firewall.allowedUDPPorts = [ 80 443 53 ];
-  system.stateVersion = "21.05";
+  system.stateVersion = "22.05";
 
 }
