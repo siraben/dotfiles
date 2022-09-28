@@ -59,21 +59,6 @@ in
   services.nextcloud = import ./nextcloud.nix { inherit pkgs; };
 
   services.postgresql = import ./postgresql.nix { };
-  # services.jitsi-meet = {
-  #   enable = true;
-  #   hostName = "meet.siraben.dev";
-  # };
-  # services.jitsi-videobridge.openFirewall = true;
-  # services.prosody = {
-  #   allowRegistration = true;
-  #   admins = [ "siraben@siraben.dev" ];
-  #   virtualHosts."meet.siraben.dev" = {
-  #     enabled = true;
-  #     extraConfig = ''
-  #       authentication = "internal_hashed"
-  #     '';
-  #   };
-  # };
 
   environment.pathsToLink = [ "/share/zsh" ];
   environment.shells = with pkgs; [ bashInteractive zsh ];
