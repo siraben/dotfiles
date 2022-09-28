@@ -5,10 +5,10 @@
         "homepage": "",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "4d342a55aa298e8ed5168be77c2262cf5fb8a0c4",
-        "sha256": "1fybr7r3nvbqwl5km4f73jlvqy5waw8xny81yq2jd0n3lcscfb04",
+        "rev": "0b9139a3474b85be53f7ab0939442c024b981043",
+        "sha256": "1i5c1b845argnmfmc5ckxjz37izl57266n3qr99q9cbw1wwzr6hl",
         "type": "tarball",
-        "url": "https://github.com/nix-community/emacs-overlay/archive/4d342a55aa298e8ed5168be77c2262cf5fb8a0c4.tar.gz",
+        "url": "https://github.com/nix-community/emacs-overlay/archive/0b9139a3474b85be53f7ab0939442c024b981043.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "home-manager": {
@@ -17,10 +17,10 @@
         "homepage": "https://nix-community.github.io/home-manager/",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "c645cc9f82c7753450d1fa4d1bc73b64960a9d7a",
-        "sha256": "1q2mvkp75daal2y5ijjr1m0lyv14fmnvnr9hj42nmhcy9f23mi71",
+        "rev": "6dc8a43f397c92afbc3f771385ac803d96d5eeb5",
+        "sha256": "1dxcfj1fx0gf59cb0b0xpi4qmi072lq9h6sj6r2611m7nsy0v8bw",
         "type": "tarball",
-        "url": "https://github.com/nix-community/home-manager/archive/c645cc9f82c7753450d1fa4d1bc73b64960a9d7a.tar.gz",
+        "url": "https://github.com/nix-community/home-manager/archive/6dc8a43f397c92afbc3f771385ac803d96d5eeb5.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "masterPkgs": {
@@ -101,10 +101,10 @@
         "homepage": "",
         "owner": "siraben",
         "repo": "siraben-overlay",
-        "rev": "c6a21af8fddc0f9072eeb6b60be107f346fd2979",
-        "sha256": "07h27h54jk0whb0p9fsq10q137hkaym5p4mj3mqwlzd0pyz5v0l7",
+        "rev": "0cd9266eb1ca51b8029c41614f8c49b48c4bef6c",
+        "sha256": "0v2a54yir7j6v9fxs3grixjzy7z871hswd6glidfny8ycd8il2px",
         "type": "tarball",
-        "url": "https://github.com/siraben/siraben-overlay/archive/c6a21af8fddc0f9072eeb6b60be107f346fd2979.tar.gz",
+        "url": "https://github.com/siraben/siraben-overlay/archive/0cd9266eb1ca51b8029c41614f8c49b48c4bef6c.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "tree-sitter-cool": {
