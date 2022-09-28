@@ -2,63 +2,81 @@
   "entries": {
     "tap": {
       "beeftornado/rmtree": {
-        "revision": "5ef564ceb7e6e55dadc59c41961808f79a18d34c"
+        "revision": "e755439c5cf529ba1dfb93bfd2d2440ed0adbe91"
+      },
+      "cvc4/cvc4": {
+        "revision": "11ff7a75b066921ea27bfed6c3d1cb9345c6f1bf"
       },
       "homebrew/bundle": {
-        "revision": "407dafc7dbdacd1d897cfc79e8c3ab86a859ca71"
+        "revision": "73b77351709591cadc3f4a918b3276ee82cafbad"
       },
       "homebrew/cask": {
-        "revision": "16eab891a1b32d7e200e83a70c37e2358954bbef"
+        "revision": "7fb3a286171c8849522e4896f949d187a2593b2d"
       },
       "homebrew/cask-versions": {
-        "revision": "4a44edd86103356e5926e63df62c08ce39bbb6ed"
+        "revision": "a4de0fb33934b9f94f782336481185712a93ba9f"
       },
       "homebrew/core": {
-        "revision": "220724c231be744fbcda3ad0f5e805ac50833928"
+        "revision": "2c17277b7fbba9449d2ef04a98fb0f70af93d9df"
       },
       "homebrew/services": {
-        "revision": "e7d862e47bc9e6f98921882ed3b1834fffcb2226"
+        "revision": "954801711b1562739176e83bc0ce0a265abdea98"
+      },
+      "mistertea/et": {
+        "revision": "103facc1d9bcb2e165adac4e7f68287392bce11e"
       }
     },
     "cask": {
+      "alacritty": {
+        "version": "0.10.1",
+        "options": {
+          "full_name": "alacritty"
+        }
+      },
       "anki": {
-        "version": "2.1.49",
+        "version": "2.1.54",
         "options": {
           "full_name": "anki"
         }
       },
       "appcleaner": {
-        "version": "3.6.0,4070",
+        "version": "3.6.4,4270",
         "options": {
           "full_name": "appcleaner"
         }
       },
       "blackhole-2ch": {
-        "version": "0.2.10",
+        "version": "0.4.0",
         "options": {
           "full_name": "blackhole-2ch"
         }
       },
       "coconutbattery": {
-        "version": "3.9.7,1b4b96e3",
+        "version": "3.9.9,6b311840",
         "options": {
           "full_name": "coconutbattery"
         }
       },
+      "devdocs": {
+        "version": "0.7.2",
+        "options": {
+          "full_name": "devdocs"
+        }
+      },
       "discord": {
-        "version": "0.0.264",
+        "version": "0.0.268",
         "options": {
           "full_name": "discord"
         }
       },
       "docker": {
-        "version": "4.3.2,72729",
+        "version": "4.12.0,85629",
         "options": {
           "full_name": "docker"
         }
       },
       "eloston-chromium": {
-        "version": "96.0.4664.110-1.1_x86-64",
+        "version": "105.0.5195.127-1.1,1663365155",
         "options": {
           "full_name": "eloston-chromium"
         }
@@ -70,39 +88,99 @@
         }
       },
       "flux": {
-        "version": "41.5",
+        "version": "42.1",
         "options": {
           "full_name": "flux"
         }
       },
+      "geekbench": {
+        "version": "5.4.5,503938",
+        "options": {
+          "full_name": "geekbench"
+        }
+      },
+      "golly": {
+        "version": "4.2",
+        "options": {
+          "full_name": "golly"
+        }
+      },
+      "google-chrome": {
+        "version": "106.0.5249.61",
+        "options": {
+          "full_name": "google-chrome"
+        }
+      },
+      "grandperspective": {
+        "version": "3.0.0",
+        "options": {
+          "full_name": "grandperspective"
+        }
+      },
+      "imageoptim": {
+        "version": "1.8.8",
+        "options": {
+          "full_name": "imageoptim"
+        }
+      },
+      "inkscape": {
+        "version": "1.2.1",
+        "options": {
+          "full_name": "inkscape"
+        }
+      },
+      "iterm2": {
+        "version": "3.4.16",
+        "options": {
+          "full_name": "iterm2"
+        }
+      },
       "keepassxc": {
-        "version": "2.6.6",
+        "version": "2.7.1",
         "options": {
           "full_name": "keepassxc"
         }
       },
+      "kitty": {
+        "version": "0.26.3",
+        "options": {
+          "full_name": "kitty"
+        }
+      },
+      "kiwix": {
+        "version": "2.1.2",
+        "options": {
+          "full_name": "kiwix"
+        }
+      },
       "libreoffice": {
-        "version": "7.2.4",
+        "version": "7.4.1",
         "options": {
           "full_name": "libreoffice"
         }
       },
+      "lulu": {
+        "version": "2.4.2",
+        "options": {
+          "full_name": "lulu"
+        }
+      },
       "macfuse": {
-        "version": "4.2.4",
+        "version": "4.4.1",
         "options": {
           "full_name": "macfuse"
         }
       },
-      "macs-fan-control": {
-        "version": "1.5.11",
-        "options": {
-          "full_name": "macs-fan-control"
-        }
-      },
       "minecraft": {
-        "version": "973,1",
+        "version": "1.1.26",
         "options": {
           "full_name": "minecraft"
+        }
+      },
+      "mullvadvpn": {
+        "version": "2022.4",
+        "options": {
+          "full_name": "mullvadvpn"
         }
       },
       "musescore": {
@@ -112,55 +190,61 @@
         }
       },
       "nextcloud": {
-        "version": "3.4.1",
+        "version": "3.6.0",
         "options": {
           "full_name": "nextcloud"
         }
       },
       "obsidian": {
-        "version": "0.13.14",
+        "version": "0.15.9",
         "options": {
           "full_name": "obsidian"
         }
       },
       "openzfs": {
-        "version": "2.1.0,343",
+        "version": "2.1.0,342",
         "options": {
           "full_name": "openzfs"
         }
       },
       "remarkable": {
-        "version": "2.10.3.179",
+        "version": "2.14.3.623,40828928",
         "options": {
           "full_name": "remarkable"
         }
       },
+      "ripcord": {
+        "version": "0.4.29",
+        "options": {
+          "full_name": "ripcord"
+        }
+      },
       "skim": {
-        "version": "1.6.7,137",
+        "version": "1.6.12,142",
         "options": {
           "full_name": "skim"
         }
       },
       "slack": {
-        "version": "4.23.0",
+        "version": "4.28.184",
         "options": {
           "full_name": "slack"
         }
       },
       "spotify": {
-        "version": "1.1.74.631,0b24d9ad,16",
+        "version": "1.1.94.872,7a9200fe,18",
         "options": {
           "full_name": "spotify"
         }
       },
       "standard-notes": {
-        "version": "3.9.10",
+        "version": "3.23.164",
         "options": {
           "full_name": "standard-notes"
         }
       },
       "stats": {
-        "version": "2.6.26",
+        "version": "2.7.36",
         "options": {
           "full_name": "stats"
         }
@@ -172,7 +256,7 @@
         }
       },
       "telegram": {
-        "version": "8.4.1,225774",
+        "version": "9.0.1,237033",
         "options": {
           "full_name": "telegram"
         }
@@ -184,7 +268,7 @@
         }
       },
       "tor-browser": {
-        "version": "11.0.3",
+        "version": "11.5.2",
         "options": {
           "full_name": "tor-browser"
         }
@@ -195,14 +279,20 @@
           "full_name": "transmission"
         }
       },
+      "visual-studio-code": {
+        "version": "1.71.2",
+        "options": {
+          "full_name": "visual-studio-code"
+        }
+      },
       "vlc": {
-        "version": "3.0.16",
+        "version": "3.0.17.3",
         "options": {
           "full_name": "vlc"
         }
       },
       "vorta": {
-        "version": "0.8.2",
+        "version": "0.8.7",
         "options": {
           "full_name": "vorta"
         }
@@ -214,9 +304,15 @@
         }
       },
       "wireshark": {
-        "version": "3.6.1",
+        "version": "3.6.8",
         "options": {
           "full_name": "wireshark"
+        }
+      },
+      "xquartz": {
+        "version": "2.8.2",
+        "options": {
+          "full_name": "xquartz"
         }
       },
       "zeronet": {
@@ -226,22 +322,28 @@
         }
       },
       "zoom": {
-        "version": "5.9.1.3506",
+        "version": "5.12.0.11129",
         "options": {
           "full_name": "zoom"
+        }
+      },
+      "zulip": {
+        "version": "5.9.3",
+        "options": {
+          "full_name": "zulip"
         }
       }
     }
   },
   "system": {
     "macos": {
-      "big_sur": {
-        "HOMEBREW_VERSION": "3.3.9",
-        "HOMEBREW_PREFIX": "/usr/local",
-        "Homebrew/homebrew-core": "220724c231be744fbcda3ad0f5e805ac50833928",
-        "CLT": "13.0.0.0.1.1630607135",
-        "Xcode": "13.1",
-        "macOS": "11.6.1"
+      "monterey": {
+        "HOMEBREW_VERSION": "3.6.3",
+        "HOMEBREW_PREFIX": "/opt/homebrew",
+        "Homebrew/homebrew-core": "2c17277b7fbba9449d2ef04a98fb0f70af93d9df",
+        "CLT": "14.0.0.0.1.1661618636",
+        "Xcode": "14.0",
+        "macOS": "12.5.1"
       }
     }
   }
