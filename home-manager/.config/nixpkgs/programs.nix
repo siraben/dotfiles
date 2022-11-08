@@ -103,7 +103,6 @@ in
       httpcode = ''curl -o /dev/null -s -w "%{http_code}\n"'';
       nb = "nix build";
       nbi = "nix build --impure";
-      nc = "nix channel";
       ncg = "nix-collect-garbage";
       nd = "nix develop";
       ne = "nix edit";
