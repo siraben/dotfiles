@@ -51,6 +51,7 @@ let
     gccemacs
     spoof-mac
     cool-osx
+    icdiff
   ];
   # Package set to use when wanting to use x86-darwin packages on
   # aarch64-darwin.
@@ -99,6 +100,7 @@ let
     pkgs'.agda
     (aspellWithDicts (d: with d; [ en en-computers en-science ]))
     bat
+    btop
     cabal-install
     cachix
     clang_13
