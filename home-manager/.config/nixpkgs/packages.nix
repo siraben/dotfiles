@@ -17,6 +17,7 @@ let
     (wrapWeb "mastodon" "https://mastodon.social")
   ]);
   linuxPackages = whenNotMinimal (with pkgs; [
+    clang_13
     discord
     docker
     docker-compose
@@ -103,10 +104,10 @@ let
     btop
     cabal-install
     cachix
-    clang_13
     cmake
     dejavu_fonts
     emscripten
+    ffmpeg
     github-cli
     gnumake
     guile
