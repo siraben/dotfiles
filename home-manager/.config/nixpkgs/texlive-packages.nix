@@ -29,6 +29,7 @@ pkgs.texlive.combine {
     subfigure # nested figures
     biber
     parskip
+    enumitem
     # Paper stuff
     paper
     fancyvrb
