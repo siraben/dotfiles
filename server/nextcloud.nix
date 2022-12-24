@@ -2,7 +2,7 @@
 
 {
   enable = true;
-  package = pkgs.nextcloud24;
+  package = pkgs.nextcloud25;
   hostName = "cloud.siraben.dev";
   https = true;
   config.adminpassFile = "/var/nextcloud-admin-pass";
