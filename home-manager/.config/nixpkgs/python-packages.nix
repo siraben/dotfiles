@@ -12,6 +12,7 @@ pkgs.python3.withPackages (p: with p; [
   numpy # numerical computation
   pandas # data analysis
   pylint # static checking
+  pwntools
   requests # HTTP library
   setuptools # setup.py
   z3 # Z3 theorem prover
