@@ -70,8 +70,8 @@ in
     after = ["postgresql.service"];
   };
 
-  networking.firewall.allowedTCPPorts = [ 80 443 53 25565 ];
+  networking.firewall.allowedTCPPorts = [ 80 443 53 ];
   networking.firewall.allowedUDPPorts = [ 80 443 53 ];
-  system.stateVersion = "22.05";
+  system.stateVersion = "22.11";
 
 }
