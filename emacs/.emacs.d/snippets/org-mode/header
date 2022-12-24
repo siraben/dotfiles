@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: header
+# key: header
+# --
+#+TITLE: $1
+#+AUTHOR: Siraphob (Ben) Phipathananunth
+#+OPTIONS: toc:nil num:nil
+#+LATEX_CLASS: journal
+#+LATEX_HEADER: \usepackage[margin=1in]{geometry}
+
+$2
