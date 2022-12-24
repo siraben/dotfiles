@@ -42,6 +42,9 @@ lib.recursiveUpdate ({
   } // (lib.optionalAttrs isLinux {
     XDG_CURRENT_DESKTOP = "sway";
     MOZ_ENABLE_WAYLAND = 1;
+  }) // (lib.optionalAttrs isDarwin {
+    HOMEBREW_NO_AUTO_UPDATE = 1;
+    HOMEBREW_NO_ANALYTICS = 1;
   });
 
   home.language = {
