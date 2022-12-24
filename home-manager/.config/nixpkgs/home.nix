@@ -13,7 +13,6 @@ let
   ];
   pkgsOptions = {
     overlays = [
-      (import sources.emacs-overlay)
       (import ./overlay.nix)
     ];
     config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
