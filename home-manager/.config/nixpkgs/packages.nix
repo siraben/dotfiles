@@ -1,4 +1,4 @@
-{ lib, sources, pkgs, x86-darwin-pkgs, masterPkgs, isDarwin, isLinux, minimal }:
+{ lib, sources, pkgs, x86-darwin-pkgs, isDarwin, isLinux, minimal }:
 let
   whenNotMinimal = lib.optionals (!minimal);
   gccemacs = with pkgs; (emacsPackagesFor emacsNativeComp).emacsWithPackages (e: [ e.vterm ]);
@@ -56,18 +56,12 @@ let
   # aarch64-darwin.
   pkgs' = if isDarwin then x86-darwin-pkgs else pkgs;
   coqPackages = with pkgs; [
-    masterPkgs.coqPackages_8_13.hierarchy-builder
-    masterPkgs.coqPackages_8_13.QuickChick
-    masterPkgs.coqPackages_8_13.simple-io
-    masterPkgs.coqPackages_8_13.coq-ext-lib
-    masterPkgs.coqPackages_8_13.mathcomp
-    masterPkgs.coqPackages_8_13.coqhammer
-    masterPkgs.coqPackages_8_13.coq-elpi
-    masterPkgs.coqPackages_8_13.trakt
-    masterPkgs.coqPackages_8_13.stdpp
-    masterPkgs.coqPackages_8_13.serapi
-    masterPkgs.coqPackages_8_13.mathcomp-ssreflect
-    masterPkgs.coq_8_13
+    coqPackages_8_13.hierarchy-builder
+    coqPackages_8_13.QuickChick
+    coqPackages_8_13.mathcomp
+    coqPackages_8_13.coqhammer
+    coqPackages_8_13.mathcomp-ssreflect
+    coq_8_13
     # External provers for coq-hammer
     eprover
     vampire
@@ -79,7 +73,7 @@ let
     else cvc4)
   ];
   languageServers = with pkgs; [
-    haskellPackages.haskell-language-server
+    # haskellPackages.haskell-language-server
     nodePackages.bash-language-server
     nodePackages.typescript-language-server
     nodePackages.pyright
@@ -108,6 +102,7 @@ let
     ffmpeg
     github-cli
     gnumake
+    google-cloud-sdk
     guile
     graphviz
     (import ./haskell-packages.nix { inherit pkgs; })
@@ -115,7 +110,6 @@ let
     jq
     ledger
     mpv
-    niv
     nixpkgs-review
     nmap
     nodePackages.typescript
@@ -125,6 +119,7 @@ let
     ripgrep
     pkgs'.rmview
     rustup
+    rust-analyzer
     shellcheck
     stow
     swiProlog
