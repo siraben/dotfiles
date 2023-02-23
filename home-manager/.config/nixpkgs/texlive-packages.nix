@@ -2,7 +2,7 @@
 
 pkgs.texlive.combine {
   inherit (pkgs.texlive)
-    scheme-minimal # base
+    scheme-medium # base
     amsmath # math symbols
     beamer # beamer
     biblatex # citations
@@ -37,5 +37,6 @@ pkgs.texlive.combine {
     algpseudocodex
     algorithms
     algorithmicx
+    koma-script
   ;
 }

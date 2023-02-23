@@ -5,34 +5,10 @@
         "homepage": "https://nix-community.github.io/home-manager/",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "886675991b643b701a33f533443db165c70692d1",
-        "sha256": "0h19xqxpfy53js465xfmaid1jjxgijqz52525s2dlzq9rxdvrnac",
+        "rev": "4295fdfa6b0005c32f2e1f0b732faf5810c1bc7f",
+        "sha256": "1lpp2y2llxxcsm96pl04lz33c33bhjl0q7g6n4jwc50mwql6fpnr",
         "type": "tarball",
-        "url": "https://github.com/nix-community/home-manager/archive/886675991b643b701a33f533443db165c70692d1.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "masterPkgs": {
-        "branch": "master",
-        "description": "Nix Packages collection",
-        "homepage": "",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "ba4069c849203f0c7137647c99da7ccf6522238e",
-        "sha256": "1xizfg9hqpqmr5dlwyx7h2c9fqd3skxy6cmvk9zina1i4phvd968",
-        "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/ba4069c849203f0c7137647c99da7ccf6522238e.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "niv": {
-        "branch": "master",
-        "description": "Easy dependency management for Nix projects",
-        "homepage": "https://github.com/nmattia/niv",
-        "owner": "nmattia",
-        "repo": "niv",
-        "rev": "351d8bc316bf901a81885bab5f52687ec8ccab6e",
-        "sha256": "1yzhz7ihkh6p2sxhp3amqfbmm2yqzaadqqii1xijymvl8alw5rrr",
-        "type": "tarball",
-        "url": "https://github.com/nmattia/niv/archive/351d8bc316bf901a81885bab5f52687ec8ccab6e.tar.gz",
+        "url": "https://github.com/nix-community/home-manager/archive/4295fdfa6b0005c32f2e1f0b732faf5810c1bc7f.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nix-bisect": {
@@ -60,15 +36,15 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs": {
-        "branch": "nixpkgs-unstable",
+        "branch": "master",
         "description": "Nix Packages collection",
         "homepage": "",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "8993cc730d11148ef59e84a8f15f94f688e1bfd1",
-        "sha256": "02kh7i8b8mfj97xmbxpkxkl9z597cpv0qf6vnfamddidmhzw1c09",
+        "rev": "f5dad40450d272a1ea2413f4a67ac08760649e89",
+        "sha256": "06nq3rn63csy4bx0dkbg1wzzm2jgf6cnfixq1cx4qikpyzixca6i",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/8993cc730d11148ef59e84a8f15f94f688e1bfd1.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs/archive/f5dad40450d272a1ea2413f4a67ac08760649e89.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs-review": {
@@ -77,10 +53,10 @@
         "homepage": "",
         "owner": "Mic92",
         "repo": "nixpkgs-review",
-        "rev": "e587514c0fa2e6361a942f4dc0c6b9f5d2af97e2",
-        "sha256": "0ri8ra14yd2vkrlm0gziq3k14v8xbvinhydgfqqh916ynvp3rfb4",
+        "rev": "379752c119f66a0031fe0444ab8f72b0a8eadbf2",
+        "sha256": "01hn2s60fyd77iz8r4l7ggllh112bjm0fh1f5ldbiki971qzqh51",
         "type": "tarball",
-        "url": "https://github.com/Mic92/nixpkgs-review/archive/e587514c0fa2e6361a942f4dc0c6b9f5d2af97e2.tar.gz",
+        "url": "https://github.com/Mic92/nixpkgs-review/archive/379752c119f66a0031fe0444ab8f72b0a8eadbf2.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "siraben-overlay": {
@@ -89,10 +65,10 @@
         "homepage": "",
         "owner": "siraben",
         "repo": "siraben-overlay",
-        "rev": "0cd9266eb1ca51b8029c41614f8c49b48c4bef6c",
-        "sha256": "0v2a54yir7j6v9fxs3grixjzy7z871hswd6glidfny8ycd8il2px",
+        "rev": "ceb6897caca0705e5430486d0e68f01eedb0943f",
+        "sha256": "15jh68j4l9d2mv7rj6068p8ak0mjd4dhs0x57zyi0iawrz45cgpz",
         "type": "tarball",
-        "url": "https://github.com/siraben/siraben-overlay/archive/0cd9266eb1ca51b8029c41614f8c49b48c4bef6c.tar.gz",
+        "url": "https://github.com/siraben/siraben-overlay/archive/ceb6897caca0705e5430486d0e68f01eedb0943f.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "tree-sitter-cool": {
