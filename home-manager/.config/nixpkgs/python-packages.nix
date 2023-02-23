@@ -1,6 +1,6 @@
 { pkgs }:
 
-pkgs.python3.withPackages (p: with p; [
+pkgs.python310.withPackages (p: with p; [
   aiohttp # async HTTP
   beautifulsoup4 # web scraping
   folium # maps
@@ -16,4 +16,6 @@ pkgs.python3.withPackages (p: with p; [
   requests # HTTP library
   setuptools # setup.py
   z3 # Z3 theorem prover
+  scapy
+  opencv4 # opencv
 ])

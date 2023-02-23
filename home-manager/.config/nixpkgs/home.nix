@@ -18,7 +18,7 @@ let
     config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
   };
   pkgs = import sources.nixpkgs pkgsOptions;
-  masterPkgs = import sources.masterPkgs pkgsOptions;
+  # masterPkgs = import sources.masterPkgs pkgsOptions;
   x86-darwin-pkgs = import sources.nixpkgs (pkgsOptions // { system = (if isDarwin then "x86_64-darwin" else builtins.currentSystem); });
   grammars = (pkgs.tree-sitter.override (with pkgs; {
     extraGrammars = {
@@ -34,7 +34,7 @@ in
 lib.recursiveUpdate ({
   home.username = "siraben";
   home.homeDirectory = if isDarwin then "/Users/siraben" else "/home/siraben";
-  home.packages = import ./packages.nix { inherit lib sources pkgs x86-darwin-pkgs masterPkgs isDarwin isLinux minimal; };
+  home.packages = import ./packages.nix { inherit lib sources pkgs x86-darwin-pkgs isDarwin isLinux minimal; };
 
   home.sessionVariables = {
     EDITOR = "emacsclient";
