@@ -15,7 +15,6 @@ let
     (wrapWeb "mastodon" "https://mastodon.social")
   ]);
   linuxPackages = whenNotMinimal (with pkgs; [
-    clang_13
     discord
     docker
     docker-compose
@@ -49,7 +48,6 @@ let
     gnused
     gccemacs
     spoof-mac
-    cool-osx
     icdiff
   ];
   # Package set to use when wanting to use x86-darwin packages on
@@ -96,6 +94,7 @@ let
     btop
     cabal-install
     cachix
+    clang_14
     cmake
     dejavu_fonts
     emscripten
@@ -111,6 +110,7 @@ let
     ledger
     mpv
     nixpkgs-review
+    niv
     nmap
     nodePackages.typescript
     nodejs
