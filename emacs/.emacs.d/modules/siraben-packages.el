@@ -199,7 +199,7 @@
   (setq lsp-clients-clangd-args '("-j=4" "-log=error"))
   (setq lsp-auto-guess-root t)
   (setq lsp-log-io nil)
-  (setq lsp-restart 'auto-restart)
+  (setq lsp-restart 'interactive)
   (setq lsp-enable-symbol-highlighting nil)
   (setq lsp-enable-on-type-formatting nil)
   (setq lsp-signature-auto-activate nil)
@@ -212,7 +212,10 @@
   (setq lsp-enable-folding nil)
   (setq lsp-enable-imenu nil)
   (setq lsp-enable-snippet nil)
-  (setq lsp-idle-delay 0.5))
+  (setq lsp-idle-delay 0.5)
+  ;; append "^~" to lsp-file-watch-ignored to ignore files in home directory
+  (setq lsp-file-watch-ignored
+        (append lsp-file-watch-ignored '("^~"))))
 
 (use-package lsp-ui)
 
@@ -484,6 +487,15 @@
   :hook (kotlin-mode . lsp-deferred))
 
 (use-package writeroom-mode)
+
+(use-package copilot
+  :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+  :ensure t
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . copilot-accept-completion)
+              ("TAB" . copilot-accept-completion)))
+
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here
