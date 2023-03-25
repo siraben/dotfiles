@@ -5,7 +5,7 @@
 #+TITLE: $1
 #+AUTHOR: Siraphob (Ben) Phipathananunth
 #+OPTIONS: toc:nil num:nil
-#+LATEX_CLASS: journal
+#+LATEX_CLASS: scrartcl
 #+LATEX_HEADER: \usepackage[margin=1in]{geometry}
 
 $2
