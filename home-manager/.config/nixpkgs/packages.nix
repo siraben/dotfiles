@@ -1,7 +1,7 @@
 { lib, sources, pkgs, x86-darwin-pkgs, isDarwin, isLinux, minimal }:
 let
   whenNotMinimal = lib.optionals (!minimal);
-  gccemacs = with pkgs; (emacsPackagesFor emacsNativeComp).emacsWithPackages (e: [ e.vterm ]);
+  gccemacs = with pkgs; (emacsPackagesFor emacs29).emacsWithPackages (e: [ e.vterm ]);
   nix-bisect = import sources.nix-bisect { inherit pkgs; };
   wrapWeb = pkgs.callPackage ./wrapWeb.nix { };
   wayland-packages = whenNotMinimal (with pkgs; [
