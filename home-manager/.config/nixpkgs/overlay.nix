@@ -6,4 +6,6 @@ final: prev:
     ln -s "z3_tptp5" "$out/bin/z3_tptp"
   '';
   });
+  circom = prev.callPackage ./circom { };
+  circom-lsp = prev.callPackage ./circom-lsp { };
 }
