@@ -71,7 +71,7 @@ let
     else cvc4)
   ];
   languageServers = with pkgs; [
-    # haskellPackages.haskell-language-server
+    haskellPackages.haskell-language-server
     nodePackages.bash-language-server
     nodePackages.typescript-language-server
     nodePackages.pyright
@@ -94,7 +94,6 @@ let
     btop
     cabal-install
     cachix
-    clang_14
     cmake
     dejavu_fonts
     emscripten
@@ -106,6 +105,7 @@ let
     graphviz
     (import ./haskell-packages.nix { inherit pkgs; })
     hlint
+    imagemagick
     jq
     ledger
     mpv
@@ -118,11 +118,9 @@ let
     ranger
     ripgrep
     pkgs'.rmview
-    rustup
     rust-analyzer
     shellcheck
     stow
-    swiProlog
     (import ./texlive-packages.nix { inherit pkgs; })
     pkgs'.the-powder-toy
     tldr
