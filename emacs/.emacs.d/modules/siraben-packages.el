@@ -196,6 +196,8 @@
 
 (use-package lsp-mode
   :config
+  (require 'lsp-mode)
+  (advice-add 'lsp :before #'direnv-update-environment)
   (setq lsp-clients-clangd-args '("-j=4" "-log=error"))
   (setq lsp-auto-guess-root t)
   (setq lsp-log-io nil)
@@ -213,9 +215,15 @@
   (setq lsp-enable-imenu nil)
   (setq lsp-enable-snippet nil)
   (setq lsp-idle-delay 0.5)
+  (setq lsp-file-watch-threshold 500)
   ;; append "^~" to lsp-file-watch-ignored to ignore files in home directory
   (setq lsp-file-watch-ignored
-        (append lsp-file-watch-ignored '("^~"))))
+        (append lsp-file-watch-ignored '("^~")))
+  ;; (lsp-register-client
+  ;;  (make-lsp-client :new-connection (lsp-stdio-connection "ruff")
+  ;;                   :major-modes '(python-mode)
+  ;;                   :server-id 'ruff))
+  )
 
 (use-package lsp-ui)
 
@@ -226,10 +234,8 @@
 (use-package flycheck
   :diminish)
 
-(use-package envrc
-  :diminish
-  :hook (after-init . envrc-global-mode)
-  :bind (("C-c e" . envrc-command-map)))
+(use-package direnv
+  :config (direnv-mode))
 
 (use-package esup
   :commands (esup)
@@ -466,7 +472,11 @@
           (formula-mode . formula)
           (cool-mode . cool)
           (kotlin-mode . kotlin)
-          ,@tree-sitter-major-mode-language-alist)))
+          ,@tree-sitter-major-mode-language-alist))
+  ;; remove haskell-mode
+  (setq tree-sitter-major-mode-language-alist
+        (assq-delete-all 'haskell-mode tree-sitter-major-mode-language-alist))
+  )
 
 
 (use-package vterm
@@ -496,6 +506,9 @@
               ("<tab>" . copilot-accept-completion)
               ("TAB" . copilot-accept-completion)))
 
+;; (use-package gptel)
+
+(use-package boogie-friends)
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here
