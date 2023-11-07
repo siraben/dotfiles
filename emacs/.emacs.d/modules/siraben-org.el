@@ -52,7 +52,8 @@
      (python . t)
      (scheme . t)
      (dot . t)
-     (octave . t)))
+     (octave . t)
+     (latex . t)))
   ;; I want to have source code syntax highlighting for LaTeX export as well.
   (setq org-latex-listings 'minted)
   (setq org-latex-packages-alist '(("" "minted")))
