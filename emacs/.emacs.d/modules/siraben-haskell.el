@@ -26,10 +26,11 @@
 (use-package haskell-mode
   :mode "\\.hs"
   :config
+  (setq haskell-process-suggest-add-package nil)
   (defvar haskell-prettify-symbols-alist
     '(("::"     . ?∷)
       ("forall" . ?∀)
-      ("exists" . ?∃)
+      ;; ("exists" . ?∃)
       ("->"     . ?→)
       ("<-"     . ?←)
       ("=>"     . ?⇒)
@@ -59,20 +60,18 @@
 
   (defun my-haskell-mode-hook ()
     (subword-mode             t)
-    (eldoc-mode               t)
     (interactive-haskell-mode t)
     (diminish 'interactive-haskell-mode)
     (flycheck-haskell-setup)
     (setq-local prettify-symbols-alist haskell-prettify-symbols-alist)
     (prettify-symbols-mode 1)
-    (haskell-indentation-mode t)
-    (lsp-deferred))
+    (haskell-indentation-mode t))
 
   (add-hook 'haskell-mode-hook #'my-haskell-mode-hook)
   (add-hook 'inferior-haskell-mode-hook (lambda () (paredit-mode -1)))
   )
 
-(use-package lsp-haskell)
+;; (use-package lsp-haskell)
 
 
 (provide 'siraben-haskell)

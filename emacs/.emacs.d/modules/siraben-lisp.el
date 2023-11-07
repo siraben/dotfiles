@@ -49,6 +49,7 @@
   :hook (scheme-mode . (lambda () (flycheck-mode -1))))
 
 (use-package geiser
+  :disabled
   :defer 10
   :config
   (setq geiser-default-implementation 'guile)
