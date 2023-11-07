@@ -54,6 +54,7 @@ in
     '';
     nix-direnv.enable = true;
     enableZshIntegration = true;
+    enableBashIntegration = true;
   };
   gpg.enable = true;
   git = {
