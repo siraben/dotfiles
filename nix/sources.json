@@ -23,18 +23,6 @@
         "url": "https://github.com/timokau/nix-bisect/archive/4425932faebfa9d72d5ad59460dd9332577be780.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
-    "nix-gccemacs-darwin": {
-        "branch": "flake",
-        "description": "Build gccemacs for macOS 10.15 or newer using Nix.",
-        "homepage": "",
-        "owner": "siraben",
-        "repo": "nix-gccemacs-darwin",
-        "rev": "fe0de762e0b6d148628217be7f28f286c94cec40",
-        "sha256": "0iz8waf4r5xx37nfqwgfgp48dpf4ygmf5sakdv5g5184y5mq82dr",
-        "type": "tarball",
-        "url": "https://github.com/siraben/nix-gccemacs-darwin/archive/fe0de762e0b6d148628217be7f28f286c94cec40.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
     "nixpkgs": {
         "branch": "master",
         "description": "Nix Packages collection",
