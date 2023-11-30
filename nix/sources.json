@@ -5,10 +5,10 @@
         "homepage": "https://nix-community.github.io/home-manager/",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "c067d57fc4552835987fd7611c3a6741ee32ebd5",
-        "sha256": "0k8z4z8ybzybjw2j0l2gxj83k66sd3k571ni4qr0vyk88ahgrqf1",
+        "rev": "db1878f013b52ba5e4034db7c1b63e8d04173a86",
+        "sha256": "1qr1xsf4fsqmh8c7av984hvrc03y1y6s8nlxfp9zrzhlnh1v034m",
         "type": "tarball",
-        "url": "https://github.com/nix-community/home-manager/archive/c067d57fc4552835987fd7611c3a6741ee32ebd5.tar.gz",
+        "url": "https://github.com/nix-community/home-manager/archive/db1878f013b52ba5e4034db7c1b63e8d04173a86.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nix-bisect": {
@@ -29,10 +29,10 @@
         "homepage": "",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "fa65ad7e14c1c3996579d7f0e96092883c77db73",
-        "sha256": "0cl90py3can0j6gcqgf0hk26yc2ad00wyid7zwx5a73q9pmbiq07",
+        "rev": "c74cc3c3db2ed5e68895953d75c397797d499133",
+        "sha256": "0f3apcn8rj1kxfzzm3q3vfl4qq8q6f27xq2wppqfx0kaws48cy2k",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/fa65ad7e14c1c3996579d7f0e96092883c77db73.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs/archive/c74cc3c3db2ed5e68895953d75c397797d499133.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs-review": {
@@ -41,10 +41,10 @@
         "homepage": "",
         "owner": "Mic92",
         "repo": "nixpkgs-review",
-        "rev": "d39c51ccc9fea2b079d93707a95e61a34523af45",
-        "sha256": "0nv6pg7zq86cafm2jxq9jq9n4gh6v0qly857iqqwmswvl060minv",
+        "rev": "a45de7c827e41846a165bad226fdff15461d381f",
+        "sha256": "05bza6nvaldc7g0cncg4cv955gm7nxq3pbb7ykqmk463ad1zia20",
         "type": "tarball",
-        "url": "https://github.com/Mic92/nixpkgs-review/archive/d39c51ccc9fea2b079d93707a95e61a34523af45.tar.gz",
+        "url": "https://github.com/Mic92/nixpkgs-review/archive/a45de7c827e41846a165bad226fdff15461d381f.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "siraben-overlay": {

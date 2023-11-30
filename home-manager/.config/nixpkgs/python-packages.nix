@@ -1,10 +1,8 @@
 { pkgs }:
 
-pkgs.python311.withPackages (p: with p; [
+pkgs.python310.withPackages (p: with p; [
   aiohttp # async HTTP
   beautifulsoup4 # web scraping
-  folium # maps
-  geopy # geographical data
   ipython # interactive shell
   jupyter # interactive notebooks
   matplotlib # plots
@@ -15,6 +13,8 @@ pkgs.python311.withPackages (p: with p; [
   pwntools
   requests # HTTP library
   setuptools # setup.py
+  scipy
+  scikit-learn
   z3 # Z3 theorem prover
   scapy
   opencv4 # opencv

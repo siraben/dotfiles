@@ -124,8 +124,6 @@ let
     (import ./texlive-packages.nix { inherit pkgs; })
     pkgs'.the-powder-toy
     tldr
-    tor
-    torsocks
     tree
     (tree-sitter.overrideAttrs (oA: { webUISupport = true; }))
     unzip

@@ -55,7 +55,8 @@ lib.recursiveUpdate ({
   programs = import ./programs.nix { inherit lib pkgs isDarwin isLinux; };
   fonts.fontconfig.enable = true;
   services = lib.optionalAttrs isLinux (import ./services.nix { inherit lib pkgs; });
-  home.stateVersion = "21.11";
+  home.stateVersion = "23.11";
+  home.enableNixpkgsReleaseCheck = false;
 })
 (lib.optionalAttrs (!minimal) {
     home.file.".tree-sitter".source = (pkgs.runCommand "grammars" {} ''
