@@ -38,5 +38,15 @@ pkgs.texlive.combine {
     algorithms
     algorithmicx
     koma-script
+    xpatch # needed for thesis
+    # new environments
+    environ
+    filecontents
+    # PL
+    semantic
+    # quantum
+    braket
+    qcircuit
+    xypic
   ;
 }
