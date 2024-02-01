@@ -118,5 +118,17 @@
         "type": "tarball",
         "url": "https://github.com/siraben/tree-sitter-solidity/archive/f5fd341cc61613079e7bb513cd0db96982253743.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "tree-sitter-typst": {
+        "branch": "master",
+        "description": "A tree-sitter grammar for the typst typesetting language with a focus on correctness",
+        "homepage": "",
+        "owner": "frozolotl",
+        "repo": "tree-sitter-typst",
+        "rev": "bb59b2b737a35e5ddae67be8e8275633648d758f",
+        "sha256": "0dgj0crna0m9wfj01qrjsd5gl45a9m34b32bbnajd11hc6is6h53",
+        "type": "tarball",
+        "url": "https://github.com/frozolotl/tree-sitter-typst/archive/bb59b2b737a35e5ddae67be8e8275633648d758f.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }
