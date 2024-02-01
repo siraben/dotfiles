@@ -71,7 +71,7 @@
   (add-hook 'inferior-haskell-mode-hook (lambda () (paredit-mode -1)))
   )
 
-;; (use-package lsp-haskell)
+(use-package lsp-haskell)
 
 
 (provide 'siraben-haskell)
