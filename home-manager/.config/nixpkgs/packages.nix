@@ -126,6 +126,7 @@ let
     tldr
     tree
     (tree-sitter.overrideAttrs (oA: { webUISupport = true; }))
+    typst
     unzip
     yt-dlp
     zathura
