@@ -75,7 +75,6 @@ let
     nodePackages.bash-language-server
     nodePackages.typescript-language-server
     nodePackages.pyright
-    rnix-lsp
   ];
   sharedPackages = with pkgs; [
     bash
