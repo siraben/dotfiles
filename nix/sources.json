@@ -11,18 +11,6 @@
         "url": "https://github.com/nix-community/home-manager/archive/dc2f3812b41f825ed466c24c4211160d75cb890c.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
-    "nix-bisect": {
-        "branch": "master",
-        "description": "Bisect nix builds",
-        "homepage": "",
-        "owner": "timokau",
-        "repo": "nix-bisect",
-        "rev": "4425932faebfa9d72d5ad59460dd9332577be780",
-        "sha256": "1frg3k4gr6hm567fsdp00j6wazjbzlfqvzn61c0k7ki5mhawwb8d",
-        "type": "tarball",
-        "url": "https://github.com/timokau/nix-bisect/archive/4425932faebfa9d72d5ad59460dd9332577be780.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
     "nixpkgs": {
         "branch": "master",
         "description": "Nix Packages collection",
@@ -33,30 +21,6 @@
         "sha256": "0b7mc1zwpl6py72zglak9j9mkiws2y7gkpchiaq1pfc12fxkjhwa",
         "type": "tarball",
         "url": "https://github.com/NixOS/nixpkgs/archive/6bea063d09c7ff3b1524cf39289e943a8f1d6d1d.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "nixpkgs-review": {
-        "branch": "master",
-        "description": "Review pull-requests on https://github.com/NixOS/nixpkgs",
-        "homepage": "",
-        "owner": "Mic92",
-        "repo": "nixpkgs-review",
-        "rev": "f86a93a0b95732ff387112688feba3def5f37b88",
-        "sha256": "0307g5cy11zqym21zb82255iz1z6wlpq6aqjfdfvfgddvaby9dir",
-        "type": "tarball",
-        "url": "https://github.com/Mic92/nixpkgs-review/archive/f86a93a0b95732ff387112688feba3def5f37b88.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "siraben-overlay": {
-        "branch": "master",
-        "description": "@siraben's eclectic collection of software",
-        "homepage": "",
-        "owner": "siraben",
-        "repo": "siraben-overlay",
-        "rev": "ceb6897caca0705e5430486d0e68f01eedb0943f",
-        "sha256": "15jh68j4l9d2mv7rj6068p8ak0mjd4dhs0x57zyi0iawrz45cgpz",
-        "type": "tarball",
-        "url": "https://github.com/siraben/siraben-overlay/archive/ceb6897caca0705e5430486d0e68f01eedb0943f.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "tree-sitter-cool": {
