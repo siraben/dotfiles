@@ -18,4 +18,4 @@ jobs:
           name: siraben
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - name: Build
-        run: nix-shell -p home-manager --run "home-manager build -f home-manager/.config/nixpkgs/home.nix"
+        run: nix-shell -p home-manager --run "home-manager build -f home-manager/.config/nixpkgs/minimal.nix"
