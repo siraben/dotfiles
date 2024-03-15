@@ -3,7 +3,7 @@
 let
   publicKey = pkgs.fetchurl {
     url = "https://github.com/siraben.keys";
-    sha256 = "sha256-hKkjnuGbhBjPv+V8XSRii/rOWTA4mL4rGIcu651wuR8=";
+    sha256 = "sha256-i8gigitlRxiNa8eMPkD6FTOlVEO0p9LxRrBN41d/sJM=";
   };
 in
 
@@ -11,7 +11,6 @@ in
   imports = [ ./hardware-configuration.nix ];
 
   boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
   boot.loader.grub.device = "/dev/vda";
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
 
@@ -44,7 +43,7 @@ in
   ];
 
   services.openssh.enable = true;
-  services.openssh.passwordAuthentication = false;
+  services.openssh.settings.PasswordAuthentication = false;
   users.users.siraben.openssh.authorizedKeys.keyFiles = [ publicKey ];
 
   services.nginx = import ./nginx.nix { };
@@ -64,14 +63,15 @@ in
   environment.shells = with pkgs; [ bashInteractive zsh ];
 
   programs.mosh.enable = true;
+  programs.zsh.enable = true;
   services.tailscale.enable = true;
   systemd.services."nextcloud-setup" = {
     requires = ["postgresql.service"];
     after = ["postgresql.service"];
   };
 
-  networking.firewall.allowedTCPPorts = [ 80 443 53 ];
-  networking.firewall.allowedUDPPorts = [ 80 443 53 ];
-  system.stateVersion = "22.11";
+  networking.firewall.allowedTCPPorts = [ 80 443 ];
+  networking.firewall.allowedUDPPorts = [ 80 443 ];
+  system.stateVersion = "23.11";
 
 }
