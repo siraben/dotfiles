@@ -2,17 +2,10 @@
 let
   whenNotMinimal = lib.optionals (!minimal);
   gccemacs = with pkgs; (emacsPackagesFor emacs29).emacsWithPackages (e: [ e.vterm ]);
-  nix-bisect = import sources.nix-bisect { inherit pkgs; };
   wrapWeb = pkgs.callPackage ./wrapWeb.nix { };
   wayland-packages = whenNotMinimal (with pkgs; [
     gccemacs
     firefox-wayland
-  ]);
-  web-shortcuts = whenNotMinimal (with pkgs; [
-    (wrapWeb "element" "https://app.element.io")
-    (wrapWeb "hn" "https://news.ycombinator.com")
-    (wrapWeb "neverssl" "http://neverssl.com")
-    (wrapWeb "mastodon" "https://mastodon.social")
   ]);
   linuxPackages = whenNotMinimal (with pkgs; [
     discord
@@ -42,13 +35,12 @@ let
     vlc
     whois
     zoom-us
-  ]) ++ wayland-packages ++ web-shortcuts;
+  ]) ++ wayland-packages;
   darwinPackages = with pkgs; [
     coreutils
     gnused
     gccemacs
     spoof-mac
-    icdiff
   ];
   # Package set to use when wanting to use x86-darwin packages on
   # aarch64-darwin.
@@ -78,7 +70,6 @@ let
   ];
   sharedPackages = with pkgs; [
     bash
-    borgbackup
     curl
     htop
     vim
@@ -86,20 +77,17 @@ let
     wget
     mosh
   ] ++ (whenNotMinimal ([
-    netcat-gnu
-    pkgs'.agda
     (aspellWithDicts (d: with d; [ en en-computers en-science ]))
     bat
     btop
+    borgbackup
     cabal-install
     cachix
     cmake
     dejavu_fonts
-    emscripten
     ffmpeg
     github-cli
     gnumake
-    google-cloud-sdk
     guile
     graphviz
     (import ./haskell-packages.nix { inherit pkgs; })
@@ -111,7 +99,6 @@ let
     nixpkgs-review
     niv
     nmap
-    nodePackages.typescript
     nodejs
     (import ./python-packages.nix { pkgs = pkgs'; })
     ranger
