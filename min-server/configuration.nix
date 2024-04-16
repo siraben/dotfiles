@@ -6,7 +6,7 @@
   networking.firewall.allowPing = true;
   services.openssh.enable = true;
 
-  environment.systemPackages = with pkgs; [ vim git tmux htop direnv nix-direnv nixpkgs-review ];
+  environment.systemPackages = with pkgs; [ vim git tmux htop nixpkgs-review ];
 
   nix = {
     trustedUsers = [ "root" "siraben" ];
@@ -16,9 +16,7 @@
     '';
   };
 
-  environment.pathsToLink = [
-    "/share/nix-direnv"
-  ];
+  programs.zsh.enable = true;
 
   users = {
     users.siraben = {
