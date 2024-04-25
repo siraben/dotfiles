@@ -197,7 +197,7 @@
 (use-package lsp-mode
   :config
   (require 'lsp-mode)
-  (advice-add 'lsp :before #'direnv-update-environment)
+  ;; (advice-add 'lsp :before #'direnv-update-environment)
   (setq lsp-clients-clangd-args '("-j=4" "-log=error"))
   (setq lsp-auto-guess-root t)
   (setq lsp-log-io nil)
@@ -235,7 +235,13 @@
   :diminish)
 
 (use-package direnv
+  :disabled
   :config (direnv-mode))
+
+(use-package envrc
+  ;; add hook after init
+  :hook (after-init . envrc-global-mode)
+  )
 
 (use-package esup
   :commands (esup)
