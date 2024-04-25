@@ -39,7 +39,6 @@ let
 in
 
 {
-  # nix-index.enable = true;
   direnv = {
     enable = true;
     stdlib = ''
