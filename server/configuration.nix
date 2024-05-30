@@ -23,6 +23,7 @@ in
     useDefaultShell = false;
     isNormalUser = true;
     extraGroups = [ "wheel" ];
+    openssh.authorizedKeys.keyFiles = [ publicKey ];
   };
 
   nix = {
@@ -44,7 +45,6 @@ in
 
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = false;
-  users.users.siraben.openssh.authorizedKeys.keyFiles = [ publicKey ];
 
   services.nginx = import ./nginx.nix { };
 
