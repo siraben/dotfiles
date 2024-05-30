@@ -88,6 +88,9 @@ Enables auto-fill mode, spell checking and disables company mode."
 (use-package async
   :hook (after-init . dired-async-mode))
 
+(eval-after-load 'dired
+  '(define-key dired-mode-map (kbd "M-G") nil))
+
 (setq ffap-machine-p-known 'reject)
 
 (use-package dashboard
