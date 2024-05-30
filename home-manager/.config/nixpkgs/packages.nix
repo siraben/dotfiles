@@ -41,6 +41,7 @@ let
     gnused
     gccemacs
     spoof-mac
+    pinentry_mac
   ];
   # Package set to use when wanting to use x86-darwin packages on
   # aarch64-darwin.
@@ -103,12 +104,11 @@ let
     (import ./python-packages.nix { pkgs = pkgs'; })
     ranger
     ripgrep
-    pkgs'.rmview
     rust-analyzer
     shellcheck
     stow
     (import ./texlive-packages.nix { inherit pkgs; })
-    pkgs'.the-powder-toy
+    the-powder-toy
     tldr
     tree
     (tree-sitter.overrideAttrs (oA: { webUISupport = true; }))
