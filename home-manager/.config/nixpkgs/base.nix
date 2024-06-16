@@ -30,7 +30,7 @@ let
     };
   })).builtGrammars;
 in
-lib.recursiveUpdate ({
+lib.recursiveUpdate (rec {
   home.username = "siraben";
   home.homeDirectory = if isDarwin then "/Users/${home.username}" else "/home/${home.username}";
   home.packages = import ./packages.nix { inherit lib sources pkgs x86-darwin-pkgs isDarwin isLinux minimal; };
