@@ -9,6 +9,7 @@ let
     "spotify"
     "spotify-unwrapped"
     "zoom"
+    "aspell-dict-en-science"
   ];
   pkgsOptions = {
     overlays = [
