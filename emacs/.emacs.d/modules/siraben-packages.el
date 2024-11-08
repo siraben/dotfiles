@@ -510,7 +510,10 @@
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-completion-map
               ("<tab>" . copilot-accept-completion)
-              ("TAB" . copilot-accept-completion)))
+              ("TAB" . copilot-accept-completion))
+  :config
+  (setq copilot-indent-offset-warning-disable t)
+  )
 
 ;; (use-package gptel)
 
