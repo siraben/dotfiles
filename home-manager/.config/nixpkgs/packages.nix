@@ -67,6 +67,7 @@ let
     haskellPackages.haskell-language-server
     nodePackages.bash-language-server
     nodePackages.typescript-language-server
+    ruff-lsp
   ];
   sharedPackages = with pkgs; [
     bash

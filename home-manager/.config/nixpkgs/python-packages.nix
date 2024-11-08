@@ -18,4 +18,5 @@ pkgs.python311.withPackages (p: with p; [
   z3 # Z3 theorem prover
   scapy
   opencv4 # opencv
+  p.yt-dlp
 ])
