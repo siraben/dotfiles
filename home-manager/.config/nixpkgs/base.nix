@@ -55,7 +55,7 @@ lib.recursiveUpdate (rec {
   programs = import ./programs.nix { inherit lib pkgs isDarwin isLinux; };
   fonts.fontconfig.enable = true;
   services = lib.optionalAttrs isLinux (import ./services.nix { inherit lib pkgs; });
-  home.stateVersion = "23.11";
+  home.stateVersion = "24.11";
   home.enableNixpkgsReleaseCheck = false;
 })
 (lib.optionalAttrs (!minimal) {
