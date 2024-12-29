@@ -43,9 +43,6 @@ let
     spoof-mac
     pinentry_mac
   ];
-  # Package set to use when wanting to use x86-darwin packages on
-  # aarch64-darwin.
-  pkgs' = if isDarwin then x86-darwin-pkgs else pkgs;
   coqPackages = with pkgs; [
     coqPackages_8_13.hierarchy-builder
     coqPackages_8_13.QuickChick
@@ -101,7 +98,7 @@ let
     niv
     nmap
     nodejs
-    (import ./python-packages.nix { pkgs = pkgs'; })
+    (import ./python-packages.nix { inherit pkgs; })
     ranger
     ripgrep
     rust-analyzer
