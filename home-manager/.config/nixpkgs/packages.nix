@@ -44,12 +44,12 @@ let
     pinentry_mac
   ];
   coqPackages = with pkgs; [
-    coqPackages_8_13.hierarchy-builder
-    coqPackages_8_13.QuickChick
-    coqPackages_8_13.mathcomp
-    coqPackages_8_13.coqhammer
-    coqPackages_8_13.mathcomp-ssreflect
-    coq_8_13
+    coqPackages_8_15.hierarchy-builder
+    coqPackages_8_15.QuickChick
+    coqPackages_8_15.mathcomp
+    coqPackages_8_15.coqhammer
+    coqPackages_8_15.mathcomp-ssreflect
+    coq_8_15
     # External provers for coq-hammer
     eprover
     vampire
