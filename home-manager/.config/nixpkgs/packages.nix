@@ -1,7 +1,9 @@
 { lib, sources, pkgs, x86-darwin-pkgs, isDarwin, isLinux, minimal }:
 let
   whenNotMinimal = lib.optionals (!minimal);
-  gccemacs = with pkgs; (emacsPackagesFor emacs29).emacsWithPackages (e: [ e.vterm ]);
+  gccemacs = with pkgs; ((emacsPackagesFor (emacs30.override { withNativeCompilation = false; })).emacsWithPackages (e: [ 
+ e.vterm
+ ]));
   wrapWeb = pkgs.callPackage ./wrapWeb.nix { };
   wayland-packages = whenNotMinimal (with pkgs; [
     gccemacs
@@ -44,12 +46,13 @@ let
     pinentry_mac
   ];
   coqPackages = with pkgs; [
-    coqPackages_8_15.hierarchy-builder
-    coqPackages_8_15.QuickChick
-    coqPackages_8_15.mathcomp
-    coqPackages_8_15.coqhammer
-    coqPackages_8_15.mathcomp-ssreflect
-    coq_8_15
+    coqPackages_8_17.hierarchy-builder
+    coqPackages_8_17.QuickChick
+    coqPackages_8_17.mathcomp
+    coqPackages_8_17.coq-hammer
+    coqPackages_8_17.mathcomp-ssreflect
+    coqPackages_8_17.ITree
+    coq_8_17
     # External provers for coq-hammer
     eprover
     vampire
@@ -65,6 +68,7 @@ let
     nodePackages.bash-language-server
     nodePackages.typescript-language-server
     ruff-lsp
+    pyright
   ];
   sharedPackages = with pkgs; [
     bash

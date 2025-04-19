@@ -216,6 +216,7 @@
   (setq lsp-enable-snippet nil)
   (setq lsp-idle-delay 0.5)
   (setq lsp-file-watch-threshold 500)
+  (setq lsp-enable-dap-auto-configure nil)
   ;; append "^~" to lsp-file-watch-ignored to ignore files in home directory
   (setq lsp-file-watch-ignored
         (append lsp-file-watch-ignored '("^~")))
@@ -505,6 +506,7 @@
 (use-package writeroom-mode)
 
 (use-package copilot
+  :disabled
   :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
   :ensure t
   :hook (prog-mode . copilot-mode)
