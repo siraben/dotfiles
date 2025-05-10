@@ -10,33 +10,12 @@ let
     firefox-wayland
   ]);
   linuxPackages = whenNotMinimal (with pkgs; [
-    discord
-    docker
-    docker-compose
-    evince
-    cheese
     keepassxc
     killall
     kitty
-    libreoffice
-    msmtp
-    musescore
-    nextcloud-client
     nix-update
-    offlineimap
-    paper-icon-theme
-    racket
-    rhythmbox
-    slack
-    spotify
-    tdesktop
-    thunderbird
-    tor-browser-bundle-bin
-    transmission-gtk
-    ungoogled-chromium
     vlc
     whois
-    zoom-us
   ]) ++ wayland-packages;
   darwinPackages = with pkgs; [
     coreutils
