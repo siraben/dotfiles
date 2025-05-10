@@ -18,8 +18,6 @@ let
     config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
   };
   pkgs = import sources.nixpkgs pkgsOptions;
-  # masterPkgs = import sources.masterPkgs pkgsOptions;
-  x86-darwin-pkgs = import sources.nixpkgs (pkgsOptions // { system = (if isDarwin then "x86_64-darwin" else builtins.currentSystem); });
   grammars = (pkgs.tree-sitter.override (with pkgs; {
     extraGrammars = {
       tree-sitter-promela = { src = sources.tree-sitter-promela.outPath; };
@@ -34,11 +32,11 @@ in
 lib.recursiveUpdate (rec {
   home.username = "siraben";
   home.homeDirectory = if isDarwin then "/Users/${home.username}" else "/home/${home.username}";
-  home.packages = import ./packages.nix { inherit lib sources pkgs x86-darwin-pkgs isDarwin isLinux minimal; };
+  home.packages = import ./packages.nix { inherit lib sources pkgs isDarwin isLinux minimal; };
 
   home.sessionVariables = {
     EDITOR = "emacsclient";
-    COQPATH="$HOME/.nix-profile/lib/coq/8.13/user-contrib";
+    COQPATH="$HOME/.nix-profile/lib/coq/8.17/user-contrib";
   } // (lib.optionalAttrs isLinux {
     XDG_CURRENT_DESKTOP = "sway";
     MOZ_ENABLE_WAYLAND = 1;
@@ -55,7 +53,7 @@ lib.recursiveUpdate (rec {
   programs = import ./programs.nix { inherit lib pkgs isDarwin isLinux; };
   fonts.fontconfig.enable = true;
   services = lib.optionalAttrs isLinux (import ./services.nix { inherit lib pkgs; });
-  home.stateVersion = "24.11";
+  home.stateVersion = "25.05";
   home.enableNixpkgsReleaseCheck = false;
 })
 (lib.optionalAttrs (!minimal) {
