@@ -114,7 +114,7 @@ in
       tb = "tput bel";
       ix = ''curl -n -F 'f:1=<-' http://ix.io'';
     } // (lib.optionalAttrs isDarwin (import ./darwin-aliases.nix {}));
-    initExtra = lib.concatStringsSep "\n"
+    initContent = lib.concatStringsSep "\n"
       [
         (lib.optionalString isDarwin darwinShellExtra)
         (lib.optionalString isLinux linuxShellExtra)
