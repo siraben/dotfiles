@@ -9,8 +9,8 @@ pkgs.mkShell rec {
 
   buildInputs = with pkgs; [
     # niv
-    pkgs.home-manager
-    # (import sources.home-manager { inherit pkgs; }).home-manager
+    # pkgs.home-manager
+    (import sources.home-manager { inherit pkgs; }).home-manager
   ];
 
   shellHook = ''
