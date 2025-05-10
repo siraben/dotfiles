@@ -14,7 +14,7 @@ let
     docker
     docker-compose
     evince
-    gnome3.cheese
+    cheese
     keepassxc
     killall
     kitty
