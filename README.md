@@ -1,16 +1,17 @@
 # siraben's dotfiles
 
-Configuration for my macOS and Linux systems using [Nix](https://nixos.org/) and [Home Manager](https://github.com/nix-community/home-manager).
-
-In particular, the build of Emacs is custom and is [built with GitHub Actions](https://github.com/siraben/nix-gccemacs-darwin/actions) from source from the Emacs source repository.  This is because I want to take advantage of things like native compilation of Elisp and use [libvterm](https://github.com/akermu/emacs-libvterm).
+Configuration for my macOS and Linux systems using
+[Nix](https://nixos.org/) and [Home
+Manager](https://github.com/nix-community/home-manager). I mostly use
+macOS now, Linux minimal in server environments.
 
 ## Summary
 - OS: NixOS and macOS
-- Package manager: Nix (duh) (version 2.7)
+- Package manager: Nix
 - Shell: `zsh` with [pure prompt](https://github.com/sindresorhus/pure)
-- WM on NixOS: GNOME 40
+- WM on NixOS: wayland
 - Filesystem: ZFS on NixOS, APFS on macOS
-- Editor: Emacs (bleeding edge), `tomorrow-night` theme, [straight.el](https://github.com/raxod502/straight.el)
+- Editor: Emacs, `tomorrow-night` theme, [straight.el](https://github.com/raxod502/straight.el)
 - Custom package sets for
   - [LaTeX](./home-manager/.config/nixpkgs/texlive-packages.nix)
   - [Haskell](./home-manager/.config/nixpkgs/haskell-packages.nix)
