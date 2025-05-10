@@ -1,4 +1,4 @@
-{ lib, sources, pkgs, x86-darwin-pkgs, isDarwin, isLinux, minimal }:
+{ lib, sources, pkgs, isDarwin, isLinux, minimal }:
 let
   whenNotMinimal = lib.optionals (!minimal);
   gccemacs = with pkgs; ((emacsPackagesFor (emacs30.override { withNativeCompilation = false; })).emacsWithPackages (e: [ 
@@ -46,12 +46,14 @@ let
     pinentry_mac
   ];
   coqPackages = with pkgs; [
-    coqPackages_8_17.hierarchy-builder
-    coqPackages_8_17.QuickChick
-    coqPackages_8_17.mathcomp
+    # coqPackages_8_17.hierarchy-builder
+    # coqPackages_8_17.QuickChick
+    # coqPackages_8_17.mathcomp
     coqPackages_8_17.coq-hammer
-    coqPackages_8_17.mathcomp-ssreflect
-    coqPackages_8_17.ITree
+    coqPackages_8_17.coq-hammer-tactics
+    # coqPackages_8_17.mathcomp-ssreflect
+    # coqPackages_8_17.ITree
+    # coqPackages_8_17.coq-elpi
     coq_8_17
     # External provers for coq-hammer
     eprover
@@ -67,7 +69,6 @@ let
     haskellPackages.haskell-language-server
     nodePackages.bash-language-server
     nodePackages.typescript-language-server
-    ruff-lsp
     pyright
   ];
   sharedPackages = with pkgs; [
