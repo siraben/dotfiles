@@ -82,6 +82,7 @@ let
     niv
     nmap
     nodejs
+    ollama
     (import ./python-packages.nix { inherit pkgs; })
     ranger
     ripgrep
