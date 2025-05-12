@@ -2,7 +2,7 @@
 
 {
   enable = true;
-  package = pkgs.nextcloud30;
+  package = pkgs.nextcloud31;
   hostName = "cloud.siraben.dev";
   database.createLocally = true;
   configureRedis = true;
