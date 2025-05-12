@@ -2,13 +2,14 @@
 
 {
   enable = true;
-  package = pkgs.nextcloud28;
+  package = pkgs.nextcloud30;
   hostName = "cloud.siraben.dev";
   database.createLocally = true;
   configureRedis = true;
   maxUploadSize = "1G";
   https = true;
   config.adminpassFile = "/var/nextcloud-admin-pass";
+  config.dbtype = "sqlite";
   ensureUsers = {
     siraben = {
       email = "bensiraphob@gmail.com";
