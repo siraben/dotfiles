@@ -12,15 +12,15 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs": {
-        "branch": "staging",
+        "branch": "staging-next",
         "description": "Nix Packages collection",
         "homepage": "",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "b827578a7c68120fdcd0acf40066cb5fdef58d28",
-        "sha256": "135fcfs9bm30sdsf9qbp3jsl93v7z4pdp04ymm5mdns7nq8hzdp3",
+        "rev": "f13b927cebf320bda02136a7a8149bd80dbcd669",
+        "sha256": "12jxwqcdamf2kz7swgkn2z3ma5n7ah3fqdz9daazlawsqngjfyly",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/b827578a7c68120fdcd0acf40066cb5fdef58d28.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs/archive/f13b927cebf320bda02136a7a8149bd80dbcd669.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "tree-sitter-cool": {
