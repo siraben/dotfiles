@@ -25,10 +25,6 @@
       url = "github:siraben/tree-sitter-sml";
       flake = false;
     };
-    tree-sitter-solidity = {
-      url = "github:siraben/tree-sitter-solidity";
-      flake = false;
-    };
     tree-sitter-typst = {
       url = "github:frozolotl/tree-sitter-typst";
       flake = false;
