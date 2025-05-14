@@ -2,35 +2,35 @@
   description = "Siraben's dotfiles";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/b3582c75c7f21ce0b429898980eddbbf05c68e55";
+    nixpkgs.url = "github:NixOS/nixpkgs";
 
     home-manager = {
-      url = "github:nix-community/home-manager/1d2f0b3d4be0fed93c31d21603f988c68d5a4d16";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     tree-sitter-cool = {
-      url = "github:siraben/tree-sitter-cool/3bd8f928527c61575de056cf62b4fa0f79bd1fb6";
+      url = "github:siraben/tree-sitter-cool";
       flake = false;
     };
     tree-sitter-formula = {
-      url = "github:siraben/tree-sitter-formula/351159cf66f0e7f8d86fa06fc44ab3c2055082df";
+      url = "github:siraben/tree-sitter-formula";
       flake = false;
     };
     tree-sitter-promela = {
-      url = "github:siraben/tree-sitter-promela/91da8f141c3c4c695eb71018c8a7b2e7ea39c167";
+      url = "github:siraben/tree-sitter-promela";
       flake = false;
     };
     tree-sitter-sml = {
-      url = "github:siraben/tree-sitter-sml/45699c3394c3c7741dda0d54fdb5af60f1ca3d25";
+      url = "github:siraben/tree-sitter-sml";
       flake = false;
     };
     tree-sitter-solidity = {
-      url = "github:siraben/tree-sitter-solidity/f5fd341cc61613079e7bb513cd0db96982253743";
+      url = "github:siraben/tree-sitter-solidity";
       flake = false;
     };
     tree-sitter-typst = {
-      url = "github:frozolotl/tree-sitter-typst/4b935442f19cfdee7fd74800ed55a0f457f281a2";
+      url = "github:frozolotl/tree-sitter-typst";
       flake = false;
     };
   };
