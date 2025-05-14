@@ -1,0 +1,53 @@
+name: Automated niv-managed dependency updates
+
+on:
+  workflow_dispatch: {}          # manual trigger
+  schedule:
+    - cron: '0 4 * * *'          # every day 04:00 UTC
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  niv-updater:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+
+      - uses: cachix/install-nix-action@v31.3.0
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - uses: cachix/cachix-action@v16
+        with:
+          name: siraben
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: niv update
+        run: |
+          nix run nixpkgs#niv update
+
+      - name: Detect changes
+        id: changes
+        run: |
+          if git diff --quiet nix/sources.json; then
+            echo "changed=false" >>"$GITHUB_OUTPUT"
+          else
+            echo "changed=true"  >>"$GITHUB_OUTPUT"
+          fi
+
+      - name: Build Home-Manager config
+        if: steps.changes.outputs.changed == 'true'
+        run: nix-shell -p home-manager --run \
+             "home-manager build -f home-manager/.config/nixpkgs/home.nix"
+
+      - name: niv-updater-action
+        if: steps.changes.outputs.changed == 'true' && success()
+        uses: knl/niv-updater-action@v15
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          keep_updating: true
