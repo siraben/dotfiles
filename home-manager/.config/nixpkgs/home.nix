@@ -1,3 +1,5 @@
-args@{ config, lib, currentSystem, ... }:
-
-import ./base.nix (args // { minimal = false; })
+args@{ config, lib, pkgs, minimal ? false, ... }:
+let
+  currentSystem = pkgs.system;
+in
+import ./base.nix (args // { inherit minimal currentSystem; })
