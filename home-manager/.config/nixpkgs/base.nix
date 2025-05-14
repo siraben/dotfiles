@@ -1,8 +1,7 @@
-{ config, lib, currentSystem, minimal, ... }:
+{ config, lib, currentSystem, minimal, inputs, ... }:
 
 let
-  inherit (lib.systems.elaborate { system = builtins.currentSystem; }) isLinux isDarwin;
-  sources = import ../../../nix/sources.nix;
+  inherit (lib.systems.elaborate { system = currentSystem; }) isLinux isDarwin;
   unfreePackages = [
     "discord"
     "slack"
@@ -17,22 +16,25 @@ let
     ];
     config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
   };
-  pkgs = import sources.nixpkgs pkgsOptions;
+  pkgs = import inputs.nixpkgs {
+    system = currentSystem;
+    inherit (pkgsOptions) overlays config;
+  };
   grammars = (pkgs.tree-sitter.override (with pkgs; {
     extraGrammars = {
-      tree-sitter-promela = { src = sources.tree-sitter-promela.outPath; };
-      tree-sitter-formula = { src = sources.tree-sitter-formula.outPath; };
-      tree-sitter-sml = { src = sources.tree-sitter-sml.outPath; };
-      tree-sitter-solidity = { src = sources.tree-sitter-solidity.outPath; };
-      tree-sitter-cool = { src = sources.tree-sitter-cool.outPath; };
-      tree-sitter-typst = { src = sources.tree-sitter-typst.outPath; };
+      tree-sitter-promela = { src = inputs.tree-sitter-promela; };
+      tree-sitter-formula = { src = inputs.tree-sitter-formula; };
+      tree-sitter-sml = { src = inputs.tree-sitter-sml; };
+      tree-sitter-solidity = { src = inputs.tree-sitter-solidity; };
+      tree-sitter-cool = { src = inputs.tree-sitter-cool; };
+      tree-sitter-typst = { src = inputs.tree-sitter-typst; };
     };
   })).builtGrammars;
 in
 lib.recursiveUpdate (rec {
   home.username = "siraben";
   home.homeDirectory = if isDarwin then "/Users/${home.username}" else "/home/${home.username}";
-  home.packages = import ./packages.nix { inherit lib sources pkgs isDarwin isLinux minimal; };
+  home.packages = import ./packages.nix { inherit lib pkgs isDarwin isLinux minimal; };
 
   home.sessionVariables = {
     EDITOR = "emacsclient";

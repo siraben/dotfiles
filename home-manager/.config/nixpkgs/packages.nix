@@ -1,4 +1,4 @@
-{ lib, sources, pkgs, isDarwin, isLinux, minimal }:
+{ lib, pkgs, isDarwin, isLinux, minimal }:
 let
   whenNotMinimal = lib.optionals (!minimal);
   gccemacs = with pkgs; ((emacsPackagesFor (emacs30.override { withNativeCompilation = false; })).emacsWithPackages (e: [ 
@@ -38,11 +38,6 @@ let
     eprover
     vampire
     z3-tptp
-    (if stdenv.isDarwin then
-      ((import (builtins.fetchTarball {
-        url = "https://github.com/NixOS/nixpkgs/archive/a3e1e9271e0ff87309d44f9817baadb09b305757.tar.gz";
-      }) {}).cvc4)
-    else cvc4)
   ];
   languageServers = with pkgs; [
     haskellPackages.haskell-language-server
