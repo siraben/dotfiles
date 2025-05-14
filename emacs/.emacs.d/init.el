@@ -97,11 +97,6 @@
 
 (setq default-directory "~/")
 
-;; Keep some things out of version control.
-(let ((secret.el "~/Nextcloud/Scripts/secret.el"))
-  (when (file-exists-p secret.el)
-    (load secret.el)))
-
 ;; Disable native compilation when on battery power
 (run-at-time 1 300 #'(lambda ()
                        (require 'battery)
