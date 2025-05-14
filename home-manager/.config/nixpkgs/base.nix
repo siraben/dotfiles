@@ -25,7 +25,6 @@ let
       tree-sitter-promela = { src = inputs.tree-sitter-promela; };
       tree-sitter-formula = { src = inputs.tree-sitter-formula; };
       tree-sitter-sml = { src = inputs.tree-sitter-sml; };
-      tree-sitter-solidity = { src = inputs.tree-sitter-solidity; };
       tree-sitter-cool = { src = inputs.tree-sitter-cool; };
       tree-sitter-typst = { src = inputs.tree-sitter-typst; };
     };
