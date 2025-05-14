@@ -19,14 +19,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.2
 
-      - uses: cachix/install-nix-action@v31.3.0
-        with:
-          nix_path: nixpkgs=channel:nixos-unstable
+      - name: Install Nix with Flakes support
+        uses: cachix/install-nix-action@v31.3.0
 
-      - uses: cachix/cachix-action@v16
+      - name: Configure Cachix
+        uses: cachix/cachix-action@v16
         with:
           name: siraben
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - name: Build home-manager config
-        run: nix-shell -p home-manager --run "home-manager build -f home-manager/.config/nixpkgs/home.nix"
+      - name: Build home-manager flake configuration
+        run: |
+          set -euo pipefail
+          echo "OS: ${{ matrix.os }}"
+          if [[ "${{ matrix.os }}" == "ubuntu-24.04" ]]; then
+            echo "Building for Linux (siraben@linux)"
+            nix build .#homeConfigurations."siraben@linux".activationPackage -L
+          elif [[ "${{ matrix.os }}" == "macos-15" ]]; then
+            echo "Building for macOS x86_64 (siraben@macos-aarch64)"
+            nix build .#homeConfigurations."siraben@macos-aarch64".activationPackage -L
+          else
+            echo "::error::Unsupported OS: ${{ matrix.os }}"
+            exit 1
+          fi
