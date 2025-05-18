@@ -72,8 +72,6 @@
 
 (add-to-list 'load-path siraben-modules-dir)
 
-(setq no-native-compile t)
-
 (require 'siraben-core)
 (load "siraben-packages.el")
 (require 'siraben-ui)
@@ -96,16 +94,6 @@
       initial-scratch-message nil)
 
 (setq default-directory "~/")
-
-;; Disable native compilation when on battery power
-(run-at-time 1 300 #'(lambda ()
-                       (require 'battery)
-                       (if (and battery-status-function
-                                (not (string-match-p "AC"
-                                                     (battery-format "%L"
-                                                                     (funcall battery-status-function)))))
-                           (setq no-native-compile t)
-                         (setq no-native-compile nil))))
 
 
 ;;; init.el ends here
