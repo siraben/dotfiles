@@ -2,6 +2,7 @@
 *.elc
 .DS_Store
 nixos/hardware-configuration.nix
+result
 
 
 emacs/.emacs.d/.dap-breakpoints
