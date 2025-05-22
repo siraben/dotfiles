@@ -37,7 +37,6 @@ lib.recursiveUpdate (rec {
 
   home.sessionVariables = {
     EDITOR = "emacsclient";
-    COQPATH="$HOME/.nix-profile/lib/coq/8.17/user-contrib";
   } // (lib.optionalAttrs isLinux {
     XDG_CURRENT_DESKTOP = "sway";
     MOZ_ENABLE_WAYLAND = 1;
