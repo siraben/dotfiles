@@ -42,8 +42,7 @@
         "tree-sitter-cool": "tree-sitter-cool",
         "tree-sitter-formula": "tree-sitter-formula",
         "tree-sitter-promela": "tree-sitter-promela",
-        "tree-sitter-sml": "tree-sitter-sml",
-        "tree-sitter-typst": "tree-sitter-typst"
+        "tree-sitter-sml": "tree-sitter-sml"
       }
     },
     "tree-sitter-cool": {
@@ -107,22 +106,6 @@
       "original": {
         "owner": "siraben",
         "repo": "tree-sitter-sml",
-        "type": "github"
-      }
-    },
-    "tree-sitter-typst": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1706533064,
-        "narHash": "sha256-fyRoObSwpou2fz+NvM0QWTMD7qLs5gogxphLmACl+lU=",
-        "owner": "frozolotl",
-        "repo": "tree-sitter-typst",
-        "rev": "4b935442f19cfdee7fd74800ed55a0f457f281a2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "frozolotl",
-        "repo": "tree-sitter-typst",
         "type": "github"
       }
     }
