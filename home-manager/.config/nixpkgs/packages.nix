@@ -61,7 +61,7 @@ let
     rust-analyzer
     shellcheck
     stow
-    (import ./texlive-packages.nix { inherit pkgs; })
+    # (import ./texlive-packages.nix { inherit pkgs; })
     tldr
     tree
     (tree-sitter.overrideAttrs (oA: { webUISupport = true; }))
