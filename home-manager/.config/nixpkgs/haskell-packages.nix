@@ -6,4 +6,5 @@ pkgs.haskellPackages.ghcWithHoogle (h: with h; [
   criterion # benchmarking
   aeson # JSON
   recursion-schemes # recursion schemes
+  yaml
 ])
