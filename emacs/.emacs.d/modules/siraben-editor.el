@@ -70,11 +70,6 @@ Enables auto-fill mode, spell checking and disables company mode."
 
 (require 'siraben-mdm)
 
-(add-hook 'sgml-mode-hook
-          (lambda ()
-            (require 'rename-sgml-tag)
-            (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)))
-
 ;; De-duplicate kill ring entries.
 (setq kill-do-not-save-duplicates t)
 
