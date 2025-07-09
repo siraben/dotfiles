@@ -30,8 +30,6 @@
   outputs = { self, nixpkgs, home-manager, ... /* Capture all inputs */ }@allInputs:
     let
       username = "siraben";
-      # 'allInputs' is the attribute set of all defined flake inputs.
-      # We will pass this set as 'inputs' within extraSpecialArgs.
     in
     {
       homeConfigurations = {
@@ -59,21 +57,15 @@
 
       devShells = nixpkgs.lib.genAttrs [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ] (system:
         let
-          pkgs = nixpkgs.legacyPackages.${system}; # nixpkgs from output function args
+          pkgs = nixpkgs.legacyPackages.${system};
         in
         {
           default = pkgs.mkShell {
             name = "home-manager-dotfiles-shell";
             packages = [
-              allInputs.home-manager.packages.${system}.default # Use allInputs here
+              allInputs.home-manager.packages.${system}.default
               pkgs.git
-              # Add other common dev tools here if needed
             ];
-            # shellHook for nix develop if required, but usually not for simple flake usage
-            # For example, to make git aware of the .git-blame-ignore-revs file:
-            # shellHook = ''
-            #  git config blame.ignoreRevsFile .git-blame-ignore-revs
-            # '';
           };
         });
     };
