@@ -39,6 +39,7 @@ let
     borgbackup
     cabal-install
     cachix
+    cargo
     cmake
     dejavu_fonts
     ffmpeg
