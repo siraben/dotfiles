@@ -62,12 +62,13 @@
           "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
           "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
   ;; These are code blocks that are "safe" to evaluate.
-  (defun my-org-confirm-babel-evaluate (lang body)
+  (defun siraben--org-confirm-babel-evaluate (lang body)
+    "Return t if LANG and BODY are safe to evaluate."
     (not (or (string= lang "dot")
              (string= lang "gnuplot")
              (string= lang "octave"))))
 
-  (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+  (setq org-confirm-babel-evaluate #'siraben--org-confirm-babel-evaluate)
   (setq org-modules '(org-mu4e
                       org-habit
                       org-crypt
@@ -83,10 +84,11 @@
   (setq org-export-backends '(ascii beamer html icalendar latex odt))
   (setq org-list-allow-alphabetical t)
   (defvar org-electric-pairs '((?$ . ?$)))
-  (defun org-add-electric-pairs ()
+  (defun siraben--org-add-electric-pairs ()
+    "Add electric pairs for org mode."
     (setq-local electric-pair-pairs (append electric-pair-pairs org-electric-pairs))
     (setq-local electric-pair-text-pairs electric-pair-pairs))
-  (add-hook 'org-mode-hook 'org-add-electric-pairs)
+  (add-hook 'org-mode-hook #'siraben--org-add-electric-pairs)
 
   (require 'ox-latex)
   (add-to-list 'org-latex-classes '("journal" "\\documentclass[11pt]{journal}"

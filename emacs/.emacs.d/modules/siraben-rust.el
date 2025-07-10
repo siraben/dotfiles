@@ -28,13 +28,14 @@
   :config
   (require 'rust-mode)
   (setq rust-format-on-save t)
-  (defun my-rust-mode-hook ()
+  (defun siraben--rust-mode-setup ()
+    "Configure Rust mode settings."
     (rustic-mode)
     (flycheck-rust-setup)
     (local-set-key (kbd "s-b") 'recompile)
-    (subword-mode t)
+    (subword-mode 1)
     (lsp))
-  (add-hook 'rust-mode-hook #'my-rust-mode-hook))
+  (add-hook 'rust-mode-hook #'siraben--rust-mode-setup))
 
 (provide 'siraben-rust)
 ;;; siraben-rust.el ends here

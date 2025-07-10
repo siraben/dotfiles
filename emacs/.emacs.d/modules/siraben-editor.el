@@ -18,7 +18,12 @@
 
 ;;; Code:
 
-(add-hook 'after-init-hook #'(lambda () (global-auto-revert-mode t) (global-so-long-mode t)))
+(add-hook 'after-init-hook #'siraben--setup-global-modes)
+
+(defun siraben--setup-global-modes ()
+  "Setup global modes for better editing experience."
+  (global-auto-revert-mode 1)
+  (global-so-long-mode 1))
 
 ;; Don't use tabs to indent but maintain correct appearance.
 (setq-default indent-tabs-mode nil
@@ -48,21 +53,19 @@
   (setq flyspell-issue-message-flag nil))
 
 (defun siraben-enable-writing-modes ()
-  "Enables writing modes for writing prose.
+  "Enable writing modes for writing prose.
 Enables auto-fill mode, spell checking and disables company mode."
   (interactive)
   (auto-fill-mode 1)
-  (undo-tree-mode 1)
   (flyspell-mode 1)
   (electric-pair-mode 1)
   (setq electric-pair-inhibit-predicate
         `(lambda (c)
            (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))
-  (visual-line-mode 1)    ;; Org mode headings don't wrap.
-  (company-mode -1)
-  (flyspell-mode 1))
+  (visual-line-mode 1)
+  (company-mode -1))
 
-(add-hook 'after-init-hook (lambda () (diminish 'visual-line-mode "vl")))
+;; This will be handled by the diminish package configuration
 
 (add-hook 'text-mode-hook #'siraben-enable-writing-modes)
 (add-hook 'markdown-mode-hook #'siraben-enable-writing-modes)
@@ -89,13 +92,17 @@ Enables auto-fill mode, spell checking and disables company mode."
 (setq ffap-machine-p-known 'reject)
 
 (use-package dashboard
-  :commands (dashboard-mode)
-  :hook (after-init . (lambda () (dashboard-mode) (dashboard-refresh-buffer)))
+  :hook (after-init . siraben--setup-dashboard)
   :config
-  (setq dashboard-set-footer nil)
-  (setq dashboard-startup-banner 'logo)
-  (setq dashboard-items '((recents . 10)))
-  (setq dashboard-center-content t)
+  (defun siraben--setup-dashboard ()
+    "Configure dashboard startup screen."
+    (dashboard-mode)
+    (dashboard-refresh-buffer))
+  
+  (setq dashboard-set-footer nil
+        dashboard-startup-banner 'logo
+        dashboard-items '((recents . 10))
+        dashboard-center-content t)
   (dashboard-setup-startup-hook))
 
 ;;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph
@@ -122,16 +129,14 @@ Enables auto-fill mode, spell checking and disables company mode."
 (global-set-key (kbd "M-n") #'forward-paragraph)
 (global-set-key (kbd "M-N") #'anon-new-empty-buffer)
 
-(setq auto-save-interval 100)
-(setq kept-new-versions 10
-      kept-old-verisons 0)
-
-;; No backups
-(setq backup-inhibited 1)
-(setq delete-old-versions t)
+(setq auto-save-interval 100
+      kept-new-versions 10
+      kept-old-versions 0
+      backup-inhibited t
+      delete-old-versions t)
 
 (setq recentf-max-saved-items 10000
-      recentf-keep nil)
+      recentf-exclude '("/tmp/" "/ssh:" "/sudo:"))
 
 (show-paren-mode 1)
 (setq show-paren-delay 0)
