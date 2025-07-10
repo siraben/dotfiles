@@ -40,8 +40,7 @@
     racket-mode-hook))
 
 (dolist (hook siraben-lispy-mode-hooks)
-  (add-hook hook #'(lambda ()
-                     (siraben-enable-lisp-editing-modes))))
+  (add-hook hook #'siraben-enable-lisp-editing-modes))
 
 (use-package scheme
   :config
@@ -51,27 +50,27 @@
 (use-package geiser
   :disabled
   :defer 10
+  :hook (geiser-repl-mode . siraben--setup-geiser-repl)
   :config
   (setq geiser-default-implementation 'guile)
-  ;; Enable some Lisp modes like paredit and rainbow delimiters, but no
-  ;; need to undo and auto complete.
-  :hook (geiser-repl-mode .
-                          (lambda ()
-                            (siraben-enable-lisp-editing-modes)
-                            (undo-tree-mode                 -1)
-                            (paredit-mode                   +1)
-                            (aggressive-indent-mode         -1))))
+  
+  (defun siraben--setup-geiser-repl ()
+    "Configure Geiser REPL mode."
+    (siraben-enable-lisp-editing-modes)
+    (undo-tree-mode -1)
+    (paredit-mode 1)
+    (aggressive-indent-mode -1)))
 
-(add-hook 'ielm-mode-hook
-          (lambda ()
-            (siraben-enable-lisp-editing-modes)
-            (undo-tree-mode                 -1)
-            (paredit-mode                   +1)
-            (aggressive-indent-mode         -1)))
+(add-hook 'ielm-mode-hook #'siraben--setup-ielm)
 
-(add-hook 'emacs-lisp-mode-hook
-          (lambda ()
-            (flycheck-mode t)))
+(defun siraben--setup-ielm ()
+  "Configure IELM mode."
+  (siraben-enable-lisp-editing-modes)
+  (undo-tree-mode -1)
+  (paredit-mode 1)
+  (aggressive-indent-mode -1))
+
+(add-hook 'emacs-lisp-mode-hook (lambda () (flycheck-mode 1)))
 
 (use-package racket-mode
   :config

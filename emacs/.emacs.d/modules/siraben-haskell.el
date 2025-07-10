@@ -58,7 +58,7 @@
       ("`isProperSubsetOf`" . ?⊂)
       ("undefined"          . ?⊥)))
 
-  (defun my-haskell-mode-hook ()
+  (defun siraben--haskell-mode-setup ()
     (subword-mode             t)
     (interactive-haskell-mode t)
     (diminish 'interactive-haskell-mode)
@@ -67,7 +67,7 @@
     (prettify-symbols-mode 1)
     (haskell-indentation-mode t))
 
-  (add-hook 'haskell-mode-hook #'my-haskell-mode-hook)
+  (add-hook 'haskell-mode-hook #'siraben--haskell-mode-setup)
   (add-hook 'inferior-haskell-mode-hook (lambda () (paredit-mode -1)))
   )
 
