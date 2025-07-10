@@ -31,28 +31,33 @@
       scroll-conservatively 100000
       scroll-preserve-screen-position 1)
 
-(add-hook 'after-init-hook
-          #'(lambda ()
-              (scroll-bar-mode -1)
-              (display-time-mode t)
-              (winner-mode t)))
+(add-hook 'after-init-hook #'siraben--setup-ui-modes)
+
+(defun siraben--setup-ui-modes ()
+  "Setup UI-related modes."
+  (when (display-graphic-p)
+    (scroll-bar-mode -1))
+  (display-time-mode 1)
+  (winner-mode 1))
 
 ;; Warn when opening files bigger than 100MB.
 (setq large-file-warning-threshold 100000000)
 
 ;; Enable short answers
-(fset 'yes-or-no-p 'y-or-n-p)
+(setq use-short-answers t)
 
 ;; Extra mode line modes.
 (use-package fancy-battery
-  :config (setq fancy-battery-show-percentage t)
-  :hook (after-init . fancy-battery-mode))
+  :hook (after-init . fancy-battery-mode)
+  :config
+  (setq fancy-battery-show-percentage t))
 
 ;; Make viewing PDFs better on HiDPI displays
 (setq doc-view-resolution 230)
 
+;; Enable smooth scrolling on supported systems
 (when (fboundp 'pixel-scroll-precision-mode)
-  (pixel-scroll-precision-mode))
+  (pixel-scroll-precision-mode 1))
 
 (provide 'siraben-ui)
 ;;; siraben-ui.el ends here

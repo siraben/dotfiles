@@ -23,14 +23,13 @@
 ;;; Code:
 
 (defvar bootstrap-version)
-;; (setq straight-check-for-modifications nil)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
+      (bootstrap-version 6))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
          'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
@@ -52,13 +51,15 @@
 (setq use-package-verbose t)
 
 (use-package diminish
-  :hook
-  ((after-init . (lambda ()
-                   (diminish 'auto-revert-mode)
-                   (diminish 'visual-line-mode "Visual Line")
-                   (diminish 'auto-fill-function "Auto Fill")
-                   (diminish 'eldoc-mode)
-                   (diminish 'lisp-interaction-mode)))))
+  :hook (after-init . siraben--setup-diminish)
+  :config
+  (defun siraben--setup-diminish ()
+    "Configure mode line diminishing."
+    (diminish 'auto-revert-mode)
+    (diminish 'visual-line-mode "vl")
+    (diminish 'auto-fill-function "af")
+    (diminish 'eldoc-mode)
+    (diminish 'abbrev-mode)))
 (use-package multiple-cursors
   :defer 3
   :commands (mc/mark-previous-like-this mc/mark-next-like mc/edit-lines mc/mark-more-like-this mc/mark-all-like-this)
@@ -108,12 +109,13 @@
   :commands (global-undo-tree-mode)
   :hook ((after-init . global-undo-tree-mode))
   :config
-  (defadvice undo-tree-make-history-save-file-name
-      (after undo-tree activate)
-    (setq ad-return-value (concat ad-return-value ".gz")))
+  ;; Compress undo-tree history files
+  (advice-add 'undo-tree-make-history-save-file-name :filter-return
+              (lambda (filename) (concat filename ".gz")))
+  
   (setq undo-tree-history-directory-alist
-        `((".*" . ,temporary-file-directory)))
-  (setq undo-tree-auto-save-history t))
+        `((".*" . ,temporary-file-directory))
+        undo-tree-auto-save-history t))
 
 (use-package aggressive-indent
   :diminish aggressive-indent-mode)
@@ -129,25 +131,16 @@
 
 (when (memq window-system '(mac ns))
   (use-package exec-path-from-shell
-    :defer 3
-    :hook
-    (after-init . (lambda ()
-                    (exec-path-from-shell-initialize)
-                    (exec-path-from-shell-copy-envs
-                     '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE" "COQPATH"))))))
+    :hook (after-init . siraben--setup-exec-path)
+    :config
+    (defun siraben--setup-exec-path ()
+      "Configure exec-path-from-shell for macOS."
+      (exec-path-from-shell-initialize)
+      (exec-path-from-shell-copy-envs
+       '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE" "COQPATH")))))
 
 (use-package helm
-  :diminish (helm-mode)
-  :commands (helm-mode helm-resume)
-  :config
-  (setq helm-split-window-in-side-p           t
-        helm-buffers-fuzzy-matching           t
-        helm-move-to-line-cycle-in-source     t
-        helm-ff-search-library-in-sexp        t
-        helm-ff-file-name-history-use-recentf t
-        helm-autoresize-max-height            0
-        helm-autoresize-min-height            40
-        helm-autoresize-mode                  t)
+  :diminish helm-mode
   :bind (("C-h a"   . helm-apropos)
          ("C-h f"   . helm-apropos)
          ("C-h r"   . helm-info-emacs)
@@ -155,8 +148,16 @@
          ("M-x"     . helm-M-x)
          ("C-x b"   . helm-mini)
          ("C-x C-b" . helm-resume))
-  :hook
-  (after-init . helm-mode))
+  :hook (after-init . helm-mode)
+  :config
+  (setq helm-split-window-in-side-p           t
+        helm-buffers-fuzzy-matching           t
+        helm-move-to-line-cycle-in-source     t
+        helm-ff-search-library-in-sexp        t
+        helm-ff-file-name-history-use-recentf t
+        helm-autoresize-max-height            0
+        helm-autoresize-min-height            40)
+  (helm-autoresize-mode 1))
 
 (use-package helm-rg
   :commands (helm-rg)
@@ -168,12 +169,13 @@
   :config (load-theme 'sanityinc-tomorrow-night t))
 
 (use-package spaceline
-  :commands (spaceline-emacs-theme spaceline-helm-mode)
-  :config (setq powerline-default-separator 'arrow)
-  :hook
-  (after-init . (lambda ()
-                  (spaceline-emacs-theme)
-                  (spaceline-helm-mode))))
+  :hook (after-init . siraben--setup-spaceline)
+  :config
+  (defun siraben--setup-spaceline ()
+    "Configure spaceline modeline."
+    (setq powerline-default-separator 'arrow)
+    (spaceline-emacs-theme)
+    (spaceline-helm-mode)))
 
 (use-package webpaste
   :config
@@ -181,18 +183,31 @@
   (setq webpaste-paste-raw-text t))
 
 (use-package auctex
+  :hook (LaTeX-mode . siraben--setup-latex)
   :config
   (setq TeX-auto-save t
         TeX-parse-self t
         TeX-master nil
-        TeX-PDF-mode t)
-  :hook
-  (LaTeX-mode . (lambda ()
-                  (siraben-enable-writing-modes)
-                  (company-auctex-init)
-                  (setq TeX-command-extra-options "-shell-escape")
-                  (auto-fill-mode 1)
-                  (flyspell-mode t))))
+        TeX-PDF-mode t
+        ;; Modern AUCTeX completion settings
+        TeX-complete-expert-commands t
+        TeX-insert-braces nil
+        LaTeX-electric-left-right-brace t)
+  
+  ;; Enable preview-latex if available
+  (when (locate-library "preview")
+    (setq preview-scale-function 1.2))
+  
+  (defun siraben--setup-latex ()
+    "Configure LaTeX mode settings."
+    (siraben-enable-writing-modes)
+    (setq TeX-command-extra-options "-shell-escape")
+    (auto-fill-mode 1)
+    (flyspell-mode 1)
+    ;; Enable modern completion
+    (setq-local completion-at-point-functions
+                (append '(LaTeX-completion-at-point)
+                        completion-at-point-functions))))
 
 (use-package lsp-mode
   :config
@@ -229,8 +244,6 @@
 (use-package lsp-ui)
 
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
-
-(use-package company-auctex)
 
 (use-package flycheck
   :diminish)

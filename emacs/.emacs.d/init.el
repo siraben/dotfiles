@@ -22,58 +22,62 @@
 
 ;;; Code:
 
-;; Always prefer the newest version of a file, even if the old one is
-;; compiled.
-(setq load-prefer-newer t)
+;; Store original values for restoration
+(defvar siraben--file-name-handler-alist file-name-handler-alist)
+(defvar siraben--gc-cons-threshold gc-cons-threshold)
+(defvar siraben--gc-cons-percentage gc-cons-percentage)
 
-(defvar file-name-handler-alist-old file-name-handler-alist)
-
+;; Maximize garbage collection threshold and disable file handlers during startup
 (setq file-name-handler-alist nil
-      message-log-max 16384
-      gc-cons-threshold (ash 1 25)
-      gc-cons-percentage 0.6
-      auto-window-vscroll nil)
+      gc-cons-threshold most-positive-fixnum
+      gc-cons-percentage 0.8)
 
-(add-hook 'after-init-hook
-          `(lambda ()
-             (setq file-name-handler-alist file-name-handler-alist-old
-                   gc-cons-threshold 100000000
-                   gc-cons-percentage 0.1)
-             (garbage-collect)) t)
+;; Restore settings after initialization
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq file-name-handler-alist siraben--file-name-handler-alist
+                  gc-cons-threshold siraben--gc-cons-threshold
+                  gc-cons-percentage siraben--gc-cons-percentage)
+            (garbage-collect)) t)
 
-(setq byte-compile-warnings nil)
+;; Suppress warnings during startup
+(setq byte-compile-warnings nil
+      native-comp-async-report-warnings-errors nil
+      warning-suppress-log-types '((comp) (bytecomp)))
 
-(setq native-comp-async-report-warnings-errors nil)
+;; Improve subprocess performance
+(setq read-process-output-max (* 1024 1024)) ; 1MB
 
-(setq read-process-output-max (* 1024 1024))
-
-;; At least remove the eyesores while we wait.
+;; Remove UI elements early to prevent flashing
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
+(when (fboundp 'menu-bar-mode)
+  (menu-bar-mode -1))
 
-(menu-bar-mode -1)
+;; Configure frame settings
+(add-hook 'window-setup-hook
+          (lambda ()
+            (when (display-graphic-p)
+              (scroll-bar-mode -1)
+              (setq-default cursor-type 'box))))
 
-(add-hook 'after-init-hook
-          #'(lambda ()
-              (when window-system
-                (scroll-bar-mode -1)
-                ;; And ensure the cursor is a box, and remove the fringe.
-                (setq-default cursor-type 'box))))
-
-(defvar siraben-root-dir
-  "~/.emacs.d/"
+;; Define configuration directories
+(defvar siraben-root-dir user-emacs-directory
   "The root directory of the Emacs configuration.")
-
-(setq custom-file (concat siraben-root-dir "/custom.el"))
 
 (defvar siraben-modules-dir
   (expand-file-name "modules/" siraben-root-dir)
   "The directory that contains all the modules for my configuration.")
 
+;; Add modules to load path
 (add-to-list 'load-path siraben-modules-dir)
 
+;; Set custom file location (but don't load it automatically)
+(setq custom-file (expand-file-name "custom.el" siraben-root-dir))
+
+;; Load configuration modules
 (require 'siraben-core)
-(load "siraben-packages.el")
+(require 'siraben-packages)
 (require 'siraben-ui)
 (require 'siraben-fonts)
 (require 'siraben-keybindings)
@@ -81,19 +85,15 @@
 (require 'siraben-programming)
 (require 'siraben-shell)
 (require 'siraben-org)
-;; (require 'siraben-tramp)
 
-;; Load OS-specific configuration.
-(require
- (cl-case system-type
-   (gnu/linux  'siraben-linux)
-   (darwin     'siraben-macos)))
+;; Load OS-specific configuration
+(pcase system-type
+  ('gnu/linux (require 'siraben-linux))
+  ('darwin (require 'siraben-macos)))
 
-;; Initial scratch buffer message.
+;; Configure startup behavior
 (setq inhibit-startup-message t
-      initial-scratch-message nil)
-
-(setq default-directory "~/")
-
+      initial-scratch-message nil
+      default-directory "~/")
 
 ;;; init.el ends here
