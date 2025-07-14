@@ -7,4 +7,5 @@ pkgs.haskellPackages.ghcWithHoogle (h: with h; [
   aeson # JSON
   recursion-schemes # recursion schemes
   yaml
+  freer-simple
 ])
