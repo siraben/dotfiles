@@ -8,9 +8,7 @@ let
   linuxPackages = whenNotMinimal (with pkgs; [
     keepassxc
     kitty
-    nix-update
     vlc
-    whois
   ]) ++ wayland-packages;
   darwinPackages = with pkgs; [
     coreutils
@@ -35,7 +33,6 @@ let
   ] ++ (whenNotMinimal ([
     (aspellWithDicts (d: with d; [ en en-computers en-science ]))
     bat
-    btop
     borgbackup
     cabal-install
     cachix
@@ -61,13 +58,13 @@ let
     ripgrep
     rust-analyzer
     shellcheck
+    stack
     stow
     # (import ./texlive-packages.nix { inherit pkgs; })
     tldr
     tree
-    (tree-sitter.overrideAttrs (oA: { webUISupport = true; }))
+    tree-sitter
     typst
-    unzip
     yt-dlp
     zip
   ] ++ languageServers));
