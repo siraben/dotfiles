@@ -9,6 +9,7 @@ let
     "spotify-unwrapped"
     "zoom"
     "aspell-dict-en-science"
+    "claude-code"
   ];
   pkgsOptions = {
     overlays = [
