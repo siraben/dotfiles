@@ -37,6 +37,7 @@ let
     cabal-install
     cachix
     cargo
+    claude-code
     cmake
     dejavu_fonts
     ffmpeg
