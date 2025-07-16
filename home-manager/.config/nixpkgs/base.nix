@@ -66,4 +66,35 @@ lib.recursiveUpdate (rec {
         '')
         grammars)}
   '');
+    home.file.".config/kitty/session.conf".text = ''
+      # Kitty session file
+      # This will restore your tabs and windows when kitty starts
+
+      # You can have multiple layouts, each in its own tab
+      # Each layout can have multiple windows
+
+      # Example session with multiple tabs
+      # Uncomment and modify as needed:
+
+      # Tab 1 - Development
+      # new_tab Development
+      # cd ~/projects
+      # launch zsh
+
+      # Tab 2 - System monitoring
+      # new_tab Monitoring
+      # layout tall
+      # launch htop
+      # launch --location=vsplit watch -n 1 "df -h"
+
+      # Tab 3 - Logs
+      # new_tab Logs
+      # cd /var/log
+      # launch tail -f system.log
+
+      # Simple session that just opens a single tab in home directory
+      new_tab Home
+      cd ~
+      launch zsh
+    '';
 })
