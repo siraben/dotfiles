@@ -82,6 +82,24 @@ in
       bind c new-window -c "#{pane_current_path}"
     '';
   };
+  kitty = {
+    enable = true;
+    font = {
+      name = "DejaVu Sans Mono";
+    };
+    settings = {
+      cursor_blink_interval = 0;
+      scrollback_lines = 10000;
+      scrollback_pager = "less --chop-long-lines --RAW-CONTROL-CHARS +INPUT_LINE_NUMBER";
+      scrollback_pager_history_size = 10;
+      startup_session = "session.conf";
+      macos_option_as_alt = "yes";
+    };
+    keybindings = {
+      "kitty_mod+t" = "new_tab_with_cwd";
+      "cmd+t" = "new_tab_with_cwd";
+    };
+  };
   zsh = {
     enable = true;
     oh-my-zsh = {
