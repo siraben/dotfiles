@@ -68,6 +68,7 @@ let
     typst
     yt-dlp
     zip
+    zoxide
   ] ++ languageServers));
 in
 sharedPackages ++ (lib.optionals isLinux linuxPackages) ++ (lib.optionals isDarwin darwinPackages)
