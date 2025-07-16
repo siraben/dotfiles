@@ -3,7 +3,6 @@
 let
   darwinShellExtra = ''
     if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix.sh' ]; then . '/nix/var/nix/profiles/default/etc/profile.d/nix.sh'; fi
-    if [ -e "$HOME/.nix/remote-build-env" ]; then . "$HOME/.nix/remote-build-env"; fi
     if [ -d "/opt/homebrew/bin" ]; then
       export PATH=/opt/homebrew/bin:$PATH
     fi
@@ -155,11 +154,5 @@ in
         (lib.optionalString isLinux linuxShellExtra)
         sharedShellExtra
       ];
-    envExtra = ''
-      if [ -d "/opt/homebrew/bin" ]; then
-        export PATH=$HOME/.nix-profile/bin:$PATH
-      fi
-      export PATH=$HOME/.nix-profile/bin:$PATH
-    '';
   };
 }
