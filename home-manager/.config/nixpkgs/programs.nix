@@ -116,9 +116,6 @@ in
       extended = true;
     };
     shellAliases = {
-      hm = "home-manager";
-      hms = "home-manager switch";
-      httpcode = ''curl -o /dev/null -s -w "%{http_code}\n"'';
       nb = "nix build";
       nbi = "nix build --impure";
       ncg = "nix-collect-garbage";
@@ -127,10 +124,6 @@ in
       nr = "nix repl";
       nreps = "nix-review pr --post-result";
       nrep = "nix-review pr --post-result --no-shell";
-      nrp = "nix repl '<nixpkgs>'";
-      ns = "nix-shell";
-      tb = "tput bel";
-      ix = ''curl -n -F 'f:1=<-' http://ix.io'';
     } // (lib.optionalAttrs isDarwin (import ./darwin-aliases.nix {}));
     initContent = lib.concatStringsSep "\n"
       [
