@@ -91,13 +91,37 @@ in
       cursor_blink_interval = 0;
       scrollback_lines = 10000;
       scrollback_pager = "less --chop-long-lines --RAW-CONTROL-CHARS +INPUT_LINE_NUMBER";
-      scrollback_pager_history_size = 10;
+      scrollback_pager_history_size = 1000;
       startup_session = "session.conf";
       macos_option_as_alt = "yes";
+      # Mouse settings
+      mouse_hide_wait = 0;
+      # Tab bar configuration
+      tab_bar_edge = "top";
+      tab_bar_style = "powerline";
+      tab_powerline_style = "slanted";
+      tab_title_template = "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{title}";
+      active_tab_title_template = "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{title} [{num_windows} window{'s' if num_windows > 1 else ''}]";
+      tab_bar_background = "#333";
+      active_tab_foreground = "#fff";
+      active_tab_background = "#666";
+      inactive_tab_foreground = "#ccc";
+      inactive_tab_background = "#333";
     };
+    shellIntegration.enableZshIntegration = true;
     keybindings = {
       "kitty_mod+t" = "new_tab_with_cwd";
       "cmd+t" = "new_tab_with_cwd";
+      # Switch tabs with cmd+number
+      "cmd+1" = "goto_tab 1";
+      "cmd+2" = "goto_tab 2";
+      "cmd+3" = "goto_tab 3";
+      "cmd+4" = "goto_tab 4";
+      "cmd+5" = "goto_tab 5";
+      "cmd+6" = "goto_tab 6";
+      "cmd+7" = "goto_tab 7";
+      "cmd+8" = "goto_tab 8";
+      "cmd+9" = "goto_tab 9";
     };
   };
   zsh = {
