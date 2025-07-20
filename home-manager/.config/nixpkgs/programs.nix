@@ -97,7 +97,7 @@ in
       mouse_hide_wait = 0;
       # Tab bar configuration
       tab_bar_edge = "top";
-      tab_bar_style = "powerline";
+      tab_bar_style = "custom";
       tab_powerline_style = "slanted";
       tab_title_template = "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{title}";
       active_tab_title_template = "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{title} [{num_windows} window{'s' if num_windows > 1 else ''}]";
@@ -106,6 +106,52 @@ in
       active_tab_background = "#666";
       inactive_tab_foreground = "#ccc";
       inactive_tab_background = "#333";
+      # Disable macOS menu bar title updates
+      macos_show_window_title_in = "window";
+      
+      # Tomorrow Night Bright theme colors
+      foreground = "#eaeaea";
+      background = "#000000";
+      selection_foreground = "#000000";
+      selection_background = "#424242";
+      cursor = "#eaeaea";
+      cursor_text_color = "#000000";
+      url_color = "#70c0b1";
+      active_border_color = "#969896";
+      inactive_border_color = "#2a2a2a";
+      bell_border_color = "#d54e53";
+      
+      # Black
+      color0 = "#000000";
+      color8 = "#969896";
+      
+      # Red
+      color1 = "#d54e53";
+      color9 = "#d54e53";
+      
+      # Green
+      color2 = "#b9ca4a";
+      color10 = "#b9ca4a";
+      
+      # Yellow
+      color3 = "#e7c547";
+      color11 = "#e7c547";
+      
+      # Blue
+      color4 = "#7aa6da";
+      color12 = "#7aa6da";
+      
+      # Magenta
+      color5 = "#c397d8";
+      color13 = "#c397d8";
+      
+      # Cyan
+      color6 = "#70c0b1";
+      color14 = "#70c0b1";
+      
+      # White
+      color7 = "#eaeaea";
+      color15 = "#ffffff";
     };
     shellIntegration.enableZshIntegration = true;
     keybindings = {
