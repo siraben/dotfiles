@@ -8,19 +8,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    tree-sitter-cool = {
-      url = "github:siraben/tree-sitter-cool";
-      flake = false;
-    };
-    tree-sitter-formula = {
-      url = "github:siraben/tree-sitter-formula";
-      flake = false;
-    };
-    tree-sitter-promela = {
-      url = "github:siraben/tree-sitter-promela";
-      flake = false;
-    };
     tree-sitter-sml = {
       url = "github:siraben/tree-sitter-sml";
       flake = false;

@@ -23,10 +23,7 @@ let
   };
   grammars = (pkgs.tree-sitter.override (with pkgs; {
     extraGrammars = {
-      tree-sitter-promela = { src = inputs.tree-sitter-promela; };
-      tree-sitter-formula = { src = inputs.tree-sitter-formula; };
       tree-sitter-sml = { src = inputs.tree-sitter-sml; };
-      tree-sitter-cool = { src = inputs.tree-sitter-cool; };
     };
   })).builtGrammars;
 in

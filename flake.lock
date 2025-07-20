@@ -39,58 +39,7 @@
       "inputs": {
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
-        "tree-sitter-cool": "tree-sitter-cool",
-        "tree-sitter-formula": "tree-sitter-formula",
-        "tree-sitter-promela": "tree-sitter-promela",
         "tree-sitter-sml": "tree-sitter-sml"
-      }
-    },
-    "tree-sitter-cool": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1662648268,
-        "narHash": "sha256-jZrX86qKu5j47BAnbFNhuGmwOEL0/jdxozg5GNFyOHc=",
-        "owner": "siraben",
-        "repo": "tree-sitter-cool",
-        "rev": "3bd8f928527c61575de056cf62b4fa0f79bd1fb6",
-        "type": "github"
-      },
-      "original": {
-        "owner": "siraben",
-        "repo": "tree-sitter-cool",
-        "type": "github"
-      }
-    },
-    "tree-sitter-formula": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1651735475,
-        "narHash": "sha256-ALQ/Hf5b/yYO8J0uFNaf5Rh98oKTUPY/F8xCZDWHmWw=",
-        "owner": "siraben",
-        "repo": "tree-sitter-formula",
-        "rev": "351159cf66f0e7f8d86fa06fc44ab3c2055082df",
-        "type": "github"
-      },
-      "original": {
-        "owner": "siraben",
-        "repo": "tree-sitter-formula",
-        "type": "github"
-      }
-    },
-    "tree-sitter-promela": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1644607664,
-        "narHash": "sha256-JK7+ZfR6uHdhDlnVJLwNtu5UbruClaIqlaRREG1iVG0=",
-        "owner": "siraben",
-        "repo": "tree-sitter-promela",
-        "rev": "91da8f141c3c4c695eb71018c8a7b2e7ea39c167",
-        "type": "github"
-      },
-      "original": {
-        "owner": "siraben",
-        "repo": "tree-sitter-promela",
-        "type": "github"
       }
     },
     "tree-sitter-sml": {
