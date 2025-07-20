@@ -1,6 +1,0 @@
-(defun formula-mode ()
-  (interactive)
-  (kill-all-local-variables)
-  (setq mode-name  		"Formula")
-  (setq major-mode 		'formula-mode)
-  (run-hooks 'formula-mode-hook))
