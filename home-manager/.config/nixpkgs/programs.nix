@@ -68,6 +68,16 @@ in
       pull.rebase = true;
       github.user = "siraben";
       advice.detachedHead = false;
+      core.commitGraph = true;
+      fetch.writeCommitGraph = true;
+      # Performance improvements
+      core.preloadIndex = true;
+      core.fscache = true;
+      core.untrackedCache = true;
+      feature.manyFiles = true;
+      gc.writeCommitGraph = true;
+      # Diff performance
+      diff.algorithm = "histogram";
     };
   };
   autojump.enable = true;
