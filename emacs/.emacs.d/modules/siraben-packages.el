@@ -87,7 +87,11 @@
   :commands (magit-dispatch magit-blame)
   :bind
   (("C-x g" . magit-dispatch)
-   ("M-L" . magit-blame)))
+   ("M-L" . magit-blame))
+  :config
+  (remove-hook 'magit-status-sections-hook 'magit-insert-tags-header)
+  (remove-hook 'magit-status-sections-hook 'magit-insert-status-headers)
+  )
 
 (use-package free-keys
   :commands free-keys)
