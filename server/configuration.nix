@@ -17,7 +17,7 @@ in
   networking.hostName = "nixos";
   networking.domain = "subnet03111413.vcn03111413.oraclevcn.com";
   services.openssh.enable = true;
-  services.openssh.passwordAuthentication = false;
+  services.openssh.settings.passwordAuthentication = false;
   users.users.root.openssh.authorizedKeys.keys = keys;
 
 
