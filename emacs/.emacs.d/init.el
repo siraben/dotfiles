@@ -24,8 +24,8 @@
 
 ;; Store original values for restoration
 (defvar siraben--file-name-handler-alist file-name-handler-alist)
-(defvar siraben--gc-cons-threshold gc-cons-threshold)
-(defvar siraben--gc-cons-percentage gc-cons-percentage)
+(defvar siraben--gc-cons-threshold (* 500 1024 1024))  ; 500MB instead of default
+(defvar siraben--gc-cons-percentage 0.1)
 
 ;; Maximize garbage collection threshold and disable file handlers during startup
 (setq file-name-handler-alist nil
@@ -90,6 +90,10 @@
 (pcase system-type
   ('gnu/linux (require 'siraben-linux))
   ('darwin (require 'siraben-macos)))
+
+;; Set higher GC threshold for runtime performance
+(setq gc-cons-threshold (* 500 1024 1024)  ; 500MB
+      gc-cons-percentage 0.1)
 
 ;; Configure startup behavior
 (setq inhibit-startup-message t
