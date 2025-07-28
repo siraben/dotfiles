@@ -16,7 +16,7 @@
       passwordFile = "/var/nextcloud-siraben-pass";
     };
   };
-  extraOptions.enabledPreviewProviders = [
+  settings.enabledPreviewProviders = [
     "OC\\Preview\\BMP"
     "OC\\Preview\\GIF"
     "OC\\Preview\\JPEG"
