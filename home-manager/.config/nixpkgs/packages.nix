@@ -53,7 +53,7 @@ let
     my-emacs
     niv
     nodejs
-    ollama
+    # ollama
     (import ./python-packages.nix { inherit pkgs; })
     ranger
     ripgrep
