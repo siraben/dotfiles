@@ -19,7 +19,7 @@ let
     haskellPackages.haskell-language-server
     nodePackages.bash-language-server
     nodePackages.typescript-language-server
-    pyright
+    basedpyright
   ];
   sharedPackages = with pkgs; [
     bash
