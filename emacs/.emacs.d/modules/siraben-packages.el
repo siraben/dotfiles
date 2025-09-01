@@ -89,8 +89,8 @@
   (("C-x g" . magit-dispatch)
    ("M-L" . magit-blame))
   :config
-  (remove-hook 'magit-status-sections-hook 'magit-insert-tags-header)
-  (remove-hook 'magit-status-sections-hook 'magit-insert-status-headers)
+  ;; (remove-hook 'magit-status-sections-hook 'magit-insert-tags-header)
+  ;; (remove-hook 'magit-status-sections-hook 'magit-insert-status-headers)
   )
 
 (use-package free-keys
@@ -214,6 +214,7 @@
                         completion-at-point-functions))))
 
 (use-package lsp-mode
+  :disabled
   :config
   (require 'lsp-mode)
   ;; (advice-add 'lsp :before #'direnv-update-environment)
@@ -245,9 +246,9 @@
   ;;                   :server-id 'ruff))
   )
 
-(use-package lsp-ui)
+;; (use-package lsp-ui)
 
-(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+;; (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
 (use-package flycheck
   :diminish)
@@ -341,9 +342,18 @@
   (setq copilot-indent-offset-warning-disable t)
   )
 
-;; (use-package gptel)
-
 (use-package boogie-friends)
+
+(use-package lsp-bridge
+  :straight '(lsp-bridge :type git :host github :repo "manateelazycat/lsp-bridge"
+                         :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
+                         :build (:not compile))
+  :init
+  (global-lsp-bridge-mode)
+  :bind
+  ("M-." . lsp-bridge-find-def)
+  ("M-," . lsp-bridge-find-def-return)
+  )
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here
