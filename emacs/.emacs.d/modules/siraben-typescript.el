@@ -24,7 +24,8 @@
 (use-package typescript-mode
   :hook (typescript-mode . (lambda ()
                              (setq typescript-indent-level 2)
-                             (lsp-deferred)))
+                             ;; (lsp-deferred)
+                             ))
   :mode (("\\.ts\\'" . typescript-mode)
          ("\\.tsx\\'" . typescript-mode)))
 

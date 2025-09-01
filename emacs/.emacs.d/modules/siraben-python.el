@@ -23,10 +23,10 @@
 
 (require 'use-package)
 
-(use-package lsp-pyright
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
-                         (lsp))))
+;; (use-package lsp-pyright
+;;   :hook (python-mode . (lambda ()
+;;                          (require 'lsp-pyright)
+;;                          (lsp))))
 
 (use-package pyvenv)
 

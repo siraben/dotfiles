@@ -34,7 +34,8 @@
     (flycheck-rust-setup)
     (local-set-key (kbd "s-b") 'recompile)
     (subword-mode 1)
-    (lsp))
+    ;; (lsp)
+    )
   (add-hook 'rust-mode-hook #'siraben--rust-mode-setup))
 
 (provide 'siraben-rust)

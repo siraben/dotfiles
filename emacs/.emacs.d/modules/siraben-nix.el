@@ -23,7 +23,6 @@
 
 
 (use-package nix-mode
-  :after lsp-mode
   :hook (nix-mode . subword-mode))
 
 (use-package nixpkgs-fmt
