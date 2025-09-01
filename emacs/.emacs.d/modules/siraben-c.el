@@ -59,12 +59,14 @@
                          (clang-format+-mode t)
                          (setq-local prettify-symbols-alist c-prettify-symbols-alist)
                          (prettify-symbols-mode 1)
-                         (lsp)))
+                         ;; (lsp)
+                         ))
 
 (add-hook 'c++-mode-hook (lambda ()
                            (clang-format+-mode t)
                            (electric-pair-local-mode t)
-                           (lsp)))
+                           ;; (lsp)
+                           ))
 
 (define-key c-mode-base-map (kbd "s-b") 'recompile)
 

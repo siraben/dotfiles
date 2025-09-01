@@ -21,11 +21,11 @@
 
 ;;; Code:
 
-(use-package lsp-ruby)
+;; (use-package lsp-ruby)
 
-(use-package ruby-mode
-  :hook (ruby-mode . (lambda ()
-                       (lsp-deferred))))
+;; (use-package ruby-mode
+;;   :hook (ruby-mode . (lambda ()
+;;                        (lsp-deferred))))
 
 (provide 'siraben-ruby)
 ;;; siraben-ruby.el ends here
