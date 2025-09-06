@@ -62,7 +62,7 @@ in
     requires = ["postgresql.service"];
     after = ["postgresql.service"];
   };
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
+  networking.firewall.allowedTCPPorts = [ 80 443 2022 ];
   networking.firewall.allowedUDPPorts = [ ];
   system.stateVersion = "24.11";
 }
