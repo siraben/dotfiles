@@ -64,5 +64,5 @@ in
   };
   networking.firewall.allowedTCPPorts = [ 80 443 2022 ];
   networking.firewall.allowedUDPPorts = [ ];
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 }
