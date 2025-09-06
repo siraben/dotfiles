@@ -56,6 +56,7 @@ in
   services.nextcloud = import ./nextcloud.nix { inherit pkgs; };
   services.postgresql = import ./postgresql.nix { };
   services.anki-sync-server = import ./anki-sync-server.nix { };
+  services.eternal-terminal.enable = true;
 
   systemd.services."nextcloud-setup" = {
     requires = ["postgresql.service"];
