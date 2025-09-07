@@ -19,6 +19,32 @@
       username = "siraben";
     in
     {
+      # NixOS system configurations
+      nixosConfigurations = {
+        beelink = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./beelink/configuration.nix
+            ./beelink/hardware-configuration.nix
+
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.siraben = import ./beelink/home.nix;
+            }
+          ];
+        };
+
+        server = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./server/configuration.nix
+            ./server/hardware-configuration.nix
+          ];
+        };
+      };
+
       homeConfigurations = {
         "${username}@macos-x86_64" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-darwin; # nixpkgs from output function args
@@ -56,4 +82,4 @@
           };
         });
     };
-} 
+}
