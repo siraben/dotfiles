@@ -11,8 +11,23 @@ let
     vlc
   ]) ++ wayland-packages;
   darwinPackages = with pkgs; [
+    # GNU replacements
     coreutils
     gnused
+    findutils
+    gnugrep
+    gawk
+    diffutils
+    gnutar
+    patch
+
+    rsync
+    openssh
+    file
+    less
+    gzip
+    bzip2
+
     pinentry_mac
   ];
   languageServers = with pkgs; [
