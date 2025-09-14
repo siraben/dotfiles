@@ -8,5 +8,7 @@ pkgs.haskellPackages.ghcWithHoogle (h: with h; [
   recursion-schemes # recursion schemes
   yaml
   effectful
+  effectful-plugin
   linear-base
+  heftia
 ])
