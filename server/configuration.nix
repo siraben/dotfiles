@@ -13,6 +13,7 @@ in
   ];
 
   boot.tmp.cleanOnBoot = true;
+  boot.loader.grub.configurationLimit = 2;
   zramSwap.enable = true;
   networking.hostName = "nixos";
   networking.domain = "subnet03111413.vcn03111413.oraclevcn.com";
