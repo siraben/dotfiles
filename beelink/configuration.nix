@@ -30,6 +30,15 @@ in
     enable = true;
     allowedTCPPorts = [ 22 ];
   };
+  services.resolved = {
+    enable = true;
+    dnssec = "allow-downgrade";
+    fallbackDns = [
+      "1.1.1.1" "9.9.9.9" "8.8.8.8"
+      "2606:4700:4700::1111" "2620:fe::fe" "2001:4860:4860::8888"
+    ];
+  };
+  networking.networkmanager.dns = "systemd-resolved";
 
   hardware.enableRedistributableFirmware = true;
 
@@ -139,6 +148,11 @@ in
     };
   };
 
+  systemd.targets.sleep.enable = false;
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hibernate.enable = false;
+  systemd.targets.hybrid-sleep.enable = false;
+
   # SSD optimization
   services.fstrim.enable = true;
 
@@ -224,16 +238,16 @@ in
     
     # Applications
     firefox
-    chromium
-    thunderbird
-    libreoffice-fresh
-    vlc
-    gimp
-    inkscape
-    discord
-    slack
-    vscode
-    obsidian
+    # chromium
+    # thunderbird
+    # libreoffice-fresh
+    # vlc
+    # gimp
+    # inkscape
+    # discord
+    # slack
+    # vscode
+    # obsidian
     
     # Archive tools
     unzip
@@ -284,5 +298,5 @@ in
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken.
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 }
