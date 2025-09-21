@@ -21,6 +21,13 @@ in
     loader.efi.canTouchEfiVariables = true;
     tmp.cleanOnBoot = true;
 
+    kernel.sysctl = {
+      "kernel.sched_autogroup_enabled" = 1;
+      "fs.inotify.max_user_watches" = 1048576;
+      "fs.inotify.max_user_instances" = 1024;
+      "vm.swappiness" = 10;
+    };
+
     # Newer kernel for HW support
     kernelPackages = pkgs.linuxPackages_latest;
 
