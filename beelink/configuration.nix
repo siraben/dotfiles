@@ -15,6 +15,12 @@ in
   
   # Latest kernel for better hardware support
   boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  boot.kernelModules = [ "snd_hda_intel" "snd_hda_codec_hdmi" ];
+
+  boot.extraModprobeConfig = ''
+    options snd-intel-dspcfg dsp_driver=1
+  '';
   
   # Intel graphics optimization for N100
   boot.kernelParams = [
@@ -79,15 +85,36 @@ in
 
   # Audio with PipeWire
   services.pulseaudio.enable = false;
+  # --- AUDIO: PipeWire + WirePlumber (HDMI default) ---
   security.rtkit.enable = true;
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
     jack.enable = true;
-  };
 
+    # Make sure WirePlumber (the policy/session manager) is on
+    wireplumber.enable = true;
+
+    # Ship a tiny WirePlumber rule that marks HDMI/DP outputs as default
+    # so sound goes to your Dell S2725QC speakers automatically.
+    wireplumber.configPackages = [
+      (pkgs.writeTextDir "share/wireplumber/main.lua.d/50-default-hdmi.lua" ''
+      -- Prefer any HDMI/DisplayPort sink as the default output
+      alsa_monitor.rules = {
+        {
+          matches = {{{ "node.name", "matches", "alsa_output.*hdmi.*" }}};
+          apply_properties = {
+            ["node.default"] = true;
+            ["priority.session"] = 200;
+          },
+        },
+                                                            }
+    '')
+    ];
+  };
   # Enable OpenSSH
   services.openssh = {
     enable = true;
@@ -256,7 +283,11 @@ in
     
     # Multimedia codecs
     ffmpeg-full
+
+    wireplumber
+    alsa-utils
   ];
+
 
   # Enable Docker
   virtualisation.docker = {
@@ -300,3 +331,4 @@ in
   # on your system were taken.
   system.stateVersion = "25.05";
 }
+
