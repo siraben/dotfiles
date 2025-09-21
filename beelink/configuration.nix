@@ -253,20 +253,14 @@ in
   ##############################################################################
   environment.systemPackages = with pkgs; [
     # Terminal / CLI
+    emacs
     vim
-    neovim
     git
     wget
     curl
     htop
     btop
     neofetch
-    tree
-    ripgrep
-    fd
-    bat
-    eza
-    zoxide
     tmux
     pciutils
     usbutils
@@ -275,19 +269,7 @@ in
     iotop
     iftop
     nethogs
-    nmap
-    dig
-    traceroute
     mtr
-    wireguard-tools
-
-    # Dev
-    gcc
-    gnumake
-    python3
-    nodejs
-    rustup
-    go
 
     # KDE / Plasma tools
     kdePackages.kate
@@ -303,8 +285,6 @@ in
     # Apps & media
     firefox
     unzip
-    p7zip
-    rar
     ffmpeg-full
 
     # Audio helpers
