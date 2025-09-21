@@ -13,11 +13,14 @@ jobs:
         uses: actions/checkout@v5.0.0
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@v20
+      - name: Get current date
+        id: date
+        run: echo "date=$(date -u +'%Y-%m-%d')" >> $GITHUB_OUTPUT
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@v27
         with:
           token: ${{ secrets.GH_TOKEN }}
-          pr-title: "$(date -u +'%Y-%m-%d') update flake lock"
+          pr-title: "${{ steps.date.outputs.date }} update flake lock"
           pr-labels: |
             dependencies
             automated
