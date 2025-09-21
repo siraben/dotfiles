@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   sshKeys = [
@@ -12,16 +17,19 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.tmp.cleanOnBoot = true;
-  
+
   # Latest kernel for better hardware support
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  boot.kernelModules = [ "snd_hda_intel" "snd_hda_codec_hdmi" ];
+  boot.kernelModules = [
+    "snd_hda_intel"
+    "snd_hda_codec_hdmi"
+  ];
 
   boot.extraModprobeConfig = ''
     options snd-intel-dspcfg dsp_driver=1
   '';
-  
+
   # Intel graphics optimization for N100
   boot.kernelParams = [
     "i915.enable_guc=2"
@@ -40,8 +48,12 @@ in
     enable = true;
     dnssec = "allow-downgrade";
     fallbackDns = [
-      "1.1.1.1" "9.9.9.9" "8.8.8.8"
-      "2606:4700:4700::1111" "2620:fe::fe" "2001:4860:4860::8888"
+      "1.1.1.1"
+      "9.9.9.9"
+      "8.8.8.8"
+      "2606:4700:4700::1111"
+      "2620:fe::fe"
+      "2001:4860:4860::8888"
     ];
   };
   networking.networkmanager.dns = "systemd-resolved";
@@ -79,7 +91,7 @@ in
       user = "siraben";
     };
   };
-  
+
   # Enable X11 and Wayland
   services.xserver.enable = true;
 
@@ -102,17 +114,17 @@ in
     # so sound goes to your Dell S2725QC speakers automatically.
     wireplumber.configPackages = [
       (pkgs.writeTextDir "share/wireplumber/main.lua.d/50-default-hdmi.lua" ''
-      -- Prefer any HDMI/DisplayPort sink as the default output
-      alsa_monitor.rules = {
-        {
-          matches = {{{ "node.name", "matches", "alsa_output.*hdmi.*" }}};
-          apply_properties = {
-            ["node.default"] = true;
-            ["priority.session"] = 200;
+        -- Prefer any HDMI/DisplayPort sink as the default output
+        alsa_monitor.rules = {
+          {
+            matches = {{{ "node.name", "matches", "alsa_output.*hdmi.*" }}};
+            apply_properties = {
+              ["node.default"] = true;
+              ["priority.session"] = 200;
+            },
           },
-        },
-                                                            }
-    '')
+                                                              }
+      '')
     ];
   };
   # Enable OpenSSH
@@ -188,7 +200,13 @@ in
     isNormalUser = true;
     description = "Ben Siraphob";
     shell = pkgs.zsh;
-    extraGroups = [ "wheel" "networkmanager" "audio" "video" "docker" ];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "audio"
+      "video"
+      "docker"
+    ];
     openssh.authorizedKeys.keys = sshKeys;
   };
 
@@ -198,8 +216,14 @@ in
   # Nix configuration
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
-      trusted-users = [ "root" "siraben" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      trusted-users = [
+        "root"
+        "siraben"
+      ];
       auto-optimise-store = true;
     };
     gc = {
@@ -227,7 +251,7 @@ in
     eza
     zoxide
     tmux
-    
+
     # Development tools
     gcc
     gnumake
@@ -235,7 +259,7 @@ in
     nodejs
     rustup
     go
-    
+
     # System tools
     pciutils
     usbutils
@@ -244,14 +268,14 @@ in
     iotop
     iftop
     nethogs
-    
+
     # Network tools
     nmap
     dig
     traceroute
     mtr
     wireguard-tools
-    
+
     # KDE/Plasma utilities
     kdePackages.kate
     kdePackages.konsole
@@ -262,7 +286,7 @@ in
     kdePackages.plasma-systemmonitor
     kdePackages.partitionmanager
     kdePackages.filelight
-    
+
     # Applications
     firefox
     # chromium
@@ -275,19 +299,18 @@ in
     # slack
     # vscode
     # obsidian
-    
+
     # Archive tools
     unzip
     p7zip
     rar
-    
+
     # Multimedia codecs
     ffmpeg-full
 
     wireplumber
     alsa-utils
   ];
-
 
   # Enable Docker
   virtualisation.docker = {
@@ -331,4 +354,3 @@ in
   # on your system were taken.
   system.stateVersion = "25.05";
 }
-
