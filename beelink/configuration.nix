@@ -93,6 +93,12 @@ in
 
   hardware.enableRedistributableFirmware = true;
 
+  zramSwap = {
+    enable = true;
+    memoryPercent = 50;
+  };
+  systemd.oomd.enable = true;
+
   ##############################################################################
   # Desktop (Plasma 6 + SDDM Wayland)
   ##############################################################################
@@ -138,6 +144,11 @@ in
         CPU_MAX_PERF_ON_BAT = 60;
       };
     };
+
+    journald.extraConfig = ''
+      SystemMaxUse=1G
+      MaxRetentionSec=14day
+    '';
 
     # SSD trim
     fstrim.enable = true;
