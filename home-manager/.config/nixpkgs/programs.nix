@@ -2,7 +2,6 @@
 
 let
   darwinShellExtra = ''
-    if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix.sh' ]; then . '/nix/var/nix/profiles/default/etc/profile.d/nix.sh'; fi
     if [ -d "/opt/homebrew/bin" ]; then
       export PATH=/opt/homebrew/bin:$PATH
     fi
