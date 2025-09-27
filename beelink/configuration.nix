@@ -283,6 +283,8 @@ in
     # Apps & media
     firefox
     chromium
+    vlc
+    libreoffice
     unzip
     ffmpeg-full
 
