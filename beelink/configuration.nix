@@ -272,10 +272,8 @@ in
     mtr
 
     # KDE / Plasma tools
-    kdePackages.kate
     kdePackages.konsole
     kdePackages.dolphin
-    kdePackages.ark
     kdePackages.spectacle
     kdePackages.kcalc
     kdePackages.plasma-systemmonitor
@@ -284,6 +282,7 @@ in
 
     # Apps & media
     firefox
+    chromium
     unzip
     ffmpeg-full
 
