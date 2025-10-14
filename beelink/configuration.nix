@@ -273,6 +273,7 @@ in
     # Apps & media
     firefox
     chromium
+    google-chrome
     vlc
     libreoffice
     unzip
