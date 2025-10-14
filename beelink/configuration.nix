@@ -22,29 +22,29 @@ in
     tmp.cleanOnBoot = true;
 
     kernel.sysctl = {
-      "kernel.sched_autogroup_enabled" = 1;
+      "kernel.sched_autogroup_enabled" = 1;   # better desktop interactivity
       "fs.inotify.max_user_watches" = 1048576;
       "fs.inotify.max_user_instances" = 1024;
-      "vm.swappiness" = 10;
+      "vm.swappiness" = 10;                   # prefer RAM over swap
     };
 
-    # Newer kernel for HW support
     kernelPackages = pkgs.linuxPackages_latest;
 
     # Intel N100 graphics tuning
     kernelParams = [
-      "i915.enable_guc=2"
-      "i915.enable_fbc=1"
+      "i915.enable_guc=2"  # GuC submission for Alder Lake-N; smooth video & compositor
+      "i915.enable_fbc=1"  # framebuffer compression (saves bandwidth; ok for desktop)
     ];
 
-    # Ensure HDMI audio path shows up
-    kernelModules = [
-      "snd_hda_intel"
-      "snd_hda_codec_hdmi"
-    ];
+    kernelModules = [ "snd_hda_intel" "snd_hda_codec_hdmi" ];
     extraModprobeConfig = ''
       options snd-intel-dspcfg dsp_driver=1
     '';
+  };
+
+  hardware = {
+    enableRedistributableFirmware = true;
+    cpu.intel.updateMicrocode = true;  # performance + stability
   };
 
   ##############################################################################
@@ -87,7 +87,8 @@ in
   };
   networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
 
-  hardware.enableRedistributableFirmware = true;
+  # faster boot, skip NM wait online
+  systemd.services.NetworkManager-wait-online.enable = false;
 
   zramSwap = {
     enable = true;
@@ -128,18 +129,8 @@ in
 
     # Power/Thermals
     thermald.enable = true;
-    power-profiles-daemon.enable = false; # we use TLP instead
-    tlp = {
-      enable = true;
-      settings = {
-        CPU_SCALING_GOVERNOR_ON_AC = "performance";
-        CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-        CPU_MIN_PERF_ON_AC = 0;
-        CPU_MAX_PERF_ON_AC = 100;
-        CPU_MIN_PERF_ON_BAT = 0;
-        CPU_MAX_PERF_ON_BAT = 60;
-      };
-    };
+    power-profiles-daemon.enable = true;
+    tlp.enable = false;
 
     journald.extraConfig = ''
       SystemMaxUse=1G
@@ -163,6 +154,21 @@ in
       };
     };
   };
+
+  # Force performance profile at boot (so KDE shows “Performance” and no throttling)
+  systemd.services.set-performance-profile = {
+    description = "Set power-profiles-daemon to performance";
+    after = [ "power-profiles-daemon.service" ];
+    wants = [ "power-profiles-daemon.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.power-profiles-daemon}/bin/powerprofilesctl set performance";
+    };
+  };
+
+  # Also nudge CPU governor
+  powerManagement.cpuFreqGovernor = "performance";
 
   ##############################################################################
   # Audio (PipeWire + WirePlumber, prefer HDMI/DP by default)
