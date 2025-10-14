@@ -17,9 +17,23 @@ in
   # Boot & Kernel
   ##############################################################################
   boot = {
-    loader.systemd-boot.enable = true;
+    loader.systemd-boot = {
+      enable = true;
+      consoleMode = "max";   # nicer high-res menu/splash
+      editor = false;        # fewer scary prompts
+    };
+    loader.timeout = 0;
     loader.efi.canTouchEfiVariables = true;
     tmp.cleanOnBoot = true;
+
+    consoleLogLevel = 3;        # reduce kernel console spam
+    initrd.verbose = false;     # quiet early initrd
+
+    plymouth = {
+      enable = true;
+      theme = "breeze";        # or another theme you install
+      themePackages = [ pkgs.kdePackages.breeze-plymouth ];
+    };
 
     kernel.sysctl = {
       "kernel.sched_autogroup_enabled" = 1;   # better desktop interactivity
@@ -32,6 +46,11 @@ in
 
     # Intel N100 graphics tuning
     kernelParams = [
+      "quiet"
+      "loglevel=3"
+      "systemd.show_status=auto"     # hide OK lines, still show errors
+      "rd.udev.log_level=3"          # make early udev less chatty
+      "vt.global_cursor_default=0"   # no blinking text cursor over the splash
       "i915.enable_guc=2"  # GuC submission for Alder Lake-N; smooth video & compositor
       "i915.enable_fbc=1"  # framebuffer compression (saves bandwidth; ok for desktop)
     ];
