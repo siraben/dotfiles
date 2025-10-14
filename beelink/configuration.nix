@@ -114,15 +114,11 @@ in
     # Printing
     printing = {
       enable = true;
-      drivers = [ pkgs.gutenprint ];
+      drivers = [ pkgs.gutenprint pkgs.brlaser ];
     };
 
-    # Avahi/mDNS
-    avahi = {
-      enable = true;
-      nssmdns4 = true;
-      openFirewall = true;
-    };
+    avahi = { enable = true; nssmdns4 = true; openFirewall = true; };
+    ipp-usb.enable = true; 
 
     # Firmware updates
     fwupd.enable = true;
