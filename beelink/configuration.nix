@@ -239,7 +239,6 @@ in
       "networkmanager"
       "audio"
       "video"
-      "docker"
     ];
     openssh.authorizedKeys.keys = sshKeys;
   };
@@ -297,18 +296,6 @@ in
       enableSSHSupport = true;
     };
     dconf.enable = true;
-  };
-
-  ##############################################################################
-  # Virtualization
-  ##############################################################################
-  virtualisation.docker = {
-    enable = true;
-    enableOnBoot = true;
-    autoPrune = {
-      enable = true;
-      dates = "weekly";
-    };
   };
 
   ##############################################################################
