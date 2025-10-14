@@ -77,26 +77,15 @@ in
     hostName = "beelink";
     networkmanager = {
       enable = true;
+      # necessary for beelink, without it wifi fails
       wifi.backend = "iwd";
-      dns = "systemd-resolved";
     };
     firewall = {
       enable = true;
       allowedTCPPorts = [ 22 ];
     };
   };
-  services.resolved = {
-    enable = true;
-    dnssec = "allow-downgrade";
-    fallbackDns = [
-      "1.1.1.1"
-      "9.9.9.9"
-      "8.8.8.8"
-      "2606:4700:4700::1111"
-      "2620:fe::fe"
-      "2001:4860:4860::8888"
-    ];
-  };
+  networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
 
   hardware.enableRedistributableFirmware = true;
 
@@ -162,6 +151,7 @@ in
 
     # Tailscale
     tailscale.enable = true;
+    tailscale.extraUpFlags = [ "--accept-dns=false" ];
 
     # OpenSSH (keys only)
     openssh = {
