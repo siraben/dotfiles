@@ -12,6 +12,10 @@
       url = "github:siraben/tree-sitter-sml";
       flake = false;
     };
+    kitty-src = {
+      url = "github:kovidgoyal/kitty";
+      flake = false;
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, ... /* Capture all inputs */ }@allInputs:

@@ -20,6 +20,22 @@
         "type": "github"
       }
     },
+    "kitty-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1761121424,
+        "narHash": "sha256-a9m2dnohX5p9DLwJT5R1zf7WC8UvEm3ObwgnMDPLPmA=",
+        "owner": "kovidgoyal",
+        "repo": "kitty",
+        "rev": "0a6ed1585872a0cb519e6e1c9a19b9dafeb7ee52",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kovidgoyal",
+        "repo": "kitty",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1760834878,
@@ -38,6 +54,7 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "kitty-src": "kitty-src",
         "nixpkgs": "nixpkgs",
         "tree-sitter-sml": "tree-sitter-sml"
       }
