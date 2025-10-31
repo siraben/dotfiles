@@ -85,9 +85,18 @@ in
     enable = true;
     clock24 = true;
     baseIndex = 1;
-    # open new windows in the same cwd
+    historyLimit = 200000;
+    mouse = true;
+    terminal = "tmux-256color";
+    # tmux defaults and key bindings shared across hosts
     extraConfig = ''
+      # Open new windows/panes in the current working directory
       bind c new-window -c "#{pane_current_path}"
+
+      # Session defaults
+      set -g pane-border-style 'fg=#5a5a5a'
+      set -g pane-active-border-style 'fg=#00afff'
+      set -g allow-rename off
     '';
   };
   kitty = {
