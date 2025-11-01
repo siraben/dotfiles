@@ -28,6 +28,7 @@ let
   })).builtGrammars;
 in
 lib.recursiveUpdate (rec {
+  nixpkgs = pkgsOptions;
   home.username = "siraben";
   home.homeDirectory = if isDarwin then "/Users/${home.username}" else "/home/${home.username}";
   home.packages = import ./packages.nix { inherit lib pkgs isDarwin isLinux minimal; };
