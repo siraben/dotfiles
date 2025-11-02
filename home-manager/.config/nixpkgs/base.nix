@@ -129,22 +129,23 @@ lib.recursiveUpdate (rec {
           if is_last:
               date_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
               date_time_len = len(date_time) + 2  # Add padding
-              
-              # Calculate where to put the clock (rightmost position)
-              clock_x = max(end + 2, screen.columns - date_time_len)
-              
-              # Fill space between tab and clock
+
+              # Always position the clock at the right edge
+              clock_x = screen.columns - date_time_len
+
+              # Only draw the clock if there's enough space
               if clock_x > end:
+                  # Fill space between tab and clock
                   screen.cursor.x = end
                   screen.draw(" " * (clock_x - end))
-              
-              # Draw the date/time
-              opts = get_options()
-              default_bg = as_rgb(int(draw_data.default_bg))
-              screen.cursor.fg = 0
-              screen.cursor.bg = default_bg
-              screen.cursor.x = clock_x
-              screen.draw(f" {date_time}")
+
+                  # Draw the date/time
+                  opts = get_options()
+                  default_bg = as_rgb(int(draw_data.default_bg))
+                  screen.cursor.fg = 0
+                  screen.cursor.bg = default_bg
+                  screen.cursor.x = clock_x
+                  screen.draw(f" {date_time}")
           
           return screen.cursor.x
 
