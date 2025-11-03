@@ -3,7 +3,7 @@ let
   whenNotMinimal = lib.optionals (!minimal);
   my-emacs = with pkgs; emacs.pkgs.withPackages (p: [ p.vterm ]);
   wayland-packages = whenNotMinimal (with pkgs; [
-    firefox-wayland
+    firefox
   ]);
   linuxPackages = whenNotMinimal (with pkgs; [
     keepassxc
