@@ -12,7 +12,7 @@ pkgs.python313.withPackages (p: with p; [
   setuptools # setup.py
   scipy
   scikit-learn
-  z3 # Z3 theorem prover
+  z3-solver # Z3 theorem prover
 
   # for lsp bridge
   epc orjson sexpdata six paramiko rapidfuzz watchdog packaging
