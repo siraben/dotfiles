@@ -12,7 +12,7 @@ let
     "claude-code"
   ];
   pkgsOptions = {
-    overlays = [
+    overlays = lib.optionals (!minimal) [
       (import ./overlay.nix)
     ];
     config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
