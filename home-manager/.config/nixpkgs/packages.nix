@@ -45,6 +45,7 @@ let
     wget
     mosh
     nixpkgs-review
+    croc
   ] ++ (whenNotMinimal ([
     (aspellWithDicts (d: with d; [ en en-computers en-science ]))
     bat
