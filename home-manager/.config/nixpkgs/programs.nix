@@ -90,6 +90,8 @@ in
     terminal = "tmux-256color";
     # tmux defaults and key bindings shared across hosts
     extraConfig = ''
+      # Truecolor / 24-bit color
+      set -as terminal-overrides ",xterm-256color:Tc,xterm-kitty:Tc,tmux*:Tc"
       # Open new windows/panes in the current working directory
       bind c new-window -c "#{pane_current_path}"
 
