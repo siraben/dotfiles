@@ -89,6 +89,8 @@
   (("C-x g" . magit-dispatch)
    ("M-L" . magit-blame))
   :config
+  ;; Don't show graph by default in log buffers
+  (transient-remove-suffix 'magit-log "-g")
   ;; (remove-hook 'magit-status-sections-hook 'magit-insert-tags-header)
   ;; (remove-hook 'magit-status-sections-hook 'magit-insert-status-headers)
   )
