@@ -1,11 +1,6 @@
 { lib, pkgs, isDarwin, isLinux }:
 
 let
-  darwinShellExtra = ''
-    if [ -d "/opt/homebrew/bin" ]; then
-      export PATH=$PATH:/opt/homebrew/bin
-    fi
-  '';
   linuxShellExtra = ''
     export NIX_PATH=$HOME/.nix-defexpr/channels:$NIX_PATH
   '';
@@ -213,7 +208,6 @@ in
     } // (lib.optionalAttrs isDarwin (import ./darwin-aliases.nix {}));
     initContent = lib.concatStringsSep "\n"
       [
-        (lib.optionalString isDarwin darwinShellExtra)
         (lib.optionalString isLinux linuxShellExtra)
         sharedShellExtra
       ];

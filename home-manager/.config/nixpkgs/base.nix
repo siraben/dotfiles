@@ -40,6 +40,10 @@ lib.recursiveUpdate (rec {
     HOMEBREW_NO_ANALYTICS = 1;
   });
 
+  home.sessionPath = lib.optionals isDarwin [
+    "/opt/homebrew/bin"
+  ];
+
   home.language = {
     ctype = "en_US.UTF-8";
     base = "en_US.UTF-8";
