@@ -3,7 +3,7 @@
 let
   darwinShellExtra = ''
     if [ -d "/opt/homebrew/bin" ]; then
-      export PATH=/opt/homebrew/bin:$PATH
+      export PATH=$PATH:/opt/homebrew/bin
     fi
   '';
   linuxShellExtra = ''
