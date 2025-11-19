@@ -103,9 +103,6 @@ in
   };
   kitty = {
     enable = true;
-    font = {
-      name = "DejaVu Sans Mono";
-    };
     settings = {
       cursor_blink_interval = 0;
       scrollback_lines = 10000;
