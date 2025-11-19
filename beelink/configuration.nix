@@ -222,8 +222,6 @@ in
     enable32Bit = true;
     extraPackages = with pkgs; [
       intel-media-driver
-      intel-compute-runtime
-      vaapiVdpau
       libvdpau-va-gl
     ];
   };
@@ -319,7 +317,7 @@ in
   fonts.packages = with pkgs; [
     noto-fonts
     noto-fonts-cjk-sans
-    noto-fonts-emoji
+    noto-fonts-color-emoji
     liberation_ttf
     fira-code
     fira-code-symbols
