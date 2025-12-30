@@ -21,11 +21,6 @@ let
     system = currentSystem;
     inherit (pkgsOptions) overlays config;
   };
-  grammars = (pkgs.tree-sitter.override (with pkgs; {
-    extraGrammars = {
-      tree-sitter-sml = { src = inputs.tree-sitter-sml; };
-    };
-  })).builtGrammars;
 in
 lib.recursiveUpdate (rec {
   nixpkgs = pkgsOptions;
@@ -56,15 +51,6 @@ lib.recursiveUpdate (rec {
   home.enableNixpkgsReleaseCheck = false;
 })
 (lib.optionalAttrs (!minimal) {
-    home.file.".tree-sitter".source = (pkgs.runCommand "grammars" {} ''
-    mkdir -p $out/bin
-    ${lib.concatStringsSep "\n"
-      (lib.mapAttrsToList (name: src: ''
-          name=${name}
-          ln -s ${src}/parser $out/bin/''${name#tree-sitter-}.so
-        '')
-        grammars)}
-  '');
     home.file.".config/kitty/session.conf".text = ''
       # Kitty session file
       # This will restore your tabs and windows when kitty starts
