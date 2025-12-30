@@ -57,6 +57,7 @@ let
     cmake
     dejavu_fonts
     ffmpeg
+    (pkgs.nerd-fonts.jetbrains-mono)
     github-cli
     gnumake
     (import ./haskell-packages.nix { inherit pkgs; })
@@ -69,7 +70,6 @@ let
     my-emacs
     niv
     nodejs
-    # ollama
     (import ./python-packages.nix { inherit pkgs; })
     ranger
     ripgrep

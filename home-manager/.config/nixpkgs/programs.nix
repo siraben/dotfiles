@@ -99,6 +99,7 @@ in
   kitty = {
     enable = true;
     settings = {
+      font_family = "JetBrainsMono Nerd Font";
       cursor_blink_interval = 0;
       scrollback_lines = 10000;
       scrollback_pager = "less --chop-long-lines --RAW-CONTROL-CHARS +INPUT_LINE_NUMBER";
