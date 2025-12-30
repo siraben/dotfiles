@@ -207,6 +207,12 @@ in
       nreps = "nix-review pr --post-result";
       nrep = "nix-review pr --post-result --no-shell";
     } // (lib.optionalAttrs isDarwin (import ./darwin-aliases.nix {}));
+    envExtra = lib.optionalString isDarwin ''
+      # Source Nix daemon for all shells (including SSH)
+      if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+        . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+      fi
+    '';
     initContent = lib.concatStringsSep "\n"
       [
         (lib.optionalString isLinux linuxShellExtra)
