@@ -207,14 +207,13 @@ in
       nreps = "nix-review pr --post-result";
       nrep = "nix-review pr --post-result --no-shell";
     } // (lib.optionalAttrs isDarwin (import ./darwin-aliases.nix {}));
-    envExtra = lib.optionalString isDarwin ''
-      # Source Nix daemon for all shells (including SSH)
-      if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-        . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-      fi
-    '';
     initContent = lib.concatStringsSep "\n"
       [
+        # Prepend Nix paths after path_helper runs (nix-daemon.sh has a guard that
+        # prevents re-sourcing, so we must directly fix PATH here)
+        (lib.optionalString isDarwin ''
+          export PATH="$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH"
+        '')
         (lib.optionalString isLinux linuxShellExtra)
         sharedShellExtra
       ];
