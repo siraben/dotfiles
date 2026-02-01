@@ -88,6 +88,14 @@
   :bind
   (("C-x g" . magit-dispatch)
    ("M-L" . magit-blame))
+  :init
+  ;; Fix for xcbuild warning on macOS breaking git version detection
+  ;; See: https://github.com/NixOS/nixpkgs/issues/376958
+  ;; The xcbuild xcrun emits "warning: unhandled Platform key FamilyDisplayName"
+  ;; which breaks magit's strict regexp that expects output to start with "git version"
+  ;; Remove the start-of-string anchor so it matches anywhere in the output
+  (defconst magit--git-version-regexp
+    "git version \\([0-9]+\\(\\.[0-9]+\\)\\{1,2\\}\\)")
   :config
   ;; Don't show graph by default in log buffers
   (transient-remove-suffix 'magit-log "-g")
