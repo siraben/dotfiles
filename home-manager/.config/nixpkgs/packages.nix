@@ -69,6 +69,7 @@ let
     mpv
     my-emacs
     niv
+    nix-output-monitor
     nodejs
     (import ./python-packages.nix { inherit pkgs; })
     ranger
