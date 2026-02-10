@@ -1,6 +1,6 @@
 { pkgs }:
 
-pkgs.python313.withPackages (p: with p; [
+pkgs.python3.withPackages (p: with p; [
   aiohttp # async HTTP
   beautifulsoup4 # web scraping
   ipython # interactive shell
