@@ -8,13 +8,14 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    mac-app-util.url = "github:hraban/mac-app-util";
     tree-sitter-sml = {
       url = "github:siraben/tree-sitter-sml";
       flake = false;
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... /* Capture all inputs */ }@allInputs:
+  outputs = { self, nixpkgs, home-manager, mac-app-util, ... /* Capture all inputs */ }@allInputs:
     let
       username = "siraben";
     in
@@ -42,12 +43,18 @@
         "${username}@macos-x86_64" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-darwin; # nixpkgs from output function args
           extraSpecialArgs = { inherit username; inputs = allInputs; minimal = false; };
-          modules = [ ./home-manager/.config/nixpkgs/home.nix ];
+          modules = [
+            mac-app-util.homeManagerModules.default
+            ./home-manager/.config/nixpkgs/home.nix
+          ];
         };
         "${username}@macos-aarch64" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.aarch64-darwin;
           extraSpecialArgs = { inherit username; inputs = allInputs; minimal = false; };
-          modules = [ ./home-manager/.config/nixpkgs/home.nix ];
+          modules = [
+            mac-app-util.homeManagerModules.default
+            ./home-manager/.config/nixpkgs/home.nix
+          ];
         };
         "${username}@linux" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
