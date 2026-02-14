@@ -1,0 +1,738 @@
+--- a/src/frontend/terminaloverlay.cc	2026-02-14 11:59:41.021899000 -0500
++++ b/src/frontend/terminaloverlay.cc	2026-02-14 12:04:03.534849504 -0500
+@@ -36,6 +36,7 @@
+ #include <typeinfo>
+ #include <limits.h>
+ 
++#include "moshwcwidth.h"
+ #include "terminaloverlay.h"
+ 
+ using namespace Overlay;
+@@ -261,7 +262,7 @@
+     }
+ 
+     wchar_t ch = *i;
+-    int chwidth = ch == L'\0' ? -1 : wcwidth( ch );
++    int chwidth = ch == L'\0' ? -1 : mosh_wcwidth( ch );
+     Cell *this_cell = 0;
+ 
+     switch ( chwidth ) {
+@@ -297,7 +298,7 @@
+     case -1: /* unprintable character */
+       break;
+     default:
+-      assert( !"unexpected character width from wcwidth()" );
++      assert( !"unexpected character width from mosh_wcwidth()" );
+     }
+   }
+ }
+@@ -743,7 +744,7 @@
+ 	    }
+ 	  }
+ 	}
+-      } else if ( (ch < 0x20) || (wcwidth( ch ) != 1) ) {
++      } else if ( (ch < 0x20) || (mosh_wcwidth( ch ) != 1) ) {
+ 	/* unknown print */
+ 	become_tentative();
+ 	//	fprintf( stderr, "Unknown print 0x%x\n", ch );
+--- a/src/terminal/Makefile.am	2026-02-14 11:59:41.029904000 -0500
++++ b/src/terminal/Makefile.am	2026-02-14 12:03:56.615439655 -0500
+@@ -3,4 +3,4 @@
+ 
+ noinst_LIBRARIES = libmoshterminal.a
+ 
+-libmoshterminal_a_SOURCES = parseraction.cc parseraction.h parser.cc parser.h parserstate.cc parserstatefamily.h parserstate.h parsertransition.h terminal.cc terminaldispatcher.cc terminaldispatcher.h terminaldisplay.cc terminaldisplayinit.cc terminaldisplay.h terminalframebuffer.cc terminalframebuffer.h terminalfunctions.cc terminal.h terminaluserinput.cc terminaluserinput.h
++libmoshterminal_a_SOURCES = moshwcwidth.cc moshwcwidth.h parseraction.cc parseraction.h parser.cc parser.h parserstate.cc parserstatefamily.h parserstate.h parsertransition.h terminal.cc terminaldispatcher.cc terminaldispatcher.h terminaldisplay.cc terminaldisplayinit.cc terminaldisplay.h terminalframebuffer.cc terminalframebuffer.h terminalfunctions.cc terminal.h terminaluserinput.cc terminaluserinput.h
+--- a/src/terminal/moshwcwidth.cc	1969-12-31 19:00:00.000000000 -0500
++++ b/src/terminal/moshwcwidth.cc	2026-02-14 12:06:12.235363573 -0500
+@@ -0,0 +1,614 @@
++/*
++    Mosh: the mobile shell
++    Copyright 2012 Keith Winstein
++
++    This program is free software: you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation, either version 3 of the License, or
++    (at your option) any later version.
++
++    This program is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this program.  If not, see <http://www.gnu.org/licenses/>.
++
++    In addition, as a special exception, the copyright holders give
++    permission to link the code of portions of this program with the
++    OpenSSL library under certain conditions as described in each
++    individual source file, and distribute linked combinations including
++    the two.
++
++    You must obey the GNU General Public License in all respects for all
++    of the code used other than OpenSSL. If you modify file(s) with this
++    exception, you may extend this exception to your version of the
++    file(s), but you are not obligated to do so. If you do not wish to do
++    so, delete this exception statement from your version. If you delete
++    this exception statement from all source files in the program, then
++    also delete it here.
++*/
++
++/*
++ * Custom wcwidth implementation for mosh.
++ *
++ * This replaces the system wcwidth() which is often outdated and returns
++ * -1 for valid printable Unicode characters. For example, macOS wcwidth()
++ * returns -1 for U+23F5 (BLACK MEDIUM RIGHT-POINTING TRIANGLE), causing
++ * mosh to silently drop the character.
++ *
++ * Based on Unicode 16.0 character property data.
++ *
++ * Algorithm:
++ *   - C0/C1 control characters return -1
++ *   - Characters in the zero-width table (combining marks, format
++ *     characters, Hangul jungseong/jongseong) return 0
++ *   - Characters in the wide table (East_Asian_Width W or F) return 2
++ *   - Surrogates and noncharacters return -1
++ *   - All other characters >= U+00A0 return 1
++ *
++ * Derived from Markus Kuhn's implementation, extended for Unicode 16.0.
++ */
++
++#include <cstdint>
++
++#include "moshwcwidth.h"
++
++namespace {
++
++struct Interval
++{
++  uint32_t first;
++  uint32_t last;
++};
++
++static bool bisearch( uint32_t ucs, const Interval* table, int max )
++{
++  int min = 0;
++  if ( ucs < table[0].first || ucs > table[max].last )
++    return false;
++  while ( max >= min ) {
++    int mid = ( min + max ) / 2;
++    if ( ucs > table[mid].last )
++      min = mid + 1;
++    else if ( ucs < table[mid].first )
++      max = mid - 1;
++    else
++      return true;
++  }
++  return false;
++}
++
++/* Zero-width characters: combining marks (Mn, Me), selected format
++   characters (Cf), and Hangul Jungseong/Jongseong (which combine
++   with leading consonants). Based on Unicode 16.0. */
++static const Interval zero_width[] = {
++  { 0x00AD, 0x00AD },   /* SOFT HYPHEN */
++  { 0x0300, 0x036F },   /* Combining Diacritical Marks */
++  { 0x0483, 0x0489 },   /* Cyrillic combining (Mn+Me) */
++  { 0x0591, 0x05BD },   /* Hebrew */
++  { 0x05BF, 0x05BF },
++  { 0x05C1, 0x05C2 },
++  { 0x05C4, 0x05C5 },
++  { 0x05C7, 0x05C7 },
++  { 0x0600, 0x0605 },   /* Arabic format (Cf) */
++  { 0x0610, 0x061A },   /* Arabic combining */
++  { 0x061C, 0x061C },   /* Arabic Letter Mark (Cf) */
++  { 0x064B, 0x065F },   /* Arabic combining */
++  { 0x0670, 0x0670 },
++  { 0x06D6, 0x06DC },
++  { 0x06DF, 0x06E4 },
++  { 0x06E7, 0x06E8 },
++  { 0x06EA, 0x06ED },
++  { 0x070F, 0x070F },   /* Syriac Abbreviation Mark (Cf) */
++  { 0x0711, 0x0711 },   /* Syriac combining */
++  { 0x0730, 0x074A },
++  { 0x07A6, 0x07B0 },   /* Thaana combining */
++  { 0x07EB, 0x07F3 },   /* NKo combining */
++  { 0x07FD, 0x07FD },
++  { 0x0816, 0x0819 },   /* Samaritan combining */
++  { 0x081B, 0x0823 },
++  { 0x0825, 0x0827 },
++  { 0x0829, 0x082D },
++  { 0x0859, 0x085B },   /* Mandaic combining */
++  { 0x0890, 0x0891 },   /* Arabic format (Cf) */
++  { 0x0898, 0x089F },   /* Arabic combining */
++  { 0x08CA, 0x08E1 },   /* Arabic combining */
++  { 0x08E3, 0x0902 },   /* Arabic/Devanagari combining (Mn) */
++  { 0x093A, 0x093A },   /* Devanagari */
++  { 0x093C, 0x093C },
++  { 0x0941, 0x0948 },
++  { 0x094D, 0x094D },
++  { 0x0951, 0x0957 },
++  { 0x0962, 0x0963 },
++  { 0x0981, 0x0981 },   /* Bengali */
++  { 0x09BC, 0x09BC },
++  { 0x09C1, 0x09C4 },
++  { 0x09CD, 0x09CD },
++  { 0x09E2, 0x09E3 },
++  { 0x09FE, 0x09FE },
++  { 0x0A01, 0x0A02 },   /* Gurmukhi */
++  { 0x0A3C, 0x0A3C },
++  { 0x0A41, 0x0A42 },
++  { 0x0A47, 0x0A48 },
++  { 0x0A4B, 0x0A4D },
++  { 0x0A51, 0x0A51 },
++  { 0x0A70, 0x0A71 },
++  { 0x0A75, 0x0A75 },
++  { 0x0A81, 0x0A82 },   /* Gujarati */
++  { 0x0ABC, 0x0ABC },
++  { 0x0AC1, 0x0AC5 },
++  { 0x0AC7, 0x0AC8 },
++  { 0x0ACD, 0x0ACD },
++  { 0x0AE2, 0x0AE3 },
++  { 0x0AFA, 0x0AFF },
++  { 0x0B01, 0x0B01 },   /* Oriya */
++  { 0x0B3C, 0x0B3C },
++  { 0x0B3F, 0x0B3F },
++  { 0x0B41, 0x0B44 },
++  { 0x0B4D, 0x0B4D },
++  { 0x0B55, 0x0B56 },
++  { 0x0B62, 0x0B63 },
++  { 0x0B82, 0x0B82 },   /* Tamil */
++  { 0x0BC0, 0x0BC0 },
++  { 0x0BCD, 0x0BCD },
++  { 0x0C00, 0x0C00 },   /* Telugu */
++  { 0x0C04, 0x0C04 },
++  { 0x0C3C, 0x0C3C },
++  { 0x0C3E, 0x0C40 },
++  { 0x0C46, 0x0C48 },
++  { 0x0C4A, 0x0C4D },
++  { 0x0C55, 0x0C56 },
++  { 0x0C62, 0x0C63 },
++  { 0x0C81, 0x0C81 },   /* Kannada */
++  { 0x0CBC, 0x0CBC },
++  { 0x0CBF, 0x0CBF },
++  { 0x0CC6, 0x0CC6 },
++  { 0x0CCC, 0x0CCD },
++  { 0x0CE2, 0x0CE3 },
++  { 0x0D00, 0x0D01 },   /* Malayalam */
++  { 0x0D3B, 0x0D3C },
++  { 0x0D41, 0x0D44 },
++  { 0x0D4D, 0x0D4D },
++  { 0x0D62, 0x0D63 },
++  { 0x0D81, 0x0D81 },   /* Sinhala */
++  { 0x0DCA, 0x0DCA },
++  { 0x0DD2, 0x0DD4 },
++  { 0x0DD6, 0x0DD6 },
++  { 0x0E31, 0x0E31 },   /* Thai */
++  { 0x0E34, 0x0E3A },
++  { 0x0E47, 0x0E4E },
++  { 0x0EB1, 0x0EB1 },   /* Lao */
++  { 0x0EB4, 0x0EBC },
++  { 0x0EC8, 0x0ECE },
++  { 0x0F18, 0x0F19 },   /* Tibetan */
++  { 0x0F35, 0x0F35 },
++  { 0x0F37, 0x0F37 },
++  { 0x0F39, 0x0F39 },
++  { 0x0F71, 0x0F7E },
++  { 0x0F80, 0x0F84 },
++  { 0x0F86, 0x0F87 },
++  { 0x0F8D, 0x0F97 },
++  { 0x0F99, 0x0FBC },
++  { 0x0FC6, 0x0FC6 },
++  { 0x102D, 0x1030 },   /* Myanmar */
++  { 0x1032, 0x1037 },
++  { 0x1039, 0x103A },
++  { 0x103D, 0x103E },
++  { 0x1058, 0x1059 },
++  { 0x105E, 0x1060 },
++  { 0x1071, 0x1074 },
++  { 0x1082, 0x1082 },
++  { 0x1085, 0x1086 },
++  { 0x108D, 0x108D },
++  { 0x109D, 0x109D },
++  { 0x1160, 0x11FF },   /* Hangul Jungseong + Jongseong */
++  { 0x135D, 0x135F },   /* Ethiopic combining */
++  { 0x1712, 0x1714 },   /* Tagalog */
++  { 0x1732, 0x1733 },   /* Hanunoo */
++  { 0x1752, 0x1753 },   /* Buhid */
++  { 0x1772, 0x1773 },   /* Tagbanwa */
++  { 0x17B4, 0x17B5 },   /* Khmer */
++  { 0x17B7, 0x17BD },
++  { 0x17C6, 0x17C6 },
++  { 0x17C9, 0x17D3 },
++  { 0x17DD, 0x17DD },
++  { 0x180B, 0x180D },   /* Mongolian */
++  { 0x180F, 0x180F },
++  { 0x1885, 0x1886 },
++  { 0x18A9, 0x18A9 },
++  { 0x1920, 0x1922 },   /* Limbu */
++  { 0x1927, 0x1928 },
++  { 0x1932, 0x1932 },
++  { 0x1939, 0x193B },
++  { 0x1A17, 0x1A18 },   /* Buginese */
++  { 0x1A1B, 0x1A1B },
++  { 0x1A56, 0x1A56 },   /* Tai Tham */
++  { 0x1A58, 0x1A5E },
++  { 0x1A60, 0x1A60 },
++  { 0x1A62, 0x1A62 },
++  { 0x1A65, 0x1A6C },
++  { 0x1A73, 0x1A7C },
++  { 0x1A7F, 0x1A7F },
++  { 0x1AB0, 0x1ACE },   /* Combining Diacritical Marks Extended */
++  { 0x1B00, 0x1B03 },   /* Balinese */
++  { 0x1B34, 0x1B34 },
++  { 0x1B36, 0x1B3A },
++  { 0x1B3C, 0x1B3C },
++  { 0x1B42, 0x1B42 },
++  { 0x1B6B, 0x1B73 },
++  { 0x1B80, 0x1B81 },   /* Sundanese */
++  { 0x1BA2, 0x1BA5 },
++  { 0x1BA8, 0x1BA9 },
++  { 0x1BAB, 0x1BAD },
++  { 0x1BE6, 0x1BE6 },   /* Batak */
++  { 0x1BE8, 0x1BE9 },
++  { 0x1BED, 0x1BED },
++  { 0x1BEF, 0x1BF1 },
++  { 0x1C2C, 0x1C33 },   /* Lepcha */
++  { 0x1C36, 0x1C37 },
++  { 0x1CD0, 0x1CD2 },   /* Vedic Extensions */
++  { 0x1CD4, 0x1CE0 },
++  { 0x1CE2, 0x1CE8 },
++  { 0x1CED, 0x1CED },
++  { 0x1CF4, 0x1CF4 },
++  { 0x1CF8, 0x1CF9 },
++  { 0x1DC0, 0x1DFF },   /* Combining Diacritical Marks Supplement */
++  { 0x200B, 0x200F },   /* Zero-width space, joiners, direction marks */
++  { 0x202A, 0x202E },   /* Direction formatting */
++  { 0x2060, 0x2064 },   /* Invisible formatters */
++  { 0x2066, 0x206F },   /* Direction formatting */
++  { 0x20D0, 0x20F0 },   /* Combining Diacritical Marks for Symbols */
++  { 0x2CEF, 0x2CF1 },   /* Coptic combining */
++  { 0x2D7F, 0x2D7F },   /* Tifinagh combining */
++  { 0x2DE0, 0x2DFF },   /* Cyrillic Extended-A combining */
++  { 0xA66F, 0xA672 },   /* Combining Cyrillic */
++  { 0xA674, 0xA67D },
++  { 0xA69E, 0xA69F },
++  { 0xA6F0, 0xA6F1 },   /* Bamum combining */
++  { 0xA802, 0xA802 },   /* Syloti Nagri */
++  { 0xA806, 0xA806 },
++  { 0xA80B, 0xA80B },
++  { 0xA825, 0xA826 },
++  { 0xA82C, 0xA82C },
++  { 0xA8C4, 0xA8C5 },   /* Saurashtra */
++  { 0xA8E0, 0xA8F1 },   /* Devanagari Extended combining */
++  { 0xA8FF, 0xA8FF },
++  { 0xA926, 0xA92D },   /* Kayah Li */
++  { 0xA947, 0xA951 },   /* Rejang */
++  { 0xA980, 0xA982 },   /* Javanese */
++  { 0xA9B3, 0xA9B3 },
++  { 0xA9B6, 0xA9B9 },
++  { 0xA9BC, 0xA9BD },
++  { 0xA9E5, 0xA9E5 },   /* Myanmar Extended-B */
++  { 0xAA29, 0xAA2E },   /* Cham */
++  { 0xAA31, 0xAA32 },
++  { 0xAA35, 0xAA36 },
++  { 0xAA43, 0xAA43 },
++  { 0xAA4C, 0xAA4C },
++  { 0xAA7C, 0xAA7C },
++  { 0xAAB0, 0xAAB0 },   /* Tai Viet */
++  { 0xAAB2, 0xAAB4 },
++  { 0xAAB7, 0xAAB8 },
++  { 0xAABE, 0xAABF },
++  { 0xAAC1, 0xAAC1 },
++  { 0xAAEC, 0xAAED },   /* Meetei Mayek Extensions */
++  { 0xAAF6, 0xAAF6 },
++  { 0xABE5, 0xABE5 },   /* Meetei Mayek */
++  { 0xABE8, 0xABE8 },
++  { 0xABED, 0xABED },
++  { 0xFB1E, 0xFB1E },   /* Hebrew combining */
++  { 0xFE00, 0xFE0F },   /* Variation Selectors */
++  { 0xFE20, 0xFE2F },   /* Combining Half Marks */
++  { 0xFEFF, 0xFEFF },   /* BOM / ZWNBSP */
++  { 0xFFF9, 0xFFFB },   /* Interlinear annotation */
++  /* Supplementary plane combining marks */
++  { 0x101FD, 0x101FD },
++  { 0x102E0, 0x102E0 },
++  { 0x10376, 0x1037A },
++  { 0x10A01, 0x10A03 },
++  { 0x10A05, 0x10A06 },
++  { 0x10A0C, 0x10A0F },
++  { 0x10A38, 0x10A3A },
++  { 0x10A3F, 0x10A3F },
++  { 0x10AE5, 0x10AE6 },
++  { 0x10D24, 0x10D27 },
++  { 0x10EAB, 0x10EAC },
++  { 0x10EFD, 0x10EFF },
++  { 0x10F46, 0x10F50 },
++  { 0x10F82, 0x10F85 },
++  { 0x11001, 0x11001 },
++  { 0x11038, 0x11046 },
++  { 0x11070, 0x11070 },
++  { 0x11073, 0x11074 },
++  { 0x1107F, 0x11081 },
++  { 0x110B3, 0x110B6 },
++  { 0x110B9, 0x110BA },
++  { 0x110C2, 0x110C2 },
++  { 0x11100, 0x11102 },
++  { 0x11127, 0x1112B },
++  { 0x1112D, 0x11134 },
++  { 0x11173, 0x11173 },
++  { 0x11180, 0x11181 },
++  { 0x111B6, 0x111BE },
++  { 0x111C9, 0x111CC },
++  { 0x111CF, 0x111CF },
++  { 0x1122F, 0x11231 },
++  { 0x11234, 0x11234 },
++  { 0x11236, 0x11237 },
++  { 0x1123E, 0x1123E },
++  { 0x11241, 0x11241 },
++  { 0x112DF, 0x112DF },
++  { 0x112E3, 0x112EA },
++  { 0x11300, 0x11301 },
++  { 0x1133B, 0x1133C },
++  { 0x11340, 0x11340 },
++  { 0x11366, 0x1136C },
++  { 0x11370, 0x11374 },
++  { 0x11438, 0x1143F },
++  { 0x11442, 0x11444 },
++  { 0x11446, 0x11446 },
++  { 0x1145E, 0x1145E },
++  { 0x114B3, 0x114B8 },
++  { 0x114BA, 0x114BA },
++  { 0x114BF, 0x114C0 },
++  { 0x114C2, 0x114C3 },
++  { 0x115B2, 0x115B5 },
++  { 0x115BC, 0x115BD },
++  { 0x115BF, 0x115C0 },
++  { 0x115DC, 0x115DD },
++  { 0x11633, 0x1163A },
++  { 0x1163D, 0x1163D },
++  { 0x1163F, 0x11640 },
++  { 0x116AB, 0x116AB },
++  { 0x116AD, 0x116AD },
++  { 0x116B0, 0x116B5 },
++  { 0x116B7, 0x116B7 },
++  { 0x1171D, 0x1171F },
++  { 0x11722, 0x11725 },
++  { 0x11727, 0x1172B },
++  { 0x1182F, 0x11837 },
++  { 0x11839, 0x1183A },
++  { 0x1193B, 0x1193C },
++  { 0x1193E, 0x1193E },
++  { 0x11943, 0x11943 },
++  { 0x119D4, 0x119D7 },
++  { 0x119DA, 0x119DB },
++  { 0x119E0, 0x119E0 },
++  { 0x11A01, 0x11A0A },
++  { 0x11A33, 0x11A38 },
++  { 0x11A3B, 0x11A3E },
++  { 0x11A47, 0x11A47 },
++  { 0x11A51, 0x11A56 },
++  { 0x11A59, 0x11A5B },
++  { 0x11A8A, 0x11A96 },
++  { 0x11A98, 0x11A99 },
++  { 0x11C30, 0x11C36 },
++  { 0x11C38, 0x11C3D },
++  { 0x11C3F, 0x11C3F },
++  { 0x11C92, 0x11CA7 },
++  { 0x11CAA, 0x11CB0 },
++  { 0x11CB2, 0x11CB3 },
++  { 0x11CB5, 0x11CB6 },
++  { 0x11D31, 0x11D36 },
++  { 0x11D3A, 0x11D3A },
++  { 0x11D3C, 0x11D3D },
++  { 0x11D3F, 0x11D45 },
++  { 0x11D47, 0x11D47 },
++  { 0x11D90, 0x11D91 },
++  { 0x11D95, 0x11D95 },
++  { 0x11D97, 0x11D97 },
++  { 0x11EF3, 0x11EF4 },
++  { 0x11F00, 0x11F01 },
++  { 0x11F36, 0x11F3A },
++  { 0x11F40, 0x11F40 },
++  { 0x11F42, 0x11F42 },
++  { 0x13430, 0x1345F },  /* Egyptian Hieroglyph Format Controls */
++  { 0x13440, 0x13440 },
++  { 0x16AF0, 0x16AF4 },
++  { 0x16B30, 0x16B36 },
++  { 0x16F4F, 0x16F4F },
++  { 0x16F8F, 0x16F92 },
++  { 0x16FE4, 0x16FE4 },
++  { 0x1BC9D, 0x1BC9E },
++  { 0x1BCA0, 0x1BCA3 },
++  { 0x1CF00, 0x1CF2D },
++  { 0x1CF30, 0x1CF46 },
++  { 0x1D167, 0x1D169 },  /* Musical Symbols combining */
++  { 0x1D173, 0x1D182 },
++  { 0x1D185, 0x1D18B },
++  { 0x1D1AA, 0x1D1AD },
++  { 0x1D242, 0x1D244 },
++  { 0x1DA00, 0x1DA36 },  /* Signwriting combining */
++  { 0x1DA3B, 0x1DA6C },
++  { 0x1DA75, 0x1DA75 },
++  { 0x1DA84, 0x1DA84 },
++  { 0x1DA9B, 0x1DA9F },
++  { 0x1DAA1, 0x1DAAF },
++  { 0x1E000, 0x1E006 },  /* Glagolitic combining */
++  { 0x1E008, 0x1E018 },
++  { 0x1E01B, 0x1E021 },
++  { 0x1E023, 0x1E024 },
++  { 0x1E026, 0x1E02A },
++  { 0x1E08F, 0x1E08F },
++  { 0x1E130, 0x1E136 },
++  { 0x1E2AE, 0x1E2AE },
++  { 0x1E2EC, 0x1E2EF },
++  { 0x1E4EC, 0x1E4EF },
++  { 0x1E8D0, 0x1E8D6 },
++  { 0x1E944, 0x1E94A },
++  { 0xE0001, 0xE0001 },  /* Language Tag */
++  { 0xE0020, 0xE007F },  /* Tag characters */
++  { 0xE0100, 0xE01EF },  /* Variation Selectors Supplement */
++};
++
++/* Wide characters: East_Asian_Width W (Wide) or F (Fullwidth).
++   Based on Unicode 16.0 EastAsianWidth.txt. */
++static const Interval wide[] = {
++  { 0x1100, 0x115F },   /* Hangul Jamo */
++  { 0x231A, 0x231B },   /* Watch, Hourglass */
++  { 0x2329, 0x232A },   /* Angle brackets */
++  { 0x23E9, 0x23F3 },   /* Various symbols */
++  { 0x23F8, 0x23FA },   /* Media control symbols */
++  { 0x25FD, 0x25FE },   /* Medium small squares */
++  { 0x2614, 0x2615 },   /* Umbrella, Hot beverage */
++  { 0x2648, 0x2653 },   /* Zodiac */
++  { 0x267F, 0x267F },   /* Wheelchair */
++  { 0x2693, 0x2693 },   /* Anchor */
++  { 0x26A1, 0x26A1 },   /* High voltage */
++  { 0x26AA, 0x26AB },   /* Circles */
++  { 0x26BD, 0x26BE },   /* Soccer, Baseball */
++  { 0x26C4, 0x26C5 },   /* Snowman, Sun behind cloud */
++  { 0x26CE, 0x26CE },   /* Ophiuchus */
++  { 0x26D4, 0x26D4 },   /* No entry */
++  { 0x26EA, 0x26EA },   /* Church */
++  { 0x26F2, 0x26F3 },   /* Fountain, Golf */
++  { 0x26F5, 0x26F5 },   /* Sailboat */
++  { 0x26FA, 0x26FA },   /* Tent */
++  { 0x26FD, 0x26FD },   /* Fuel pump */
++  { 0x2702, 0x2702 },   /* Scissors */
++  { 0x2705, 0x2705 },   /* Check mark */
++  { 0x2708, 0x270D },   /* Various symbols */
++  { 0x270F, 0x270F },   /* Pencil */
++  { 0x2712, 0x2712 },   /* Black nib */
++  { 0x2714, 0x2714 },   /* Check mark */
++  { 0x2716, 0x2716 },   /* Multiplication X */
++  { 0x271D, 0x271D },   /* Latin cross */
++  { 0x2721, 0x2721 },   /* Star of David */
++  { 0x2728, 0x2728 },   /* Sparkles */
++  { 0x2733, 0x2734 },   /* Eight-spoked asterisk */
++  { 0x2744, 0x2744 },   /* Snowflake */
++  { 0x2747, 0x2747 },   /* Sparkle */
++  { 0x274C, 0x274C },   /* Cross mark */
++  { 0x274E, 0x274E },   /* Cross mark */
++  { 0x2753, 0x2755 },   /* Question/exclamation */
++  { 0x2757, 0x2757 },   /* Exclamation */
++  { 0x2763, 0x2764 },   /* Heart */
++  { 0x2795, 0x2797 },   /* Heavy plus/minus/division */
++  { 0x27A1, 0x27A1 },   /* Rightwards arrow */
++  { 0x27B0, 0x27B0 },   /* Curly loop */
++  { 0x27BF, 0x27BF },   /* Double curly loop */
++  { 0x2934, 0x2935 },   /* Arrows */
++  { 0x2B05, 0x2B07 },   /* Arrows */
++  { 0x2B1B, 0x2B1C },   /* Large squares */
++  { 0x2B50, 0x2B50 },   /* Star */
++  { 0x2B55, 0x2B55 },   /* Heavy circle */
++  { 0x3000, 0x3000 },   /* Ideographic space */
++  { 0x3001, 0x303E },   /* CJK Symbols and Punctuation */
++  { 0x3041, 0x3096 },   /* Hiragana */
++  { 0x3099, 0x30FF },   /* Hiragana/Katakana */
++  { 0x3105, 0x312F },   /* Bopomofo */
++  { 0x3131, 0x318E },   /* Hangul Compatibility Jamo */
++  { 0x3190, 0x31E3 },   /* Kanbun, CJK Strokes */
++  { 0x31EF, 0x321E },   /* CJK enclosed */
++  { 0x3220, 0x3247 },   /* CJK enclosed */
++  { 0x3250, 0x4DBF },   /* CJK misc, Extension A */
++  { 0x4E00, 0xA48C },   /* CJK Unified + Yi Syllables */
++  { 0xA490, 0xA4C6 },   /* Yi Radicals */
++  { 0xA960, 0xA97C },   /* Hangul Jamo Extended-A */
++  { 0xAC00, 0xD7A3 },   /* Hangul Syllables */
++  { 0xF900, 0xFAFF },   /* CJK Compatibility Ideographs */
++  { 0xFE10, 0xFE19 },   /* Vertical Forms */
++  { 0xFE30, 0xFE6B },   /* CJK Compatibility Forms */
++  { 0xFF01, 0xFF60 },   /* Fullwidth Forms */
++  { 0xFFE0, 0xFFE6 },   /* Fullwidth Signs */
++  { 0x16FE0, 0x16FE4 }, /* Ideographic Symbols */
++  { 0x16FF0, 0x16FF1 },
++  { 0x17000, 0x187F7 }, /* Tangut */
++  { 0x18800, 0x18CD5 }, /* Tangut Components */
++  { 0x18D00, 0x18D08 }, /* Tangut Supplement */
++  { 0x1AFF0, 0x1AFF3 }, /* Kana Extended-B */
++  { 0x1AFF5, 0x1AFFB },
++  { 0x1AFFD, 0x1AFFE },
++  { 0x1B000, 0x1B122 }, /* Kana Supplement */
++  { 0x1B132, 0x1B132 },
++  { 0x1B150, 0x1B152 }, /* Small Kana Extension */
++  { 0x1B155, 0x1B155 },
++  { 0x1B164, 0x1B167 },
++  { 0x1B170, 0x1B2FB }, /* Nushu */
++  { 0x1F004, 0x1F004 }, /* Mahjong tile */
++  { 0x1F0CF, 0x1F0CF }, /* Playing card */
++  { 0x1F18E, 0x1F18E },
++  { 0x1F191, 0x1F19A },
++  { 0x1F200, 0x1F202 }, /* Enclosed Ideographic */
++  { 0x1F210, 0x1F23B },
++  { 0x1F240, 0x1F248 },
++  { 0x1F250, 0x1F251 },
++  { 0x1F260, 0x1F265 },
++  { 0x1F300, 0x1F320 }, /* Miscellaneous Symbols and Pictographs */
++  { 0x1F32D, 0x1F335 },
++  { 0x1F337, 0x1F37C },
++  { 0x1F37E, 0x1F393 },
++  { 0x1F3A0, 0x1F3CA },
++  { 0x1F3CF, 0x1F3D3 },
++  { 0x1F3E0, 0x1F3F0 },
++  { 0x1F3F4, 0x1F3F4 },
++  { 0x1F3F8, 0x1F43E },
++  { 0x1F440, 0x1F440 },
++  { 0x1F442, 0x1F4FC },
++  { 0x1F4FF, 0x1F53D },
++  { 0x1F54B, 0x1F54E },
++  { 0x1F550, 0x1F567 },
++  { 0x1F57A, 0x1F57A },
++  { 0x1F595, 0x1F596 },
++  { 0x1F5A4, 0x1F5A4 },
++  { 0x1F5FB, 0x1F64F },
++  { 0x1F680, 0x1F6C5 },
++  { 0x1F6CC, 0x1F6CC },
++  { 0x1F6D0, 0x1F6D2 },
++  { 0x1F6D5, 0x1F6D7 },
++  { 0x1F6DC, 0x1F6DF },
++  { 0x1F6EB, 0x1F6EC },
++  { 0x1F6F4, 0x1F6FC },
++  { 0x1F7E0, 0x1F7EB },
++  { 0x1F7F0, 0x1F7F0 },
++  { 0x1F90C, 0x1F93A },
++  { 0x1F93C, 0x1F945 },
++  { 0x1F947, 0x1F9FF },
++  { 0x1FA00, 0x1FA53 },
++  { 0x1FA60, 0x1FA6D },
++  { 0x1FA70, 0x1FA7C },
++  { 0x1FA80, 0x1FA89 },
++  { 0x1FA8F, 0x1FAC6 },
++  { 0x1FACE, 0x1FADC },
++  { 0x1FADF, 0x1FAE9 },
++  { 0x1FAF0, 0x1FAF8 },
++  { 0x20000, 0x2FFFD }, /* CJK Extension B..F */
++  { 0x30000, 0x3FFFD }, /* CJK Extension G+ */
++};
++
++} /* anonymous namespace */
++
++int mosh_wcwidth( wchar_t ucs )
++{
++  uint32_t c = static_cast<uint32_t>( ucs );
++
++  /* C0/C1 control characters */
++  if ( c < 0x20 )
++    return ( c == 0 ) ? 0 : -1;
++  if ( c >= 0x7F && c < 0xA0 )
++    return -1;
++
++  /* Combining / zero-width characters */
++  if ( bisearch( c, zero_width, sizeof( zero_width ) / sizeof( zero_width[0] ) - 1 ) )
++    return 0;
++
++  /* Wide characters */
++  if ( bisearch( c, wide, sizeof( wide ) / sizeof( wide[0] ) - 1 ) )
++    return 2;
++
++  /* Surrogates (shouldn't appear but handle gracefully) */
++  if ( c >= 0xD800 && c <= 0xDFFF )
++    return -1;
++
++  /* Noncharacters */
++  if ( ( c & 0xFFFE ) == 0xFFFE ) /* U+xFFFE and U+xFFFF */
++    return -1;
++  if ( c >= 0xFDD0 && c <= 0xFDEF )
++    return -1;
++
++  /* Unassigned in Private Use Areas are typically rendered as single-width */
++  /* Everything else is a normal printable character */
++  return 1;
++}
+--- a/src/terminal/moshwcwidth.h	1969-12-31 19:00:00.000000000 -0500
++++ b/src/terminal/moshwcwidth.h	2026-02-14 12:04:18.628479484 -0500
+@@ -0,0 +1,45 @@
++/*
++    Mosh: the mobile shell
++    Copyright 2012 Keith Winstein
++
++    This program is free software: you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation, either version 3 of the License, or
++    (at your option) any later version.
++
++    This program is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this program.  If not, see <http://www.gnu.org/licenses/>.
++
++    In addition, as a special exception, the copyright holders give
++    permission to link the code of portions of this program with the
++    OpenSSL library under certain conditions as described in each
++    individual source file, and distribute linked combinations including
++    the two.
++
++    You must obey the GNU General Public License in all respects for all
++    of the code used other than OpenSSL. If you modify file(s) with this
++    exception, you may extend this exception to your version of the
++    file(s), but you are not obligated to do so. If you do not wish to do
++    so, delete this exception statement from your version. If you delete
++    this exception statement from all source files in the program, then
++    also delete it here.
++*/
++
++#ifndef MOSH_WCWIDTH_H
++#define MOSH_WCWIDTH_H
++
++#include <cwchar>
++
++/* Custom wcwidth implementation that does not depend on the system's
++   libc wcwidth, which is often outdated and returns -1 for valid
++   printable Unicode characters (e.g. U+23F5 on macOS). Based on
++   Unicode 16.0 character width data. */
++
++int mosh_wcwidth( wchar_t ucs );
++
++#endif /* MOSH_WCWIDTH_H */
+--- a/src/terminal/terminal.cc	2026-02-14 11:59:41.031023000 -0500
++++ b/src/terminal/terminal.cc	2026-02-14 12:04:06.149259464 -0500
+@@ -36,6 +36,7 @@
+ #include <unistd.h>
+ #include <typeinfo>
+ 
++#include "moshwcwidth.h"
+ #include "terminal.h"
+ 
+ using namespace Terminal;
+@@ -66,7 +67,7 @@
+    * Check for printing ISO 8859-1 first, it's a cheap way to detect
+    * some common narrow characters.
+    */
+-  const int chwidth = ch == L'\0' ? -1 : ( Cell::isprint_iso8859_1( ch ) ? 1 : wcwidth( ch ));
++  const int chwidth = ch == L'\0' ? -1 : ( Cell::isprint_iso8859_1( ch ) ? 1 : mosh_wcwidth( ch ));
+ 
+   Cell *this_cell = fb.get_mutable_cell();
+ 
+@@ -142,7 +143,7 @@
+   case -1: /* unprintable character */
+     break;
+   default:
+-    assert( !"unexpected character width from wcwidth()" );
++    assert( !"unexpected character width from mosh_wcwidth()" );
+     break;
+   }
+ }
