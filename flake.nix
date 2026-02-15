@@ -13,6 +13,10 @@
       url = "github:siraben/tree-sitter-sml";
       flake = false;
     };
+    codex-src = {
+      url = "github:openai/codex";
+      flake = false;
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, mac-app-util, ... /* Capture all inputs */ }@allInputs:
