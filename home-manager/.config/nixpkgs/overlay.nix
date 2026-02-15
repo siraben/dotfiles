@@ -27,6 +27,9 @@ final: prev:
         "tungstenite-0.27.0" = "sha256-AN5wql2X2yJnQ7lnDxpljNw0Jua40GtmT+w3wjER010=";
       };
     };
+    buildInputs = (old.buildInputs or [ ]) ++ prev.lib.optionals prev.stdenv.hostPlatform.isLinux [
+      prev.libcap
+    ];
     doInstallCheck = false;
   });
   python3 = prev.python3.override {
