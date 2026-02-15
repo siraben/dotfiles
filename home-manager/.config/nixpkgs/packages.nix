@@ -54,6 +54,7 @@ let
     cachix
     cargo
     claude-code
+    codex
     cmake
     dejavu_fonts
     ffmpeg
