@@ -13,7 +13,7 @@ let
   ];
   pkgsOptions = {
     overlays = lib.optionals (!minimal) [
-      (import ./overlay.nix)
+      (import ./overlay.nix { inherit inputs; })
     ];
     config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
   };
