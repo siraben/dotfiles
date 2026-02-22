@@ -58,7 +58,6 @@ in
   programs.mosh.enable = true;
   programs.zsh.enable = true;
   services.tailscale.enable = true;
-  networking.interfaces.tailscale0.mtu = 1280;
   services.eternal-terminal.enable = true;
 
   # User
