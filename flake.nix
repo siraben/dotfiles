@@ -41,6 +41,13 @@
             ./server/hardware-configuration.nix
           ];
         };
+
+        server-arm = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          modules = [
+            ./server-arm/configuration.nix
+          ];
+        };
       };
 
       homeConfigurations = {
