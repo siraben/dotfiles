@@ -2,8 +2,9 @@
 #
 # Runs a containerized Minecraft server that starts automatically when
 # a client connects and shuts down after a configurable idle period.
-# A Python listener always owns the public port, proxying to the
-# container backend when it's up, and showing status MOTDs when it's not.
+# A Rust listener always owns the public port, proxying to the container
+# backend with zero-copy splice() when it's up, and showing status
+# MOTDs when it's not.
 
 {
   config,
@@ -17,6 +18,13 @@ let
   portStr = toString cfg.port;
   backendPort = cfg.port + 1;
   backendPortStr = toString backendPort;
+
+  minecraft-listener = pkgs.rustPlatform.buildRustPackage {
+    pname = "minecraft-listener";
+    version = "1.0.0";
+    src = ./minecraft-listener;
+    cargoLock.lockFile = ./minecraft-listener/Cargo.lock;
+  };
 in
 {
   options.services.ondemand-minecraft = {
@@ -62,6 +70,12 @@ in
       type = lib.types.listOf lib.types.path;
       default = [ ];
       description = "Environment files passed to the container (KEY=VALUE format).";
+    };
+
+    whitelistFile = lib.mkOption {
+      type = lib.types.nullOr lib.types.path;
+      default = null;
+      description = "Path to env file with WHITELIST=name1,name2,... for pre-start filtering.";
     };
 
     idleShutdownMinutes = lib.mkOption {
@@ -111,7 +125,7 @@ in
       after = [ "network.target" ];
       serviceConfig = {
         Type = "simple";
-        ExecStart = "${pkgs.python3}/bin/python3 -u ${./minecraft-listener.py} ${portStr} ${backendPortStr}";
+        ExecStart = "${minecraft-listener}/bin/minecraft-listener ${portStr} ${backendPortStr}${lib.optionalString (cfg.whitelistFile != null) " ${cfg.whitelistFile}"}";
         Restart = "always";
         RestartSec = "5s";
       };
