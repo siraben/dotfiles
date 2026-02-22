@@ -17,6 +17,10 @@
       url = "github:openai/codex";
       flake = false;
     };
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, mac-app-util, ... /* Capture all inputs */ }@allInputs:
@@ -45,6 +49,7 @@
         server-arm = nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
           modules = [
+            allInputs.agenix.nixosModules.default
             ./server-arm/configuration.nix
           ];
         };

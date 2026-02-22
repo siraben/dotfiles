@@ -1,4 +1,4 @@
-{ pkgs, lib, modulesPath, ... }:
+{ config, pkgs, lib, modulesPath, ... }:
 
 let
   keys = [
@@ -11,6 +11,7 @@ in
     "${modulesPath}/virtualisation/oci-common.nix"
     ./oci-hardware.nix
     ./zfs-mounts.nix
+    ./minecraft.nix
   ];
 
   # Server tweaks
@@ -69,11 +70,21 @@ in
     openssh.authorizedKeys.keys = keys;
   };
 
+  # On-demand Minecraft server
+  age.secrets.minecraft-whitelist.file = ../secrets/minecraft-whitelist.age;
+  services.ondemand-minecraft = {
+    enable = true;
+    extraEnvironment = {
+      WHITELIST_FILE = config.age.secrets.minecraft-whitelist.path;
+      ENFORCE_WHITELIST = "TRUE";
+    };
+  };
+
   security.sudo.wheelNeedsPassword = false;
 
   # Firewall (22=ssh, 2022=ET, 60000-61000=mosh)
   networking.firewall.allowedTCPPorts = [ 2022 ];
   networking.firewall.allowedUDPPorts = [ ];
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 }
