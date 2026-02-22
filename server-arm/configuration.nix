@@ -74,13 +74,16 @@ in
   age.secrets.minecraft-whitelist.file = ../secrets/minecraft-whitelist.age;
   services.ondemand-minecraft = {
     enable = true;
+    environmentFiles = [ config.age.secrets.minecraft-whitelist.path ];
     extraEnvironment = {
-      WHITELIST_FILE = config.age.secrets.minecraft-whitelist.path;
       ENFORCE_WHITELIST = "TRUE";
     };
   };
 
   security.sudo.wheelNeedsPassword = false;
+
+  # Disable wait-online (OCI networking is managed outside systemd-networkd)
+  systemd.network.wait-online.enable = false;
 
   # Firewall (22=ssh, 2022=ET, 60000-61000=mosh)
   networking.firewall.allowedTCPPorts = [ 2022 ];
