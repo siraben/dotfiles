@@ -1,0 +1,11 @@
+[package]
+name = "minecraft-listener"
+version = "1.0.0"
+edition = "2021"
+
+[dependencies]
+libc = "0.2"
+
+[profile.release]
+lto = true
+strip = true
