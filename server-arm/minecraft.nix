@@ -134,6 +134,7 @@ in
     # Watchdog: checks for idle connections and shuts down after timeout
     systemd.services.minecraft-watchdog = {
       description = "Minecraft idle shutdown watchdog";
+      wantedBy = [ "podman-minecraft.service" ];
       after = [ "podman-minecraft.service" ];
       bindsTo = [ "podman-minecraft.service" ];
       script = ''
