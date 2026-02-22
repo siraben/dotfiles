@@ -2,7 +2,8 @@
 #
 # Runs a containerized Minecraft server that starts automatically when
 # a client connects and shuts down after a configurable idle period.
-# Uses systemd socket-style activation via ncat + a watchdog service.
+# A Python listener always owns the public port, proxying to the
+# container backend when it's up, and showing status MOTDs when it's not.
 
 {
   config,
@@ -14,6 +15,8 @@
 let
   cfg = config.services.ondemand-minecraft;
   portStr = toString cfg.port;
+  backendPort = cfg.port + 1;
+  backendPortStr = toString backendPort;
 in
 {
   options.services.ondemand-minecraft = {
@@ -49,6 +52,18 @@ in
       description = "Extra environment variables passed to the itzg image.";
     };
 
+    extraVolumes = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      description = "Extra volume mounts for the container (e.g. \"/host/path:/container/path:ro\").";
+    };
+
+    environmentFiles = lib.mkOption {
+      type = lib.types.listOf lib.types.path;
+      default = [ ];
+      description = "Environment files passed to the container (KEY=VALUE format).";
+    };
+
     idleShutdownMinutes = lib.mkOption {
       type = lib.types.int;
       default = 20;
@@ -68,56 +83,38 @@ in
     virtualisation.oci-containers.backend = "podman";
 
     # Minecraft server container (started on-demand, not auto-started)
+    # Binds to localhost backend port; the listener proxies public traffic to it.
     virtualisation.oci-containers.containers.minecraft = {
       image = cfg.image;
       environment = {
         EULA = "TRUE";
         MEMORY = cfg.memory;
+        SERVER_PORT = portStr;
       } // cfg.extraEnvironment;
-      ports = [ "${portStr}:${portStr}" ];
-      volumes = [ "${cfg.dataDir}:/data" ];
+      ports = [ "127.0.0.1:${backendPortStr}:${portStr}" ];
+      volumes = [ "${cfg.dataDir}:/data" ] ++ cfg.extraVolumes;
+      environmentFiles = cfg.environmentFiles;
     };
 
-    # Override: don't auto-start the minecraft container
+    # Ensure data directory exists
+    systemd.tmpfiles.rules = [ "d ${cfg.dataDir} 0755 root root -" ];
+
+    # Don't auto-start the minecraft container
     systemd.services.podman-minecraft.wantedBy = lib.mkForce [ ];
 
-    # TCP listener that starts minecraft on incoming connection
-    # Uses systemd socket activation: listens on the port, starts minecraft,
-    # then gets out of the way once the real server is up.
+    # Listener/proxy: always owns the public port.
+    # When backend is down: shows sleeping/starting MOTD, kicks with message.
+    # When backend is up: transparently proxies connections.
     systemd.services.minecraft-listener = {
-      description = "Minecraft on-demand TCP listener";
+      description = "Minecraft on-demand listener and proxy";
       wantedBy = [ "multi-user.target" ];
-      # Only run when minecraft is stopped
-      conflicts = [ "podman-minecraft.service" ];
       after = [ "network.target" ];
-      script = ''
-        echo "Waiting for connection on port ${portStr}..."
-        ${pkgs.nmap}/bin/ncat -l -p ${portStr} -w 1 2>/dev/null || true
-        echo "Connection received, starting Minecraft server..."
-        systemctl start podman-minecraft.service
-      '';
       serviceConfig = {
-        Type = "oneshot";
-        Restart = "on-failure";
+        Type = "simple";
+        ExecStart = "${pkgs.python3}/bin/python3 -u ${./minecraft-listener.py} ${portStr} ${backendPortStr}";
+        Restart = "always";
         RestartSec = "5s";
       };
-    };
-
-    # Restart the listener whenever minecraft stops
-    systemd.services.minecraft-listener-restart = {
-      description = "Restart Minecraft listener after server stops";
-      after = [ "podman-minecraft.service" ];
-      script = ''
-        # Small delay so the port is released
-        sleep 2
-        systemctl start minecraft-listener.service
-      '';
-      serviceConfig.Type = "oneshot";
-    };
-
-    # Trigger listener restart when minecraft stops
-    systemd.paths.minecraft-listener-watch = {
-      wantedBy = [ "multi-user.target" ];
     };
 
     # Watchdog: checks for idle connections and shuts down after timeout
