@@ -75,10 +75,11 @@ in
   services.ondemand-minecraft = {
     enable = true;
     environmentFiles = [ config.age.secrets.minecraft-whitelist.path ];
-    whitelistFile = config.age.secrets.minecraft-whitelist.path;
     extraEnvironment = {
+      TYPE = "PAPER";
       ENFORCE_WHITELIST = "TRUE";
       VIEW_DISTANCE = "12";
+      ENABLE_RCON = "TRUE";
     };
   };
 
