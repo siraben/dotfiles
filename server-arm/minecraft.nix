@@ -1,10 +1,9 @@
 # On-demand Minecraft server module
 #
-# Runs a containerized Minecraft server that starts automatically when
-# a client connects and shuts down after a configurable idle period.
-# A Rust listener always owns the public port, proxying to the container
-# backend with zero-copy splice() when it's up, and showing status
-# MOTDs when it's not.
+# Uses lazymc to proxy the public Minecraft port.  When a whitelisted
+# client connects, lazymc starts a containerised Minecraft server via
+# podman and proxies traffic to it.  After an idle timeout the server
+# is stopped automatically.
 
 {
   config,
@@ -15,16 +14,79 @@
 
 let
   cfg = config.services.ondemand-minecraft;
+  proxy = cfg.proxy;
   portStr = toString cfg.port;
   backendPort = cfg.port + 1;
   backendPortStr = toString backendPort;
 
-  minecraft-listener = pkgs.rustPlatform.buildRustPackage {
-    pname = "minecraft-listener";
-    version = "1.0.0";
-    src = ./minecraft-listener;
-    cargoLock.lockFile = ./minecraft-listener/Cargo.lock;
-  };
+  # Environment variables passed to the itzg/minecraft-server container.
+  allEnv = {
+    EULA = "TRUE";
+    MEMORY = cfg.memory;
+  } // cfg.extraEnvironment;
+
+  # Shell script that lazymc invokes as its server.command.
+  # exec replaces the shell so lazymc can signal podman directly.
+  startScript =
+    let
+      envArgs = lib.concatMap (k: [ "-e" "${k}=${allEnv.${k}}" ]) (lib.attrNames allEnv);
+      envFileArgs = lib.concatMap (f: [ "--env-file" (toString f) ]) cfg.environmentFiles;
+      volumeArgs = lib.concatMap (v: [ "-v" v ]) ([ "${cfg.dataDir}:/data" ] ++ cfg.extraVolumes);
+      args =
+        [
+          "${pkgs.podman}/bin/podman"
+          "run"
+          "--rm"
+          "--replace"
+          "--name"
+          "minecraft"
+        ]
+        ++ envArgs
+        ++ envFileArgs
+        ++ [
+          "-p"
+          "127.0.0.1:${backendPortStr}:25565"
+        ]
+        ++ volumeArgs
+        ++ [ cfg.image ];
+    in
+    pkgs.writeShellScript "minecraft-start" ''
+      exec ${lib.escapeShellArgs args}
+    '';
+
+  joinMethodsStr = lib.concatMapStringsSep ", " (m: ''"${m}"'') proxy.joinMethods;
+
+  lazymcConfig = pkgs.writeText "lazymc.toml" ''
+    [public]
+    address = "0.0.0.0:${portStr}"
+    version = "${proxy.version}"
+    protocol = ${toString proxy.protocol}
+
+    [server]
+    address = "127.0.0.1:${backendPortStr}"
+    directory = "${cfg.dataDir}"
+    command = "${startScript}"
+    wake_whitelist = ${lib.boolToString proxy.wakeWhitelist}
+    wake_on_start = ${lib.boolToString proxy.wakeOnStart}
+    wake_on_crash = ${lib.boolToString proxy.wakeOnCrash}
+
+    [time]
+    sleep_after = ${toString (cfg.idleShutdownMinutes * 60)}
+    minimum_online_time = ${toString (cfg.startupGraceMinutes * 60)}
+
+    [join]
+    methods = [${joinMethodsStr}]
+
+    [join.kick]
+    starting = "${proxy.kickStartingMessage}"
+
+    [motd]
+    sleeping = "${proxy.motdSleeping}"
+    starting = "${proxy.motdStarting}"
+
+    [advanced]
+    rewrite_server_properties = ${lib.boolToString proxy.rewriteServerProperties}
+  '';
 in
 {
   options.services.ondemand-minecraft = {
@@ -63,19 +125,13 @@ in
     extraVolumes = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
-      description = "Extra volume mounts for the container (e.g. \"/host/path:/container/path:ro\").";
+      description = "Extra volume mounts for the container.";
     };
 
     environmentFiles = lib.mkOption {
       type = lib.types.listOf lib.types.path;
       default = [ ];
       description = "Environment files passed to the container (KEY=VALUE format).";
-    };
-
-    whitelistFile = lib.mkOption {
-      type = lib.types.nullOr lib.types.path;
-      default = null;
-      description = "Path to env file with WHITELIST=name1,name2,... for pre-start filtering.";
     };
 
     idleShutdownMinutes = lib.mkOption {
@@ -89,107 +145,88 @@ in
       default = 10;
       description = "Minutes to wait for the first connection after startup.";
     };
+
+    proxy = {
+      wakeWhitelist = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Only allow whitelisted players (from whitelist.json in dataDir) to wake the server.";
+      };
+
+      wakeOnStart = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "Start the Minecraft server immediately when lazymc launches.";
+      };
+
+      wakeOnCrash = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "Automatically restart the Minecraft server after a crash.";
+      };
+
+      rewriteServerProperties = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "Let lazymc rewrite server.properties to set the correct port and RCON settings.";
+      };
+
+      joinMethods = lib.mkOption {
+        type = lib.types.listOf (lib.types.enum [ "kick" "hold" "forward" "lobby" ]);
+        default = [ "hold" "kick" ];
+        description = "Ordered list of methods to handle players connecting while the server is down.";
+      };
+
+      kickStartingMessage = lib.mkOption {
+        type = lib.types.str;
+        default = "Server is starting...\\n\\nPlease try again in a minute.";
+        description = "Disconnect message shown when a player is kicked while the server starts.";
+      };
+
+      motdSleeping = lib.mkOption {
+        type = lib.types.str;
+        default = "Server is sleeping\\n\\u00a72Join to wake it up";
+        description = "MOTD shown in the server list when the server is sleeping.";
+      };
+
+      motdStarting = lib.mkOption {
+        type = lib.types.str;
+        default = "\\u00a72Server is starting...\\n\\u00a77Please wait";
+        description = "MOTD shown in the server list when the server is starting.";
+      };
+
+      version = lib.mkOption {
+        type = lib.types.str;
+        default = "1.21.1.1";
+        description = "Minecraft version string shown in the server list before the server is probed.";
+      };
+
+      protocol = lib.mkOption {
+        type = lib.types.int;
+        default = 774;
+        description = "Minecraft protocol version matching the version string (e.g. 767 for 1.21.1).";
+      };
+    };
   };
 
   config = lib.mkIf cfg.enable {
-    # Podman for OCI containers
     virtualisation.podman.enable = true;
-    virtualisation.oci-containers.backend = "podman";
 
-    # Minecraft server container (started on-demand, not auto-started)
-    # Binds to localhost backend port; the listener proxies public traffic to it.
-    virtualisation.oci-containers.containers.minecraft = {
-      image = cfg.image;
-      environment = {
-        EULA = "TRUE";
-        MEMORY = cfg.memory;
-        SERVER_PORT = portStr;
-      } // cfg.extraEnvironment;
-      ports = [ "127.0.0.1:${backendPortStr}:${portStr}" ];
-      volumes = [ "${cfg.dataDir}:/data" ] ++ cfg.extraVolumes;
-      environmentFiles = cfg.environmentFiles;
-    };
+    # Ensure data directory exists with itzg container UID/GID (1000:1000)
+    systemd.tmpfiles.rules = [ "d ${cfg.dataDir} 0755 1000 1000 -" ];
 
-    # Ensure data directory exists
-    systemd.tmpfiles.rules = [ "d ${cfg.dataDir} 0755 root root -" ];
-
-    # Don't auto-start the minecraft container
-    systemd.services.podman-minecraft.wantedBy = lib.mkForce [ ];
-
-    # Listener/proxy: always owns the public port.
-    # When backend is down: shows sleeping/starting MOTD, kicks with message.
-    # When backend is up: transparently proxies connections.
-    systemd.services.minecraft-listener = {
-      description = "Minecraft on-demand listener and proxy";
+    systemd.services.minecraft-lazymc = {
+      description = "Minecraft on-demand server (lazymc)";
       wantedBy = [ "multi-user.target" ];
       after = [ "network.target" ];
       serviceConfig = {
         Type = "simple";
-        ExecStart = "${minecraft-listener}/bin/minecraft-listener ${portStr} ${backendPortStr}${lib.optionalString (cfg.whitelistFile != null) " ${cfg.whitelistFile}"}";
+        ExecStart = "${pkgs.lazymc}/bin/lazymc -c ${lazymcConfig} start";
         Restart = "always";
         RestartSec = "5s";
-      };
-    };
-
-    # Watchdog: checks for idle connections and shuts down after timeout
-    systemd.services.minecraft-watchdog = {
-      description = "Minecraft idle shutdown watchdog";
-      wantedBy = [ "podman-minecraft.service" ];
-      after = [ "podman-minecraft.service" ];
-      bindsTo = [ "podman-minecraft.service" ];
-      script = ''
-        IDLE_MINUTES=0
-        SHUTDOWN_AFTER=${toString cfg.idleShutdownMinutes}
-        STARTUP_GRACE=${toString cfg.startupGraceMinutes}
-
-        echo "Watchdog started. Waiting $STARTUP_GRACE min for first connection..."
-
-        # Startup grace period: wait for first connection
-        MINUTE=0
-        while [ $MINUTE -lt $STARTUP_GRACE ]; do
-          sleep 60
-          MINUTE=$((MINUTE + 1))
-          CONNECTIONS=$(${pkgs.iproute2}/bin/ss -tn state established '( dport = :${portStr} or sport = :${portStr} )' | tail -n +2 | wc -l)
-          if [ "$CONNECTIONS" -gt 0 ]; then
-            echo "Connection detected during startup grace period."
-            break
-          fi
-          echo "No connections yet, minute $MINUTE of $STARTUP_GRACE..."
-        done
-
-        # Check if anyone connected during grace period
-        CONNECTIONS=$(${pkgs.iproute2}/bin/ss -tn state established '( dport = :${portStr} or sport = :${portStr} )' | tail -n +2 | wc -l)
-        if [ "$CONNECTIONS" -lt 1 ]; then
-          echo "No connections after $STARTUP_GRACE minutes, shutting down."
-          systemctl stop podman-minecraft.service
-          exit 0
-        fi
-
-        echo "Switching to idle shutdown watcher ($SHUTDOWN_AFTER min timeout)..."
-
-        # Idle shutdown loop
-        while true; do
-          sleep 60
-          CONNECTIONS=$(${pkgs.iproute2}/bin/ss -tn state established '( dport = :${portStr} or sport = :${portStr} )' | tail -n +2 | wc -l)
-          if [ "$CONNECTIONS" -lt 1 ]; then
-            IDLE_MINUTES=$((IDLE_MINUTES + 1))
-            echo "No connections, idle for $IDLE_MINUTES of $SHUTDOWN_AFTER minutes..."
-            if [ $IDLE_MINUTES -ge $SHUTDOWN_AFTER ]; then
-              echo "$SHUTDOWN_AFTER minutes idle, shutting down Minecraft."
-              systemctl stop podman-minecraft.service
-              exit 0
-            fi
-          else
-            if [ $IDLE_MINUTES -gt 0 ]; then
-              echo "Connection detected, resetting idle counter."
-            fi
-            IDLE_MINUTES=0
-          fi
-        done
-      '';
-      serviceConfig = {
-        Type = "simple";
-        Restart = "no";
+        # Hardening (ProtectKernelTunables omitted: netavark needs sysctl writes)
+        PrivateTmp = true;
+        ProtectKernelModules = true;
       };
     };
 
