@@ -19,6 +19,13 @@ let
   backendPort = cfg.port + 1;
   backendPortStr = toString backendPort;
 
+  # Dedicated podman network with a fixed subnet so the container always
+  # gets the same IP.  This prevents stale DNAT iptables rules from
+  # accumulating across container restarts.
+  networkName = "minecraft-net";
+  networkSubnet = "10.89.0.0/24";
+  containerIp = "10.89.0.2";
+
   # Environment variables passed to the itzg/minecraft-server container.
   allEnv = {
     EULA = "TRUE";
@@ -40,6 +47,10 @@ let
           "--replace"
           "--name"
           "minecraft"
+          "--network"
+          networkName
+          "--ip"
+          containerIp
         ]
         ++ envArgs
         ++ envFileArgs
@@ -215,10 +226,25 @@ in
     # Ensure data directory exists with itzg container UID/GID (1000:1000)
     systemd.tmpfiles.rules = [ "d ${cfg.dataDir} 0755 1000 1000 -" ];
 
+    systemd.services.minecraft-network = {
+      description = "Create podman network for Minecraft";
+      wantedBy = [ "multi-user.target" ];
+      before = [ "minecraft-lazymc.service" ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = "${pkgs.writeShellScript "minecraft-network-create" ''
+          ${pkgs.podman}/bin/podman network exists ${networkName} 2>/dev/null \
+            || ${pkgs.podman}/bin/podman network create ${networkName} --subnet ${networkSubnet}
+        ''}";
+      };
+    };
+
     systemd.services.minecraft-lazymc = {
       description = "Minecraft on-demand server (lazymc)";
       wantedBy = [ "multi-user.target" ];
-      after = [ "network.target" ];
+      after = [ "network.target" "minecraft-network.service" ];
+      requires = [ "minecraft-network.service" ];
       serviceConfig = {
         Type = "simple";
         ExecStart = "${pkgs.lazymc}/bin/lazymc -c ${lazymcConfig} start";
