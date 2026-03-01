@@ -322,6 +322,7 @@
 
 
 (use-package vterm
+  :straight nil
   :if (require 'vterm-module nil t)
   :config
   (setq vterm-timer-delay nil))
