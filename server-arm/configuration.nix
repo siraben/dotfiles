@@ -74,12 +74,34 @@ in
   age.secrets.minecraft-whitelist.file = ../secrets/minecraft-whitelist.age;
   services.ondemand-minecraft = {
     enable = true;
+    memory = "8G";
     environmentFiles = [ config.age.secrets.minecraft-whitelist.path ];
     extraEnvironment = {
       TYPE = "PAPER";
       ENFORCE_WHITELIST = "TRUE";
-      VIEW_DISTANCE = "12";
+      VIEW_DISTANCE = "16";
+      SIMULATION_DISTANCE = "8";
+      NETWORK_COMPRESSION_THRESHOLD = "256";
       ENABLE_RCON = "TRUE";
+      JVM_XX_OPTS = builtins.concatStringsSep " " [
+        "-XX:+UnlockExperimentalVMOptions"
+        "-XX:+AlwaysPreTouch"
+        "-XX:+DisableExplicitGC"
+        "-XX:+ParallelRefProcEnabled"
+        "-XX:+PerfDisableSharedMem"
+        "-XX:+UseG1GC"
+        "-XX:MaxGCPauseMillis=130"
+        "-XX:G1NewSizePercent=28"
+        "-XX:G1MaxNewSizePercent=40"
+        "-XX:G1HeapRegionSize=8M"
+        "-XX:G1ReservePercent=20"
+        "-XX:G1MixedGCCountTarget=3"
+        "-XX:InitiatingHeapOccupancyPercent=15"
+        "-XX:G1MixedGCLiveThresholdPercent=90"
+        "-XX:SurvivorRatio=32"
+        "-XX:MaxTenuringThreshold=1"
+        "-XX:+UseStringDeduplication"
+      ];
     };
   };
 
