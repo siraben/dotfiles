@@ -62,7 +62,11 @@ let
         ++ [ cfg.image ];
     in
     pkgs.writeShellScript "minecraft-start" ''
-      exec ${lib.escapeShellArgs args}
+      # Trap SIGTERM/SIGINT so lazymc's stop signal actually stops the container.
+      # Without this, podman ignores the signal and the container keeps running.
+      trap '${pkgs.podman}/bin/podman stop -t 30 minecraft; exit 0' TERM INT
+      ${lib.escapeShellArgs args} &
+      wait $!
     '';
 
   joinMethodsStr = lib.concatMapStringsSep ", " (m: ''"${m}"'') proxy.joinMethods;
