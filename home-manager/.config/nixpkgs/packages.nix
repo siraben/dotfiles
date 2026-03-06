@@ -44,6 +44,7 @@ let
     watch
     wget
     mosh
+    mosh2
     nixpkgs-review
     croc
   ] ++ (whenNotMinimal ([

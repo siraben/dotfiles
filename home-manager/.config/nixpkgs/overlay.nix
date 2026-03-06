@@ -3,11 +3,14 @@
 final: prev:
 
 {
-  mosh = prev.mosh.overrideAttrs (old: {
+  mosh-patched = prev.mosh.overrideAttrs (old: {
     patches = (old.patches or [ ]) ++ [
       ./mosh/unicode-16.patch
     ];
   });
+  mosh2 = prev.writeShellScriptBin "mosh2" ''
+    exec ${final.mosh-patched}/bin/mosh "$@"
+  '';
   codex = prev.codex.overrideAttrs (old: rec {
     version = "0.101.0-unstable-${inputs.codex-src.lastModifiedDate or "unknown"}";
     src = inputs.codex-src;
