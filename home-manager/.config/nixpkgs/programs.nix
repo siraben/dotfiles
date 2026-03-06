@@ -8,8 +8,6 @@ let
     fpath+=("${pkgs.pure-prompt}/share/zsh/site-functions")
     if [ "$TERM" != dumb ]; then
       autoload -U promptinit && promptinit && prompt pure
-      zstyle :prompt:pure:host color cyan
-      zstyle :prompt:pure:user color cyan
       vterm_printf(){
           if [ -n "$TMUX" ] && ([ "''${TERM%%-*}" = "tmux" ] || [ "''${TERM%%-*}" = "screen" ] ); then
               # Tell tmux to pass the escape sequences through
