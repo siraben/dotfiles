@@ -7,7 +7,6 @@ pkgs.python3.withPackages (p: with p; [
   matplotlib # plots
   numpy # numerical computation
   pandas # data analysis
-  pylint # static checking
   requests # HTTP library
   setuptools # setup.py
   scipy

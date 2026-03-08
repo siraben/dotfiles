@@ -23,12 +23,13 @@
 
 (require 'use-package)
 
-;; (use-package lsp-pyright
-;;   :hook (python-mode . (lambda ()
-;;                          (require 'lsp-pyright)
-;;                          (lsp))))
-
 (use-package pyvenv)
+
+;; Use basedpyright (type checking) + ruff (linting/formatting) via rass multiplexer.
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '((python-mode python-ts-mode) .
+                 ("rass" "--" "basedpyright-langserver" "--stdio" "--" "ruff" "server"))))
 
 (provide 'siraben-python)
 ;;; siraben-python.el ends here
