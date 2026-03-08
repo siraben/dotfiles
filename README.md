@@ -18,13 +18,12 @@ macOS now, Linux minimal in server environments.
   - [Python](./home-manager/.config/nixpkgs/python-packages.nix)
 
 ## Installation
-First, [install Home Manager](https://github.com/nix-community/home-manager#installation) on macOS or Linux, then run the following commands.
+[Install Nix](https://nixos.org/download/) on macOS or Linux, then run the following commands.
 
 ```shell-session
-$ git clone git@github.com:siraben/dotfiles.git
-$ cd dotfiles && stow home-manager
-$ home-manager switch
+$ git clone git@github.com:siraben/dotfiles.git ~/dotfiles
+$ cd ~/dotfiles && ./switch.sh
 ```
 
 ## Notes
-Some configuration (e.g. Emacs, i3) has deliberately not been Nixified so that it works independently.  In general, every folder except for `nixos` can be `stow`'d.  Note that for some things like Emacs it assumes you have installed external dependencies such as fonts, interpreters and language servers for various programming languages.
+Some configuration (e.g. Emacs) has deliberately not been Nixified so that it works independently. For some things like Emacs it assumes you have installed external dependencies such as fonts, interpreters and language servers for various programming languages.
