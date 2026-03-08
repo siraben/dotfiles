@@ -126,7 +126,7 @@
   ;; Compress undo-tree history files
   (advice-add 'undo-tree-make-history-save-file-name :filter-return
               (lambda (filename) (concat filename ".gz")))
-  
+
   (setq undo-tree-history-directory-alist
         `((".*" . ,temporary-file-directory))
         undo-tree-auto-save-history t))
@@ -153,29 +153,29 @@
       (exec-path-from-shell-copy-envs
        '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE" "COQPATH")))))
 
-(use-package helm
-  :diminish helm-mode
-  :bind (("C-h a"   . helm-apropos)
-         ("C-h f"   . helm-apropos)
-         ("C-h r"   . helm-info-emacs)
-         ("C-x C-f" . helm-find-files)
-         ("M-x"     . helm-M-x)
-         ("C-x b"   . helm-mini)
-         ("C-x C-b" . helm-resume))
-  :hook (after-init . helm-mode)
-  :config
-  (setq helm-split-window-in-side-p           t
-        helm-buffers-fuzzy-matching           t
-        helm-move-to-line-cycle-in-source     t
-        helm-ff-search-library-in-sexp        t
-        helm-ff-file-name-history-use-recentf t
-        helm-autoresize-max-height            0
-        helm-autoresize-min-height            40)
-  (helm-autoresize-mode 1))
+(use-package vertico
+  :hook (after-init . vertico-mode))
 
-(use-package helm-rg
-  :commands (helm-rg)
-  :bind (("M-G" . helm-rg)))
+(use-package orderless
+  :demand
+  :config
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles partial-completion)))))
+
+(use-package marginalia
+  :hook (after-init . marginalia-mode))
+
+(use-package consult
+  :bind (("C-h a"   . consult-apropos)
+         ("C-x C-f" . find-file)
+         ("M-x"     . execute-extended-command)
+         ("C-x b"   . consult-buffer)
+         ("C-x C-b" . consult-buffer)
+         ("M-G"     . consult-ripgrep)
+         ("M-g g"   . consult-goto-line)
+         ("M-g M-g" . consult-goto-line)
+         ("M-s l"   . consult-line)))
 
 ;; Enable my favorite color scheme.
 (use-package color-theme-sanityinc-tomorrow
@@ -188,8 +188,7 @@
   (defun siraben--setup-spaceline ()
     "Configure spaceline modeline."
     (setq powerline-default-separator 'arrow)
-    (spaceline-emacs-theme)
-    (spaceline-helm-mode)))
+    (spaceline-emacs-theme)))
 
 (use-package webpaste
   :config
@@ -207,11 +206,11 @@
         TeX-complete-expert-commands t
         TeX-insert-braces nil
         LaTeX-electric-left-right-brace t)
-  
+
   ;; Enable preview-latex if available
   (when (locate-library "preview")
     (setq preview-scale-function 1.2))
-  
+
   (defun siraben--setup-latex ()
     "Configure LaTeX mode settings."
     (siraben-enable-writing-modes)
@@ -223,42 +222,6 @@
                 (append '(LaTeX-completion-at-point)
                         completion-at-point-functions))))
 
-(use-package lsp-mode
-  :disabled
-  :config
-  (require 'lsp-mode)
-  ;; (advice-add 'lsp :before #'direnv-update-environment)
-  (setq lsp-clients-clangd-args '("-j=4" "-log=error"))
-  (setq lsp-auto-guess-root t)
-  (setq lsp-log-io nil)
-  (setq lsp-restart 'interactive)
-  (setq lsp-enable-symbol-highlighting nil)
-  (setq lsp-enable-on-type-formatting nil)
-  (setq lsp-signature-auto-activate nil)
-  (setq lsp-signature-render-documentation nil)
-  (setq lsp-eldoc-hook nil)
-  (setq lsp-modeline-code-actions-enable nil)
-  (setq lsp-modeline-diagnostics-enable nil)
-  (setq lsp-headerline-breadcrumb-enable nil)
-  (setq lsp-semantic-tokens-enable nil)
-  (setq lsp-enable-folding nil)
-  (setq lsp-enable-imenu nil)
-  (setq lsp-enable-snippet nil)
-  (setq lsp-idle-delay 0.5)
-  (setq lsp-file-watch-threshold 500)
-  (setq lsp-enable-dap-auto-configure nil)
-  ;; append "^~" to lsp-file-watch-ignored to ignore files in home directory
-  (setq lsp-file-watch-ignored
-        (append lsp-file-watch-ignored '("^~")))
-  ;; (lsp-register-client
-  ;;  (make-lsp-client :new-connection (lsp-stdio-connection "ruff")
-  ;;                   :major-modes '(python-mode)
-  ;;                   :server-id 'ruff))
-  )
-
-;; (use-package lsp-ui)
-
-;; (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
 (use-package flycheck
   :diminish)
@@ -336,8 +299,7 @@
   :config
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
-(use-package kotlin-mode
-  :hook (kotlin-mode . lsp-deferred))
+(use-package kotlin-mode)
 
 (use-package writeroom-mode)
 
@@ -355,16 +317,19 @@
 
 (use-package boogie-friends)
 
-(use-package lsp-bridge
-  :straight '(lsp-bridge :type git :host github :repo "manateelazycat/lsp-bridge"
-                         :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
-                         :build (:not compile))
-  :init
-  (global-lsp-bridge-mode)
-  :bind
-  ("M-." . lsp-bridge-find-def)
-  ("M-," . lsp-bridge-find-def-return)
-  )
+(use-package eglot
+  :straight nil
+  :commands (eglot eglot-ensure)
+  :bind (:map eglot-mode-map
+              ("M-." . xref-find-definitions)
+              ("M-," . xref-go-back))
+  :hook ((python-mode . eglot-ensure)
+         (rust-mode . eglot-ensure)
+         (typescript-mode . eglot-ensure)
+         (kotlin-mode . eglot-ensure)
+         (c-mode . eglot-ensure)
+         (c++-mode . eglot-ensure)
+         (nix-mode . eglot-ensure)))
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here

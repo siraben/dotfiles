@@ -21,6 +21,7 @@ emacs/.emacs.d/projects
 emacs/.emacs.d/recentf
 emacs/.emacs.d/recentf.bak
 emacs/.emacs.d/straight/build-cache.el
+emacs/.emacs.d/straight/modified/
 emacs/.emacs.d/straight/build/
 emacs/.emacs.d/straight/repos/
 emacs/.emacs.d/tramp
