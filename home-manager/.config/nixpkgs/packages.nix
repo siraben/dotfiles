@@ -33,6 +33,8 @@ let
     nodePackages.bash-language-server
     nodePackages.typescript-language-server
     basedpyright
+    rassumfrassum
+    ruff
   ];
   sharedPackages = with pkgs; [
     bash

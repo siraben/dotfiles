@@ -134,9 +134,14 @@
 (use-package aggressive-indent
   :diminish aggressive-indent-mode)
 
-(use-package company
-  :diminish company-mode
-  :config (global-company-mode t))
+(use-package corfu
+  :hook (after-init . global-corfu-mode)
+  :config
+  (setq corfu-auto t
+        corfu-auto-prefix 1
+        corfu-auto-delay 0.2)
+  (corfu-popupinfo-mode 1)
+  (setq corfu-popupinfo-delay '(0.5 . 0.2)))
 
 (use-package which-key
   :diminish
@@ -226,14 +231,18 @@
 (use-package flycheck
   :diminish)
 
-(use-package direnv
-  :disabled
-  :config (direnv-mode))
+(use-package inheritenv)
 
 (use-package envrc
-  ;; add hook after init
   :hook (after-init . envrc-global-mode)
-  )
+  :config
+  ;; Ensure eglot inherits buffer-local env vars set by envrc,
+  ;; and restart the LSP server when the environment changes.
+  (advice-add 'eglot--connect :around #'inheritenv-apply)
+  (add-hook 'envrc-after-update-hook
+            (lambda ()
+              (when (and (featurep 'eglot) (eglot-managed-p))
+                (eglot-reconnect (eglot-current-server))))))
 
 (use-package esup
   :commands (esup)
