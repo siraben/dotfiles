@@ -5,6 +5,9 @@ nixos/hardware-configuration.nix
 result
 
 
+home-manager/.config/nix/nix.conf
+
+emacs/.emacs.d/.cache/
 emacs/.emacs.d/.dap-breakpoints
 emacs/.emacs.d/.lsp-session-v1
 emacs/.emacs.d/.mc-lists.el
