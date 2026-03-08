@@ -2,18 +2,6 @@
   "flakes": [
     {
       "from": {
-        "id": "stable",
-        "type": "indirect"
-      },
-      "to": {
-        "owner": "NixOS",
-        "ref": "nixos-20.09",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    {
-      "from": {
         "id": "nixpkgs",
         "type": "indirect"
       },
