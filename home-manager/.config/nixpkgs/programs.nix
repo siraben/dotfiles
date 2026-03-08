@@ -48,17 +48,17 @@ in
     enableZshIntegration = true;
     enableBashIntegration = true;
   };
-  gpg.enable = true;
   git = {
     enable = true;
     lfs.enable = true;
     signing = {
-      key = "45F0E5D788143267";
+      key = "~/.ssh/id_ed25519.pub";
       signByDefault = true;
     };
     settings = {
       user.name = "Ben Siraphob";
       user.email = "bensiraphob@gmail.com";
+      gpg.format = "ssh";
       pull.rebase = true;
       github.user = "siraben";
       advice.detachedHead = false;
