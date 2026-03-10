@@ -22,7 +22,6 @@ let
     patch
 
     rsync
-    openssh
     file
     less
     gzip
