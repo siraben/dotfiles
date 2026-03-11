@@ -48,6 +48,7 @@ in
     enableZshIntegration = true;
     enableBashIntegration = true;
   };
+  gpg.enable = true;
   git = {
     enable = true;
     lfs.enable = true;
