@@ -26,6 +26,8 @@ let
     less
     gzip
     bzip2
+
+    pinentry_mac
   ];
   languageServers = with pkgs; [
     haskellPackages.haskell-language-server
