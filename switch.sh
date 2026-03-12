@@ -29,5 +29,8 @@ else
 fi
 
 echo "Switching Home Manager configuration for siraben@$FLAKE_HOSTNAME..."
+# Disable nix plugins during activation to avoid ABI mismatches between the
+# system nix and the nixpkgs nix used by home-manager's activate script.
+export NIX_CONFIG="plugin-files ="
 # Pass along any remaining arguments (e.g., --show-trace, -v)
 home-manager switch --flake ".#siraben@$FLAKE_HOSTNAME" "$@"
