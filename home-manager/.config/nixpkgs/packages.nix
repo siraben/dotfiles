@@ -45,18 +45,20 @@ let
     watch
     wget
     mosh
-    mosh2
     nixpkgs-review
+    gh
+    claude-code
+    codex
+    ranger
     croc
   ] ++ (whenNotMinimal ([
+    mosh2
     (aspellWithDicts (d: with d; [ en en-computers en-science ]))
     bat
     borgbackup
     cabal-install
     cachix
     cargo
-    claude-code
-    # codex (2026-03-07: disabled until I fix it in Nixpkgs)
     cmake
     dejavu_fonts
     ffmpeg
@@ -75,7 +77,6 @@ let
     nix-output-monitor
     nodejs
     (import ./python-packages.nix { inherit pkgs; })
-    ranger
     ripgrep
     rust-analyzer
     shellcheck
