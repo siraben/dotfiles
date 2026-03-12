@@ -35,6 +35,15 @@ final: prev:
     ];
     doInstallCheck = false;
   });
+  pure-prompt = prev.pure-prompt.overrideAttrs (old: rec {
+    version = "1.27.1";
+    src = prev.fetchFromGitHub {
+      owner = "sindresorhus";
+      repo = "pure";
+      rev = "v${version}";
+      hash = "sha256-Fhk4nlVPS09oh0coLsBnjrKncQGE6cUEynzDO2Skiq8=";
+    };
+  });
   python3 = prev.python3.override {
     packageOverrides = pyFinal: pyPrev: {
       rapidfuzz = pyPrev.rapidfuzz.overridePythonAttrs (old: {
