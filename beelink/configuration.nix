@@ -101,7 +101,7 @@ in
     };
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 22 ];
+      allowedTCPPorts = [ 22 8384 ];
     };
   };
   networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
@@ -168,7 +168,9 @@ in
         KbdInteractiveAuthentication = false;
       };
     };
+
   };
+  virtualisation.docker.enable = true;
 
   # Force performance profile at boot (so KDE shows “Performance” and no throttling)
   systemd.services.set-performance-profile = {
@@ -252,9 +254,11 @@ in
       "networkmanager"
       "audio"
       "video"
+      "docker"
     ];
     openssh.authorizedKeys.keys = sshKeys;
   };
+
 
   ##############################################################################
   # Packages & Programs

@@ -24,7 +24,7 @@
 
             home-manager.nixosModules.home-manager
             {
-              home-manager.useGlobalPkgs = true;
+              # home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.siraben = import ../home-manager/.config/nixpkgs/home.nix;
               home-manager.extraSpecialArgs = { inherit username inputs; minimal = true; };
