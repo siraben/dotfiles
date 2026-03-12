@@ -49,6 +49,10 @@ in
     enableBashIntegration = true;
   };
   gpg.enable = true;
+  ssh = {
+    enable = true;
+    matchBlocks."*".addKeysToAgent = "yes";
+  };
   git = {
     enable = true;
     lfs.enable = true;
@@ -63,6 +67,7 @@ in
       pull.rebase = true;
       github.user = "siraben";
       advice.detachedHead = false;
+      commit.gpgSign = false;
       core.commitGraph = true;
       fetch.writeCommitGraph = true;
       # Performance improvements

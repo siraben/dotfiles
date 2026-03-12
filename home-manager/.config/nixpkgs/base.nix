@@ -30,6 +30,7 @@ lib.recursiveUpdate (rec {
 
   home.sessionVariables = {
     EDITOR = "emacsclient";
+    TZ = "America/Los_Angeles";
   } // (lib.optionalAttrs isDarwin {
     HOMEBREW_NO_AUTO_UPDATE = 1;
     HOMEBREW_NO_ANALYTICS = 1;
