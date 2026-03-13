@@ -1,4 +1,4 @@
-{ lib, pkgs, isDarwin, isLinux }:
+{ lib, pkgs, isDarwin, isLinux, profile }:
 
 let
   linuxShellExtra = ''
@@ -99,7 +99,7 @@ in
     '';
   };
   kitty = {
-    enable = true;
+    enable = profile == "full";
     settings = {
       font_family = "JetBrainsMono Nerd Font";
       cursor_blink_interval = 0;

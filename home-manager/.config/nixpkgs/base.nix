@@ -45,7 +45,7 @@ lib.recursiveUpdate (rec {
     base = "en_US.UTF-8";
   };
 
-  programs = import ./programs.nix { inherit lib pkgs isDarwin isLinux; };
+  programs = import ./programs.nix { inherit lib pkgs isDarwin isLinux profile; };
   fonts.fontconfig.enable = true;
   services = lib.optionalAttrs isLinux (import ./services.nix { inherit lib pkgs; });
   nix.package = pkgs.nix;
