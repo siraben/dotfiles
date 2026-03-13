@@ -44,22 +44,6 @@
         "type": "github"
       }
     },
-    "codex-src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1772944175,
-        "narHash": "sha256-woJPeumQkThASGA7a0//dL6veosA+iX9JeY0LMSJ78s=",
-        "owner": "openai",
-        "repo": "codex",
-        "rev": "46b8d127cf372378945b53f79c82cd0341fe870e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "openai",
-        "repo": "codex",
-        "type": "github"
-      }
-    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -298,7 +282,6 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
-        "codex-src": "codex-src",
         "home-manager": "home-manager_2",
         "mac-app-util": "mac-app-util",
         "nixpkgs": "nixpkgs_5",
