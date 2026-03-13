@@ -55,36 +55,30 @@
         };
       };
 
-      homeConfigurations = {
-        "${username}@macos-x86_64" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-darwin; # nixpkgs from output function args
-          extraSpecialArgs = { inherit username; inputs = allInputs; minimal = false; };
-          modules = [
-            mac-app-util.homeManagerModules.default
-            ./home-manager/.config/nixpkgs/home.nix
-          ];
-        };
-        "${username}@macos-aarch64" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-          extraSpecialArgs = { inherit username; inputs = allInputs; minimal = false; };
-          modules = [
-            mac-app-util.homeManagerModules.default
-            ./home-manager/.config/nixpkgs/home.nix
-          ];
-        };
-        "${username}@linux" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          extraSpecialArgs = { inherit username; inputs = allInputs; minimal = false; };
-          modules = [ ./home-manager/.config/nixpkgs/home.nix ];
-        };
-        "${username}@minimal" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          extraSpecialArgs = { inherit username; inputs = allInputs; minimal = true; };
-          modules = [ ./home-manager/.config/nixpkgs/home.nix ];
-        };
+      homeConfigurations = let
+        mkHome = { system, profile, extraModules ? [] }:
+          home-manager.lib.homeManagerConfiguration {
+            pkgs = nixpkgs.legacyPackages.${system};
+            extraSpecialArgs = { inherit username profile; inputs = allInputs; };
+            modules = extraModules ++ [ ./home-manager/.config/nixpkgs/home.nix ];
+          };
+        darwinModules = [ mac-app-util.homeManagerModules.default ];
+      in {
+        # Darwin (full only)
+        "${username}@x86_64-darwin-full"   = mkHome { system = "x86_64-darwin";  profile = "full"; extraModules = darwinModules; };
+        "${username}@aarch64-darwin-full"   = mkHome { system = "aarch64-darwin"; profile = "full"; extraModules = darwinModules; };
+
+        # Linux x86_64
+        "${username}@x86_64-linux-full"     = mkHome { system = "x86_64-linux"; profile = "full"; };
+        "${username}@x86_64-linux-headless" = mkHome { system = "x86_64-linux"; profile = "headless"; };
+        "${username}@x86_64-linux-minimal"  = mkHome { system = "x86_64-linux"; profile = "minimal"; };
+
+        # Linux aarch64
+        "${username}@aarch64-linux-headless" = mkHome { system = "aarch64-linux"; profile = "headless"; };
+        "${username}@aarch64-linux-minimal"  = mkHome { system = "aarch64-linux"; profile = "minimal"; };
       };
 
-      devShells = nixpkgs.lib.genAttrs [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ] (system:
+      devShells = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ] (system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
         in
