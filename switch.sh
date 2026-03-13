@@ -1,32 +1,39 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Determine hostname for the flake
+# Determine the arch-os-profile triple for the flake
 OS_TYPE=$(uname -s)
 ARCH=$(uname -m)
-FLAKE_HOSTNAME=""
 
-if [[ "$OS_TYPE" == "Linux" ]]; then
-  # Default to 'linux', user can specify 'minimal' as an argument
-  if [[ "${1:-}" == "minimal" ]]; then # Check first argument safely
-    FLAKE_HOSTNAME="minimal"
-    shift || true # Consume the 'minimal' argument if present
-  else
-    FLAKE_HOSTNAME="linux" # This is x86_64-linux by flake definition
-  fi
-elif [[ "$OS_TYPE" == "Darwin" ]]; then
-  if [[ "$ARCH" == "x86_64" ]]; then
-    FLAKE_HOSTNAME="macos-x86_64"
-  elif [[ "$ARCH" == "arm64" ]]; then # uname -m on Apple Silicon is arm64
-    FLAKE_HOSTNAME="macos-aarch64" # Flake uses aarch64
-  else
-    echo "::error:: Unsupported macOS architecture: $ARCH" >&2
+case "$OS_TYPE" in
+  Linux)
+    NIX_ARCH=$([[ "$ARCH" == "aarch64" ]] && echo "aarch64" || echo "x86_64")
+    PROFILE="${1:-}"
+    case "$PROFILE" in
+      minimal|headless|full)
+        shift || true
+        ;;
+      *)
+        # Default: aarch64 -> headless, x86_64 -> full
+        if [[ "$NIX_ARCH" == "aarch64" ]]; then
+          PROFILE="headless"
+        else
+          PROFILE="full"
+        fi
+        ;;
+    esac
+    FLAKE_HOSTNAME="${NIX_ARCH}-linux-${PROFILE}"
+    ;;
+  Darwin)
+    NIX_ARCH=$([[ "$ARCH" == "arm64" ]] && echo "aarch64" || echo "x86_64")
+    PROFILE="full"
+    FLAKE_HOSTNAME="${NIX_ARCH}-darwin-${PROFILE}"
+    ;;
+  *)
+    echo "::error:: Unsupported OS type: $OS_TYPE" >&2
     exit 1
-  fi
-else
-  echo "::error:: Unsupported OS type: $OS_TYPE" >&2
-  exit 1
-fi
+    ;;
+esac
 
 echo "Switching Home Manager configuration for siraben@$FLAKE_HOSTNAME..."
 # Disable nix plugins during activation to avoid ABI mismatches between the
