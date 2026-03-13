@@ -49,10 +49,6 @@ in
     enableBashIntegration = true;
   };
   gpg.enable = true;
-  ssh = {
-    enable = true;
-    matchBlocks."*".addKeysToAgent = "yes";
-  };
   git = {
     enable = true;
     lfs.enable = true;
