@@ -13,10 +13,6 @@
       url = "github:siraben/tree-sitter-sml";
       flake = false;
     };
-    codex-src = {
-      url = "github:openai/codex";
-      flake = false;
-    };
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
