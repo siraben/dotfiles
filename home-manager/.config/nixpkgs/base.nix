@@ -1,4 +1,4 @@
-{ config, lib, currentSystem, minimal, inputs, ... }:
+{ config, lib, currentSystem, profile, inputs, ... }:
 
 let
   inherit (lib.systems.elaborate { system = currentSystem; }) isLinux isDarwin;
@@ -12,7 +12,7 @@ let
     "claude-code"
   ];
   pkgsOptions = {
-    overlays = lib.optionals (!minimal) [
+    overlays = [
       (import ./overlay.nix { inherit inputs; })
     ];
     config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
@@ -26,7 +26,7 @@ lib.recursiveUpdate (rec {
   nixpkgs = pkgsOptions;
   home.username = "siraben";
   home.homeDirectory = if isDarwin then "/Users/${home.username}" else "/home/${home.username}";
-  home.packages = import ./packages.nix { inherit lib pkgs isDarwin isLinux minimal; };
+  home.packages = import ./packages.nix { inherit lib pkgs isDarwin isLinux profile; };
 
   home.sessionVariables = {
     EDITOR = "emacsclient";
@@ -68,7 +68,7 @@ lib.recursiveUpdate (rec {
   home.stateVersion = "25.05";
   home.enableNixpkgsReleaseCheck = false;
 })
-(lib.optionalAttrs (!minimal) {
+(lib.optionalAttrs (profile == "full") {
     home.file.".config/kitty/session.conf".text = ''
       # Kitty session file
       # This will restore your tabs and windows when kitty starts
