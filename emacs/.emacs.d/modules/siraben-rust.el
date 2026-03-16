@@ -22,21 +22,17 @@
 ;;; Code:
 
 (use-package flycheck-rust)
-(use-package rustic)
 
-(use-package rust-mode
+(use-package rustic
+  :mode ("\\.rs\\'" . rustic-mode)
   :config
-  (require 'rust-mode)
   (setq rust-format-on-save t)
   (defun siraben--rust-mode-setup ()
     "Configure Rust mode settings."
-    (rustic-mode)
     (flycheck-rust-setup)
     (local-set-key (kbd "s-b") 'recompile)
-    (subword-mode 1)
-    ;; (lsp)
-    )
-  (add-hook 'rust-mode-hook #'siraben--rust-mode-setup))
+    (subword-mode 1))
+  (add-hook 'rustic-mode-hook #'siraben--rust-mode-setup))
 
 (provide 'siraben-rust)
 ;;; siraben-rust.el ends here
