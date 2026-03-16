@@ -33,11 +33,11 @@ jobs:
           set -euo pipefail
           echo "OS: ${{ matrix.os }}"
           if [[ "${{ matrix.os }}" == "ubuntu-24.04" ]]; then
-            echo "Building for Linux (siraben@linux)"
-            nix build .#homeConfigurations."siraben@linux".activationPackage -L
+            echo "Building for Linux (siraben@x86_64-linux-headless)"
+            nix build .#homeConfigurations."siraben@x86_64-linux-headless".activationPackage -L
           elif [[ "${{ matrix.os }}" == "macos-15" ]]; then
-            echo "Building for macOS x86_64 (siraben@macos-aarch64)"
-            nix build .#homeConfigurations."siraben@macos-aarch64".activationPackage -L
+            echo "Building for macOS (siraben@aarch64-darwin-full)"
+            nix build .#homeConfigurations."siraben@aarch64-darwin-full".activationPackage -L
           else
             echo "::error::Unsupported OS: ${{ matrix.os }}"
             exit 1
