@@ -121,6 +121,15 @@ in
   services.nginx = import ./nginx.nix {};
   services.nextcloud = import ./nextcloud.nix { inherit pkgs; };
   services.anki-sync-server = import ./anki-sync-server.nix {};
+  services.postgresql = {
+    enable = true;
+    ensureDatabases = [ "nextcloud" ];
+    ensureUsers = [{ name = "nextcloud"; ensureDBOwnership = true; }];
+  };
+  systemd.services."nextcloud-setup" = {
+    requires = [ "postgresql.service" ];
+    after = [ "postgresql.service" ];
+  };
 
   # Disable wait-online (OCI networking is managed outside systemd-networkd)
   systemd.network.wait-online.enable = false;
