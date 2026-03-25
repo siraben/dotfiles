@@ -9,7 +9,7 @@
   maxUploadSize = "1G";
   https = true;
   config.adminpassFile = "/var/nextcloud-admin-pass";
-  config.dbtype = "sqlite";
+  config.dbtype = "pgsql";
   ensureUsers = {
     siraben = {
       email = "bensiraphob@gmail.com";
