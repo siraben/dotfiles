@@ -120,13 +120,13 @@ in
   # Nextcloud
   services.nginx = import ./nginx.nix {};
   services.nextcloud = import ./nextcloud.nix { inherit pkgs; };
-  # services.anki-sync-server = import ./anki-sync-server.nix {};
+  services.anki-sync-server = import ./anki-sync-server.nix {};
 
   # Disable wait-online (OCI networking is managed outside systemd-networkd)
   systemd.network.wait-online.enable = false;
 
   # Firewall
-  networking.firewall.allowedTCPPorts = [ 80 443 2022 25565 ];
+  networking.firewall.allowedTCPPorts = [ 80 443 2022 25565 26594 ];
   networking.firewall.allowedUDPPorts = [ ];
 
   system.stateVersion = "25.11";
