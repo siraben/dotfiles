@@ -12,6 +12,10 @@ in
     ./oci-hardware.nix
     ./zfs-mounts.nix
     ./minecraft.nix
+    "${fetchTarball {
+      url = "https://github.com/onny/nixos-nextcloud-testumgebung/archive/fa6f062830b4bc3cedb9694c1dbf01d5fdf775ac.tar.gz";
+      sha256 = "0gzd0276b8da3ykapgqks2zhsqdv4jjvbv97dsxg0hgrhb74z0fs";
+    }}/nextcloud-extras.nix"
   ];
 
   # Server tweaks
@@ -107,11 +111,22 @@ in
 
   security.sudo.wheelNeedsPassword = false;
 
+  # ACME / Let's Encrypt
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "bensiraphob@gmail.com";
+  };
+
+  # Nextcloud
+  services.nginx = import ./nginx.nix {};
+  services.nextcloud = import ./nextcloud.nix { inherit pkgs; };
+  # services.anki-sync-server = import ./anki-sync-server.nix {};
+
   # Disable wait-online (OCI networking is managed outside systemd-networkd)
   systemd.network.wait-online.enable = false;
 
-  # Firewall (22=ssh, 2022=ET, 60000-61000=mosh)
-  networking.firewall.allowedTCPPorts = [ 2022 ];
+  # Firewall
+  networking.firewall.allowedTCPPorts = [ 80 443 2022 25565 ];
   networking.firewall.allowedUDPPorts = [ ];
 
   system.stateVersion = "25.11";

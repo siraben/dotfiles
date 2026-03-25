@@ -11,4 +11,8 @@
     device = "datapool/home";
     fsType = "zfs";
   };
+  fileSystems."/var/lib/nextcloud" = {
+    device = "datapool/nextcloud";
+    fsType = "zfs";
+  };
 }
