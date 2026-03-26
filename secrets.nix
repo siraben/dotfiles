@@ -4,4 +4,8 @@ let
 in
 {
   "secrets/minecraft-whitelist.age".publicKeys = [ siraben server-arm ];
+  "secrets/nextcloud-admin-pass.age".publicKeys = [ siraben server-arm ];
+  "secrets/nextcloud-siraben-pass.age".publicKeys = [ siraben server-arm ];
+  "secrets/anki-sync-pass.age".publicKeys = [ siraben server-arm ];
+  "secrets/cloudflare-credentials.age".publicKeys = [ siraben server-arm ];
 }

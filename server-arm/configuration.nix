@@ -74,8 +74,14 @@ in
     openssh.authorizedKeys.keys = keys;
   };
 
-  # On-demand Minecraft server
+  # Secrets
   age.secrets.minecraft-whitelist.file = ../secrets/minecraft-whitelist.age;
+  age.secrets.nextcloud-admin-pass = { file = ../secrets/nextcloud-admin-pass.age; owner = "nextcloud"; };
+  age.secrets.nextcloud-siraben-pass = { file = ../secrets/nextcloud-siraben-pass.age; owner = "nextcloud"; };
+  age.secrets.anki-sync-pass.file = ../secrets/anki-sync-pass.age;
+  age.secrets.cloudflare-credentials = { file = ../secrets/cloudflare-credentials.age; owner = "acme"; };
+
+  # On-demand Minecraft server
   services.ondemand-minecraft = {
     enable = true;
     memory = "8G";
