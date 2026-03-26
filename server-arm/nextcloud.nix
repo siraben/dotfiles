@@ -8,12 +8,12 @@
   configureRedis = true;
   maxUploadSize = "1G";
   https = true;
-  config.adminpassFile = "/var/nextcloud-admin-pass";
+  config.adminpassFile = "/run/agenix/nextcloud-admin-pass";
   config.dbtype = "pgsql";
   ensureUsers = {
     siraben = {
       email = "bensiraphob@gmail.com";
-      passwordFile = "/var/nextcloud-siraben-pass";
+      passwordFile = "/run/agenix/nextcloud-siraben-pass";
     };
   };
   settings.enabledPreviewProviders = [
