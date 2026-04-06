@@ -34,8 +34,6 @@ let
   ];
   languageServers = with pkgs; [
     haskellPackages.haskell-language-server
-    nodePackages.bash-language-server
-    nodePackages.typescript-language-server
     basedpyright
     rassumfrassum
     ruff
