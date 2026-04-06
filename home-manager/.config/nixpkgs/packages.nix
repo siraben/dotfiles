@@ -73,7 +73,6 @@ let
     (aspellWithDicts (d: with d; [ en en-computers en-science ]))
     cabal-install
     cargo
-    cmake
     dejavu_fonts
     ffmpeg
     (pkgs.nerd-fonts.jetbrains-mono)
@@ -88,7 +87,6 @@ let
     nodejs
     (import ./python-packages.nix { inherit pkgs; })
     rust-analyzer
-    stack
     # (import ./texlive-packages.nix { inherit pkgs; })
     tree-sitter
     typst
