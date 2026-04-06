@@ -45,7 +45,6 @@
   # Hardware configuration
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   hardware.enableRedistributableFirmware = true;
-  hardware.enableAllFirmware = true;
 
   # Network interfaces (adjust based on your hardware)
   networking.useDHCP = lib.mkDefault true;
