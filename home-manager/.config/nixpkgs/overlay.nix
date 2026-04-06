@@ -3,14 +3,7 @@
 final: prev:
 
 {
-  mosh-patched = prev.mosh.overrideAttrs (old: {
-    patches = (old.patches or [ ]) ++ [
-      ./mosh/unicode-16.patch
-    ];
-  });
-  mosh2 = prev.writeShellScriptBin "mosh2" ''
-    exec ${final.mosh-patched}/bin/mosh "$@"
-  '';
+  mosh = inputs.mosh-unicode.packages.${prev.system}.default;
   pure-prompt = prev.pure-prompt.overrideAttrs (old: rec {
     version = "1.27.1";
     src = prev.fetchFromGitHub {

@@ -185,6 +185,27 @@
         "type": "github"
       }
     },
+    "mosh-unicode": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1775502273,
+        "narHash": "sha256-RLJxm/5TUaUa5mcrMjd86RR/lMJFx5mOFdrvCJqC6io=",
+        "owner": "siraben",
+        "repo": "mosh",
+        "rev": "cf7a85f84971a62b5cc05d6c5aca750b7f4a5465",
+        "type": "github"
+      },
+      "original": {
+        "owner": "siraben",
+        "ref": "unicode",
+        "repo": "mosh",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1766736597,
@@ -284,6 +305,7 @@
         "agenix": "agenix",
         "home-manager": "home-manager_2",
         "mac-app-util": "mac-app-util",
+        "mosh-unicode": "mosh-unicode",
         "nixpkgs": "nixpkgs_5",
         "tree-sitter-sml": "tree-sitter-sml"
       }

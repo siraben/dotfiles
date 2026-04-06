@@ -54,7 +54,6 @@ let
     # CLI tools (headless + full)
     claude-code
     codex
-    mosh2
     bat
     borgbackup
     cachix
