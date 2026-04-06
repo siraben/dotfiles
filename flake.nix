@@ -13,6 +13,10 @@
       url = "github:siraben/tree-sitter-sml";
       flake = false;
     };
+    mosh-unicode = {
+      url = "github:siraben/mosh/unicode";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, mac-app-util, ... /* Capture all inputs */ }@allInputs:
