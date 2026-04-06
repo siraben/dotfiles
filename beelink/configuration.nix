@@ -39,20 +39,24 @@ in
       "kernel.sched_autogroup_enabled" = 1;   # better desktop interactivity
       "fs.inotify.max_user_watches" = 1048576;
       "fs.inotify.max_user_instances" = 1024;
-      "vm.swappiness" = 10;                   # prefer RAM over swap
+      "vm.swappiness" = 180;                  # high for zram (compressed RAM, not disk)
+      "vm.dirty_ratio" = 15;                  # flush writes sooner (good for NVMe)
+      "vm.dirty_background_ratio" = 5;
+      "net.core.default_qdisc" = "fq";
+      "net.ipv4.tcp_congestion_control" = "bbr";
     };
 
     kernelPackages = pkgs.linuxPackages_latest;
 
-    # Intel N100 graphics tuning
+    # Intel N100: GuC/FBC are auto-enabled on kernel 6.2+, no manual i915 params needed
     kernelParams = [
       "quiet"
       "loglevel=3"
       "systemd.show_status=auto"     # hide OK lines, still show errors
       "rd.udev.log_level=3"          # make early udev less chatty
       "vt.global_cursor_default=0"   # no blinking text cursor over the splash
-      "i915.enable_guc=2"  # GuC submission for Alder Lake-N; smooth video & compositor
-      "i915.enable_fbc=1"  # framebuffer compression (saves bandwidth; ok for desktop)
+      "nowatchdog"                   # reduce overhead
+      "nmi_watchdog=0"
     ];
 
     kernelModules = [ "snd_hda_intel" "snd_hda_codec_hdmi" ];
@@ -142,10 +146,8 @@ in
     # Firmware updates
     fwupd.enable = true;
 
-    # Power/Thermals
+    # Thermals (thermald manages N100 burst clocks gracefully)
     thermald.enable = true;
-    power-profiles-daemon.enable = true;
-    tlp.enable = false;
 
     journald.extraConfig = ''
       SystemMaxUse=1G
@@ -172,19 +174,7 @@ in
   };
   virtualisation.docker.enable = true;
 
-  # Force performance profile at boot (so KDE shows “Performance” and no throttling)
-  systemd.services.set-performance-profile = {
-    description = "Set power-profiles-daemon to performance";
-    after = [ "power-profiles-daemon.service" ];
-    wants = [ "power-profiles-daemon.service" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.power-profiles-daemon}/bin/powerprofilesctl set performance";
-    };
-  };
-
-  # Also nudge CPU governor
+  # Max performance - governor directly, no PPD daemon overhead
   powerManagement.cpuFreqGovernor = "performance";
 
   ##############################################################################
@@ -202,17 +192,20 @@ in
 
     wireplumber = {
       enable = true;
-      # Append a rule to prefer HDMI/DP sinks as default without overwriting others
-      configPackages = [
-        (pkgs.writeTextDir "share/wireplumber/main.lua.d/50-default-hdmi.lua" ''
-          -- Prefer any HDMI/DisplayPort sink as the default output
-          rule = {
-            matches = { { { "node.name", "matches", "alsa_output.*hdmi.*" }, }, },
-            apply_properties = { ["node.default"] = true, ["priority.session"] = 200 },
+      # Prefer HDMI/DP sinks as default
+      extraConfig."50-hdmi-default" = {
+        "monitor.alsa.rules" = [
+          {
+            matches = [
+              { "node.name" = "~alsa_output.*hdmi.*"; }
+            ];
+            actions.update-props = {
+              "priority.driver" = 2000;
+              "priority.session" = 2000;
+            };
           }
-          table.insert(alsa_monitor.rules, rule)
-        '')
-      ];
+        ];
+      };
     };
   };
 
@@ -272,7 +265,7 @@ in
     curl
     htop
     btop
-    neofetch
+    fastfetch
     tmux
     pciutils
     usbutils

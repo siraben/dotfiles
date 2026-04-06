@@ -31,6 +31,12 @@
           modules = [
             ./beelink/configuration.nix
             ./beelink/hardware-configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useUserPackages = true;
+              home-manager.users.${username} = import ./home-manager/.config/nixpkgs/home.nix;
+              home-manager.extraSpecialArgs = { inherit username; inputs = allInputs; profile = "headless"; };
+            }
           ];
         };
 
