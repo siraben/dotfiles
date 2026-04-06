@@ -48,7 +48,7 @@ lib.recursiveUpdate (rec {
   programs = import ./programs.nix { inherit lib pkgs isDarwin isLinux profile; };
   fonts.fontconfig.enable = true;
   services = lib.optionalAttrs isLinux (import ./services.nix { inherit lib pkgs; });
-  nix.package = pkgs.nix;
+  nix.package = lib.mkDefault pkgs.nix;
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
     keep-derivations = true;
