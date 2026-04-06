@@ -108,7 +108,10 @@ in
       allowedTCPPorts = [ 22 8384 ];
     };
   };
+  # Deterministic DNS: NM can't touch resolv.conf, Nix manages it entirely
+  networking.networkmanager.dns = "none";
   networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
+  networking.resolvconf.enable = true;
 
   # faster boot, skip NM wait online
   systemd.services.NetworkManager-wait-online.enable = false;
