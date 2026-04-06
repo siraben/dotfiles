@@ -81,7 +81,6 @@ let
     hlint
     imagemagick
     ledger
-    mpv
     my-emacs
     niv
     nodejs
@@ -90,7 +89,9 @@ let
     # (import ./texlive-packages.nix { inherit pkgs; })
     tree-sitter
     typst
-    yt-dlp
+    # uncommenting until deno gets fixed
+    # mpv
+    # yt-dlp
   ] ++ languageServers));
 in
 sharedPackages ++ (lib.optionals isLinux linuxPackages) ++ (lib.optionals isDarwin darwinPackages)
