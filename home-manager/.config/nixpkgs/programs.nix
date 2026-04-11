@@ -91,6 +91,8 @@ in
       set -as terminal-overrides ",xterm-256color:Tc,xterm-kitty:Tc,tmux*:Tc"
       # Open new windows/panes in the current working directory
       bind c new-window -c "#{pane_current_path}"
+      bind '"' split-window -c "#{pane_current_path}"
+      bind % split-window -h -c "#{pane_current_path}"
 
       # Session defaults
       set -g pane-border-style 'fg=#5a5a5a'
