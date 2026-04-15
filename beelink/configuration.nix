@@ -40,10 +40,11 @@ in
       "fs.inotify.max_user_watches" = 1048576;
       "fs.inotify.max_user_instances" = 1024;
       "vm.swappiness" = 180;                  # high for zram (compressed RAM, not disk)
-      "vm.dirty_ratio" = 15;                  # flush writes sooner (good for NVMe)
+      "vm.dirty_ratio" = 20;                  # flush writes sooner (SATA SSD)
       "vm.dirty_background_ratio" = 5;
       "net.core.default_qdisc" = "fq";
       "net.ipv4.tcp_congestion_control" = "bbr";
+      "vm.page-cluster" = 0;                   # single-page swap for zram+zstd
     };
 
     kernelPackages = pkgs.linuxPackages_latest;
@@ -179,6 +180,18 @@ in
 
   # Max performance - governor directly, no PPD daemon overhead
   powerManagement.cpuFreqGovernor = "performance";
+  services.power-profiles-daemon.enable = false;
+
+  # Disable ModemManager (no cellular modem on this device)
+  systemd.services.ModemManager.enable = false;
+
+  # IRQ balancing across 4 cores
+  services.irqbalance.enable = true;
+
+  # SSD: use noop scheduler for SATA SSD
+  services.udev.extraRules = ''
+    ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="none"
+  '';
 
   ##############################################################################
   # Audio (PipeWire + WirePlumber, prefer HDMI/DP by default)
@@ -300,6 +313,10 @@ in
     # Audio helpers
     alsa-utils
     pavucontrol
+
+    # Diagnostics
+    libva-utils  # vainfo - verify VAAPI works
+    fio          # disk benchmarking
   ];
 
   programs = {
