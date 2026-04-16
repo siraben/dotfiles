@@ -63,6 +63,7 @@ in
       pull.rebase = true;
       github.user = "siraben";
       advice.detachedHead = false;
+      url."ssh://git@github.com/".insteadOf = "https://github.com/";
       commit.gpgSign = false;
       core.commitGraph = true;
       fetch.writeCommitGraph = true;
