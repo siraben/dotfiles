@@ -9,7 +9,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     mac-app-util = {
-      url = "github:hraban/mac-app-util";
+      url = "github:siraben/mac-app-util-py";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     agenix = {
