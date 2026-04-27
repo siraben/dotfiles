@@ -3,6 +3,12 @@
 final: prev:
 
 {
+  # Workaround for NixOS/nix#15638 on darwin: Mach-O page-hash rewriting
+  # invalidates ad-hoc signatures on zsh/fish, causing checkPhase scenarios to
+  # hang or be SIGKILLed. Skip checks until the upstream fix lands.
+  direnv = prev.direnv.overrideAttrs (_: { doCheck = false; doInstallCheck = false; });
+  nix-direnv = prev.nix-direnv.overrideAttrs (_: { doCheck = false; doInstallCheck = false; });
+
   mosh = inputs.mosh-unicode.packages.${prev.system}.default;
   pure-prompt = prev.pure-prompt.overrideAttrs (old: rec {
     version = "1.27.1";
