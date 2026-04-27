@@ -14,6 +14,7 @@ let
   pkgsOptions = {
     overlays = [
       (import ./overlay.nix { inherit inputs; })
+      inputs.siraben-overlay.overlays.default
     ];
     config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
   };
@@ -43,6 +44,17 @@ lib.recursiveUpdate (rec {
   home.language = {
     ctype = "en_US.UTF-8";
     base = "en_US.UTF-8";
+  };
+
+  home.file = lib.optionalAttrs (profile == "headless") {
+    ".agent-deck/config.toml".source =
+      (pkgs.formats.toml { }).generate "agent-deck-config" {
+        default_tool = "claude";
+        theme = "dark";
+        worktree.branch_prefix = "siraben/";
+        claude.dangerous_mode = true;
+        feedback.disabled = true;
+      };
   };
 
   programs = import ./programs.nix { inherit lib pkgs isDarwin isLinux profile; };

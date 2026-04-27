@@ -2,8 +2,10 @@
 let
   isMinimal = profile == "minimal";
   isFull = profile == "full";
+  isHeadless = profile == "headless";
   whenNotMinimal = lib.optionals (!isMinimal);
   whenFull = lib.optionals isFull;
+  whenHeadless = lib.optionals isHeadless;
   my-emacs = with pkgs; emacs.pkgs.withPackages (p: [ p.vterm ]);
   wayland-packages = whenFull (with pkgs; [
     firefox
@@ -50,7 +52,9 @@ let
     gh
     ranger
     croc
-  ] ++ (whenNotMinimal ([
+  ] ++ (whenHeadless [
+    agent-deck
+  ]) ++ (whenNotMinimal ([
     # CLI tools (headless + full)
     claude-code
     codex

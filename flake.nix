@@ -20,6 +20,10 @@
       url = "github:siraben/mosh/unicode";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    siraben-overlay = {
+      url = "github:siraben/overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, mac-app-util, ... /* Capture all inputs */ }@allInputs:
