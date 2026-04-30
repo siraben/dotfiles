@@ -205,7 +205,7 @@
   :config
   (setq TeX-auto-save t
         TeX-parse-self t
-        TeX-master nil
+        TeX-master t
         TeX-PDF-mode t
         ;; Modern AUCTeX completion settings
         TeX-complete-expert-commands t
