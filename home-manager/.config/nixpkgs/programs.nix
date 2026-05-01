@@ -175,6 +175,8 @@ in
     keybindings = {
       "kitty_mod+t" = "new_tab_with_cwd";
       "cmd+t" = "new_tab_with_cwd";
+      "kitty_mod+enter" = "launch --cwd=current";
+      "cmd+enter" = "launch --cwd=current";
       # Switch tabs with cmd+number
       "cmd+1" = "goto_tab 1";
       "cmd+2" = "goto_tab 2";
