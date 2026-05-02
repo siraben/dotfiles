@@ -37,6 +37,7 @@ in
 
   services.forgejo = {
     enable = true;
+    package = pkgs.forgejo-lts;
     stateDir = "/var/lib/forgejo";
 
     database = {
