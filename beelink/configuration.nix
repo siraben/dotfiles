@@ -154,8 +154,8 @@ in
     thermald.enable = true;
 
     journald.extraConfig = ''
-      SystemMaxUse=1G
-      MaxRetentionSec=14day
+      SystemMaxUse=4G
+      MaxRetentionSec=1year
     '';
 
     # SSD trim
