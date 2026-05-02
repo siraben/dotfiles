@@ -19,10 +19,11 @@ final: prev:
       hash = "sha256-Fhk4nlVPS09oh0coLsBnjrKncQGE6cUEynzDO2Skiq8=";
     };
   });
+} // prev.lib.optionalAttrs prev.stdenv.isDarwin {
   python3 = prev.python3.override {
     packageOverrides = pyFinal: pyPrev: {
       rapidfuzz = pyPrev.rapidfuzz.overridePythonAttrs (old: {
-        postPatch = (old.postPatch or "") + prev.lib.optionalString prev.stdenv.isDarwin ''
+        postPatch = (old.postPatch or "") + ''
           substituteInPlace CMakeLists.txt \
             --replace-fail "set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)" \
                            "set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
