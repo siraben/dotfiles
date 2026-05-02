@@ -268,6 +268,14 @@ in
     openssh.authorizedKeys.keys = sshKeys;
   };
 
+  users.users.jrestivo = {
+    isNormalUser = true;
+    description = "Justin Restivo";
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINE5i3Uv3queOM3VfOCYOU/gnUAU+kZ8GFyn+C5dGcCc"
+    ];
+  };
+
 
   ##############################################################################
   # Packages & Programs
