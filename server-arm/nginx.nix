@@ -5,6 +5,7 @@
 
   # Use recommended settings
   recommendedGzipSettings = true;
+  recommendedBrotliSettings = true;
   recommendedOptimisation = true;
   recommendedProxySettings = true;
   recommendedTlsSettings = true;

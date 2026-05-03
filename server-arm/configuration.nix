@@ -31,7 +31,27 @@ in
     "net.ipv4.tcp_fastopen" = 3;
     "net.ipv4.ip_forward" = 1;
     "net.ipv6.conf.all.forwarding" = 1;
+    # Bigger TCP buffers for the 25Gb Mellanox NIC + cross-region BDP
+    "net.core.rmem_max" = 33554432;
+    "net.core.wmem_max" = 16777216;
+    "net.core.rmem_default" = 1048576;
+    "net.core.wmem_default" = 1048576;
+    # tcp_rmem max stays at 32 MiB to avoid regressing kernel default; tcp_wmem max
+    # at 16 MiB matches the wmem_max we actually need for outbound 1 Gbps egress.
+    "net.ipv4.tcp_rmem" = "4096 1048576 33554432";
+    "net.ipv4.tcp_wmem" = "4096 1048576 16777216";
+    "net.core.netdev_max_backlog" = 5000;
+    "net.ipv4.tcp_mtu_probing" = 1;
+    # zramSwap is enabled, so prefer cache over swap; retain dentries longer
+    "vm.swappiness" = 10;
+    "vm.vfs_cache_pressure" = 50;
   };
+  # Cap the ZFS ARC at 8 GiB. Without this it grows to ~50% RAM (~12 GiB)
+  # and on this box has been observed creeping toward the c_max default.
+  # Capping leaves more headroom for postgres + minecraft JVM + bots.
+  boot.extraModprobeConfig = ''
+    options zfs zfs_arc_max=8589934592
+  '';
   powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
   nix.optimise.automatic = true;
   nix.gc = {
@@ -131,7 +151,30 @@ in
     enable = true;
     ensureDatabases = [ "nextcloud" ];
     ensureUsers = [{ name = "nextcloud"; ensureDBOwnership = true; }];
+    settings = {
+      shared_buffers = "2GB";
+      effective_cache_size = "8GB";
+      maintenance_work_mem = "512MB";
+      work_mem = "32MB";
+      random_page_cost = 1.1;       # SSD-class storage
+      effective_io_concurrency = 200;
+      wal_buffers = "16MB";
+      max_wal_size = "4GB";
+      min_wal_size = "1GB";
+    };
   };
+
+  # ZFS auto-scrub for silent-corruption detection (trim is already on)
+  services.zfs.autoScrub = {
+    enable = true;
+    interval = "Sat *-*-* 04:00:00";
+  };
+
+  # Bump journal retention now that root has headroom (was capped ~460M)
+  services.journald.extraConfig = ''
+    SystemMaxUse=2G
+    MaxRetentionSec=2month
+  '';
   systemd.services."nextcloud-setup" = {
     requires = [ "postgresql.service" ];
     after = [ "postgresql.service" ];
