@@ -60,6 +60,10 @@ lib.recursiveUpdate (rec {
       cache=/home/siraben/cold/caches/npm
       prefix=/home/siraben/cold/toolchains/npm-global
     '';
+    ".config/baloofilerc".text = ''
+      [Basic Settings]
+      Indexing-Enabled=false
+    '';
   } // lib.optionalAttrs (profile == "headless") {
     ".agent-deck/config.toml".source =
       (pkgs.formats.toml { }).generate "agent-deck-config" {
