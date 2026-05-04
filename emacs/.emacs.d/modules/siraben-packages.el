@@ -333,7 +333,7 @@
               ("M-." . xref-find-definitions)
               ("M-," . xref-go-back))
   :hook ((python-mode . eglot-ensure)
-         (rust-mode . eglot-ensure)
+         (rustic-mode . eglot-ensure)
          (typescript-mode . eglot-ensure)
          (kotlin-mode . eglot-ensure)
          (c-mode . eglot-ensure)

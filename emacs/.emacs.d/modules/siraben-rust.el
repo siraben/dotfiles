@@ -26,6 +26,7 @@
 (use-package rustic
   :mode ("\\.rs\\'" . rustic-mode)
   :config
+  (setq rustic-lsp-client 'eglot)
   (setq rust-format-on-save t)
   (defun siraben--rust-mode-setup ()
     "Configure Rust mode settings."
