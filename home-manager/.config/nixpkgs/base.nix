@@ -57,6 +57,7 @@ lib.recursiveUpdate (rec {
         default_tool = "claude";
         theme = "dark";
         worktree.branch_prefix = "siraben/";
+        worktree.default_location = "sibling";
         claude.dangerous_mode = true;
         feedback.disabled = true;
       };
