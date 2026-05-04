@@ -46,7 +46,12 @@ lib.recursiveUpdate (rec {
     base = "en_US.UTF-8";
   };
 
-  home.file = lib.optionalAttrs (profile == "headless") {
+  home.file = lib.optionalAttrs isLinux {
+    ".config/baloofilerc".text = ''
+      [Basic Settings]
+      Indexing-Enabled=false
+    '';
+  } // lib.optionalAttrs (profile == "headless") {
     ".agent-deck/config.toml".source =
       (pkgs.formats.toml { }).generate "agent-deck-config" {
         default_tool = "claude";
