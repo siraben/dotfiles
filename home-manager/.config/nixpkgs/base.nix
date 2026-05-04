@@ -30,23 +30,37 @@ lib.recursiveUpdate (rec {
   home.packages = import ./packages.nix { inherit lib pkgs isDarwin isLinux profile; };
 
   home.sessionVariables = {
-    EDITOR = "emacsclient";
+    EDITOR = "vim";
     TZ = "America/Los_Angeles";
-  } // (lib.optionalAttrs isDarwin {
+  } // (lib.optionalAttrs isLinux {
+    BUN_INSTALL = "/home/siraben/cold/toolchains/bun";
+    CARGO_HOME = "/home/siraben/cold/toolchains/cargo";
+    RUSTUP_HOME = "/home/siraben/cold/toolchains/rustup";
+    npm_config_cache = "/home/siraben/cold/caches/npm";
+    npm_config_prefix = "/home/siraben/cold/toolchains/npm-global";
+  }) // (lib.optionalAttrs isDarwin {
     HOMEBREW_NO_AUTO_UPDATE = 1;
     HOMEBREW_NO_ANALYTICS = 1;
   });
 
-  home.sessionPath = lib.optionals isDarwin [
+  home.sessionPath = (lib.optionals isLinux [
+    "/home/siraben/cold/toolchains/bun/bin"
+    "/home/siraben/cold/toolchains/npm-global/bin"
+    "/home/siraben/cold/toolchains/cargo/bin"
+  ]) ++ (lib.optionals isDarwin [
     "/opt/homebrew/bin"
-  ];
+  ]);
 
-  home.language = {
-    ctype = "en_US.UTF-8";
-    base = "en_US.UTF-8";
-  };
-
-  home.file = lib.optionalAttrs (profile == "headless") {
+  home.file = lib.optionalAttrs isLinux {
+    ".bunfig.toml".text = ''
+      [install]
+      cache = "/home/siraben/cold/caches/bun"
+    '';
+    ".npmrc".text = ''
+      cache=/home/siraben/cold/caches/npm
+      prefix=/home/siraben/cold/toolchains/npm-global
+    '';
+  } // lib.optionalAttrs (profile == "headless") {
     ".agent-deck/config.toml".source =
       (pkgs.formats.toml { }).generate "agent-deck-config" {
         default_tool = "claude";
@@ -57,25 +71,17 @@ lib.recursiveUpdate (rec {
       };
   };
 
+  home.language = {
+    ctype = "en_US.UTF-8";
+    base = "en_US.UTF-8";
+  };
+
   programs = import ./programs.nix { inherit lib pkgs isDarwin isLinux profile; };
   fonts.fontconfig.enable = true;
   services = lib.optionalAttrs isLinux (import ./services.nix { inherit lib pkgs; });
   nix.package = lib.mkDefault pkgs.nix;
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
-    keep-derivations = true;
-    keep-outputs = true;
-    builders-use-substitutes = true;
-    substituters = [
-      "https://cache.nixos.org"
-      "https://nix-community.cachix.org"
-      "https://siraben.cachix.org"
-    ];
-    trusted-public-keys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "siraben.cachix.org-1:/zSVUB18DWcjQF52VMh0v7MzjI+pdevnWOa01koPoYc="
-    ];
   };
   home.stateVersion = "25.05";
   home.enableNixpkgsReleaseCheck = false;
@@ -112,6 +118,6 @@ lib.recursiveUpdate (rec {
       cd ~
       launch zsh
     '';
-    
+
     home.file.".config/kitty/tab_bar.py".source = ./tab_bar.py;
 })

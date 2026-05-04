@@ -60,6 +60,7 @@ let
     codex
     bat
     borgbackup
+    bun
     cachix
     gnumake
     jq
