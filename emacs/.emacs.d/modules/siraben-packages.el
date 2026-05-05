@@ -192,7 +192,7 @@
   :config
   (defun siraben--setup-spaceline ()
     "Configure spaceline modeline."
-    (setq powerline-default-separator 'arrow)
+    (setq powerline-default-separator 'utf-8)
     (spaceline-emacs-theme)))
 
 (use-package webpaste
