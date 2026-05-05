@@ -24,7 +24,6 @@ def draw_tab(
     if timer_id is None:
         timer_id = add_timer(_redraw_tab_bar, 1.0, True)
 
-    # Draw the tab with powerline style
     end = draw_tab_with_powerline(
         draw_data, screen, tab, before, max_title_length, index, is_last, extra_data
     )
@@ -32,35 +31,30 @@ def draw_tab(
     # Draw clock on the right side if this is the last tab
     if is_last:
         date_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        date_time_len = len(date_time) + 2  # Add padding
+        clock_text = f" {date_time} "
 
-        # Always position the clock at the right edge
-        clock_x = screen.columns - date_time_len
+        opts = get_options()
+        bar_bg_color = opts.tab_bar_background if opts.tab_bar_background is not None else draw_data.default_bg
+        bar_bg = as_rgb(int(bar_bg_color))
+        bar_fg = as_rgb(int(draw_data.inactive_fg))
 
-        # Only draw the clock if there's enough space
+        clock_x = screen.columns - len(clock_text)
+
         if clock_x > end:
-            # Fill space between tab and clock
+            # Fill space between tab and clock with the bar background
+            screen.cursor.fg = bar_fg
+            screen.cursor.bg = bar_bg
             screen.cursor.x = end
             screen.draw(" " * (clock_x - end))
 
             # Draw the date/time
-            opts = get_options()
-            default_bg = as_rgb(int(draw_data.default_bg))
-            screen.cursor.fg = 0
-            screen.cursor.bg = default_bg
             screen.cursor.x = clock_x
-            screen.draw(f" {date_time}")
+            screen.draw(clock_text)
 
-    return screen.cursor.x
+    return end
 
 def _redraw_tab_bar(timer_id):
-    for tm in _get_tm():
-        tm.mark_tab_bar_dirty()
-
-def _get_tm():
     from kitty.fast_data_types import get_boss
-    boss = get_boss()
-    for window in boss.all_windows:
-        tabman = window.tabref()
-        if tabman is not None:
-            yield tabman
+    tm = get_boss().active_tab_manager
+    if tm is not None:
+        tm.mark_tab_bar_dirty()
