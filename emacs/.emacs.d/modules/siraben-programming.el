@@ -26,9 +26,6 @@
 
 (defun siraben-prog-mode-defaults ()
   "Default programming mode hook, useful with any programming language."
-  (flyspell-prog-mode)
-  (diminish 'flyspell-mode)
-
   (electric-pair-mode +1)
   
   (set (make-local-variable 'comment-auto-fill-only-comments) t)
