@@ -28,9 +28,9 @@ in
     acceptProxyIP = [ "localhost" ];
   };
 
-  # DynamicUser=true on services.soju means we can't add a static user to
-  # the acme group, but SupplementaryGroups still works under DynamicUser.
-  systemd.services.soju.serviceConfig.SupplementaryGroups = [ "acme" ];
+  # ACME cert dir for an nginx-enableACME host is mode 750 acme:nginx, so
+  # soju (DynamicUser=true) joins the nginx group via SupplementaryGroups.
+  systemd.services.soju.serviceConfig.SupplementaryGroups = [ "nginx" ];
 
   services.nginx.virtualHosts.${ircHost} = {
     forceSSL = true;
