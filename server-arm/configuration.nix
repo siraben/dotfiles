@@ -13,6 +13,7 @@ in
     ./zfs-mounts.nix
     ./minecraft.nix
     ./soju.nix
+    ./wastebin.nix
     "${fetchTarball {
       url = "https://github.com/onny/nixos-nextcloud-testumgebung/archive/fa6f062830b4bc3cedb9694c1dbf01d5fdf775ac.tar.gz";
       sha256 = "0gzd0276b8da3ykapgqks2zhsqdv4jjvbv97dsxg0hgrhb74z0fs";
