@@ -7,10 +7,10 @@
       },
       "to": {
         "__final": true,
-        "lastModified": 1768783163,
+        "lastModified": 1779043932,
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "bde09022887110deb780067364a0818e89258968",
+        "rev": "3aa71a66694b02eebbcb563cb1dc06a641d8c2d4",
         "type": "github"
       }
     }
