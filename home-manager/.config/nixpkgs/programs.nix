@@ -106,9 +106,32 @@ in
       bind % split-window -h -c "#{pane_current_path}"
 
       # Session defaults
-      set -g pane-border-style 'fg=#5a5a5a'
-      set -g pane-active-border-style 'fg=#00afff'
       set -g allow-rename off
+
+      # Catppuccin Mocha theme — minimal, default fg throughout
+      set -g status-position bottom
+      set -g status-justify left
+      set -g status-style "bg=default,fg=default"
+      set -g status-left-length 60
+      set -g status-right-length 100
+
+      set -g pane-border-style 'fg=#313244'
+      set -g pane-active-border-style 'fg=#89b4fa'
+
+      set -g message-style "bg=#313244,fg=default"
+      set -g message-command-style "bg=#313244,fg=default"
+      set -g mode-style "bg=#45475a,fg=default"
+
+      set -g status-left "#[fg=#1e1e2e,bg=#89b4fa,bold]  #S #[fg=#89b4fa,bg=default,nobold] "
+      set -g status-right "#[fg=#6c7086]#{b:pane_current_path} "
+
+      setw -g window-status-format         "#[fg=default,bg=default] #I #W "
+      setw -g window-status-current-format "#[fg=default,bg=#313244,bold] #I #W #[bg=default,nobold]"
+
+      setw -g window-status-activity-style "fg=#f38ba8,bg=default"
+      setw -g window-status-bell-style "fg=#f38ba8,bg=default,bold"
+      setw -g window-status-separator " "
+      setw -g clock-mode-colour "#89b4fa"
     '';
   };
   kitty = {
