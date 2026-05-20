@@ -87,37 +87,17 @@ lib.recursiveUpdate (rec {
   home.enableNixpkgsReleaseCheck = false;
 })
 (lib.optionalAttrs (profile == "full") {
-    home.file.".config/kitty/session.conf".text = ''
-      # Kitty session file
-      # This will restore your tabs and windows when kitty starts
-
-      # You can have multiple layouts, each in its own tab
-      # Each layout can have multiple windows
-
-      # Example session with multiple tabs
-      # Uncomment and modify as needed:
-
-      # Tab 1 - Development
-      # new_tab Development
-      # cd ~/projects
-      # launch zsh
-
-      # Tab 2 - System monitoring
-      # new_tab Monitoring
-      # layout tall
-      # launch htop
-      # launch --location=vsplit watch -n 1 "df -h"
-
-      # Tab 3 - Logs
-      # new_tab Logs
-      # cd /var/log
-      # launch tail -f system.log
-
-      # Simple session that just opens a single tab in home directory
-      new_tab
-      cd ~
-      launch zsh
+    home.activation.ensureKittySessionFile = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      session_file="$HOME/.config/kitty/sessions/last-session.conf"
+      $DRY_RUN_CMD mkdir -p "$(dirname "$session_file")"
+      if [ ! -s "$session_file" ]; then
+        if [ -n "$DRY_RUN_CMD" ]; then
+          $DRY_RUN_CMD printf 'new_tab\ncd ~\nlaunch zsh\n' \> "$session_file"
+        else
+          printf 'new_tab\ncd ~\nlaunch zsh\n' > "$session_file"
+        fi
+      fi
     '';
-    
+
     home.file.".config/kitty/tab_bar.py".source = ./tab_bar.py;
 })
