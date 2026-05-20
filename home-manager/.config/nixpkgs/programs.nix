@@ -90,6 +90,16 @@ in
     extraConfig = ''
       # Truecolor / 24-bit color
       set -as terminal-overrides ",xterm-256color:Tc,xterm-kitty:Tc,tmux*:Tc"
+
+      # Quality-of-life
+      set -sg escape-time 250
+      set -g  focus-events on
+      set -g  renumber-windows on
+      set -g  pane-base-index 1
+      set -g  detach-on-destroy off
+      set -g  status-interval 5
+      set -g  display-panes-time 2000
+
       # Open new windows/panes in the current working directory
       bind c new-window -c "#{pane_current_path}"
       bind '"' split-window -c "#{pane_current_path}"
@@ -109,7 +119,7 @@ in
       scrollback_lines = 10000;
       scrollback_pager = "less --chop-long-lines --RAW-CONTROL-CHARS +INPUT_LINE_NUMBER";
       scrollback_pager_history_size = 1000;
-      startup_session = "session.conf";
+      startup_session = "~/.config/kitty/sessions/last-session.conf";
       macos_option_as_alt = "yes";
       # Mouse settings
       mouse_hide_wait = 0;
@@ -177,6 +187,8 @@ in
       "cmd+t" = "new_tab_with_cwd";
       "kitty_mod+enter" = "launch --cwd=current";
       "cmd+enter" = "launch --cwd=current";
+      "cmd+s" = "save_as_session --save-only --use-foreground-process ~/.config/kitty/sessions/last-session.conf";
+      "cmd+q" = "combine : save_as_session --save-only --use-foreground-process ~/.config/kitty/sessions/last-session.conf : quit";
       # Switch tabs with cmd+number
       "cmd+1" = "goto_tab 1";
       "cmd+2" = "goto_tab 2";
