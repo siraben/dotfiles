@@ -1,4 +1,4 @@
-;;; siraben-macos.el --- This files runs when the host OS is macOS.
+;;; siraben-macos.el --- macOS-specific Emacs configuration
 
 ;;; License:
 

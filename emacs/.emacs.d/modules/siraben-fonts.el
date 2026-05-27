@@ -1,10 +1,10 @@
-;;; siraben-fonts.el --- Setup fonts
+;;; siraben-fonts.el --- Configure default fonts and resizing commands
 
 ;;; Commentary:
 
-;; This file sets up the use of the Hack font and various functions
-;; that allow fonts to be resized.  The font settings were inspired by
-;; hrs's dotfiles repository at
+;; Set the default monospace font and provide interactive commands for
+;; increasing, decreasing, and resetting frame font size.  The font settings
+;; were inspired by hrs's dotfiles repository at
 ;; `https://github.com/hrs/dotfiles/blob/master/emacs/.emacs.d/configuration.org'
 
 ;;; License:

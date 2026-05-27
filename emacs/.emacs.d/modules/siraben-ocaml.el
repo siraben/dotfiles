@@ -1,4 +1,4 @@
-;;; siraben-ocaml.el --- configures Emacs for OCaml development
+;;; siraben-ocaml.el --- Configure Emacs for OCaml development
 
 ;;; License:
 
@@ -16,6 +16,8 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
+
+;; Configure tuareg and OCaml-specific Flycheck integration.
 
 ;;; Code:
 

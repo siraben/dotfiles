@@ -1,4 +1,6 @@
-;;; siraben-ui.el -- configure Emacs' visual appearance.
+;;; siraben-ui.el --- Configure Emacs visual appearance
+
+;;; License:
 
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -14,8 +16,9 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-;; This file configures the visual appearance of Emacs, loads
-;; my favorite theme, and adds a smart mode line.
+
+;; Configure global visual defaults, scrolling behavior, modeline helpers, and
+;; display-related quality-of-life settings.
 
 ;;; Code:
 

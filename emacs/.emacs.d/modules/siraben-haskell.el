@@ -1,4 +1,4 @@
-;;; siraben-haskell.el -- Haskell programming customizations.
+;;; siraben-haskell.el --- Haskell programming customizations
 
 ;;; License:
 

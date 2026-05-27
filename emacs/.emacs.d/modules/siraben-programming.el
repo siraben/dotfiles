@@ -1,4 +1,4 @@
-;;; siraben-programming.el -- siraben's programming configuration
+;;; siraben-programming.el --- Load programming language configuration
 
 ;;; License:
 
@@ -17,8 +17,7 @@
 
 ;;; Commentary:
 
-;; This file makes managing the different programming modes that
-;; need to be loaded easier.
+;; Set shared programming-mode defaults and load language-specific modules.
 
 ;;; Code:
 
