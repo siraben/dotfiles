@@ -3,6 +3,7 @@
 let
   linuxShellExtra = ''
     export NIX_PATH=$HOME/.nix-defexpr/channels:$NIX_PATH
+    export SSH_AUTH_SOCK="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/ssh-agent"
   '';
   sharedShellExtra = ''
     fpath+=("${pkgs.pure-prompt}/share/zsh/site-functions")

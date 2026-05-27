@@ -51,16 +51,6 @@ lib.recursiveUpdate (rec {
       [Basic Settings]
       Indexing-Enabled=false
     '';
-  } // lib.optionalAttrs (profile == "headless") {
-    ".agent-deck/config.toml".source =
-      (pkgs.formats.toml { }).generate "agent-deck-config" {
-        default_tool = "claude";
-        theme = "dark";
-        worktree.branch_prefix = "siraben/";
-        worktree.default_location = "sibling";
-        claude.dangerous_mode = true;
-        feedback.disabled = true;
-      };
   };
 
   programs = import ./programs.nix { inherit lib pkgs isDarwin isLinux profile; };
@@ -72,6 +62,7 @@ lib.recursiveUpdate (rec {
     keep-derivations = true;
     keep-outputs = true;
     builders-use-substitutes = true;
+    plugin-files = "";
     substituters = [
       "https://cache.nixos.org"
       "https://nix-community.cachix.org"
