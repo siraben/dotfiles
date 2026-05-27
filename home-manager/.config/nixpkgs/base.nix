@@ -63,7 +63,12 @@ lib.recursiveUpdate (rec {
     base = "en_US.UTF-8";
   };
 
-  home.file = lib.optionalAttrs isLinux {
+  home.file = {
+    ".claude/hooks/block-find-nix-store.sh" = {
+      executable = true;
+      source = ./block-find-nix-store.sh;
+    };
+  } // lib.optionalAttrs isLinux {
     ".config/baloofilerc".text = ''
       [Basic Settings]
       Indexing-Enabled=false
