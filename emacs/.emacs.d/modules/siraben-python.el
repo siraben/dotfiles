@@ -25,11 +25,25 @@
 
 (use-package pyvenv)
 
-;; Use basedpyright (type checking) + ruff (linting/formatting) via rass multiplexer.
+;; Capability-driven Python LSP setup.
+;;
+;; Preferred stack: basedpyright (type checking) + ruff (lint / format)
+;; multiplexed by `rass'.  If `rass' is missing we fall back to plain
+;; basedpyright; if that is also missing we leave the defaults alone and
+;; let `siraben-eglot-ensure-if-server-available' decide whether eglot
+;; should fire at all.
 (with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs
-               '((python-mode python-ts-mode) .
-                 ("rass" "--" "basedpyright-langserver" "--stdio" "--" "ruff" "server"))))
+  (require 'siraben-capabilities)
+  (cond
+   ((and (siraben-have-p "rass")
+         (siraben-have-p "basedpyright-langserver"))
+    (add-to-list 'eglot-server-programs
+                 '((python-mode python-ts-mode) .
+                   ("rass" "--" "basedpyright-langserver" "--stdio" "--" "ruff" "server"))))
+   ((siraben-have-p "basedpyright-langserver")
+    (add-to-list 'eglot-server-programs
+                 '((python-mode python-ts-mode) .
+                   ("basedpyright-langserver" "--stdio"))))))
 
 (provide 'siraben-python)
 ;;; siraben-python.el ends here
