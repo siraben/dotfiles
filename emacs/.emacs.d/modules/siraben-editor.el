@@ -1,4 +1,4 @@
-;;; siraben-editor.el --- make Emacs a great editor.
+;;; siraben-editor.el --- Configure general editing behavior
 
 ;;; License:
 ;; This program is free software: you can redistribute it and/or modify
@@ -15,6 +15,9 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
+
+;; Enable global editing modes and defaults that apply outside any one
+;; programming language.
 
 ;;; Code:
 

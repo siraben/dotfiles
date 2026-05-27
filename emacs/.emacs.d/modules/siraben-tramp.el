@@ -1,4 +1,4 @@
-;;; siraben-tramp.el -- siraben's TRAMP configuration
+;;; siraben-tramp.el --- TRAMP and remote terminal helpers
 
 ;;; License:
 
@@ -17,8 +17,8 @@
 
 ;;; Commentary:
 
-;; This file makes managing the different programming modes that
-;; need to be loaded easier.
+;; Configure TRAMP defaults and provide a helper for opening an ansi-term in a
+;; local or remote path.
 
 ;;; Code:
 

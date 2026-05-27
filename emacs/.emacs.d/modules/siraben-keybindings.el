@@ -1,4 +1,4 @@
-;;; siraben-keybindings.el -- Customize keybindings
+;;; siraben-keybindings.el --- Customize global keybindings
 
 ;;; License:
 
@@ -15,12 +15,10 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-;; This file sets up global keybindings. These keybindings are those
-;; that weren't set up in `use-package' declarations.
-
 ;;; Commentary:
 
-;; Customization of global keybindings.
+;; Set global keybindings that are not owned by a package-specific
+;; `use-package' declaration.
 
 ;;; Code:
 

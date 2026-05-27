@@ -1,4 +1,4 @@
-;;; siraben-agda.el --- configures Emacs for Agda development
+;;; siraben-agda.el --- Configure Emacs for Agda development
 
 ;;; License:
 ;; This program is free software: you can redistribute it and/or modify
@@ -15,6 +15,9 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
+
+;; Register Agda files and customize Agda mode faces when agda2-mode is
+;; available.
 
 ;;; Code:
 (add-to-list 'auto-mode-alist
@@ -56,4 +59,5 @@
      `(agda2-highlight-incomplete-pattern-face ((t (:background ,orange :foreground ,base03))))
      `(agda2-highlight-typechecks-face ((t (:background ,cyan :foreground ,base03)))))))
 
+(provide 'siraben-agda)
 ;;; siraben-agda.el ends here

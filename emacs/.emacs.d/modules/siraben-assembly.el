@@ -1,4 +1,4 @@
-;;; siraben-assembly.el --- Specific modes and packages for assembly code.
+;;; siraben-assembly.el --- Configure assembly editing helpers
 
 ;;; License:
 ;; This program is free software: you can redistribute it and/or modify
@@ -15,6 +15,8 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
+
+;; Tune asm-mode indentation and local editing modes for assembly files.
 
 ;;; Code:
 

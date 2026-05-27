@@ -1,4 +1,4 @@
-;;; siraben-sml.el --- Specific modes and packages for Standard ML code.
+;;; siraben-sml.el --- Configure Standard ML editing support
 
 ;;; License:
 ;; This program is free software: you can redistribute it and/or modify

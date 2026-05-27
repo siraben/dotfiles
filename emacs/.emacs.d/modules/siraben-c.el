@@ -1,4 +1,4 @@
-;;; siraben-c.el --- configures Emacs for C development
+;;; siraben-c.el --- Configure Emacs for C and C++ development
 
 ;;; License:
 
