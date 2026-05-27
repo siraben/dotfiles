@@ -24,11 +24,30 @@
 
 ;;; Code:
 
-(defvar siraben-default-font "DejaVu Sans Mono" "The default font type.")
+(defvar siraben-font-candidates
+  '("DejaVu Sans Mono" "Hack" "Source Code Pro" "Fira Code"
+    "Cascadia Mono" "Cascadia Code" "Consolas" "Menlo"
+    "Liberation Mono" "Courier New" "Monospace")
+  "Ordered list of monospace fonts to try. First installed wins.")
+
+(defun siraben--first-available-font (candidates)
+  "Return the first name in CANDIDATES that is installed, or nil."
+  (and (display-graphic-p)
+       (seq-find (lambda (name)
+                   (find-font (font-spec :name name)))
+                 candidates)))
+
+(defvar siraben-default-font
+  (or (siraben--first-available-font siraben-font-candidates)
+      "DejaVu Sans Mono")
+  "The default font type.  Auto-detected from `siraben-font-candidates'.")
+
 (defvar siraben-default-font-size
   (cond
    ((eq system-type 'darwin) 13)
-   ((eq system-type 'gnu/linux) 10))
+   ((eq system-type 'gnu/linux) 10)
+   ((eq system-type 'windows-nt) 10)
+   (t 10))
   "The default font size.")
 
 (defvar siraben-font-change-increment 1.1
@@ -42,10 +61,19 @@
 (defun siraben-set-font-size ()
   "Set the font to `siraben-default-font' at `siraben-current-font-size'.
 Set that for the current frame, and also make it the default for
-other, future frames."
-  (let ((font-code (siraben-font-code)))
-    (add-to-list 'default-frame-alist (cons 'font font-code))
-    (set-frame-font font-code)))
+other, future frames.  Silently no-ops in TTY frames or when the
+font isn't installed."
+  (when (and (display-graphic-p)
+             siraben-default-font
+             siraben-current-font-size
+             (find-font (font-spec :name siraben-default-font)))
+    (let ((font-code (siraben-font-code)))
+      (add-to-list 'default-frame-alist (cons 'font font-code))
+      (condition-case err
+          (set-frame-font font-code nil t)
+        (error
+         (message "siraben-set-font-size: could not set %s: %S"
+                  font-code err))))))
 
 (defun siraben-reset-font-size ()
   "Change font size back to `siraben-default-font-size'."

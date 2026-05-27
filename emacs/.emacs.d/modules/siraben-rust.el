@@ -26,8 +26,11 @@
 (use-package rustic
   :mode ("\\.rs\\'" . rustic-mode)
   :config
+  (require 'siraben-capabilities)
   (setq rustic-lsp-client 'eglot)
-  (setq rust-format-on-save t)
+  ;; Only auto-format on save when rustfmt is actually installed; otherwise
+  ;; every save would error out on Windows / minimal systems.
+  (setq rust-format-on-save (and (siraben-have-p "rustfmt") t))
   (defun siraben--rust-mode-setup ()
     "Configure Rust mode settings."
     (flycheck-rust-setup)

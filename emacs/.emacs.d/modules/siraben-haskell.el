@@ -58,11 +58,18 @@
       ("`isProperSubsetOf`" . ?⊂)
       ("undefined"          . ?⊥)))
 
+  (require 'siraben-capabilities)
   (defun siraben--haskell-mode-setup ()
     (subword-mode             t)
-    (interactive-haskell-mode t)
-    (diminish 'interactive-haskell-mode)
-    (flycheck-haskell-setup)
+    ;; `interactive-haskell-mode' shells out to ghci/cabal/stack; only
+    ;; turn it on when one of them is installed.
+    (when (siraben-have-p '("ghci" "cabal" "stack" "ghc"))
+      (interactive-haskell-mode t)
+      (when (fboundp 'diminish)
+        (diminish 'interactive-haskell-mode)))
+    (when (and (fboundp 'flycheck-haskell-setup)
+               (siraben-have-p '("ghc" "cabal" "stack")))
+      (flycheck-haskell-setup))
     (setq-local prettify-symbols-alist haskell-prettify-symbols-alist)
     (prettify-symbols-mode 1)
     (haskell-indentation-mode t))
