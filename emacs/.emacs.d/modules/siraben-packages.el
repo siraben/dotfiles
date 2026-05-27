@@ -187,12 +187,30 @@
   :demand
   :config (load-theme 'sanityinc-tomorrow-night t))
 
+(defun siraben--font-has-char-p (font char)
+  "Return non-nil if FONT can render CHAR."
+  (condition-case nil
+      (let ((glyphs (font-get-glyphs font 0 1 (string char))))
+        (and glyphs (aref glyphs 0)))
+    (error nil)))
+
+(defun siraben--has-powerline-glyphs-p ()
+  "Return non-nil if the default font can render Powerline glyph U+E0B0."
+  (when (display-graphic-p)
+    (let ((font (face-attribute 'default :font nil t)))
+      (and (fontp font)
+           (siraben--font-has-char-p font #xE0B0)))))
+
 (use-package spaceline
   :hook (after-init . siraben--setup-spaceline)
   :config
   (defun siraben--setup-spaceline ()
-    "Configure spaceline modeline."
-    (setq powerline-default-separator 'utf-8)
+    "Configure spaceline modeline.
+Uses fancy `utf-8' powerline separators when the default font supplies
+the required Private Use Area glyphs (Powerline / Nerd Fonts), otherwise
+falls back to plain ASCII separators so the mode-line stays readable."
+    (setq powerline-default-separator
+          (if (siraben--has-powerline-glyphs-p) 'utf-8 'bar))
     (spaceline-emacs-theme)))
 
 (use-package webpaste
@@ -234,7 +252,12 @@
 (use-package inheritenv)
 
 (use-package envrc
-  :hook (after-init . envrc-global-mode)
+  ;; Only enable envrc-global-mode when direnv is actually installed;
+  ;; otherwise every buffer would log a warning about a missing binary.
+  :hook (after-init . (lambda ()
+                        (require 'siraben-capabilities)
+                        (when (siraben-have-p "direnv")
+                          (envrc-global-mode))))
   :config
   ;; Ensure eglot inherits buffer-local env vars set by envrc,
   ;; and restart the LSP server when the environment changes.
@@ -332,13 +355,16 @@
   :bind (:map eglot-mode-map
               ("M-." . xref-find-definitions)
               ("M-," . xref-go-back))
-  :hook ((python-mode . eglot-ensure)
-         (rustic-mode . eglot-ensure)
-         (typescript-mode . eglot-ensure)
-         (kotlin-mode . eglot-ensure)
-         (c-mode . eglot-ensure)
-         (c++-mode . eglot-ensure)
-         (nix-mode . eglot-ensure)))
+  ;; Capability-driven: each hook only starts eglot when a known LSP
+  ;; server binary for that language is installed.  See
+  ;; `siraben-lsp-servers' / `siraben-eglot-ensure-if-server-available'.
+  :hook ((python-mode . siraben-eglot-ensure-if-server-available)
+         (rustic-mode . siraben-eglot-ensure-if-server-available)
+         (typescript-mode . siraben-eglot-ensure-if-server-available)
+         (kotlin-mode . siraben-eglot-ensure-if-server-available)
+         (c-mode . siraben-eglot-ensure-if-server-available)
+         (c++-mode . siraben-eglot-ensure-if-server-available)
+         (nix-mode . siraben-eglot-ensure-if-server-available)))
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here
