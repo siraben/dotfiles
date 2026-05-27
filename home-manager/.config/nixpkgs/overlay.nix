@@ -10,6 +10,29 @@ final: prev:
   nix-direnv = prev.nix-direnv.overrideAttrs (_: { doCheck = false; doInstallCheck = false; });
 
   mosh = inputs.mosh-unicode.packages.${prev.stdenv.hostPlatform.system}.default;
+
+  forgejo-mcp = final.buildGoModule rec {
+    pname = "forgejo-mcp";
+    version = "2.17.0";
+
+    src = final.fetchFromGitHub {
+      owner = "goern";
+      repo = "forgejo-mcp";
+      rev = "v${version}";
+      hash = "sha256-DcpS2467MCFfIVsdYEfd5t6kPjMeLElMQbDyuXI04XE=";
+    };
+
+    vendorHash = "sha256-5CV4drUaYKtZ/RoydAatblhsqU8VWYzYByjhcb9KZVY=";
+
+    meta = with final.lib; {
+      description = "MCP server for interacting with Forgejo repositories";
+      homepage = "https://github.com/goern/forgejo-mcp";
+      license = licenses.mit;
+      platforms = platforms.linux;
+      mainProgram = "forgejo-mcp";
+    };
+  };
+
   pure-prompt = prev.pure-prompt.overrideAttrs (old: rec {
     version = "1.27.1";
     src = prev.fetchFromGitHub {

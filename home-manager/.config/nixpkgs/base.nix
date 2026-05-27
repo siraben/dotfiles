@@ -22,6 +22,23 @@ let
     system = currentSystem;
     inherit (pkgsOptions) overlays config;
   };
+  forgejoMcpPort = 8214;
+  forgejoMcpTokenPath = "/home/siraben/psi-coding-agent/forgejo_token.txt";
+  forgejoMcpStart = pkgs.writeShellScript "forgejo-mcp-start" ''
+    set -euo pipefail
+
+    credential="$CREDENTIALS_DIRECTORY/forgejo_token"
+    if [ ! -r "$credential" ]; then
+      echo "forgejo-mcp: missing systemd credential forgejo_token" >&2
+      exit 1
+    fi
+
+    export FORGEJO_ACCESS_TOKEN="$(${pkgs.coreutils}/bin/cat "$credential")"
+    exec ${pkgs.forgejo-mcp}/bin/forgejo-mcp \
+      --transport http \
+      --http-port ${toString forgejoMcpPort} \
+      --url http://127.0.0.1:3010
+  '';
 in
 lib.recursiveUpdate (rec {
   nixpkgs = pkgsOptions;
@@ -66,12 +83,29 @@ lib.recursiveUpdate (rec {
   programs = import ./programs.nix { inherit lib pkgs isDarwin isLinux profile; };
   fonts.fontconfig.enable = true;
   services = lib.optionalAttrs isLinux (import ./services.nix { inherit lib pkgs; });
+  systemd.user.services.forgejo-mcp = lib.mkIf isLinux {
+    Unit = {
+      Description = "Forgejo MCP HTTP server";
+    };
+
+    Service = {
+      LoadCredential = [ "forgejo_token:${forgejoMcpTokenPath}" ];
+      ExecStart = "${forgejoMcpStart}";
+      Restart = "on-failure";
+      RestartSec = "10s";
+    };
+
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
+  };
   nix.package = lib.mkDefault pkgs.nix;
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
     keep-derivations = true;
     keep-outputs = true;
     builders-use-substitutes = true;
+    plugin-files = "";
     substituters = [
       "https://cache.nixos.org"
       "https://nix-community.cachix.org"
