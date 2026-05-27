@@ -53,17 +53,25 @@
     ;; ("NULL"   . ?∅)
     ))
 
+(require 'siraben-capabilities)
+
+(defun siraben--maybe-enable-clang-format ()
+  "Enable `clang-format+-mode' iff a clang-format binary is installed."
+  (when (and (fboundp 'clang-format+-mode)
+             (siraben-have-p "clang-format"))
+    (clang-format+-mode 1)))
+
 (add-hook 'c-mode-hook (lambda ()
                          (electric-pair-local-mode t)
                          (electric-indent-mode t)
-                         (clang-format+-mode t)
+                         (siraben--maybe-enable-clang-format)
                          (setq-local prettify-symbols-alist c-prettify-symbols-alist)
                          (prettify-symbols-mode 1)
                          ;; (lsp)
                          ))
 
 (add-hook 'c++-mode-hook (lambda ()
-                           (clang-format+-mode t)
+                           (siraben--maybe-enable-clang-format)
                            (electric-pair-local-mode t)
                            ;; (lsp)
                            ))

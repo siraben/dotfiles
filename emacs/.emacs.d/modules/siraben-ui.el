@@ -50,8 +50,24 @@
 (setq use-short-answers t)
 
 ;; Extra mode line modes.
+(defun siraben--battery-available-p ()
+  "Return non-nil if this system has a real, queryable battery.
+Guards against `fancy-battery-mode' crashing on desktops/VMs where the
+platform battery driver returns \"N/A\" for all fields (notably Windows
+VMs and physical desktops)."
+  (require 'battery)
+  (and battery-status-function
+       (let ((data (ignore-errors (funcall battery-status-function))))
+         (and data
+              (let ((pct (cdr (assq ?p data))))
+                (and (stringp pct)
+                     (not (member pct '("" "N/A")))
+                     (ignore-errors (> (string-to-number pct) 0))))))))
+
 (use-package fancy-battery
-  :hook (after-init . fancy-battery-mode)
+  :hook (after-init . (lambda ()
+                        (when (siraben--battery-available-p)
+                          (fancy-battery-mode))))
   :config
   (setq fancy-battery-show-percentage t))
 
