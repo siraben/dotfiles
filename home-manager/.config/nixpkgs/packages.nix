@@ -14,7 +14,8 @@ let
     keepassxc
     kitty
     vlc
-  ]) ++ wayland-packages;
+  ]) ++ wayland-packages ++ (with pkgs; [
+  ]);
   darwinPackages = with pkgs; [
     # GNU replacements
     coreutils

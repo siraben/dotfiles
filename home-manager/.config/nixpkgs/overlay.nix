@@ -10,6 +10,8 @@ final: prev:
   nix-direnv = prev.nix-direnv.overrideAttrs (_: { doCheck = false; doInstallCheck = false; });
 
   mosh = inputs.mosh-unicode.packages.${prev.stdenv.hostPlatform.system}.default;
+
+
   pure-prompt = prev.pure-prompt.overrideAttrs (old: rec {
     version = "1.27.1";
     src = prev.fetchFromGitHub {
