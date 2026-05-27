@@ -1,4 +1,4 @@
-;;; siraben-mdm.el -- emulating The Most Dangerous Writing App
+;;; siraben-mdm.el --- Emulate The Most Dangerous Writing App
 
 ;;; License:
 
@@ -15,14 +15,11 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-;; This mode was written from scratch by me after being inspired by
-;; The Most Dangerous Writing App which can be found at
-;; `https://www.themostdangerouswritingapp.com/'
-
 ;;; Commentary:
-;; There's no guarantee that this code is up to style.  It's very
-;; hacky as it is, but it works good enough for my purposes.  I'll
-;; read the Emacs Lisp manual later.
+
+;; Provide `most-dangerous-mode', a writing timer inspired by The Most
+;; Dangerous Writing App:
+;; `https://www.themostdangerouswritingapp.com/'
 
 ;;; Code:
 (defvar siraben-mdt-grace 5)

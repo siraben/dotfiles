@@ -1,4 +1,4 @@
-;;; siraben-packages.el --- Set up MELPA packages
+;;; siraben-packages.el --- Bootstrap and configure Emacs packages
 
 ;;; License:
 
@@ -17,8 +17,8 @@
 
 ;;; Commentary:
 
-;; This file sets up `use-package', which handles the installation of
-;; most packages.
+;; Bootstrap straight.el and use-package, then declare package-level
+;; configuration shared across the Emacs setup.
 
 ;;; Code:
 
