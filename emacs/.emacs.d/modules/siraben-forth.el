@@ -1,4 +1,4 @@
-;;; siraben-forth.el --- Specific modes and packages for Forth code.
+;;; siraben-forth.el --- Configure Forth editing support
 
 ;;; License:
 ;; This program is free software: you can redistribute it and/or modify
@@ -15,6 +15,8 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
+
+;; Install and configure forth-mode.
 
 ;;; Code:
 
