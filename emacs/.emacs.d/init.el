@@ -77,6 +77,7 @@
 
 ;; Load configuration modules
 (require 'siraben-core)
+(require 'siraben-capabilities)
 (require 'siraben-packages)
 (require 'siraben-ui)
 (require 'siraben-fonts)
