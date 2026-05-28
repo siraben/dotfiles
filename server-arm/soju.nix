@@ -7,12 +7,12 @@ let
   gamjaSrc = pkgs.fetchFromGitHub {
     owner = "siraben";
     repo = "gamja";
-    rev = "848cb1cfe83d33ebef039944109e792e422dd535";
-    hash = "sha256-rhEGXuBEsW9qHmXo3a+AMPtOwEkEsTWqz1EedSHW5R0=";
+    rev = "2c4f1d3c326d41261fedadcb751a707f146cdd44";
+    hash = "sha256-5tQbxYuYBLzD/YrjYEc3J/4Ivo2jvGKv8hvzAuEQF2w=";
   };
 
   gamja = pkgs.gamja.overrideAttrs (old: {
-    version = "siraben-fork-848cb1c";
+    version = "siraben-fork-2c4f1d3";
     src = gamjaSrc;
     npmDepsHash = "sha256-9MUvDaMIDe9zkPXxcFYGOrHWYEfKqLJofc22w35dQK0=";
     npmDeps = pkgs.fetchNpmDeps {
