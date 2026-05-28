@@ -4,7 +4,24 @@ let
   ircHost = "irc.siraben.dev";
   webHost = "chat.siraben.dev";
 
-  gamjaWeb = pkgs.gamja.override {
+  gamjaSrc = pkgs.fetchFromGitHub {
+    owner = "siraben";
+    repo = "gamja";
+    rev = "8dcdb51a831ab7045de877043c0ed086975b95b0";
+    hash = "sha256-6nPlM63+NbAhJT6/LihnP8bRCmbUIrSZJLSF/pT6ZRY=";
+  };
+
+  gamja = pkgs.gamja.overrideAttrs (old: {
+    version = "siraben-fork-8dcdb51";
+    src = gamjaSrc;
+    npmDepsHash = "sha256-9MUvDaMIDe9zkPXxcFYGOrHWYEfKqLJofc22w35dQK0=";
+    npmDeps = pkgs.fetchNpmDeps {
+      src = gamjaSrc;
+      hash = "sha256-9MUvDaMIDe9zkPXxcFYGOrHWYEfKqLJofc22w35dQK0=";
+    };
+  });
+
+  gamjaWeb = gamja.override {
     gamjaConfig = {
       server = {
         url = "/socket";
