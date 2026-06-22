@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# PreToolUse hook: block any Bash command that runs `find /nix/store`.
+# PreToolUse hook: block Bash commands that run `find /nix/store` or `rg`.
 # Reads stdin as a single JSON blob with at least { tool_name, tool_input }.
 
 set -eu
@@ -14,11 +14,18 @@ fi
 
 command=$(printf '%s' "$input" | python3 -c 'import json,sys;print(json.load(sys.stdin).get("tool_input",{}).get("command",""))' 2>/dev/null || true)
 
-# Match `find /nix/store` as a top-level command, the start of a pipeline,
+# Match a target command as a top-level command, the start of a pipeline,
 # inside `$(...)`/backticks, or after `&&`/`||`/`;`. Allow `nix path-info` etc.
-if printf '%s' "$command" | grep -qE '(^|[;&|`]|\$\()[[:space:]]*find[[:space:]]+/nix/store'; then
-  printf '%s\n' '{"decision":"block","reason":"Refusing `find /nix/store` (filesystem-wide nix store scans are expensive). Use `nix path-info`, `nix log`, or a specific store path instead."}'
-  exit 0
+prefix='(^|[;&|`]|\$\()[[:space:]]*'
+
+if printf '%s' "$command" | grep -qE "${prefix}find[[:space:]]+/nix/store"; then
+  echo "Refusing 'find /nix/store' (filesystem-wide nix store scans are expensive). Use 'nix path-info', 'nix log', or a specific store path instead." >&2
+  exit 2
+fi
+
+if printf '%s' "$command" | grep -qE "${prefix}rg([[:space:]]|$)"; then
+  echo "Refusing 'rg' (ripgrep). Use 'grep -r' / 'grep' instead." >&2
+  exit 2
 fi
 
 exit 0
