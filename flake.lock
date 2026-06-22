@@ -201,11 +201,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1778444822,
-        "narHash": "sha256-OHFAJVy0z1j+sKVvrdttKEdrbk9v1gRIfu+n7i2i9Wo=",
+        "lastModified": 1782147949,
+        "narHash": "sha256-WYGiW31yel3G0qMqKfsKM4zOn2qTKznUaW3HmzPfAHk=",
         "owner": "siraben",
         "repo": "overlay",
-        "rev": "8a7381c8737750d87ad0c33f00910672bccce85d",
+        "rev": "53afa05a31df77cda8b231b8085b57cd1a674008",
         "type": "github"
       },
       "original": {
