@@ -156,7 +156,9 @@
       "Configure exec-path-from-shell for macOS."
       (exec-path-from-shell-initialize)
       (exec-path-from-shell-copy-envs
-       '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE" "COQPATH")))))
+       '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE" "COQPATH"))
+      ;; Executable lookups made during init used the pre-shell PATH.
+      (siraben-capabilities-refresh))))
 
 (use-package vertico
   :hook (after-init . vertico-mode))
@@ -359,12 +361,23 @@ falls back to plain ASCII separators so the mode-line stays readable."
   ;; server binary for that language is installed.  See
   ;; `siraben-lsp-servers' / `siraben-eglot-ensure-if-server-available'.
   :hook ((python-mode . siraben-eglot-ensure-if-server-available)
+         (python-ts-mode . siraben-eglot-ensure-if-server-available)
          (rustic-mode . siraben-eglot-ensure-if-server-available)
+         (rust-mode . siraben-eglot-ensure-if-server-available)
+         (rust-ts-mode . siraben-eglot-ensure-if-server-available)
          (typescript-mode . siraben-eglot-ensure-if-server-available)
+         (typescript-ts-mode . siraben-eglot-ensure-if-server-available)
+         (tsx-ts-mode . siraben-eglot-ensure-if-server-available)
          (kotlin-mode . siraben-eglot-ensure-if-server-available)
          (c-mode . siraben-eglot-ensure-if-server-available)
          (c++-mode . siraben-eglot-ensure-if-server-available)
-         (nix-mode . siraben-eglot-ensure-if-server-available)))
+         (c-ts-mode . siraben-eglot-ensure-if-server-available)
+         (c++-ts-mode . siraben-eglot-ensure-if-server-available)
+         (nix-mode . siraben-eglot-ensure-if-server-available)
+         (haskell-mode . siraben-eglot-ensure-if-server-available))
+  :config
+  (setq eglot-autoshutdown t
+        eglot-events-buffer-size 200000))
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here
