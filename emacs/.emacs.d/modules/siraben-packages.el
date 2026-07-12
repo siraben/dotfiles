@@ -260,9 +260,6 @@ falls back to plain ASCII separators so the mode-line stays readable."
                         completion-at-point-functions))))
 
 
-(use-package flycheck
-  :diminish)
-
 (use-package inheritenv)
 
 (defvar-local siraben-envrc--timer nil
@@ -313,20 +310,14 @@ falls back to plain ASCII separators so the mode-line stays readable."
   (setq esup-user-init-file (file-truename "~/.emacs.d/init.el")))
 
 (use-package yaml-mode)
-(use-package build-farm)
-
 (use-package editorconfig
   :config
   (editorconfig-mode 1))
-
-(use-package graphviz-dot-mode)
 
 (use-package tree-sitter-langs
   :defer 2
   :config
   (setq tree-sitter-load-path `(,(expand-file-name "~/.tree-sitter/bin"))))
-
-(use-package solidity-mode)
 
 (use-package tree-sitter
   ;; Grammar discovery takes roughly 0.7s on this machine.  Load it on an
@@ -346,11 +337,7 @@ falls back to plain ASCII separators so the mode-line stays readable."
           (yaml-mode . yaml)
           (typescript-mode . tsx)
           (conf-toml-mode . toml)
-          (graphviz-dot-mode . dot)
           (makefile-bsdmake-mode . make)
-          (sml-mode . sml)
-          (solidity-mode . solidity)
-          (kotlin-mode . kotlin)
           ,@tree-sitter-major-mode-language-alist))
   ;; remove haskell-mode
   (setq tree-sitter-major-mode-language-alist
@@ -373,8 +360,6 @@ falls back to plain ASCII separators so the mode-line stays readable."
   :config
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
-(use-package kotlin-mode)
-
 (use-package writeroom-mode)
 
 (use-package copilot
@@ -388,8 +373,6 @@ falls back to plain ASCII separators so the mode-line stays readable."
   :config
   (setq copilot-indent-offset-warning-disable t)
   )
-
-(use-package boogie-friends)
 
 (defun siraben-eglot--skip-transient-file-watches
     (register server method id &rest options)
@@ -423,7 +406,8 @@ file outside a recognized project; recursively enumerating roots such as
          (typescript-mode . siraben-eglot-ensure-if-server-available)
          (typescript-ts-mode . siraben-eglot-ensure-if-server-available)
          (tsx-ts-mode . siraben-eglot-ensure-if-server-available)
-         (kotlin-mode . siraben-eglot-ensure-if-server-available)
+         (js-mode . siraben-eglot-ensure-if-server-available)
+         (js-ts-mode . siraben-eglot-ensure-if-server-available)
          (c-mode . siraben-eglot-ensure-if-server-available)
          (c++-mode . siraben-eglot-ensure-if-server-available)
          (c-ts-mode . siraben-eglot-ensure-if-server-available)

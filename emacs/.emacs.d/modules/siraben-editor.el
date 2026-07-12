@@ -57,7 +57,7 @@
 
 (defun siraben-enable-writing-modes ()
   "Enable writing modes for writing prose.
-Enables auto-fill mode, spell checking and disables company mode."
+Enables auto-fill mode and spell checking."
   (interactive)
   (auto-fill-mode 1)
   (flyspell-mode 1)
@@ -65,8 +65,7 @@ Enables auto-fill mode, spell checking and disables company mode."
   (setq electric-pair-inhibit-predicate
         `(lambda (c)
            (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))
-  (visual-line-mode 1)
-  (company-mode -1))
+  (visual-line-mode 1))
 
 ;; This will be handled by the diminish package configuration
 

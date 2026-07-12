@@ -79,7 +79,8 @@ PROGRAM is a string (or list of alternatives) accepted by
     (typescript-mode  . ("typescript-language-server" "tsserver"))
     (typescript-ts-mode . ("typescript-language-server" "tsserver"))
     (tsx-ts-mode        . ("typescript-language-server" "tsserver"))
-    (kotlin-mode      . ("kotlin-language-server"))
+    (js-mode          . ("typescript-language-server" "tsserver"))
+    (js-ts-mode       . ("typescript-language-server" "tsserver"))
     (c-mode           . ("clangd" "ccls"))
     (c++-mode         . ("clangd" "ccls"))
     (c-ts-mode        . ("clangd" "ccls"))
@@ -165,7 +166,6 @@ Useful to see at a glance what is enabled on the current host."
                  "clangd" "ccls"
                  "nil" "nixd"
                  "haskell-language-server-wrapper"
-                 "kotlin-language-server"
                  ;; Formatters / linters
                  "clang-format" "rustfmt" "black" "ruff"
                  "prettier" "nixpkgs-fmt" "ormolu" "stylish-haskell"
