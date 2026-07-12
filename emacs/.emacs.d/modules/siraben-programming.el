@@ -38,11 +38,9 @@
 ;; https://emacs.stackexchange.com/questions/8135/why-does-compilation-buffer-show-control-characters
 (require 'ansi-color)
 
-(defun siraben-ansi-colorize-buffer ()
-  "Colorize the buffer with ANSI color."
-  (let ((buffer-read-only nil))
-    (ansi-color-apply-on-region (point-min) (point-max))))
-(add-hook 'compilation-filter-hook 'siraben-ansi-colorize-buffer)
+;; Process only the newly inserted compilation output.  Re-coloring the whole
+;; buffer for every process chunk becomes quadratic and stalls long builds.
+(add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
 
 (add-hook 'after-init-hook (lambda () (require 'siraben-c)))
 ;; (require 'siraben-common-lisp)
