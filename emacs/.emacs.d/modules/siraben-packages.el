@@ -143,6 +143,15 @@
   (corfu-popupinfo-mode 1)
   (setq corfu-popupinfo-delay '(0.5 . 0.2)))
 
+;; Emacs 30 cannot display Corfu child frames on a TTY.  Use an overlay
+;; renderer there so the same automatic completion UI works under tmux.
+(use-package corfu-terminal
+  :if (not (display-graphic-p))
+  :after corfu
+  :demand t
+  :config
+  (corfu-terminal-mode 1))
+
 (use-package which-key
   :diminish
   :commands (which-key-mode)
