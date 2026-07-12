@@ -47,6 +47,8 @@ let
   languageServers = with pkgs; [
     basedpyright
     ruff
+    nil
+    typescript-language-server
   ];
   sharedPackages =
     with pkgs;
