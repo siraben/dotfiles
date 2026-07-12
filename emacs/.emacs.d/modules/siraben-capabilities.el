@@ -78,6 +78,7 @@ PROGRAM is a string (or list of alternatives) accepted by
     (rust-ts-mode     . ("rust-analyzer"))
     (typescript-mode  . ("typescript-language-server" "tsserver"))
     (typescript-ts-mode . ("typescript-language-server" "tsserver"))
+    (tsx-ts-mode        . ("typescript-language-server" "tsserver"))
     (kotlin-mode      . ("kotlin-language-server"))
     (c-mode           . ("clangd" "ccls"))
     (c++-mode         . ("clangd" "ccls"))

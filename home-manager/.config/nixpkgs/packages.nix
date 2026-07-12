@@ -40,6 +40,8 @@ let
     basedpyright
     rassumfrassum
     ruff
+    nil
+    typescript-language-server
   ];
   sharedPackages = with pkgs; [
     bash
