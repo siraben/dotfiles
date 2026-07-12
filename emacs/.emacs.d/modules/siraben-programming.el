@@ -44,16 +44,11 @@
 
 (add-hook 'after-init-hook (lambda () (require 'siraben-c)))
 (require 'siraben-coq)
-(require 'siraben-forth)
 (require 'siraben-haskell)
 (require 'siraben-lisp)
 (require 'siraben-nix)
-(require 'siraben-prolog)
 (require 'siraben-python)
 (require 'siraben-rust)
-(require 'siraben-sml)
 (require 'siraben-typescript)
-(require 'siraben-ocaml)
-
 (provide 'siraben-programming)
 ;;; siraben-programming.el ends here
