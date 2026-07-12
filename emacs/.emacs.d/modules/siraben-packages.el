@@ -262,22 +262,42 @@ falls back to plain ASCII separators so the mode-line stays readable."
 
 (use-package inheritenv)
 
-(defun siraben--maybe-enable-envrc ()
-  "Enable Envrc globally when its executable dependency is available."
-  (when (siraben-have-p "direnv")
-    ;; The hook is intentionally a wrapper, so use-package cannot infer an
-    ;; autoload for `envrc-global-mode'.
-    (require 'envrc)
-    (envrc-global-mode 1)))
+(defvar-local siraben-envrc--timer nil
+  "Pending idle timer for Envrc activation in this buffer.")
+
+(defun siraben--enable-envrc-buffer (buffer)
+  "Enable `envrc-mode' in BUFFER when it is still live."
+  (when (buffer-live-p buffer)
+    (with-current-buffer buffer
+      (setq siraben-envrc--timer nil)
+      (unless (or (minibufferp) (file-remote-p default-directory))
+        (require 'envrc)
+        (envrc-mode 1)))))
+
+(defun siraben--schedule-envrc ()
+  "Schedule buffer-local environment setup outside the command path."
+  (when (and (siraben-have-p "direnv")
+             (not (timerp siraben-envrc--timer)))
+    (setq siraben-envrc--timer
+          (run-with-idle-timer 0.2 nil #'siraben--enable-envrc-buffer
+                               (current-buffer)))))
+
+(defun siraben--setup-envrc ()
+  "Arrange asynchronous Envrc activation for current and future buffers."
+  (add-hook 'after-change-major-mode-hook #'siraben--schedule-envrc)
+  (dolist (buffer (buffer-list))
+    (with-current-buffer buffer
+      (siraben--schedule-envrc))))
 
 (use-package envrc
-  :after inheritenv
-  ;; Only enable envrc-global-mode when direnv is actually installed;
-  ;; otherwise every buffer would log a warning about a missing binary.
-  :hook (after-init . siraben--maybe-enable-envrc)
+  :commands envrc-mode
+  ;; `envrc-mode' calls `direnv export' synchronously.  Schedule it while
+  ;; Emacs is idle so opening a buffer and active typing stay responsive.
+  :hook (after-init . siraben--setup-envrc)
   :config
   ;; Ensure eglot inherits buffer-local env vars set by envrc,
   ;; and restart the LSP server when the environment changes.
+  (require 'inheritenv)
   (advice-add 'eglot--connect :around #'inheritenv-apply)
   (add-hook 'envrc-after-update-hook
             (lambda ()
@@ -394,7 +414,11 @@ falls back to plain ASCII separators so the mode-line stays readable."
          (haskell-mode . siraben-eglot-ensure-if-server-available))
   :config
   (setq eglot-autoshutdown t
-        eglot-events-buffer-size 200000))
+        ;; Formatting every JSON-RPC exchange into a log buffer adds latency.
+        ;; Set this temporarily to a positive size when debugging a server.
+        eglot-events-buffer-size 0
+        eldoc-idle-delay 0.75
+        flymake-no-changes-timeout 0.5))
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here

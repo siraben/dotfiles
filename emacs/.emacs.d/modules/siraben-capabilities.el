@@ -91,17 +91,43 @@ PROGRAM is a string (or list of alternatives) accepted by
 `siraben-eglot-ensure-if-server-available'.  The first installed
 binary in the list wins.")
 
+(defcustom siraben-eglot-idle-delay 0.5
+  "Idle time before starting an automatic Eglot connection.
+This keeps language-server loading and process startup out of the
+latency-sensitive file-opening command."
+  :type 'number
+  :group 'tools)
+
+(defvar-local siraben-eglot--ensure-timer nil
+  "Pending idle timer for automatic Eglot startup in this buffer.")
+
+(defun siraben-eglot--ensure-buffer (buffer)
+  "Start Eglot in BUFFER if it is still live and eligible."
+  (when (buffer-live-p buffer)
+    (with-current-buffer buffer
+      (setq siraben-eglot--ensure-timer nil)
+      (when (and buffer-file-name
+                 (siraben-have-p (cdr (assq major-mode siraben-lsp-servers))))
+        (require 'eglot)
+        (eglot-ensure)))))
+
 (defun siraben-eglot-ensure-if-server-available ()
-  "Like `eglot-ensure', but no-op if no known LSP server is installed.
+  "Schedule `eglot-ensure' when a known LSP server is installed.
 Consult `siraben-lsp-servers' for the binaries to look for.  This is
 meant to be used in `MODE-hook' clauses where blindly calling
 `eglot-ensure' on a system without the server only pollutes the echo
-area with \"Searching for program: No such file or directory\" messages."
+area with \"Searching for program: No such file or directory\" messages.
+The idle timer is important: mode hooks run synchronously inside
+`find-file', so loading Eglot there makes Emacs ignore input."
   (let* ((servers (cdr (assq major-mode siraben-lsp-servers)))
          (chosen  (siraben-have-p servers)))
     (when chosen
-      (require 'eglot)
-      (eglot-ensure))))
+      (when (timerp siraben-eglot--ensure-timer)
+        (cancel-timer siraben-eglot--ensure-timer))
+      (setq siraben-eglot--ensure-timer
+            (run-with-idle-timer siraben-eglot-idle-delay nil
+                                 #'siraben-eglot--ensure-buffer
+                                 (current-buffer))))))
 
 ;; ---------------------------------------------------------------------------
 ;; Reporting
