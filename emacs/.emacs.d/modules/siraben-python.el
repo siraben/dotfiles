@@ -31,6 +31,21 @@
               '(:basedpyright.analysis
                 (:diagnosticMode "openFilesOnly")))
 
+(defun siraben-python--limit-loose-file-analysis ()
+  "Keep basedpyright from treating a loose file's directory as a workspace.
+Eglot represents files outside a recognized project as transient projects.
+For those buffers, mirror the lightweight single-file behavior available in
+modern editors: analyze open and imported files, but do not enumerate the
+entire fallback directory."
+  (unless (project-current nil)
+    (setq-local eglot-workspace-configuration
+                '(:basedpyright.analysis
+                  (:diagnosticMode "openFilesOnly"
+                   :exclude ["**"])))))
+
+(add-hook 'python-mode-hook #'siraben-python--limit-loose-file-analysis)
+(add-hook 'python-ts-mode-hook #'siraben-python--limit-loose-file-analysis)
+
 ;; Capability-driven Python LSP setup.
 ;;
 ;; Preferred stack: basedpyright (type checking) + ruff (lint / format)

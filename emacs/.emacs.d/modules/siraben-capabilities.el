@@ -101,6 +101,27 @@ latency-sensitive file-opening command."
 (defvar-local siraben-eglot--ensure-timer nil
   "Pending idle timer for automatic Eglot startup in this buffer.")
 
+(defcustom siraben-eglot-loose-file-project-directory
+  (expand-file-name "var/loose-file-project/" user-emacs-directory)
+  "Small synthetic workspace used for loose files handled by Eglot.
+Without this, project.el promotes a file's containing directory to a
+transient project.  Opening /tmp/foo.py can therefore make a language server
+index all of /tmp."
+  :type 'directory
+  :group 'tools)
+
+(defun siraben-project-find-loose-file (_directory)
+  "Return a bounded transient project for a loose LSP-capable file.
+This finder is appended after normal project finders, so Git and other real
+projects always win."
+  (when (and buffer-file-name (assq major-mode siraben-lsp-servers))
+    (make-directory siraben-eglot-loose-file-project-directory t)
+    (cons 'transient
+          (file-name-as-directory siraben-eglot-loose-file-project-directory))))
+
+(with-eval-after-load 'project
+  (add-hook 'project-find-functions #'siraben-project-find-loose-file t))
+
 (defun siraben-eglot--ensure-buffer (buffer)
   "Start Eglot in BUFFER if it is still live and eligible."
   (when (buffer-live-p buffer)
