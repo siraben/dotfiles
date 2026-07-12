@@ -391,6 +391,21 @@ falls back to plain ASCII separators so the mode-line stays readable."
 
 (use-package boogie-friends)
 
+(defun siraben-eglot--skip-transient-file-watches
+    (register server method id &rest options)
+  "Avoid recursive file-watch scans for loose-file SERVER projects.
+REGISTER, METHOD, ID, and OPTIONS are the arguments of
+`eglot-register-capability'.  A transient project is Eglot's fallback for a
+file outside a recognized project; recursively enumerating roots such as
+/tmp or $HOME blocks Emacs and provides little value for a loose file."
+  (if (and (eq method 'workspace/didChangeWatchedFiles)
+           (eq (car-safe (eglot--project server)) 'transient))
+      (progn
+        (message "[eglot] Skipping recursive file watches for transient project %s"
+                 (cdr (eglot--project server)))
+        (list t "Skipped recursive watches for transient project"))
+    (apply register server method id options)))
+
 (use-package eglot
   :straight nil
   :commands (eglot eglot-ensure)
@@ -418,10 +433,18 @@ falls back to plain ASCII separators so the mode-line stays readable."
   :config
   (setq eglot-autoshutdown t
         ;; Formatting every JSON-RPC exchange into a log buffer adds latency.
-        ;; Set this temporarily to a positive size when debugging a server.
-        eglot-events-buffer-size 0
+        ;; Set :size temporarily to a positive value when debugging a server.
+        eglot-events-buffer-config '(:size 0 :format short)
         eldoc-idle-delay 0.75
-        flymake-no-changes-timeout 0.5))
+        flymake-no-changes-timeout 0.5)
+  ;; Eglot 1.22 adds an upstream safety limit.  Retain a conservative limit
+  ;; when this config is used with that or a newer release.
+  (when (boundp 'eglot-max-file-watches)
+    (setq eglot-max-file-watches 512))
+  (unless (advice-member-p #'siraben-eglot--skip-transient-file-watches
+                           'eglot-register-capability)
+    (advice-add 'eglot-register-capability :around
+                #'siraben-eglot--skip-transient-file-watches)))
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here
