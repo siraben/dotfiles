@@ -21,8 +21,6 @@
 
 ;;; Code:
 
-(use-package flycheck-rust)
-
 (use-package rustic
   :mode ("\\.rs\\'" . rustic-mode)
   :config
@@ -33,7 +31,6 @@
   (setq rust-format-on-save (and (siraben-have-p "rustfmt") t))
   (defun siraben--rust-mode-setup ()
     "Configure Rust mode settings."
-    (flycheck-rust-setup)
     (local-set-key (kbd "s-b") 'recompile)
     (subword-mode 1))
   (add-hook 'rustic-mode-hook #'siraben--rust-mode-setup))
