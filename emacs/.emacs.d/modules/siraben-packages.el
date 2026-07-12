@@ -253,13 +253,19 @@ falls back to plain ASCII separators so the mode-line stays readable."
 
 (use-package inheritenv)
 
+(defun siraben--maybe-enable-envrc ()
+  "Enable Envrc globally when its executable dependency is available."
+  (when (siraben-have-p "direnv")
+    ;; The hook is intentionally a wrapper, so use-package cannot infer an
+    ;; autoload for `envrc-global-mode'.
+    (require 'envrc)
+    (envrc-global-mode 1)))
+
 (use-package envrc
+  :after inheritenv
   ;; Only enable envrc-global-mode when direnv is actually installed;
   ;; otherwise every buffer would log a warning about a missing binary.
-  :hook (after-init . (lambda ()
-                        (require 'siraben-capabilities)
-                        (when (siraben-have-p "direnv")
-                          (envrc-global-mode))))
+  :hook (after-init . siraben--maybe-enable-envrc)
   :config
   ;; Ensure eglot inherits buffer-local env vars set by envrc,
   ;; and restart the LSP server when the environment changes.
@@ -284,15 +290,17 @@ falls back to plain ASCII separators so the mode-line stays readable."
 (use-package graphviz-dot-mode)
 
 (use-package tree-sitter-langs
-  :defer 3
-  :demand
+  :defer 2
   :config
   (setq tree-sitter-load-path `(,(expand-file-name "~/.tree-sitter/bin"))))
 
 (use-package solidity-mode)
 
 (use-package tree-sitter
-  :demand
+  ;; Grammar discovery takes roughly 0.7s on this machine.  Load it on an
+  ;; idle timer instead of blocking the first frame.  Enabling the global
+  ;; mode after loading also updates language buffers opened during startup.
+  :defer 2
   :diminish "ts"
   :hook (tree-sitter-after-on . tree-sitter-hl-mode)
   :config
