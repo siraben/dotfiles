@@ -21,8 +21,6 @@
 
 ;;; Code:
 
-(use-package flycheck-haskell)
-
 (use-package haskell-mode
   :mode "\\.hs"
   :config
@@ -67,9 +65,6 @@
       (interactive-haskell-mode t)
       (when (fboundp 'diminish)
         (diminish 'interactive-haskell-mode)))
-    (when (and (fboundp 'flycheck-haskell-setup)
-               (siraben-have-p '("ghc" "cabal" "stack")))
-      (flycheck-haskell-setup))
     (setq-local prettify-symbols-alist haskell-prettify-symbols-alist)
     (prettify-symbols-mode 1)
     (haskell-indentation-mode t))
@@ -77,9 +72,6 @@
   (add-hook 'haskell-mode-hook #'siraben--haskell-mode-setup)
   (add-hook 'inferior-haskell-mode-hook (lambda () (paredit-mode -1)))
   )
-
-;; (use-package lsp-haskell)
-
 
 (provide 'siraben-haskell)
 ;;; siraben-haskell.el ends here
