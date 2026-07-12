@@ -25,6 +25,12 @@
 
 (use-package pyvenv)
 
+;; Keep loose files and large workspaces responsive.  Project-local config
+;; files can still opt into whole-workspace diagnostics when appropriate.
+(setq-default eglot-workspace-configuration
+              '(:basedpyright.analysis
+                (:diagnosticMode "openFilesOnly")))
+
 ;; Capability-driven Python LSP setup.
 ;;
 ;; Preferred stack: basedpyright (type checking) + ruff (lint / format)
