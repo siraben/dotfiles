@@ -138,8 +138,11 @@
   :hook (after-init . global-corfu-mode)
   :config
   (setq corfu-auto t
-        corfu-auto-prefix 1
-        corfu-auto-delay 0.2)
+        ;; Do not query completion backends after every single character.
+        ;; This also keeps the transient Corfu keymap (where C-g only closes
+        ;; the popup) from taking over nearly continuously while typing.
+        corfu-auto-prefix 2
+        corfu-auto-delay 0.35)
   (corfu-popupinfo-mode 1)
   (setq corfu-popupinfo-delay '(0.5 . 0.2)))
 
