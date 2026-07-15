@@ -123,9 +123,12 @@
   :commands (global-undo-tree-mode)
   :hook ((after-init . global-undo-tree-mode))
   :config
-  ;; Compress undo-tree history files
-  (advice-add 'undo-tree-make-history-save-file-name :filter-return
-              (lambda (filename) (concat filename ".gz")))
+  ;; Compress undo-tree history files when gzip is available.  Emacs uses the
+  ;; external gzip program for .gz files, which is not installed by default
+  ;; on Windows.
+  (when (executable-find "gzip")
+    (advice-add 'undo-tree-make-history-save-file-name :filter-return
+                (lambda (filename) (concat filename ".gz"))))
 
   (setq undo-tree-history-directory-alist
         `((".*" . ,temporary-file-directory))
