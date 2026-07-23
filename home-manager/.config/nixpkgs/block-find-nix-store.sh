@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# PreToolUse hook: block Bash commands that run `find /nix/store` or `rg`.
+# PreToolUse hook: block expensive scans and disallowed package installation.
 # Reads stdin as a single JSON blob with at least { tool_name, tool_input }.
 
 set -eu
@@ -25,6 +25,11 @@ fi
 
 if printf '%s' "$command" | grep -qE "${prefix}rg([[:space:]]|$)"; then
   echo "Refusing 'rg' (ripgrep). Use 'grep -r' / 'grep' instead." >&2
+  exit 2
+fi
+
+if printf '%s' "$command" | grep -qE "${prefix}(command[[:space:]]+)?([^[:space:];&|]+/)?brew[[:space:]]+install([[:space:]]|$)"; then
+  echo "Refusing 'brew install'. Homebrew packages must be installed explicitly by the user." >&2
   exit 2
 fi
 

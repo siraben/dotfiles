@@ -68,6 +68,15 @@ lib.recursiveUpdate (rec {
       executable = true;
       source = ./block-find-nix-store.sh;
     };
+    ".codex/rules/custom.rules" = {
+      force = true;
+      source = ./codex-custom.rules;
+    };
+  } // lib.optionalAttrs isDarwin {
+    "Library/Application Support/Code/User/settings.json" = {
+      force = true;
+      source = ./vscode-settings.json;
+    };
   } // lib.optionalAttrs isLinux {
     ".config/baloofilerc".text = ''
       [Basic Settings]
