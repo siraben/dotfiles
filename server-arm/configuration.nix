@@ -172,10 +172,12 @@ in
     interval = "Sat *-*-* 04:00:00";
   };
 
-  # Bump journal retention now that root has headroom (was capped ~460M)
+  # Root is a small OCI volume; keep journald from consuming most of it.
+  # Durable application data lives on ZFS under /home instead.
   services.journald.extraConfig = ''
-    SystemMaxUse=2G
-    MaxRetentionSec=2month
+    SystemMaxUse=512M
+    SystemKeepFree=1G
+    MaxRetentionSec=14day
   '';
   systemd.services."nextcloud-setup" = {
     requires = [ "postgresql.service" ];

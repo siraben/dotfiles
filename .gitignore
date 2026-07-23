@@ -1,6 +1,7 @@
 *~
 *.elc
 .DS_Store
+.env
 nixos/hardware-configuration.nix
 result
 
