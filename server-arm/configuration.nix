@@ -84,6 +84,7 @@ in
   programs.mosh.enable = true;
   programs.zsh.enable = true;
   services.tailscale.enable = true;
+  networking.firewall.trustedInterfaces = [ "tailscale0" ];
   services.eternal-terminal.enable = true;
 
   # User
