@@ -1,0 +1,29 @@
+prefix_rule(
+    pattern=["find", "/nix/store"],
+    decision="forbidden",
+    justification="Filesystem-wide nix store scans are expensive. Use `nix path-info`, `nix log`, or a specific store path instead."
+)
+
+prefix_rule(
+    pattern=["rg"],
+    decision="forbidden",
+    justification="`rg` (ripgrep) is blocked in this environment. Use `grep -r` / `grep` instead."
+)
+
+prefix_rule(
+    pattern=["brew", "install"],
+    decision="forbidden",
+    justification="Homebrew packages must be installed explicitly by the user."
+)
+
+prefix_rule(
+    pattern=["/opt/homebrew/bin/brew", "install"],
+    decision="forbidden",
+    justification="Homebrew packages must be installed explicitly by the user."
+)
+
+prefix_rule(
+    pattern=["/usr/local/bin/brew", "install"],
+    decision="forbidden",
+    justification="Homebrew packages must be installed explicitly by the user."
+)
