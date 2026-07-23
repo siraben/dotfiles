@@ -60,6 +60,10 @@
           modules = [
             allInputs.agenix.nixosModules.default
             ./server-arm/configuration.nix
+            {
+              # Surface the deployed Git revision in `nixos-version --json`.
+              system.configurationRevision = self.rev or self.dirtyRev or null;
+            }
           ];
         };
       };
