@@ -6,6 +6,9 @@ let
     export SSH_AUTH_SOCK="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/ssh-agent"
   '';
   sharedShellExtra = ''
+    # The remote host/session identifies mosh tabs without its verbose prefix.
+    export MOSH_TITLE_NOPREFIX=1
+
     fpath+=("${pkgs.pure-prompt}/share/zsh/site-functions")
     if [ "$TERM" != dumb ]; then
       autoload -U promptinit && promptinit && prompt pure
@@ -108,6 +111,8 @@ in
 
       # Session defaults
       set -g allow-rename off
+      set -g set-titles on
+      set -g set-titles-string '#{host_short} · #S'
 
       # Catppuccin Mocha theme — minimal, default fg throughout
       set -g status-position bottom
