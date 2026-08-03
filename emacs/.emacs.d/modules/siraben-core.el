@@ -34,20 +34,6 @@
   (siraben-insert-time)
   (goto-char (point-max)))
 
-(defun siraben-reset-packages ()
-  "Deletes all packages from the directory `siraben-root-dir'."
-  (interactive)
-  (when (y-or-n-p "Really reset packages?")
-    (message "Removing installed package directory...")
-    (delete-directory (concat siraben-root-dir "elpa/") t t)
-    (when (y-or-n-p "Packages deleted. Quit Emacs?")
-      (save-buffers-kill-emacs))))
-
-(defmacro set-if-exists (sym str)
-  "Set SYM TO STR if STR exists as a file."
-  `(if (file-exists-p ,str)
-       (setq ,sym ,str)))
-
 (defun enable-all-commands ()
   "Enable all commands, reporting on which were disabled."
   (interactive)
