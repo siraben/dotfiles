@@ -338,18 +338,6 @@ falls back to plain ASCII separators so the mode-line stays readable."
 
 (use-package writeroom-mode)
 
-(use-package copilot
-  :disabled
-  :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
-  :ensure t
-  :hook (prog-mode . copilot-mode)
-  :bind (:map copilot-completion-map
-              ("<tab>" . copilot-accept-completion)
-              ("TAB" . copilot-accept-completion))
-  :config
-  (setq copilot-indent-offset-warning-disable t)
-  )
-
 (use-package boogie-friends)
 
 (use-package eglot
