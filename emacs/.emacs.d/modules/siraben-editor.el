@@ -74,8 +74,6 @@ Enables auto-fill mode, spell checking and disables company mode."
 (add-hook 'markdown-mode-hook #'siraben-enable-writing-modes)
 (add-hook 'org-mode-hook #'siraben-enable-writing-modes)
 
-(require 'siraben-mdm)
-
 ;; De-duplicate kill ring entries.
 (setq kill-do-not-save-duplicates t)
 

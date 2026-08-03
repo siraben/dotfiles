@@ -45,11 +45,9 @@
 (add-hook 'compilation-filter-hook 'siraben-ansi-colorize-buffer)
 
 (add-hook 'after-init-hook (lambda () (require 'siraben-c)))
-;; (require 'siraben-common-lisp)
 (require 'siraben-coq)
 (require 'siraben-forth)
 (require 'siraben-haskell)
-(require 'siraben-js)
 (require 'siraben-lisp)
 (require 'siraben-nix)
 (require 'siraben-prolog)
@@ -58,7 +56,6 @@
 (require 'siraben-sml)
 (require 'siraben-typescript)
 (require 'siraben-ocaml)
-;; (require 'siraben-ruby)
 
 (provide 'siraben-programming)
 ;;; siraben-programming.el ends here

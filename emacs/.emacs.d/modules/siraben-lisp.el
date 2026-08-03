@@ -50,20 +50,6 @@
   (setq scheme-program-name "guile")
   :hook (scheme-mode . (lambda () (flycheck-mode -1))))
 
-(use-package geiser
-  :disabled
-  :defer 10
-  :hook (geiser-repl-mode . siraben--setup-geiser-repl)
-  :config
-  (setq geiser-default-implementation 'guile)
-  
-  (defun siraben--setup-geiser-repl ()
-    "Configure Geiser REPL mode."
-    (siraben-enable-lisp-editing-modes)
-    (undo-tree-mode -1)
-    (paredit-mode 1)
-    (aggressive-indent-mode -1)))
-
 (add-hook 'ielm-mode-hook #'siraben--setup-ielm)
 
 (defun siraben--setup-ielm ()
