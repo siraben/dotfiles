@@ -5,25 +5,94 @@ prefix_rule(
 )
 
 prefix_rule(
+    pattern=[
+        "command",
+        ["brew", "/opt/homebrew/bin/brew", "/usr/local/bin/brew"],
+        ["install", "reinstall", "upgrade"],
+    ],
+    decision="forbidden",
+    justification="Agents must not bypass the Homebrew policy through the shell command builtin.",
+    match=[
+        "command brew install jq",
+        "command /opt/homebrew/bin/brew reinstall jq",
+    ],
+)
+
+prefix_rule(
+    pattern=[
+        ["env", "/usr/bin/env"],
+        ["brew", "/opt/homebrew/bin/brew", "/usr/local/bin/brew"],
+        ["install", "reinstall", "upgrade"],
+    ],
+    decision="forbidden",
+    justification="Agents must not bypass the Homebrew policy through env.",
+    match=[
+        "env brew install jq",
+        "/usr/bin/env /opt/homebrew/bin/brew upgrade jq",
+    ],
+)
+
+prefix_rule(
     pattern=["rg"],
     decision="forbidden",
     justification="`rg` (ripgrep) is blocked in this environment. Use `grep -r` / `grep` instead."
 )
 
 prefix_rule(
-    pattern=["brew", "install"],
+    pattern=[
+        "command",
+        ["brew", "/opt/homebrew/bin/brew", "/usr/local/bin/brew"],
+        "bundle",
+    ],
     decision="forbidden",
-    justification="Homebrew packages must be installed explicitly by the user."
+    justification="Agents must not bypass the Homebrew bundle policy through the shell command builtin.",
+    match=[
+        "command brew bundle",
+        "command /usr/local/bin/brew bundle install",
+    ],
 )
 
 prefix_rule(
-    pattern=["/opt/homebrew/bin/brew", "install"],
+    pattern=[
+        ["env", "/usr/bin/env"],
+        ["brew", "/opt/homebrew/bin/brew", "/usr/local/bin/brew"],
+        "bundle",
+    ],
     decision="forbidden",
-    justification="Homebrew packages must be installed explicitly by the user."
+    justification="Agents must not bypass the Homebrew bundle policy through env.",
+    match=[
+        "env brew bundle",
+        "/usr/bin/env /opt/homebrew/bin/brew bundle install",
+    ],
 )
 
 prefix_rule(
-    pattern=["/usr/local/bin/brew", "install"],
+    pattern=[
+        ["brew", "/opt/homebrew/bin/brew", "/usr/local/bin/brew"],
+        ["install", "reinstall", "upgrade"],
+    ],
     decision="forbidden",
-    justification="Homebrew packages must be installed explicitly by the user."
+    justification="Agents must not install or recommend Homebrew packages. Add the dependency to an existing project flake.nix; if none exists, ask the user how to proceed.",
+    match=[
+        "brew install jq",
+        "brew reinstall jq",
+        "brew upgrade jq",
+        "/opt/homebrew/bin/brew install jq",
+        "/usr/local/bin/brew install jq",
+    ],
+)
+
+prefix_rule(
+    pattern=[
+        ["brew", "/opt/homebrew/bin/brew", "/usr/local/bin/brew"],
+        "bundle",
+    ],
+    decision="forbidden",
+    justification="Agents must not use Homebrew bundles to install packages. Add dependencies to existing project flakes instead.",
+    match=[
+        "brew bundle",
+        "brew bundle install",
+        "/opt/homebrew/bin/brew bundle",
+        "/usr/local/bin/brew bundle",
+    ],
 )
