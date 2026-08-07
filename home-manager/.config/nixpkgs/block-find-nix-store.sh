@@ -28,8 +28,11 @@ if printf '%s' "$command" | grep -qE "${prefix}rg([[:space:]]|$)"; then
   exit 2
 fi
 
-if printf '%s' "$command" | grep -qE "${prefix}(command[[:space:]]+)?([^[:space:];&|]+/)?brew[[:space:]]+install([[:space:]]|$)"; then
-  echo "Refusing 'brew install'. Homebrew packages must be installed explicitly by the user." >&2
+shell_wrapper="((/[^[:space:];&|]+/)?(zsh|bash|sh)[[:space:]]+-[^[:space:]]*c[[:space:]]+['\"]?)?"
+brew_wrapper='((command|(/usr/bin/)?env)[[:space:]]+)?'
+action_end="([[:space:]'\"]|$)"
+if printf '%s' "$command" | grep -qE "${prefix}${shell_wrapper}${brew_wrapper}([^[:space:];&|]+/)?brew[[:space:]]+((install|reinstall|upgrade)${action_end}|bundle${action_end})"; then
+  echo "Refusing Homebrew package changes. Do not recommend that the user run them. Add the dependency to an existing project flake.nix; if none exists, ask how to proceed." >&2
   exit 2
 fi
 
