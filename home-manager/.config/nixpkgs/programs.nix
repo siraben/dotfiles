@@ -142,6 +142,8 @@ in
   };
   kitty = {
     enable = profile == "full";
+    # On macOS, install the app with Homebrew while retaining this managed config.
+    package = if isDarwin then null else pkgs.kitty;
     settings = {
       font_family = "JetBrainsMono Nerd Font";
       cursor_blink_interval = 0;
