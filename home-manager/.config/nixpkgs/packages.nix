@@ -53,10 +53,9 @@ let
     gh
     ranger
     croc
-  ] ++ (whenHeadless [
-    agent-deck
-  ]) ++ (whenNotMinimal ([
+  ] ++ (whenNotMinimal ([
     # CLI tools (headless + full)
+    agent-deck
     claude-code
     codex
     bat
