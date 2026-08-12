@@ -1,0 +1,16 @@
+{
+  "skipDangerousModePermissionPrompt": true,
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/block-find-nix-store.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
