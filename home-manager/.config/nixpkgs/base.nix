@@ -68,6 +68,18 @@ lib.recursiveUpdate (rec {
       executable = true;
       source = ./block-find-nix-store.sh;
     };
+    ".claude/settings.json" = {
+      force = true;
+      source = ./claude-settings.json;
+    };
+    ".codex/hooks/block-find-nix-store.sh" = {
+      executable = true;
+      source = ./block-find-nix-store.sh;
+    };
+    ".codex/hooks.json" = {
+      force = true;
+      source = ./codex-hooks.json;
+    };
     ".codex/rules/custom.rules" = {
       force = true;
       source = ./codex-custom.rules;

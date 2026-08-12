@@ -1,0 +1,18 @@
+{
+  "description": "Block expensive recursive scans of the Nix store.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|shell|exec_command|functions\\.exec",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.codex/hooks/block-find-nix-store.sh",
+            "timeout": 5,
+            "statusMessage": "Checking for Nix store scans"
+          }
+        ]
+      }
+    ]
+  }
+}

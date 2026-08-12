@@ -1,10 +1,4 @@
 prefix_rule(
-    pattern=["find", "/nix/store"],
-    decision="forbidden",
-    justification="Filesystem-wide nix store scans are expensive. Use `nix path-info`, `nix log`, or a specific store path instead."
-)
-
-prefix_rule(
     pattern=[
         "command",
         ["brew", "/opt/homebrew/bin/brew", "/usr/local/bin/brew"],
@@ -30,12 +24,6 @@ prefix_rule(
         "env brew install jq",
         "/usr/bin/env /opt/homebrew/bin/brew upgrade jq",
     ],
-)
-
-prefix_rule(
-    pattern=["rg"],
-    decision="forbidden",
-    justification="`rg` (ripgrep) is blocked in this environment. Use `grep -r` / `grep` instead."
 )
 
 prefix_rule(
