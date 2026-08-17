@@ -42,7 +42,7 @@ final: prev:
       hash = "sha256-Fhk4nlVPS09oh0coLsBnjrKncQGE6cUEynzDO2Skiq8=";
     };
   });
-} // prev.lib.optionalAttrs prev.stdenv.isDarwin {
+} // prev.lib.optionalAttrs prev.stdenv.hostPlatform.isDarwin {
   python3 = prev.python3.override {
     packageOverrides = pyFinal: pyPrev: {
       rapidfuzz = pyPrev.rapidfuzz.overridePythonAttrs (old: {
