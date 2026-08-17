@@ -302,6 +302,7 @@ in
 
     # KDE / Plasma tools
     kdePackages.konsole
+    kitty
     kdePackages.dolphin
     kdePackages.spectacle
     kdePackages.kcalc
