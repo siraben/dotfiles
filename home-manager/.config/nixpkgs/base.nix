@@ -1,4 +1,4 @@
-{ config, lib, currentSystem, profile, inputs, ... }:
+{ config, lib, currentSystem, profile, inputs, timeZone ? "America/Los_Angeles", ... }:
 
 let
   inherit (lib.systems.elaborate { system = currentSystem; }) isLinux isDarwin;
@@ -48,7 +48,7 @@ lib.recursiveUpdate (rec {
 
   home.sessionVariables = {
     EDITOR = "emacsclient";
-    TZ = "America/Los_Angeles";
+    TZ = timeZone;
   } // (lib.optionalAttrs isDarwin {
     HOMEBREW_NO_AUTO_UPDATE = 1;
     HOMEBREW_NO_ANALYTICS = 1;
