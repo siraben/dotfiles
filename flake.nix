@@ -42,7 +42,12 @@
             {
               home-manager.useUserPackages = true;
               home-manager.users.${username} = import ./home-manager/.config/nixpkgs/home.nix;
-              home-manager.extraSpecialArgs = { inherit username; inputs = allInputs; profile = "headless"; };
+              home-manager.extraSpecialArgs = {
+                inherit username;
+                inputs = allInputs;
+                profile = "headless";
+                timeZone = "Asia/Bangkok";
+              };
             }
           ];
         };
