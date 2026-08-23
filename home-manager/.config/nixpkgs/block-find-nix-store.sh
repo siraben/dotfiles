@@ -50,12 +50,14 @@ def tokens(text):
 def is_command(token):
     token = token.strip("\\\"`{}[],:=")
     token = re.split(r"[:=]", token)[-1]
-    return os.path.basename(token) in {"find", "rg"}
+    return os.path.basename(token) in {"find", "rg", "fd", "fdfind"}
 
 
 def is_store_root(token):
     token = token.strip("\\\"`{}[](),:;")
-    return token in {"/nix/store", "/nix/store/"}
+    # The filesystem root and /nix are here for the same reason as the store
+    # root: a recursive walk from any of them takes minutes on this machine.
+    return token in {"/nix/store", "/nix/store/", "/nix", "/nix/", "/"}
 
 
 def scans_store_root(text, depth=0):
@@ -82,8 +84,9 @@ def scans_store_root(text, depth=0):
 
 if scans_store_root(command):
     reason = (
-        "Refusing find/rg over /nix/store: store-wide scans are expensive. "
-        "Use nix path-info, nix log, or a specific known store path instead."
+        "Refusing a recursive scan rooted at / or the Nix store: these walk "
+        "millions of paths and take minutes. Scope the search to a project "
+        "directory, or use nix path-info / nix log / a known store path instead."
     )
     json.dump(
         {
