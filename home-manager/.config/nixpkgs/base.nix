@@ -84,6 +84,12 @@ lib.recursiveUpdate (rec {
       force = true;
       source = ./codex-custom.rules;
     };
+    # pi has no hooks.json; the equivalent guard is a local extension
+    # registered via the "extensions" array in ~/.pi/agent/settings.json.
+    ".pi/agent/extensions/block-expensive-scans.ts" = {
+      force = true;
+      source = ./pi-block-expensive-scans.ts;
+    };
   } // lib.optionalAttrs isDarwin {
     "Library/Application Support/Code/User/settings.json" = {
       force = true;
