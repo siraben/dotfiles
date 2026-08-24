@@ -145,7 +145,12 @@ in
     enable = true;
     memoryPercent = 50;
   };
-  systemd.oomd.enable = true;
+  systemd.oomd = {
+    enable = true;
+    # Monitor user-owned slices so runaway tmux panes are stopped before the
+    # kernel exhausts RAM and zram and has to invoke the global OOM killer.
+    enableUserSlices = true;
+  };
 
   ##############################################################################
   # Desktop (Plasma 6 + SDDM Wayland)
@@ -366,7 +371,10 @@ in
     zsh.enable = true;
     gnupg.agent = {
       enable = true;
-      enableSSHSupport = true;
+      # OpenSSH's systemd user agent is managed by Home Manager.  Do not also
+      # expose gpg-agent as an SSH agent, or shells/tmux can select an empty
+      # agent socket and repeatedly prompt for private-key passphrases.
+      enableSSHSupport = false;
     };
     dconf.enable = true;
   };
