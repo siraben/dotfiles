@@ -125,9 +125,7 @@ in
         docker_host = "-";
         force_pull = false;
         force_rebuild = false;
-        options = "--volume psi-code-nix:/nix";
         workdir_parent = "/var/cache/forgejo-actions/work";
-        valid_volumes = [ "psi-code-nix" ];
       };
       settings.host.workdir_parent = "/var/cache/forgejo-actions/work";
       settings.cache = {
@@ -156,9 +154,7 @@ in
         force_pull = false;
         force_rebuild = false;
         network = "host";
-        options = "--volume psi-code-nix:/nix";
         workdir_parent = "/var/cache/forgejo-actions/work";
-        valid_volumes = [ "psi-code-nix" ];
       };
       settings.host.workdir_parent = "/var/cache/forgejo-actions/work";
       settings.cache = {
@@ -169,6 +165,8 @@ in
   };
 
   systemd.services.gitea-runner-beelink = {
+    after = [ "forgejo.service" ];
+    requires = [ "forgejo.service" ];
     environment.HOME = lib.mkForce "/var/cache/forgejo-actions/runner";
     serviceConfig = {
       DynamicUser = lib.mkForce false;
@@ -184,8 +182,8 @@ in
 
   systemd.services."gitea-runner-beelink\\x2ddocker" = {
     environment.HOME = lib.mkForce "/var/cache/forgejo-actions/runner";
-    after = [ "docker-volume-psi-code-nix.service" ];
-    requires = [ "docker-volume-psi-code-nix.service" ];
+    after = [ "forgejo.service" ];
+    requires = [ "forgejo.service" ];
     serviceConfig = {
       DynamicUser = lib.mkForce false;
       User = "gitea-runner";
@@ -195,18 +193,6 @@ in
         "/var/cache/forgejo-actions"
         "/var/tmp"
       ];
-    };
-  };
-
-  systemd.services.docker-volume-psi-code-nix = {
-    description = "Create persistent Docker volume for psi-code CI Nix store";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "docker.service" ];
-    requires = [ "docker.service" ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      ExecStart = "${pkgs.docker}/bin/docker volume create --label forgejo-ci=psi-code --label keep=true psi-code-nix";
     };
   };
 
