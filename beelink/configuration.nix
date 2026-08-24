@@ -255,9 +255,13 @@ in
     powerOnBoot = true;
   };
 
-  # Keep the Intel controller powered whenever BlueZ starts or restarts.
+  # Keep the Intel controller powered and accepting reconnects whenever BlueZ
+  # starts or restarts. BlueZ otherwise leaves Connectable=false on this host.
   systemd.services.bluetooth.serviceConfig.ExecStartPost =
-    "${pkgs.bluez}/bin/btmgmt --index 0 power on";
+    pkgs.writeShellScript "bluetooth-ready" ''
+      ${pkgs.bluez}/bin/btmgmt --index 0 power on
+      ${pkgs.bluez}/bin/btmgmt --index 0 connectable on
+    '';
 
   ##############################################################################
   # User
