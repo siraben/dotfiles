@@ -109,6 +109,10 @@ in
       allowedTCPPorts = [ 22 8384 ];
     };
   };
+
+  # Set the local regulatory domain so the preferred 5 GHz channel is usable.
+  networking.wireless.iwd.settings.General.Country = "TH";
+
   # Deterministic DNS: NM can't touch resolv.conf, Nix manages it entirely
   networking.networkmanager.dns = "none";
   networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
@@ -250,6 +254,10 @@ in
     enable = true;
     powerOnBoot = true;
   };
+
+  # Keep the Intel controller powered whenever BlueZ starts or restarts.
+  systemd.services.bluetooth.serviceConfig.ExecStartPost =
+    "${pkgs.bluez}/bin/btmgmt --index 0 power on";
 
   ##############################################################################
   # User
