@@ -219,6 +219,12 @@ in
     "d /var/cache/forgejo-actions/work 0775 gitea-runner gitea-runner -"
   ];
 
+  # Let caddy invoke `tailscale cert` to obtain browser-trusted certs.
+  services.tailscale.permitCertUid = "caddy";
+
+  # Vanilla caddy is sufficient: caddy 2.7+ auto-detects *.ts.net domains
+  # and shells out to `tailscale cert` (allowed via permitCertUid above) to
+  # obtain a browser-trusted certificate — no plugin required.
   services.caddy = {
     enable = true;
     virtualHosts."${forgejoDomain}".extraConfig = ''
