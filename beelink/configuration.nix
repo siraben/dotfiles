@@ -260,6 +260,7 @@ in
   systemd.services.bluetooth.serviceConfig.ExecStartPost =
     pkgs.writeShellScript "bluetooth-ready" ''
       ${pkgs.bluez}/bin/btmgmt --index 0 power on
+      ${pkgs.coreutils}/bin/sleep 2
       ${pkgs.bluez}/bin/btmgmt --index 0 connectable on
     '';
 
