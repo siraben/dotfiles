@@ -16,6 +16,7 @@ let
 in
 {
   services.postgresql = {
+    package = pkgs.postgresql_17;
     enable = true;
     ensureDatabases = [ "forgejo" ];
     ensureUsers = [
