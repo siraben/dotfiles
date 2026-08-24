@@ -75,6 +75,26 @@ in
   # Locale, Console, Time
   ##############################################################################
   time.timeZone = "Asia/Bangkok";
+
+  # Temporary backport from nixpkgs master: the nanoemoji v0.16.0 GitHub
+  # archive changed after the current nixos-unstable snapshot was published.
+  nixpkgs.overlays = [
+    (final: prev: {
+      pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+        (_: pythonPrev: {
+          nanoemoji = pythonPrev.nanoemoji.overrideAttrs (oldAttrs: {
+            src = final.fetchFromGitHub {
+              owner = "googlefonts";
+              repo = "nanoemoji";
+              tag = "v${oldAttrs.version}";
+              hash = "sha256-FysyKC01XBnRiur5RR9fcsTxQqE8x0JJHSoe3q6JtKc=";
+            };
+          });
+        })
+      ];
+    })
+  ];
+
   i18n = {
     defaultLocale = "en_US.UTF-8";
     extraLocaleSettings = {
