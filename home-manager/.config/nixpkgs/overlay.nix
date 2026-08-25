@@ -2,7 +2,28 @@
 
 final: prev:
 
+let
+  # nixpkgs can lag urgent Claude Code runtime fixes. Keep the override small
+  # and use the checksums from Anthropic's signed release manifest so it is
+  # easy to remove once nixpkgs catches up.
+  claudeCodeVersion = "2.1.245";
+  claudeCodePlatform = "${prev.stdenv.hostPlatform.node.platform}-${prev.stdenv.hostPlatform.node.arch}";
+  claudeCodeHashes = {
+    "darwin-arm64" = "sha256-n3wiYCUXZaGNCzUZhmnazBkS9ugSmjsB9rWNkzZf8fE=";
+    "darwin-x64" = "sha256-3gRLtUPoJjUvMVh6dDVuGy2ulNwbnJYKNi2fB9+Wwqc=";
+    "linux-arm64" = "sha256-0NopkwPXEKfMXN7OlimVj1EozhpyfhVGPGUe1c84XH8=";
+    "linux-x64" = "sha256-Fq0rlN6veymr7ZZtmByZkaR68EIPW+jtSj+Dvqn2eLw=";
+  };
+in
 {
+  claude-code = prev.claude-code.overrideAttrs (_: {
+    version = claudeCodeVersion;
+    src = final.fetchurl {
+      url = "https://downloads.claude.ai/claude-code-releases/${claudeCodeVersion}/${claudeCodePlatform}/claude";
+      hash = claudeCodeHashes.${claudeCodePlatform};
+    };
+  });
+
   # Workaround for NixOS/nix#15638 on darwin: Mach-O page-hash rewriting
   # invalidates ad-hoc signatures on zsh/fish, causing checkPhase scenarios to
   # hang or be SIGKILLed. Skip checks until the upstream fix lands.
