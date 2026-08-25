@@ -26,7 +26,6 @@
  ("emacs-async" . "31cb2fea8f4bc7a593acd76187a89075d8075500")
  ("emacs-clang-format-plus" . "ddd4bfe1a13c2fd494ce339a320a51124c1d2f68")
  ("emacs-libvterm" . "a01a2894a1c1e81a39527835a9169e35b7ec5dec")
- ("emacs-nixpkgs-fmt" . "1f6fb42a5439589c44d99c661cc76958520323cc")
  ("emacs-reformatter" . "c0ddac04b7b937ed56d6bf97e4bfcc4eccfa501a")
  ("emacs-request" . "c22e3c23a6dd90f64be536e176ea0ed6113a5ba6")
  ("emacs-solidity" . "8ba549e429e86778a0e079648f3bc3463fcb15f6")
