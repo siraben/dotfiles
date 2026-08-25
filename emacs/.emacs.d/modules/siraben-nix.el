@@ -25,8 +25,5 @@
 (use-package nix-mode
   :hook (nix-mode . subword-mode))
 
-(use-package nixpkgs-fmt
-  :after nix-mode)
-
 (provide 'siraben-nix)
 ;;; siraben-nix.el ends here

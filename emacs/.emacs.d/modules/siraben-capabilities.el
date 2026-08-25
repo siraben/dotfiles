@@ -120,7 +120,7 @@ Useful to see at a glance what is enabled on the current host."
                  "kotlin-language-server"
                  ;; Formatters / linters
                  "clang-format" "rustfmt" "black" "ruff"
-                 "prettier" "nixpkgs-fmt" "ormolu" "stylish-haskell"
+                 "prettier" "nixfmt" "ormolu" "stylish-haskell"
                  ;; Multiplexers
                  "rass"
                  ;; Build / package tools
