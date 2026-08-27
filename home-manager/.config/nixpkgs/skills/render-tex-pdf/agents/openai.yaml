@@ -1,0 +1,4 @@
+interface:
+  display_name: "Render TeX PDF"
+  short_description: "Create and verify polished Tectonic PDFs"
+  default_prompt: "Use $render-tex-pdf to turn this material into a polished TeX source and verified PDF."
