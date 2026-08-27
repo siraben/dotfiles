@@ -84,6 +84,14 @@ lib.recursiveUpdate (rec {
       force = true;
       source = ./codex-custom.rules;
     };
+    ".codex/skills/render-tex-pdf" = {
+      force = true;
+      source = ./skills/render-tex-pdf;
+    };
+    ".claude/skills/render-tex-pdf" = {
+      force = true;
+      source = ./skills/render-tex-pdf;
+    };
     # pi has no hooks.json; the equivalent guard is a local extension
     # registered via the "extensions" array in ~/.pi/agent/settings.json.
     ".pi/agent/extensions/block-expensive-scans.ts" = {
