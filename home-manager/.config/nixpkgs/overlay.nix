@@ -9,7 +9,13 @@ final: prev:
   direnv = prev.direnv.overrideAttrs (_: { doCheck = false; doInstallCheck = false; });
   nix-direnv = prev.nix-direnv.overrideAttrs (_: { doCheck = false; doInstallCheck = false; });
 
-  mosh = inputs.mosh-unicode.packages.${prev.stdenv.hostPlatform.system}.default;
+  # Mosh normally consumes unknown OSC sequences instead of forwarding them.
+  # Preserve OSC 9 in its synchronized framebuffer and re-emit it client-side.
+  mosh = inputs.mosh-unicode.packages.${prev.stdenv.hostPlatform.system}.default.overrideAttrs (old: {
+    version = "${old.version}-osc9";
+    __intentionallyOverridingVersion = true;
+    patches = (old.patches or [ ]) ++ [ ./mosh-osc9-notifications.patch ];
+  });
 
   forgejo-mcp = final.buildGoModule rec {
     pname = "forgejo-mcp";
