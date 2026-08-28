@@ -1,0 +1,133 @@
+diff --git a/src/terminal/terminaldisplay.cc b/src/terminal/terminaldisplay.cc
+index 4ee5f0a..c0de001 100644
+--- a/src/terminal/terminaldisplay.cc
++++ b/src/terminal/terminaldisplay.cc
+@@ -26,6 +26,7 @@
+ */
+ 
+ #include <cstdio>
++#include <cstdlib>
+ 
+ #include "src/terminal/terminalframebuffer.h"
+ #include "terminaldisplay.h"
+@@ -123,6 +124,22 @@ std::string Display::new_frame( bool initialized, const Framebuffer& last, const
+     frame.append( '\007' );
+   }
+ 
++  /* has a desktop notification arrived? */
++  if ( f.get_notification_count() != frame.last_frame.get_notification_count() ) {
++    const bool tmux_passthrough = std::getenv( "TMUX" ) != nullptr;
++    frame.append( tmux_passthrough ? "\033Ptmux;\033\033]" : "\033]" );
++    const title_type& notification( f.get_notification() );
++    for ( title_type::const_iterator i = notification.begin();
++          i != notification.end();
++          i++ ) {
++      frame.append( *i );
++    }
++    frame.append( '\007' );
++    if ( tmux_passthrough ) {
++      frame.append( "\033\\" );
++    }
++  }
++
+   /* has reverse video state changed? */
+   if ( ( !initialized ) || ( f.ds.reverse_video != frame.last_frame.ds.reverse_video ) ) {
+     /* set reverse video */
+diff --git a/src/terminal/terminalframebuffer.cc b/src/terminal/terminalframebuffer.cc
+index 5fb167c..c0de002 100644
+--- a/src/terminal/terminalframebuffer.cc
++++ b/src/terminal/terminalframebuffer.cc
+@@ -78,7 +78,8 @@ DrawState::DrawState( int s_width, int s_height )
+ }
+ 
+ Framebuffer::Framebuffer( int s_width, int s_height )
+-  : rows(), icon_name(), window_title(), clipboard(), bell_count( 0 ), title_initialized( false ),
++  : rows(), icon_name(), window_title(), clipboard(), notification(), notification_count( 0 ),
++    bell_count( 0 ), title_initialized( false ),
+     ds( s_width, s_height )
+ {
+   assert( s_height > 0 );
+@@ -90,8 +91,9 @@ Framebuffer::Framebuffer( int s_width, int s_height )
+ 
+ Framebuffer::Framebuffer( const Framebuffer& other )
+   : rows( other.rows ), icon_name( other.icon_name ), window_title( other.window_title ),
+-    clipboard( other.clipboard ), bell_count( other.bell_count ), title_initialized( other.title_initialized ),
+-    ds( other.ds )
++    clipboard( other.clipboard ), notification( other.notification ),
++    notification_count( other.notification_count ), bell_count( other.bell_count ),
++    title_initialized( other.title_initialized ), ds( other.ds )
+ {}
+ 
+ Framebuffer& Framebuffer::operator=( const Framebuffer& other )
+@@ -102,6 +104,8 @@ Framebuffer& Framebuffer::operator=( const Framebuffer& other )
+     icon_name = other.icon_name;
+     window_title = other.window_title;
+     clipboard = other.clipboard;
++    notification = other.notification;
++    notification_count = other.notification_count;
+     bell_count = other.bell_count;
+     title_initialized = other.title_initialized;
+     ds = other.ds;
+@@ -449,6 +453,7 @@ void Framebuffer::reset( void )
+   rows = rows_type( height, newrow() );
+   window_title.clear();
+   clipboard.clear();
++  notification.clear();
+   /* do not reset bell_count */
+ }
+ 
+diff --git a/src/terminal/terminalframebuffer.h b/src/terminal/terminalframebuffer.h
+index dd0ab44..c0de003 100644
+--- a/src/terminal/terminalframebuffer.h
++++ b/src/terminal/terminalframebuffer.h
+@@ -444,6 +444,8 @@ private:
+   title_type icon_name;
+   title_type window_title;
+   title_type clipboard;
++  title_type notification;
++  unsigned int notification_count;
+   unsigned int bell_count;
+   bool title_initialized; /* true if the window title has been set via an OSC */
+ 
+@@ -530,9 +532,16 @@ public:
+   void set_icon_name( const title_type& s ) { icon_name = s; }
+   void set_window_title( const title_type& s ) { window_title = s; }
+   void set_clipboard( const title_type& s ) { clipboard = s; }
++  void set_notification( const title_type& s )
++  {
++    notification = s;
++    notification_count++;
++  }
+   const title_type& get_icon_name( void ) const { return icon_name; }
+   const title_type& get_window_title( void ) const { return window_title; }
+   const title_type& get_clipboard( void ) const { return clipboard; }
++  const title_type& get_notification( void ) const { return notification; }
++  unsigned int get_notification_count( void ) const { return notification_count; }
+ 
+   void prefix_window_title( const title_type& s );
+ 
+@@ -547,7 +555,8 @@ public:
+   bool operator==( const Framebuffer& x ) const
+   {
+     return ( rows == x.rows ) && ( window_title == x.window_title ) && ( clipboard == x.clipboard )
+-           && ( bell_count == x.bell_count ) && ( ds == x.ds );
++           && ( notification == x.notification ) && ( notification_count == x.notification_count )
++           && ( bell_count == x.bell_count ) && ( ds == x.ds );
+   }
+ };
+ }
+diff --git a/src/terminal/terminalfunctions.cc b/src/terminal/terminalfunctions.cc
+index 004ba1f..c0de004 100644
+--- a/src/terminal/terminalfunctions.cc
++++ b/src/terminal/terminalfunctions.cc
+@@ -631,6 +631,10 @@ void Dispatcher::OSC_dispatch( const Parser::OSC_End* act __attribute( ( unused )
+        && OSC_string[3] == L'c' && OSC_string[4] == L';' ) {
+     Terminal::Framebuffer::title_type clipboard( OSC_string.begin() + 5, OSC_string.end() );
+     fb->set_clipboard( clipboard );
++    /* preserve OSC 9 desktop notifications for the Mosh client */
++  } else if ( OSC_string.size() >= 2 && OSC_string[0] == L'9' && OSC_string[1] == L';' ) {
++    Terminal::Framebuffer::title_type notification( OSC_string.begin(), OSC_string.end() );
++    fb->set_notification( notification );
+     /* handle osc terminal title sequence */
+   } else if ( OSC_string.size() >= 1 ) {
+     long cmd_num = -1;
