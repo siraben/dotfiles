@@ -52,6 +52,7 @@ let
     mosh
     nixpkgs-review
     gh
+    tea
     ranger
     croc
   ] ++ (whenNotMinimal ([
