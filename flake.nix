@@ -27,6 +27,12 @@
       username = "siraben";
     in
     {
+      # NixOS system configurations
+      nixosConfigurations = {
+
+
+      };
+
       homeConfigurations = let
         mkHome = { system, profile, extraModules ? [] }:
           home-manager.lib.homeManagerConfiguration {

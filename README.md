@@ -21,7 +21,7 @@ Home configurations use `{arch}-{os}-{profile}` triple naming:
 | Profile    | Description                          | Packages                                                  |
 |------------|--------------------------------------|-----------------------------------------------------------|
 | `minimal`  | Bare essentials                      | bash, curl, htop, vim, wget, mosh, gh, ranger, croc, etc. |
-| `headless` | CLI-only tools                | minimal + claude-code, codex, bat, ripgrep, jq, etc.      |
+| `headless` | CLI tools for servers                | minimal + claude-code, codex, bat, ripgrep, jq, etc.      |
 | `full`     | Everything including GUI and dev     | headless + emacs, kitty, firefox, haskell, rust, etc.      |
 
 Available configurations:
@@ -45,11 +45,16 @@ $ cd ~/dotfiles && ./switch.sh
 `switch.sh` auto-detects arch and OS. On Linux, pass a profile:
 
 ```shell-session
-$ ./switch.sh              # default
+$ ./switch.sh              # default (full on x86_64, headless on aarch64)
 $ ./switch.sh minimal
 $ ./switch.sh headless
 $ ./switch.sh full
 ```
+
+## NixOS Configurations
+
+| Host         | Arch           | Description                  |
+|--------------|----------------|------------------------------|
 
 ## Notes
 Some configuration (e.g. Emacs) has deliberately not been Nixified so that it works independently. For some things like Emacs it assumes you have installed external dependencies such as fonts, interpreters and language servers for various programming languages.
