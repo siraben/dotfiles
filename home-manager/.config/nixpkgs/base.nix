@@ -63,6 +63,55 @@ lib.recursiveUpdate (rec {
     base = "en_US.UTF-8";
   };
 
+  # Codex mutates config.toml with project trust, plugin, and app state, so
+  # keep the file writable and merge our declarative settings into it.
+  home.activation.mergeCodexConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    codex_config="$HOME/.codex/config.toml"
+    codex_config_dir="$(dirname "$codex_config")"
+    managed_config=${./codex-config.toml}
+
+    if [ -n "$DRY_RUN_CMD" ]; then
+      echo "Would merge $managed_config into $codex_config"
+    else
+      mkdir -p "$codex_config_dir"
+      if [ -f "$codex_config" ]; then
+        merged_config="$(${pkgs.coreutils}/bin/mktemp "$codex_config_dir/config.toml.XXXXXX")"
+        managed_setting="$(${pkgs.gnugrep}/bin/grep -E \
+          '^[[:space:]]*disable_paste_burst[[:space:]]*=' \
+          "$managed_config")"
+        ${pkgs.gawk}/bin/awk -v managed_setting="$managed_setting" '
+          BEGIN { inserted = 0 }
+          /^[[:space:]]*disable_paste_burst[[:space:]]*=/ {
+            if (!inserted) print managed_setting
+            inserted = 1
+            next
+          }
+          !inserted && /^[[:space:]]*\[/ {
+            print managed_setting
+            print ""
+            inserted = 1
+          }
+          { print }
+          END {
+            if (!inserted) {
+              if (NR > 0) print ""
+              print managed_setting
+            }
+          }
+        ' "$codex_config" > "$merged_config"
+        chmod --reference="$codex_config" "$merged_config"
+        if ${pkgs.diffutils}/bin/cmp --silent "$codex_config" "$merged_config"; then
+          rm "$merged_config"
+        else
+          mv "$merged_config" "$codex_config"
+        fi
+      else
+        cp "$managed_config" "$codex_config"
+        chmod u+w "$codex_config"
+      fi
+    fi
+  '';
+
   home.file = {
     ".claude/hooks/block-find-nix-store.sh" = {
       executable = true;

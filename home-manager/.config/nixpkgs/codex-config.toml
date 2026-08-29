@@ -1,0 +1,3 @@
+# Mosh may deliver typed characters in a tight batch, which can make Codex
+# mistake normal typing for a paste and treat plain Enter as a newline.
+disable_paste_burst = true
