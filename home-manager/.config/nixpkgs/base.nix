@@ -15,6 +15,9 @@ let
     overlays = [
       (import ./overlay.nix { inherit inputs; })
       inputs.siraben-overlay.overlays.default
+      # Keep Pi and its extensions on mutually compatible versions pinned in
+      # this repository.
+      (import ./pi.nix)
     ];
     config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
   };
@@ -41,6 +44,8 @@ let
   '';
 in
 lib.recursiveUpdate (rec {
+  imports = [ ./pi-home.nix ];
+
   nixpkgs = pkgsOptions;
   home.username = "siraben";
   home.homeDirectory = if isDarwin then "/Users/${home.username}" else "/home/${home.username}";
@@ -84,8 +89,7 @@ lib.recursiveUpdate (rec {
       force = true;
       source = ./codex-custom.rules;
     };
-    # pi has no hooks.json; the equivalent guard is a local extension
-    # registered via the "extensions" array in ~/.pi/agent/settings.json.
+    # pi has no hooks.json; global extensions are auto-discovered here.
     ".pi/agent/extensions/block-expensive-scans.ts" = {
       force = true;
       source = ./pi-block-expensive-scans.ts;
