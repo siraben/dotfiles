@@ -36,8 +36,7 @@
           };
         darwinModules = [ mac-app-util.homeManagerModules.default ];
       in {
-        # Darwin (full only)
-        "${username}@x86_64-darwin-full"   = mkHome { system = "x86_64-darwin";  profile = "full"; extraModules = darwinModules; };
+        # Darwin (full only; current Nixpkgs no longer supports Intel macOS)
         "${username}@aarch64-darwin-full"   = mkHome { system = "aarch64-darwin"; profile = "full"; extraModules = darwinModules; };
 
         # Linux x86_64
@@ -47,7 +46,7 @@
 
       };
 
-      devShells = nixpkgs.lib.genAttrs [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ] (system:
+      devShells = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
         in
