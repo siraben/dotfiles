@@ -34,7 +34,10 @@ in
           }
           "${pkgs.pi-codex-goal}/lib/node_modules/pi-codex-goal"
           "${pkgs.pi-web-access}/lib/node_modules/pi-web-access"
-          "${pkgs.context-mode}/lib/node_modules/context-mode"
+          {
+            source = "${pkgs.context-mode}/lib/node_modules/context-mode";
+            autoload = false;
+          }
         ];
       };
     };
