@@ -16,12 +16,16 @@ in
 
   home.file = {
     # Pi mutates settings at runtime, so keep the changelog marker aligned with
-    # the packaged version. Provider/model selection intentionally falls back
-    # to Pi rather than pinning the removed OpenRouter ox-alpha model.
+    # the packaged version and pin startup model selection declaratively.
     ".pi/agent/settings.json" = {
       force = true;
       text = builtins.toJSON {
+        defaultModel = "gpt-5.6-sol";
+        defaultProvider = "openai-codex";
         defaultThinkingLevel = "high";
+        modelThinkingLevels = {
+          "openai-codex/gpt-5.6-sol" = "high";
+        };
         enableAnalytics = false;
         enableInstallTelemetry = false;
         lastChangelogVersion = pkgs.pi-coding-agent.version;
