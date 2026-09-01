@@ -15,4 +15,8 @@
     device = "datapool/nextcloud";
     fsType = "zfs";
   };
+  fileSystems."/var/lib/postgresql" = {
+    device = "datapool/postgresql";
+    fsType = "zfs";
+  };
 }
