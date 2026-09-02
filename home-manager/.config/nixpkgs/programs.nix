@@ -95,6 +95,12 @@ in
       # Truecolor / 24-bit color
       set -as terminal-overrides ",xterm-256color:Tc,xterm-kitty:Tc,tmux*:Tc"
 
+      # Let terminal-native notifications (including those from inactive tmux
+      # windows) reach the local terminal through SSH or Mosh. Codex and the
+      # patched Mosh client emit the required tmux DCS wrapper around
+      # Kitty-compatible OSC 9 notifications.
+      set -g allow-passthrough all
+
       # Quality-of-life
       set -sg escape-time 250
       set -g  focus-events on
