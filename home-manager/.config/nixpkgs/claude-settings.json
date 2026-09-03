@@ -1,6 +1,9 @@
 {
   "skipDangerousModePermissionPrompt": true,
   "includeCoAuthoredBy": false,
+  "attribution": {
+    "sessionUrl": false
+  },
   "hooks": {
     "PreToolUse": [
       {
