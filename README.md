@@ -53,6 +53,35 @@ $ ./switch.sh headless
 $ ./switch.sh full
 ```
 
+## Composition
+
+The flake exports `homeManagerModules.default` and
+`lib.mkHomeConfiguration` so a separate host or private flake can reuse the
+public configuration without copying it. Pass private modules through
+`extraModules` and keep the private flake's own lock file pinned:
+
+```nix
+{
+  inputs.dotfiles.url = "github:siraben/dotfiles";
+
+  outputs = { dotfiles, ... }: {
+    homeConfigurations.work = dotfiles.lib.mkHomeConfiguration {
+      system = "x86_64-linux";
+      profile = "headless";
+      username = "work-user";
+      extraModules = [
+        { siraben.manageClaudeSettings = false; }
+        ./work.nix
+      ];
+    };
+  };
+}
+```
+
+The `siraben.manageClaudeSettings` Home Manager option defaults to `true`. A
+private wrapper can disable it when Claude Code must update its own settings
+file.
+
 ## NixOS Configurations
 
 | Host         | Arch           | Description                  |

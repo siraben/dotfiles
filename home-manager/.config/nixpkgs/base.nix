@@ -1,4 +1,4 @@
-{ config, lib, currentSystem, profile, inputs, timeZone ? "America/Los_Angeles", ... }:
+{ config, lib, currentSystem, profile, inputs, username ? "siraben", timeZone ? "America/Los_Angeles", ... }:
 
 let
   inherit (lib.systems.elaborate { system = currentSystem; }) isLinux isDarwin;
@@ -25,13 +25,22 @@ let
     system = currentSystem;
     inherit (pkgsOptions) overlays config;
   };
+  manageClaudeSettingsModule = {
+    options.siraben.manageClaudeSettings = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Whether Home Manager manages Claude Code settings";
+    };
+  };
 in
 lib.recursiveUpdate (rec {
-  imports = [ ./pi-home.nix ];
+  imports = [ ./pi-home.nix manageClaudeSettingsModule ];
 
   nixpkgs = pkgsOptions;
-  home.username = "siraben";
-  home.homeDirectory = if isDarwin then "/Users/${home.username}" else "/home/${home.username}";
+  home.username = lib.mkDefault username;
+  home.homeDirectory = lib.mkDefault (
+    if isDarwin then "/Users/${username}" else "/home/${username}"
+  );
   home.packages = import ./packages.nix { inherit lib pkgs isDarwin isLinux profile; };
 
   home.sessionVariables = {
@@ -56,10 +65,12 @@ lib.recursiveUpdate (rec {
       executable = true;
       source = ./block-find-nix-store.sh;
     };
+  } // lib.optionalAttrs config.siraben.manageClaudeSettings {
     ".claude/settings.json" = {
       force = true;
       source = ./claude-settings.json;
     };
+  } // {
     ".codex/hooks/block-find-nix-store.sh" = {
       executable = true;
       source = ./block-find-nix-store.sh;

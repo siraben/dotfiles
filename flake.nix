@@ -28,9 +28,41 @@
 
   outputs = { self, nixpkgs, home-manager, mac-app-util, ... /* Capture all inputs */ }@allInputs:
     let
-      username = "siraben";
+      configurationName = "siraben";
+      defaultUsername = "siraben";
+      homeModule = ./home-manager/.config/nixpkgs/home.nix;
+      mkHomeModule = profile: args@{ config, lib, pkgs, ... }:
+        (import homeModule (args // { inherit profile; })) // {
+          _module.args.profile = profile;
+        };
+      mkHomeConfiguration = {
+        system,
+        profile ? "full",
+        username ? defaultUsername,
+        timeZone ? "America/Los_Angeles",
+        extraModules ? [],
+        extraSpecialArgs ? {},
+      }:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.${system};
+          extraSpecialArgs = {
+            inherit username profile timeZone;
+            inputs = allInputs;
+          } // extraSpecialArgs;
+          modules = [ homeModule ] ++ extraModules;
+        };
     in
     {
+      # Public extension points for wrapper flakes and host-specific overlays.
+      homeManagerModules = {
+        default = mkHomeModule "full";
+        full = mkHomeModule "full";
+        headless = mkHomeModule "headless";
+        minimal = mkHomeModule "minimal";
+      };
+
+      lib.mkHomeConfiguration = mkHomeConfiguration;
+
       # NixOS system configurations
       nixosConfigurations = {
         beelink = nixpkgs.lib.nixosSystem {
@@ -41,9 +73,9 @@
             home-manager.nixosModules.home-manager
             {
               home-manager.useUserPackages = true;
-              home-manager.users.${username} = import ./home-manager/.config/nixpkgs/home.nix;
+              home-manager.users.${defaultUsername} = homeModule;
               home-manager.extraSpecialArgs = {
-                inherit username;
+                username = defaultUsername;
                 inputs = allInputs;
                 profile = "headless";
                 timeZone = "Asia/Bangkok";
@@ -74,25 +106,23 @@
       };
 
       homeConfigurations = let
-        mkHome = { system, profile, extraModules ? [] }:
-          home-manager.lib.homeManagerConfiguration {
-            pkgs = nixpkgs.legacyPackages.${system};
-            extraSpecialArgs = { inherit username profile; inputs = allInputs; };
-            modules = extraModules ++ [ ./home-manager/.config/nixpkgs/home.nix ];
-          };
         darwinModules = [ mac-app-util.homeManagerModules.default ];
       in {
         # Darwin (full only; current Nixpkgs no longer supports Intel macOS)
-        "${username}@aarch64-darwin-full"   = mkHome { system = "aarch64-darwin"; profile = "full"; extraModules = darwinModules; };
+        "${configurationName}@aarch64-darwin-full" = mkHomeConfiguration {
+          system = "aarch64-darwin";
+          profile = "full";
+          extraModules = darwinModules;
+        };
 
         # Linux x86_64
-        "${username}@x86_64-linux-full"     = mkHome { system = "x86_64-linux"; profile = "full"; };
-        "${username}@x86_64-linux-headless" = mkHome { system = "x86_64-linux"; profile = "headless"; };
-        "${username}@x86_64-linux-minimal"  = mkHome { system = "x86_64-linux"; profile = "minimal"; };
+        "${configurationName}@x86_64-linux-full" = mkHomeConfiguration { system = "x86_64-linux"; profile = "full"; };
+        "${configurationName}@x86_64-linux-headless" = mkHomeConfiguration { system = "x86_64-linux"; profile = "headless"; };
+        "${configurationName}@x86_64-linux-minimal" = mkHomeConfiguration { system = "x86_64-linux"; profile = "minimal"; };
 
         # Linux aarch64
-        "${username}@aarch64-linux-headless" = mkHome { system = "aarch64-linux"; profile = "headless"; };
-        "${username}@aarch64-linux-minimal"  = mkHome { system = "aarch64-linux"; profile = "minimal"; };
+        "${configurationName}@aarch64-linux-headless" = mkHomeConfiguration { system = "aarch64-linux"; profile = "headless"; };
+        "${configurationName}@aarch64-linux-minimal" = mkHomeConfiguration { system = "aarch64-linux"; profile = "minimal"; };
       };
 
       devShells = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ] (system:
