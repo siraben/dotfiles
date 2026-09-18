@@ -84,7 +84,6 @@ let
     (import ./haskell-packages.nix { inherit pkgs; })
     hlint
     imagemagick
-    ledger
     my-emacs
     nodejs
     (import ./python-packages.nix { inherit pkgs; })
