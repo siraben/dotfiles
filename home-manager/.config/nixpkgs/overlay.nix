@@ -9,17 +9,6 @@ final: prev: {
   nix-direnv = prev.nix-direnv.overrideAttrs (_: { doCheck = false; doInstallCheck = false; });
 
   mosh = inputs.mosh-unicode.packages.${prev.stdenv.hostPlatform.system}.default;
-
-
-  pure-prompt = prev.pure-prompt.overrideAttrs (old: rec {
-    version = "1.27.1";
-    src = prev.fetchFromGitHub {
-      owner = "sindresorhus";
-      repo = "pure";
-      rev = "v${version}";
-      hash = "sha256-Fhk4nlVPS09oh0coLsBnjrKncQGE6cUEynzDO2Skiq8=";
-    };
-  });
 } // prev.lib.optionalAttrs prev.stdenv.hostPlatform.isDarwin {
   python3 = prev.python3.override {
     packageOverrides = pyFinal: pyPrev: {
