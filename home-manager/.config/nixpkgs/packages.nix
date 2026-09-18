@@ -80,7 +80,6 @@ let
     dejavu_fonts
     ffmpeg
     (pkgs.nerd-fonts.jetbrains-mono)
-    github-cli
     (import ./haskell-packages.nix { inherit pkgs; })
     hlint
     imagemagick
