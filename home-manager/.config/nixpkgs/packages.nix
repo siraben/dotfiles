@@ -91,7 +91,6 @@ let
     tree-sitter
     typst
     # uncommenting until deno gets fixed
-    # mpv
     # yt-dlp
   ] ++ languageServers));
 in
