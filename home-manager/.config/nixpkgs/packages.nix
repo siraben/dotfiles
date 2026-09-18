@@ -86,7 +86,6 @@ let
     imagemagick
     ledger
     my-emacs
-    niv
     nodejs
     (import ./python-packages.nix { inherit pkgs; })
     rust-analyzer
