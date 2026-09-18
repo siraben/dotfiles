@@ -90,8 +90,7 @@ let
     # (import ./texlive-packages.nix { inherit pkgs; })
     tree-sitter
     typst
-    # uncommenting until deno gets fixed
-    # yt-dlp
+    yt-dlp
   ] ++ languageServers));
 in
 sharedPackages ++ (lib.optionals isLinux linuxPackages) ++ (lib.optionals isDarwin darwinPackages)
