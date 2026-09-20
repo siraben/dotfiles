@@ -22,6 +22,10 @@ jobs:
       - name: Install Nix with Flakes support
         uses: cachix/install-nix-action@v31.3.0
 
+      - name: Test package manifest reporting
+        if: matrix.os == 'ubuntu-24.04'
+        run: python3 -B -m unittest discover -s scripts -p 'test_package_manifest.py'
+
       - name: Configure Cachix
         uses: cachix/cachix-action@v16
         with:

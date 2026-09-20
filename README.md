@@ -90,5 +90,28 @@ file.
 | `server`     | x86_64-linux   | x86_64 server                |
 | `server-arm` | aarch64-linux  | OCI ARM instance             |
 
+## Package update reports
+
+Weekly flake update PRs include a package-version comparison for every exported
+Home Manager configuration and NixOS host, including embedded Home Manager
+profiles. The report groups identical updates and lists additions and removals.
+It evaluates the exact PR base and head commits, so overlays and pinned packages
+are reflected in the reported versions.
+
+The manifest covers Home Manager packages and NixOS system packages, kernels,
+and fonts. It does not enumerate transitive dependencies, service-only packages,
+or rebuilds that keep the same version, and does not replace the build checks.
+Full JSON manifests and the Markdown report are attached to the update workflow
+as the `package-manifest` artifact. If evaluation fails, the workflow fails
+without publishing a partial comparison.
+
+To reproduce a comparison locally (Nix and Python 3.12+ required):
+
+```shell-session
+$ python3 scripts/package-manifest.py --base HEAD^ --head HEAD --output-dir /tmp/package-manifest
+$ python3 -m unittest discover -s scripts -p 'test_package_manifest.py'
+```
+
 ## Notes
+
 Some configuration (e.g. Emacs) has deliberately not been Nixified so that it works independently. For some things like Emacs it assumes you have installed external dependencies such as fonts, interpreters and language servers for various programming languages.
