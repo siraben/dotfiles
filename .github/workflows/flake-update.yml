@@ -15,8 +15,9 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@v20
       - name: Get current date
         id: date
-        run: echo "date=$(date -u +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+        run: echo "date=$(date -u +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
       - name: Update flake.lock
+        id: update
         uses: DeterminateSystems/update-flake-lock@v27
         with:
           token: ${{ secrets.GH_TOKEN }}
@@ -24,3 +25,46 @@ jobs:
           pr-labels: |
             dependencies
             automated
+      - name: Compare configured package versions
+        id: manifest
+        if: steps.update.outputs.pull-request-number != '' && steps.update.outputs.pull-request-operation != 'closed'
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          PR_NUMBER: ${{ steps.update.outputs.pull-request-number }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          gh pr view "$PR_NUMBER" --json baseRefOid,headRefOid,body > "$RUNNER_TEMP/package-manifest-pr.json"
+          BASE_SHA=$(jq -r .baseRefOid "$RUNNER_TEMP/package-manifest-pr.json")
+          HEAD_SHA=$(jq -r .headRefOid "$RUNNER_TEMP/package-manifest-pr.json")
+          jq -r .body "$RUNNER_TEMP/package-manifest-pr.json" > "$RUNNER_TEMP/package-manifest-body.md"
+          git fetch --no-tags origin "$BASE_SHA" "$HEAD_SHA"
+          python3 scripts/package-manifest.py \
+            --base "$BASE_SHA" --head "$HEAD_SHA" \
+            --output-dir "$RUNNER_TEMP/package-manifest" \
+            --pr-body "$RUNNER_TEMP/package-manifest-body.md" \
+            --artifact-url "$RUN_URL"
+          cat "$RUNNER_TEMP/package-manifest/report.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload package manifests and comparison
+        id: manifest-artifact
+        if: steps.manifest.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-manifest
+          path: ${{ runner.temp }}/package-manifest/
+          if-no-files-found: error
+      - name: Add package comparison to PR description
+        if: steps.manifest-artifact.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          PR_NUMBER: ${{ steps.update.outputs.pull-request-number }}
+        run: |
+          set -euo pipefail
+          gh pr view "$PR_NUMBER" --json baseRefOid,headRefOid,body > "$RUNNER_TEMP/package-manifest-current.json"
+          if ! diff -u \
+            <(jq -S . "$RUNNER_TEMP/package-manifest-pr.json") \
+            <(jq -S . "$RUNNER_TEMP/package-manifest-current.json"); then
+            echo 'PR changed during evaluation; refusing to publish a stale package comparison.' >&2
+            exit 1
+          fi
+          gh pr edit "$PR_NUMBER" --body-file "$RUNNER_TEMP/package-manifest/pr-body.md"

@@ -59,6 +59,12 @@
 
       lib.mkHomeConfiguration = mkHomeConfiguration;
 
+      # NixOS system configurations
+      nixosConfigurations = {
+
+
+      };
+
       homeConfigurations = let
         darwinModules = [ mac-app-util.homeManagerModules.default ];
       in {
