@@ -96,6 +96,10 @@ lib.recursiveUpdate (rec {
       force = true;
       source = ./pi-block-expensive-scans.ts;
     };
+    ".pi/agent/extensions/codex-usage.ts" = {
+      force = true;
+      source = ./pi-codex-usage.ts;
+    };
   } // lib.optionalAttrs isDarwin {
     "Library/Application Support/Code/User/settings.json" = {
       force = true;
