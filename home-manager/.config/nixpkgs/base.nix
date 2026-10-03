@@ -19,6 +19,7 @@ let
       # Keep Pi and its extensions on mutually compatible versions pinned in
       # this repository.
       (import ./pi.nix)
+      (import ./cua-driver.nix)
     ];
     config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
   };
