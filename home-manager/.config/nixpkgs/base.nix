@@ -10,6 +10,7 @@ let
     "zoom"
     "aspell-dict-en-science"
     "claude-code"
+    "context-mode"
   ];
   pkgsOptions = {
     overlays = [
