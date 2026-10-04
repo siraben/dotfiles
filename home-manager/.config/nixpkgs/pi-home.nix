@@ -8,7 +8,6 @@
 
 let
   cfg = config.siraben.pi;
-  nativeMcp = lib.versionAtLeast pkgs.pi.version "0.99";
   enableCuaDriver = cfg.enableCuaDriver && pkgs.stdenv.hostPlatform.isDarwin;
   cuaDriverEnvironment = {
     CUA_DRIVER_RS_TELEMETRY_ENABLED = "0";
@@ -37,8 +36,7 @@ let
         source = "${pkgs.context-mode}/lib/node_modules/context-mode";
         autoload = false;
       }
-    ]
-    ++ lib.optional (!nativeMcp) "${pkgs.pi-mcp-adapter}/lib/node_modules/pi-mcp-adapter";
+    ];
   piPackageSource = package: if builtins.isString package then package else package.source;
   subagentExtensions =
     map piPackageSource (
@@ -167,7 +165,6 @@ in
       pkgs.pi
       pkgs.context-mode
     ]
-    ++ lib.optional (!nativeMcp) pkgs.pi-mcp-adapter
     ++ lib.optional enableCuaDriver pkgs.cua-driver;
 
     home.sessionVariables = {
@@ -192,33 +189,14 @@ in
       };
     };
 
-    home.activation.writePiMcpConfig = lib.mkIf nativeMcp (
-      lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        $DRY_RUN_CMD ${writePiMcpConfig}
-      ''
-    );
+    home.activation.writePiMcpConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      $DRY_RUN_CMD ${writePiMcpConfig}
+    '';
 
     home.file = {
       ".pi/agent/themes/tomorrow-night-bright.json" = {
         force = true;
         source = ./pi-theme-tomorrow-night-bright.json;
-      };
-
-      ".pi/agent/mcp.json" = lib.mkIf (!nativeMcp) {
-        force = true;
-        text = builtins.toJSON {
-          imports = lib.optional cfg.importCodexMcp "codex";
-          mcpServers = {
-            computer-use.disabled = true;
-          }
-          // lib.optionalAttrs enableCuaDriver {
-            cua-driver = {
-              command = lib.getExe pkgs.cua-driver;
-              args = [ "mcp" ];
-              env = cuaDriverEnvironment;
-            };
-          };
-        };
       };
 
       ".pi/agent/settings.json" = {
