@@ -95,6 +95,10 @@ in
       # Truecolor / 24-bit color
       set -as terminal-overrides ",xterm-256color:Tc,xterm-kitty:Tc,tmux*:Tc"
 
+      # Forward modified keys such as Shift+Enter and Alt+Enter to Pi.
+      set -g extended-keys on
+      set -g extended-keys-format csi-u
+
       # Quality-of-life
       set -sg escape-time 250
       set -g  focus-events on
