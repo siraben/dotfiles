@@ -8,6 +8,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    pi = {
+      url = "github:earendil-works/pi/stable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # Root-owned so agenix cannot leave this integration input stale.
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin";

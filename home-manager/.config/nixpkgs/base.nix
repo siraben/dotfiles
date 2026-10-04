@@ -16,8 +16,9 @@ let
     overlays = [
       (import ./overlay.nix { inherit inputs; })
       inputs.siraben-overlay.overlays.default
-      # Keep Pi and its extensions on mutually compatible versions pinned in
-      # this repository.
+      inputs.pi.overlays.default
+      # Keep Pi extensions on mutually compatible versions pinned in this
+      # repository while using Pi's upstream Nix package.
       (import ./pi.nix)
       (import ./cua-driver.nix)
     ];
