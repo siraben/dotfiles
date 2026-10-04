@@ -17,9 +17,8 @@ let
   ]) ++ wayland-packages ++ (with pkgs; [
   ]);
   darwinPackages = with pkgs; [
-    # GNU replacements
-    coreutils
-    gnused
+    # Prefer macOS core utilities, sed, and rsync for native flag and
+    # metadata semantics.
     findutils
     gnugrep
     gawk
@@ -27,7 +26,6 @@ let
     gnutar
     patch
 
-    rsync
     file
     less
     gzip
@@ -61,8 +59,12 @@ let
     borgbackup
     gnumake
     jq
+    just
+    nixfmt
     nix-output-monitor
+    poppler-utils
     ripgrep
+    sqlite
     stow
     tldr
     tree
