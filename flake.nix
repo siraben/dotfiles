@@ -46,7 +46,7 @@
         system,
         profile ? "full",
         username ? defaultUsername,
-        timeZone ? "America/Los_Angeles",
+        timeZone ? "America/New_York",
         extraModules ? [],
         extraSpecialArgs ? {},
       }:
