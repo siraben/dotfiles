@@ -231,6 +231,10 @@ in
             theme = "tomorrow-night-bright";
             hideThinkingBlock = true;
             followUpMode = "all";
+            toolSummaries = {
+              model = "openrouter/openai/gpt-6-luna";
+              reasoning = "off";
+            };
             packages = piPackages;
           }
           // lib.optionalAttrs (lib.versionAtLeast pkgs.pi-coding-agent.version "1.0") {
