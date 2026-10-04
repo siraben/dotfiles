@@ -12,11 +12,6 @@
       url = "github:earendil-works/pi/stable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Root-owned so agenix cannot leave this integration input stale.
-    nix-darwin = {
-      url = "github:nix-darwin/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     mac-app-util = {
       url = "github:siraben/mac-app-util-py";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -24,8 +19,6 @@
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
-      inputs.darwin.follows = "nix-darwin";
     };
     mosh-unicode = {
       url = "github:siraben/mosh/unicode";
