@@ -100,7 +100,6 @@ in
       set -g extended-keys-format csi-u
 
       # Quality-of-life
-      set -sg escape-time 250
       set -g  focus-events on
       set -g  renumber-windows on
       set -g  pane-base-index 1
