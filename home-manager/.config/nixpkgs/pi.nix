@@ -1,54 +1,87 @@
-final: _: {
-  # nicobailon/pi-subagents: subagent delegation (foreground, parallel,
-  # chains, detached background runs), built from the v0.74.0 source the
-  # way upstream publishes it (`npm run build:pkg` -> dist-pkg).
-  pi-subagents = final.buildNpmPackage rec {
-    pname = "pi-subagents";
-    version = "0.74.0";
-
-    src = final.fetchFromGitHub {
-      owner = "nicobailon";
-      repo = "pi-subagents";
-      # v0.74.0; the published tarball's gitHead.
-      rev = "b6bda32f03b7f549623bc404c9be14dca298ddc4";
-      hash = "sha256-QKf8Y8x90TLBKy3AkTRUc0+FxXAy/GKkHK2WQL2+a+k=";
-    };
-
-    patches = [
-      # nicobailon/pi-subagents#2634, merged after 0.74.0: Pi 1.0's
-      # pi-agent-core no longer exports "./node", which 0.74.0 required, so
-      # every background/async subagent failed to launch. Source hunk only;
-      # drop with the next release.
-      ./pi-subagents-pi-1.0-agent-core-node.patch
-    ];
-
-    # Fetch the same npm tarballs through Yarn's registry mirror.
-    npmDeps = final.fetchNpmDeps {
-      inherit src patches;
-      name = "${pname}-${version}-npm-deps";
-      hash = "sha256-uwNrhoxNS6aa8PftDw4qWtGxKeVnGX4t/tcMoDgEwQY=";
-      fetcherVersion = 2;
-      npmRegistryOverridesString = builtins.toJSON {
-        "registry.npmjs.org" = "https://registry.yarnpkg.com";
+{ inputs }:
+final: _:
+let
+  subagentsSrc = inputs.pi-subagents;
+  subagentsPackage = builtins.fromJSON (builtins.readFile "${subagentsSrc}/package.json");
+  subagentsPackageLock = builtins.fromJSON (builtins.readFile "${subagentsSrc}/package-lock.json");
+  subagentsBuildDependencies = subagentsPackage.dependencies // {
+    inherit (subagentsPackage.devDependencies) typescript;
+    "@types/node" = subagentsPackage.devDependencies."@types/node";
+  };
+  subagentsBuildPackage = removeAttrs subagentsPackage [ "devDependencies" ] // {
+    dependencies = subagentsBuildDependencies;
+  };
+  subagentsBuildPackageLock = subagentsPackageLock // {
+    packages = final.lib.filterAttrs (
+      name:
+      package:
+      !(package.dev or false)
+      || builtins.elem name [
+        "node_modules/typescript"
+        "node_modules/@types/node"
+        "node_modules/undici-types"
+      ]
+    ) subagentsPackageLock.packages // {
+      "" = removeAttrs subagentsPackageLock.packages."" [ "devDependencies" ] // {
+        dependencies = subagentsBuildDependencies;
       };
     };
+  };
+  subagentsBuildNodeModules = final.importNpmLock.buildNodeModules {
+    package = subagentsBuildPackage;
+    packageLock = subagentsBuildPackageLock;
+    nodejs = final.nodejs;
+  };
+in
+{
+  # nicobailon/pi-subagents: subagent delegation (foreground, parallel,
+  # chains, detached background runs). The flake lock selects the upstream
+  # source, while importNpmLock avoids a separately maintained dependency hash.
+  pi-subagents = final.stdenvNoCC.mkDerivation rec {
+    pname = "pi-subagents";
+    version = subagentsPackage.version;
+    src = subagentsSrc;
 
-    npmDepsFetcherVersion = 2;
-    npmFlags = [ "--ignore-scripts" ];
-    npmBuildScript = "build:pkg";
+    nativeBuildInputs = [ final.nodejs ];
 
-    # build:pkg writes the publishable package to dist-pkg; install it with
+    postPatch = ''
+      if grep -Fq 'steer: (text) => session.steer(text),' src/runs/shared/child-session.ts; then
+        substituteInPlace src/runs/shared/child-session.ts \
+          --replace-fail 'steer: (text) => session.steer(text),' \
+            'steer: async (text) => { await session.steer(text); },' \
+          --replace-fail 'followUp: (text) => session.followUp(text),' \
+            'followUp: async (text) => { await session.followUp(text); },'
+      fi
+    '';
+
+    buildPhase = ''
+      runHook preBuild
+
+      cp -R ${subagentsBuildNodeModules}/node_modules .
+      chmod -R u+w node_modules
+      mkdir -p node_modules/@earendil-works
+      for package in pi-agent-core pi-ai pi-coding-agent pi-tui; do
+        ln -s ${final.pi}/lib/pi/node_modules/@earendil-works/$package \
+          node_modules/@earendil-works/$package
+      done
+      ln -s ${final.pi}/lib/pi/node_modules/typebox node_modules/typebox
+      npm run build:pkg --offline --ignore-scripts
+
+      runHook postBuild
+    '';
+
+    # build:pkg writes the publishable package to dist-pkg. Install it with
     # only its runtime dependencies, as `npm install pi-subagents` would.
     installPhase = ''
       runHook preInstall
 
-      npm prune --omit=dev --ignore-scripts --no-audit --no-fund --offline
+      rm -rf node_modules/.bin node_modules/@earendil-works node_modules/@types \
+        node_modules/typebox node_modules/typescript node_modules/undici-types
       find node_modules -mindepth 1 -maxdepth 1 -type d -empty -delete
       cp -R node_modules dist-pkg/node_modules
-      cd dist-pkg
 
       mkdir -p "$out/lib/node_modules/pi-subagents"
-      cp -R . "$out/lib/node_modules/pi-subagents"
+      cp -R dist-pkg/. "$out/lib/node_modules/pi-subagents"
 
       runHook postInstall
     '';
@@ -101,12 +134,8 @@ final: _: {
   # No runtime dependencies; Pi loads its TypeScript sources directly.
   pi-better-background-tasks = final.stdenvNoCC.mkDerivation rec {
     pname = "pi-better-background-tasks";
-    version = "0.6.3";
-
-    src = final.fetchurl {
-      url = "https://registry.yarnpkg.com/pi-better-background-tasks/-/pi-better-background-tasks-${version}.tgz";
-      hash = "sha512-11rJaj1NmE5tQU87vME5nEZJWFQfey1UMbNbKlMc7E93flKbYTd1gwuT017yyiQO9Nt1qR3LG2rkOp1qHWnOTQ==";
-    };
+    version = (builtins.fromJSON (builtins.readFile "${src}/package.json")).version;
+    src = inputs.pi-better-harness + "/packages/pi-better-background-tasks";
 
     dontBuild = true;
 
@@ -157,12 +186,8 @@ final: _: {
   # dependencies; the tarball's __tests__ directory (bun:test) is not loaded.
   pi-tool-renderer = final.stdenvNoCC.mkDerivation rec {
     pname = "pi-tool-renderer";
-    version = "2.0.9";
-
-    src = final.fetchurl {
-      url = "https://registry.yarnpkg.com/@vanillagreen/pi-tool-renderer/-/pi-tool-renderer-${version}.tgz";
-      hash = "sha512-l445hi9+PP6VKceI3lCTGqCt2MR8E3lJrNIsJDUJk8X7F/247gkYnkoMfvkiNHOhalAAAlK0x82GDVosRq+x7Q==";
-    };
+    version = (builtins.fromJSON (builtins.readFile "${src}/package.json")).version;
+    src = inputs.kendex + "/pi-extensions/pi-tool-renderer";
 
     dontBuild = true;
 

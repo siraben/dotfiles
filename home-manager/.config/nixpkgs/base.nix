@@ -19,7 +19,7 @@ let
       inputs.pi.overlays.default
       # Keep Pi extensions on mutually compatible versions pinned in this
       # repository while using Pi's upstream Nix package.
-      (import ./pi.nix)
+      (import ./pi.nix { inherit inputs; })
       (import ./cua-driver.nix)
     ];
     config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;

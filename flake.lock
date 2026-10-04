@@ -77,6 +77,22 @@
         "type": "github"
       }
     },
+    "kendex": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791137712,
+        "narHash": "sha256-h5hcMRBIIgVDK0Iobs6FG8L7vt/cmWQQYcIFZ4u8VAQ=",
+        "owner": "vanillagreencom",
+        "repo": "kendex",
+        "rev": "7ee2ba3d782dd8da98904cda69a042fa846a5714",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vanillagreencom",
+        "repo": "kendex",
+        "type": "github"
+      }
+    },
     "mac-app-util": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -174,14 +190,49 @@
         "type": "github"
       }
     },
+    "pi-better-harness": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791135950,
+        "narHash": "sha256-bx3V+ZFP5uLcfDRouvuB21KXg/WdA87vBc1tTcob37s=",
+        "owner": "1aboveio",
+        "repo": "pi-better-harness",
+        "rev": "0aac90030312687a75d57749d50dd96aced30431",
+        "type": "github"
+      },
+      "original": {
+        "owner": "1aboveio",
+        "repo": "pi-better-harness",
+        "type": "github"
+      }
+    },
+    "pi-subagents": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791137950,
+        "narHash": "sha256-1mUXpkn5RooCkOnf1akvKfU1b6EeEhqIMb69gvza574=",
+        "owner": "nicobailon",
+        "repo": "pi-subagents",
+        "rev": "2d3f6471a3ae824da3af9983caafb45ff58751a3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nicobailon",
+        "repo": "pi-subagents",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
         "home-manager": "home-manager",
+        "kendex": "kendex",
         "mac-app-util": "mac-app-util",
         "mosh-unicode": "mosh-unicode",
         "nixpkgs": "nixpkgs",
         "pi": "pi",
+        "pi-better-harness": "pi-better-harness",
+        "pi-subagents": "pi-subagents",
         "siraben-overlay": "siraben-overlay"
       }
     },

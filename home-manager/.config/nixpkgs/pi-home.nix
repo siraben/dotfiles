@@ -147,6 +147,7 @@ in
     ++ lib.optional enableCuaDriver pkgs.cua-driver;
 
     home.sessionVariables = {
+      PI_BETTER_BACKGROUND_TASKS_SHELL = lib.getExe pkgs.bash;
       PI_SKIP_VERSION_CHECK = "1";
       PI_TELEMETRY = "0";
     }
