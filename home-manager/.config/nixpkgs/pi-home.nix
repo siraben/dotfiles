@@ -8,7 +8,7 @@
 
 let
   cfg = config.siraben.pi;
-  nativeMcp = lib.versionAtLeast pkgs.pi-coding-agent.version "0.99";
+  nativeMcp = lib.versionAtLeast pkgs.pi.version "0.99";
   enableCuaDriver = cfg.enableCuaDriver && pkgs.stdenv.hostPlatform.isDarwin;
   cuaDriverEnvironment = {
     CUA_DRIVER_RS_TELEMETRY_ENABLED = "0";
@@ -164,13 +164,19 @@ in
 
   config = lib.mkIf cfg.enable {
     home.packages = [
-      pkgs.pi-coding-agent
+      pkgs.pi
       pkgs.context-mode
     ]
     ++ lib.optional (!nativeMcp) pkgs.pi-mcp-adapter
     ++ lib.optional enableCuaDriver pkgs.cua-driver;
 
-    home.sessionVariables = lib.optionalAttrs enableCuaDriver cuaDriverEnvironment;
+    home.sessionVariables = {
+      PI_BG_DISABLE_PI_TELEMETRY = "1";
+      PI_BG_DISABLE_UPDATE_CHECK = "1";
+      PI_SKIP_VERSION_CHECK = "1";
+      PI_TELEMETRY = "0";
+    }
+    // lib.optionalAttrs enableCuaDriver cuaDriverEnvironment;
 
     launchd.agents.cua-driver = lib.mkIf enableCuaDriver {
       enable = true;
@@ -227,7 +233,7 @@ in
             };
             enableAnalytics = false;
             enableInstallTelemetry = false;
-            lastChangelogVersion = pkgs.pi-coding-agent.version;
+            lastChangelogVersion = pkgs.pi.version;
             theme = "tomorrow-night-bright";
             hideThinkingBlock = true;
             followUpMode = "all";
@@ -237,7 +243,7 @@ in
             };
             packages = piPackages;
           }
-          // lib.optionalAttrs (lib.versionAtLeast pkgs.pi-coding-agent.version "1.0") {
+          // lib.optionalAttrs (lib.versionAtLeast pkgs.pi.version "1.0") {
             quietStartup = "header";
           }
           // lib.optionalAttrs (cfg.backgroundBackend == "subagents") {
