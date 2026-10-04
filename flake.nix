@@ -12,6 +12,18 @@
       url = "github:earendil-works/pi/stable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    pi-subagents = {
+      url = "github:nicobailon/pi-subagents";
+      flake = false;
+    };
+    pi-better-harness = {
+      url = "github:1aboveio/pi-better-harness";
+      flake = false;
+    };
+    kendex = {
+      url = "github:vanillagreencom/kendex";
+      flake = false;
+    };
     mac-app-util = {
       url = "github:siraben/mac-app-util-py";
       inputs.nixpkgs.follows = "nixpkgs";
