@@ -74,7 +74,7 @@ let
     zip
   ])) ++ (whenFull ([
     # Development tools (full only)
-    (aspellWithDicts (d: with d; [ en en-computers en-science ]))
+    (aspellWithDicts (d: [ d.en ]))
     cabal-install
     cargo
     dejavu_fonts
