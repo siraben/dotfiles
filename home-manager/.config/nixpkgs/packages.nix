@@ -59,13 +59,10 @@ let
     codex
     bat
     borgbackup
-    cachix
     gnumake
     jq
-    killall
     nix-output-monitor
     ripgrep
-    shellcheck
     stow
     tldr
     tree
@@ -73,7 +70,6 @@ let
   ])) ++ (whenFull ([
     # Development tools (full only)
     (aspellWithDicts (d: [ d.en ]))
-    cargo
     dejavu_fonts
     ffmpeg
     (pkgs.nerd-fonts.jetbrains-mono)
@@ -81,7 +77,6 @@ let
     my-emacs
     nodejs
     (import ./python-packages.nix { inherit pkgs; })
-    rust-analyzer
     # (import ./texlive-packages.nix { inherit pkgs; })
     tree-sitter
     typst
