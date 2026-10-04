@@ -13,30 +13,17 @@ let
     CUA_DRIVER_RS_TELEMETRY_ENABLED = "0";
     CUA_DRIVER_RS_UPDATE_CHECK = "0";
   };
-  piPackages =
-    (
-      if cfg.backgroundBackend == "subagents" then
-        [
-          "${pkgs.pi-better-background-tasks}/lib/node_modules/pi-better-background-tasks"
-          "${pkgs.pi-subagents}/lib/node_modules/pi-subagents"
-        ]
-      else
-        [
-          {
-            source = "${pkgs.pi-background-tasks}/lib/node_modules/pi-background-tasks";
-            extensions = [ "extensions/background-tasks.ts" ];
-          }
-        ]
-    )
-    ++ [
-      "${pkgs.pi-codex-goal}/lib/node_modules/pi-codex-goal"
-      "${pkgs.pi-tool-summaries}/lib/node_modules/pi-tool-summaries"
-      "${pkgs.pi-web-access}/lib/node_modules/pi-web-access"
-      {
-        source = "${pkgs.context-mode}/lib/node_modules/context-mode";
-        autoload = false;
-      }
-    ];
+  piPackages = [
+    "${pkgs.pi-better-background-tasks}/lib/node_modules/pi-better-background-tasks"
+    "${pkgs.pi-subagents}/lib/node_modules/pi-subagents"
+    "${pkgs.pi-codex-goal}/lib/node_modules/pi-codex-goal"
+    "${pkgs.pi-tool-summaries}/lib/node_modules/pi-tool-summaries"
+    "${pkgs.pi-web-access}/lib/node_modules/pi-web-access"
+    {
+      source = "${pkgs.context-mode}/lib/node_modules/context-mode";
+      autoload = false;
+    }
+  ];
   piPackageSource = package: if builtins.isString package then package else package.source;
   subagentExtensions =
     map piPackageSource (
@@ -144,14 +131,6 @@ in
       default = profile != "minimal";
       description = "Whether to install and configure Pi";
     };
-    backgroundBackend = lib.mkOption {
-      type = lib.types.enum [
-        "fusion"
-        "subagents"
-      ];
-      default = "fusion";
-      description = "Pi background-task and delegation implementation to load";
-    };
     enableCuaDriver = lib.mkEnableOption "the Cua Driver computer-use MCP server on macOS";
     importCodexMcp = lib.mkOption {
       type = lib.types.bool;
@@ -168,8 +147,6 @@ in
     ++ lib.optional enableCuaDriver pkgs.cua-driver;
 
     home.sessionVariables = {
-      PI_BG_DISABLE_PI_TELEMETRY = "1";
-      PI_BG_DISABLE_UPDATE_CHECK = "1";
       PI_SKIP_VERSION_CHECK = "1";
       PI_TELEMETRY = "0";
     }
@@ -220,12 +197,10 @@ in
               reasoning = "off";
             };
             packages = piPackages;
+            subagents.defaultExtensions = subagentExtensions;
           }
           // lib.optionalAttrs (lib.versionAtLeast pkgs.pi.version "1.0") {
             quietStartup = "header";
-          }
-          // lib.optionalAttrs (cfg.backgroundBackend == "subagents") {
-            subagents.defaultExtensions = subagentExtensions;
           }
         );
       };
