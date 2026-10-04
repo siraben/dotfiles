@@ -261,57 +261,6 @@ final: _: {
     };
   };
 
-  pi-mcp-adapter = final.buildNpmPackage rec {
-    pname = "pi-mcp-adapter";
-    version = "2.33.0";
-
-    src = final.fetchurl {
-      url = "https://registry.yarnpkg.com/pi-mcp-adapter/-/pi-mcp-adapter-${version}.tgz";
-      hash = "sha512-W1wFtd8NOz9+yAZZEoyEDfz4YMUxHSitPejZo4Yvol1YXQGeYiCfoFqd2k6GulP6k+w/p+L3NU2IcA/nlTkFEQ==";
-    };
-
-    npmDepsHash = "sha256-7IDVm4F+k/vAMA4LsMk1IkcANVKxCmeCXJmGMXud8E0=";
-
-    npmFlags = [
-      "--legacy-peer-deps"
-      "--omit=dev"
-    ];
-    makeCacheWritable = true;
-
-    nativeBuildInputs = [ final.makeBinaryWrapper ];
-
-    postPatch = ''
-      substituteInPlace package.json \
-        --replace-fail \
-          'https://pkg.pr.new/@modelcontextprotocol/core@3b205e7dd2f997b6a87e479e36421f7eaa2058e0' \
-          'https://pkg.pr.new/modelcontextprotocol/typescript-sdk/@modelcontextprotocol/core@3b205e7'
-      sed -i '/^  "devDependencies": {$/,$d' package.json
-      sed -i '$s/,$//' package.json
-      printf '}\n' >> package.json
-      cp ${./pi-mcp-adapter-package-lock.json} package-lock.json
-    '';
-
-    dontNpmBuild = true;
-
-    installPhase = ''
-      runHook preInstall
-
-      mkdir -p "$out/lib/node_modules/pi-mcp-adapter" "$out/bin"
-      cp -R . "$out/lib/node_modules/pi-mcp-adapter"
-      makeWrapper ${final.nodejs}/bin/node "$out/bin/pi-mcp-adapter" \
-        --add-flags "$out/lib/node_modules/pi-mcp-adapter/cli.js"
-
-      runHook postInstall
-    '';
-
-    meta = with final.lib; {
-      description = "MCP client extension and configuration adapter for Pi";
-      homepage = "https://github.com/nicobailon/pi-mcp-adapter";
-      license = licenses.mit;
-      mainProgram = "pi-mcp-adapter";
-    };
-  };
-
   context-mode = final.buildNpmPackage rec {
     pname = "context-mode";
     version = "1.0.169";
