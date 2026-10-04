@@ -36,9 +36,7 @@ let
     pinentry_mac
   ];
   languageServers = with pkgs; [
-    haskellPackages.haskell-language-server
     basedpyright
-    rassumfrassum
     ruff
   ];
   sharedPackages = with pkgs; [
@@ -75,13 +73,10 @@ let
   ])) ++ (whenFull ([
     # Development tools (full only)
     (aspellWithDicts (d: [ d.en ]))
-    cabal-install
     cargo
     dejavu_fonts
     ffmpeg
     (pkgs.nerd-fonts.jetbrains-mono)
-    (import ./haskell-packages.nix { inherit pkgs; })
-    hlint
     imagemagick
     my-emacs
     nodejs
