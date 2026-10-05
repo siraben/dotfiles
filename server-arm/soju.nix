@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   ircHost = "irc.siraben.dev";
@@ -7,12 +12,12 @@ let
   gamjaSrc = pkgs.fetchFromGitHub {
     owner = "siraben";
     repo = "gamja";
-    rev = "9a98692ab22e4b7f77673d57a04d1e3fbb09e106";
-    hash = "sha256-1tXGt6QsoIarz4MG+FNX3SOSL0CfddveDtnii6mBSfU=";
+    rev = "703c9281ec81f45d5cb9aaedb222ab02290f80eb";
+    hash = "sha256-6bsbo/M3LgDbQZ8TiGdRe/7SEn1JwPPpKdv23SFHIZg=";
   };
 
   gamja = pkgs.gamja.overrideAttrs (old: {
-    version = "siraben-fork-9a98692";
+    version = "siraben-fork-703c928";
     src = gamjaSrc;
     npmDepsHash = "sha256-9MUvDaMIDe9zkPXxcFYGOrHWYEfKqLJofc22w35dQK0=";
     npmDeps = pkgs.fetchNpmDeps {
