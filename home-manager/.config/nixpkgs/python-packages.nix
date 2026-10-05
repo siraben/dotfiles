@@ -5,6 +5,7 @@ pkgs.python3.withPackages (p: with p; [
   beautifulsoup4 # web scraping
   matplotlib # plots
   numpy # numerical computation
+  pyyaml # YAML parsing
   requests # HTTP library
   setuptools # setup.py
 ])
