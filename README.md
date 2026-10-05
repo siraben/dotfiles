@@ -67,18 +67,15 @@ public configuration without copying it. Pass private modules through
       system = "x86_64-linux";
       profile = "headless";
       username = "work-user";
-      extraModules = [
-        { siraben.manageClaudeSettings = false; }
-        ./work.nix
-      ];
+      extraModules = [ ./work.nix ];
     };
   };
 }
 ```
 
-The `siraben.manageClaudeSettings` Home Manager option defaults to `true`. A
-private wrapper can disable it when Claude Code must update its own settings
-file.
+Pi can be extended without replacing its managed files: `siraben.pi.settings`
+recursively overlays `settings.json`, while `siraben.pi.providers` and
+`siraben.pi.mcpServers` populate `models.json` and `mcp.json` respectively.
 
 ## Notes
 Some configuration (e.g. Emacs) has deliberately not been Nixified so that it works independently. For some things like Emacs it assumes you have installed external dependencies such as fonts, interpreters and language servers for various programming languages.

@@ -47,7 +47,8 @@ let
       args = [ "mcp" ];
       env = cuaDriverEnvironment;
     };
-  };
+  }
+  // cfg.mcpServers;
   writePiMcpConfig = pkgs.writers.writePython3 "write-pi-mcp-config" { } ''
     import json
     import os
@@ -137,6 +138,21 @@ in
       default = true;
       description = "Whether to import Codex MCP server declarations into Pi";
     };
+    settings = lib.mkOption {
+      type = lib.types.attrsOf lib.types.anything;
+      default = { };
+      description = "Pi settings merged recursively over the managed defaults";
+    };
+    providers = lib.mkOption {
+      type = lib.types.attrsOf lib.types.anything;
+      default = { };
+      description = "Custom model providers written to Pi's models.json";
+    };
+    mcpServers = lib.mkOption {
+      type = lib.types.attrsOf lib.types.anything;
+      default = { };
+      description = "MCP servers merged into Pi's generated mcp.json";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -177,38 +193,51 @@ in
         source = ./pi-theme-tomorrow-night-bright.json;
       };
 
+      ".pi/agent/AGENTS.md" = {
+        force = true;
+        text = ''
+          # Background work
+          - Ordinary async subagents notify and wake this session when they finish. After launching one, end the turn instead of polling or calling `bg_wait` merely because it is active.
+          - `bg_wait` tracks subagents and registered provider work; it cannot wait for `bg_task_*` jobs.
+          - When a `bg_task_*` result is needed, end the turn: its completion notice wakes this session. Do not use foreground `sleep` or polling to wait for it.
+          - Use `bg_task_watch` to check repeatedly until a condition holds.
+        '';
+      };
+
       ".pi/agent/settings.json" = {
         force = true;
         text = builtins.toJSON (
-          {
-            defaultModel = "gpt-5.6-sol";
-            defaultProvider = "openai-codex";
-            defaultThinkingLevel = "xhigh";
-            modelThinkingLevels = {
-              "openai-codex/gpt-5.6-sol" = "xhigh";
-            };
-            enableAnalytics = false;
-            enableInstallTelemetry = false;
-            lastChangelogVersion = pkgs.pi.version;
-            theme = "tomorrow-night-bright";
-            hideThinkingBlock = true;
-            followUpMode = "all";
-            toolSummaries = {
-              model = "openrouter/openai/gpt-6-luna";
-              reasoning = "off";
-            };
-            packages = piPackages;
-            subagents.defaultExtensions = subagentExtensions;
-          }
-          // lib.optionalAttrs (lib.versionAtLeast pkgs.pi.version "1.0") {
-            quietStartup = "header";
-          }
+          lib.recursiveUpdate (
+            {
+              defaultModel = "gpt-5.6-sol";
+              defaultProvider = "openai-codex";
+              defaultThinkingLevel = "xhigh";
+              modelThinkingLevels = {
+                "openai-codex/gpt-5.6-sol" = "xhigh";
+              };
+              enableAnalytics = false;
+              enableInstallTelemetry = false;
+              lastChangelogVersion = pkgs.pi.version;
+              theme = "tomorrow-night-bright";
+              hideThinkingBlock = true;
+              followUpMode = "all";
+              toolSummaries = {
+                model = "openrouter/openai/gpt-6-luna";
+                reasoning = "off";
+              };
+              packages = piPackages;
+              subagents.defaultExtensions = subagentExtensions;
+            }
+            // lib.optionalAttrs (lib.versionAtLeast pkgs.pi.version "1.0") {
+              quietStartup = "header";
+            }
+          ) cfg.settings
         );
       };
 
       ".pi/agent/models.json" = {
         force = true;
-        text = builtins.toJSON { providers = { }; };
+        text = builtins.toJSON { providers = cfg.providers; };
       };
     };
   };
