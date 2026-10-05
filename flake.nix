@@ -46,6 +46,7 @@
     let
       configurationName = "siraben";
       defaultUsername = "siraben";
+      supportedSystems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
       homeModule = ./home-manager/.config/nixpkgs/home.nix;
       mkHomeModule = profile: args@{ config, lib, pkgs, ... }:
         (import homeModule (args // { inherit profile; })) // {
@@ -141,7 +142,7 @@
         "${configurationName}@aarch64-linux-minimal" = mkHomeConfiguration { system = "aarch64-linux"; profile = "minimal"; };
       };
 
-      devShells = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ] (system:
+      devShells = nixpkgs.lib.genAttrs supportedSystems (system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
         in
@@ -154,5 +155,7 @@
             ];
           };
         });
+
+      formatter = nixpkgs.lib.genAttrs supportedSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
     };
 }
