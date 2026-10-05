@@ -14,8 +14,9 @@ let
   ];
   pkgsOptions = {
     overlays = [
-      (import ./overlay.nix { inherit inputs; })
       inputs.siraben-overlay.overlays.default
+      inputs.llm-agents.overlays.shared-nixpkgs
+      (import ./overlay.nix { inherit inputs; })
       inputs.pi.overlays.default
       # Keep Pi extensions on mutually compatible versions pinned in this
       # repository while using Pi's upstream Nix package.
