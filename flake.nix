@@ -28,10 +28,6 @@
       url = "github:siraben/mac-app-util-py";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    agenix = {
-      url = "github:ryantm/agenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     mosh-unicode = {
       url = "github:siraben/mosh/unicode";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -42,30 +38,51 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, mac-app-util, ... /* Capture all inputs */ }@allInputs:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      mac-app-util,
+      ... # Capture all inputs
+    }@allInputs:
     let
       configurationName = "siraben";
       defaultUsername = "siraben";
-      supportedSystems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
+      supportedSystems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "aarch64-darwin"
+      ];
       homeModule = ./home-manager/.config/nixpkgs/home.nix;
-      mkHomeModule = profile: args@{ config, lib, pkgs, ... }:
-        (import homeModule (args // { inherit profile; })) // {
+      mkHomeModule =
+        profile:
+        args@{
+          config,
+          lib,
+          pkgs,
+          ...
+        }:
+        (import homeModule (args // { inherit profile; }))
+        // {
           _module.args.profile = profile;
         };
-      mkHomeConfiguration = {
-        system,
-        profile ? "full",
-        username ? defaultUsername,
-        timeZone ? "America/New_York",
-        extraModules ? [],
-        extraSpecialArgs ? {},
-      }:
+      mkHomeConfiguration =
+        {
+          system,
+          profile ? "full",
+          username ? defaultUsername,
+          timeZone ? "America/New_York",
+          extraModules ? [ ],
+          extraSpecialArgs ? { },
+        }:
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
           extraSpecialArgs = {
             inherit username profile timeZone;
             inputs = allInputs;
-          } // extraSpecialArgs;
+          }
+          // extraSpecialArgs;
           modules = [ homeModule ] ++ extraModules;
         };
     in
@@ -109,40 +126,47 @@
           ];
         };
 
-        server-arm = nixpkgs.lib.nixosSystem {
-          system = "aarch64-linux";
-          modules = [
-            allInputs.agenix.nixosModules.default
-            ./server-arm/configuration.nix
-            {
-              # Surface the deployed Git revision in `nixos-version --json`.
-              system.configurationRevision = self.rev or self.dirtyRev or null;
-            }
-          ];
-        };
       };
 
-      homeConfigurations = let
-        darwinModules = [ mac-app-util.homeManagerModules.default ];
-      in {
-        # Darwin (full only; current Nixpkgs no longer supports Intel macOS)
-        "${configurationName}@aarch64-darwin-full" = mkHomeConfiguration {
-          system = "aarch64-darwin";
-          profile = "full";
-          extraModules = darwinModules;
+      homeConfigurations =
+        let
+          darwinModules = [ mac-app-util.homeManagerModules.default ];
+        in
+        {
+          # Darwin (full only; current Nixpkgs no longer supports Intel macOS)
+          "${configurationName}@aarch64-darwin-full" = mkHomeConfiguration {
+            system = "aarch64-darwin";
+            profile = "full";
+            extraModules = darwinModules;
+          };
+
+          # Linux x86_64
+          "${configurationName}@x86_64-linux-full" = mkHomeConfiguration {
+            system = "x86_64-linux";
+            profile = "full";
+          };
+          "${configurationName}@x86_64-linux-headless" = mkHomeConfiguration {
+            system = "x86_64-linux";
+            profile = "headless";
+          };
+          "${configurationName}@x86_64-linux-minimal" = mkHomeConfiguration {
+            system = "x86_64-linux";
+            profile = "minimal";
+          };
+
+          # Linux aarch64
+          "${configurationName}@aarch64-linux-headless" = mkHomeConfiguration {
+            system = "aarch64-linux";
+            profile = "headless";
+          };
+          "${configurationName}@aarch64-linux-minimal" = mkHomeConfiguration {
+            system = "aarch64-linux";
+            profile = "minimal";
+          };
         };
 
-        # Linux x86_64
-        "${configurationName}@x86_64-linux-full" = mkHomeConfiguration { system = "x86_64-linux"; profile = "full"; };
-        "${configurationName}@x86_64-linux-headless" = mkHomeConfiguration { system = "x86_64-linux"; profile = "headless"; };
-        "${configurationName}@x86_64-linux-minimal" = mkHomeConfiguration { system = "x86_64-linux"; profile = "minimal"; };
-
-        # Linux aarch64
-        "${configurationName}@aarch64-linux-headless" = mkHomeConfiguration { system = "aarch64-linux"; profile = "headless"; };
-        "${configurationName}@aarch64-linux-minimal" = mkHomeConfiguration { system = "aarch64-linux"; profile = "minimal"; };
-      };
-
-      devShells = nixpkgs.lib.genAttrs supportedSystems (system:
+      devShells = nixpkgs.lib.genAttrs supportedSystems (
+        system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
         in
@@ -154,7 +178,8 @@
               pkgs.git
             ];
           };
-        });
+        }
+      );
 
       formatter = nixpkgs.lib.genAttrs supportedSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
     };

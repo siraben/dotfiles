@@ -85,7 +85,6 @@ recursively overlays `settings.json`, while `siraben.pi.providers` and
 |--------------|----------------|------------------------------|
 | `beelink`    | x86_64-linux   | Beelink Mini S12 Pro desktop |
 | `server`     | x86_64-linux   | x86_64 server                |
-| `server-arm` | aarch64-linux  | OCI ARM instance             |
 
 ## Notes
 Some configuration (e.g. Emacs) has deliberately not been Nixified so that it works independently. For some things like Emacs it assumes you have installed external dependencies such as fonts, interpreters and language servers for various programming languages.
