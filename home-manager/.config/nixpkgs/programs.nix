@@ -2,6 +2,10 @@
 
 let
   linuxShellExtra = ''
+    # A long-lived tmux server can retain Home Manager's session-variable
+    # sentinel while its PATH predates the current profile. Restore the active
+    # Nix paths in every interactive zsh instead of relying on guarded setup.
+    export PATH="$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$HOME/.local/state/nix/profiles/home-manager/home-path/bin:$PATH"
     export NIX_PATH=$HOME/.nix-defexpr/channels:$NIX_PATH
     export SSH_AUTH_SOCK="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/ssh-agent"
   '';
