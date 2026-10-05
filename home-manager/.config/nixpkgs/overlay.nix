@@ -2,6 +2,15 @@
 
 final: prev: {
 
+  # llm-agents.nix tracks Agent Deck releases automatically. Keep the local
+  # preference for hiding per-session tmux window rows without maintaining a
+  # separate source and Go dependency hash.
+  agent-deck = prev.llm-agents.agent-deck.overrideAttrs (old: {
+    patches = (old.patches or [ ]) ++ [ ./agent-deck-hide-window-rows.patch ];
+    # The patch intentionally changes behavior covered by upstream UI tests.
+    doCheck = false;
+  });
+
   # Workaround for NixOS/nix#15638 on darwin: Mach-O page-hash rewriting
   # invalidates ad-hoc signatures on zsh/fish, causing checkPhase scenarios to
   # hang or be SIGKILLed. Skip checks until the upstream fix lands.

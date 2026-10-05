@@ -1,0 +1,51 @@
+diff --git a/internal/ui/home.go b/internal/ui/home.go
+index b85f810..57056d3 100644
+--- a/internal/ui/home.go
++++ b/internal/ui/home.go
+@@ -3498,46 +3497,0 @@ func (h *Home) rebuildFlatItemsAt(now time.Time) {
+-	// Inject window items after sessions that have 2+ windows
+-	if len(h.flatItems) > 0 {
+-		expanded := make([]session.Item, 0, len(h.flatItems)+8)
+-		for _, item := range h.flatItems {
+-			expanded = append(expanded, item)
+-
+-			if item.Type != session.ItemTypeSession || item.Session == nil {
+-				continue
+-			}
+-			tmuxSess := item.Session.GetTmuxSession()
+-			if tmuxSess == nil {
+-				continue
+-			}
+-			wins := tmux.GetCachedWindows(tmuxSess.Name)
+-			if len(wins) < 2 || h.windowsCollapsed[item.Session.ID] {
+-				continue
+-			}
+-
+-			// A window hangs off the row above it, so it takes that row's own
+-			// "am I last" flag: IsLastSubSession for a sub-session row,
+-			// IsLastInGroup for a top-level row. Reading IsLastInGroup
+-			// unconditionally left a dangling │ under the last visible
+-			// sub-session's windows (R4).
+-			parentIsLast := item.IsLastInGroup
+-			if item.IsSubSession {
+-				parentIsLast = item.IsLastSubSession
+-			}
+-			for winIdx, win := range wins {
+-				expanded = append(expanded, session.Item{
+-					Type:                session.ItemTypeWindow,
+-					WindowIndex:         win.Index,
+-					WindowID:            win.ID,
+-					WindowName:          win.Name,
+-					WindowTool:          win.Tool,
+-					WindowSessionID:     item.Session.ID,
+-					Level:               item.Level + 1,
+-					Path:                item.Path,
+-					IsWindow:            true,
+-					IsLastWindow:        winIdx == len(wins)-1,
+-					IsLastInGroup:       parentIsLast && winIdx == len(wins)-1,
+-					ParentIsLastInGroup: parentIsLast,
+-				})
+-			}
+-		}
+-		h.flatItems = expanded
+-	}
