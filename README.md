@@ -78,6 +78,14 @@ Pi can be extended without replacing its managed files: `siraben.pi.settings`
 recursively overlays `settings.json`, while `siraben.pi.providers` and
 `siraben.pi.mcpServers` populate `models.json` and `mcp.json` respectively.
 
+## Pi configuration
+
+Pi comes from its upstream Nix flake. Home Manager modules and extension package
+definitions live under [pi/](./home-manager/.config/nixpkgs/pi/README.md).
+All external Pi extension sources are flake inputs; published npm bundles retain
+explicit release URLs and their existing dependency locks. See that directory’s
+update notes before changing releases.
+
 ## Notes
 
 Some configuration (e.g. Emacs) has deliberately not been Nixified so that it works independently. For some things like Emacs it assumes you have installed external dependencies such as fonts, interpreters and language servers for various programming languages.

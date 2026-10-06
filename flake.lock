@@ -34,6 +34,19 @@
         "type": "github"
       }
     },
+    "context-mode": {
+      "flake": false,
+      "locked": {
+        "lastModified": 499162500,
+        "narHash": "sha256-ZZbcDagn2MC1dVZfNRIpNB4WwO4PVqHrP0rryoNkEmw=",
+        "type": "tarball",
+        "url": "https://registry.npmjs.org/context-mode/-/context-mode-1.0.169.tgz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://registry.npmjs.org/context-mode/-/context-mode-1.0.169.tgz"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -265,6 +278,19 @@
         "type": "github"
       }
     },
+    "pi-codex-goal": {
+      "flake": false,
+      "locked": {
+        "lastModified": 499162500,
+        "narHash": "sha256-n8BB0egq7jgIQgnKlt+QtIWd5UMa5XOI2RZtkxcCAho=",
+        "type": "tarball",
+        "url": "https://registry.npmjs.org/pi-codex-goal/-/pi-codex-goal-0.6.0.tgz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://registry.npmjs.org/pi-codex-goal/-/pi-codex-goal-0.6.0.tgz"
+      }
+    },
     "pi-subagents": {
       "flake": false,
       "locked": {
@@ -281,8 +307,38 @@
         "type": "github"
       }
     },
+    "pi-tool-summaries": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791050089,
+        "narHash": "sha256-ZBdYqYUSt2NUSpqfy5vqciY6HMLA2tb9BmpCQISHVTI=",
+        "owner": "siraben",
+        "repo": "pi-tool-summaries",
+        "rev": "bccfb8e20403b3f435dfc2c3b561d727ec891ae7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "siraben",
+        "repo": "pi-tool-summaries",
+        "type": "github"
+      }
+    },
+    "pi-web-access": {
+      "flake": false,
+      "locked": {
+        "lastModified": 499162500,
+        "narHash": "sha256-Vw3CL26ixcf3RAMHiUZhkEfXHAsJEJSShgD7V7vD3aM=",
+        "type": "tarball",
+        "url": "https://registry.npmjs.org/pi-web-access/-/pi-web-access-0.35.0.tgz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://registry.npmjs.org/pi-web-access/-/pi-web-access-0.35.0.tgz"
+      }
+    },
     "root": {
       "inputs": {
+        "context-mode": "context-mode",
         "home-manager": "home-manager",
         "kendex": "kendex",
         "llm-agents": "llm-agents",
@@ -291,7 +347,10 @@
         "nixpkgs": "nixpkgs",
         "pi": "pi",
         "pi-better-harness": "pi-better-harness",
+        "pi-codex-goal": "pi-codex-goal",
         "pi-subagents": "pi-subagents",
+        "pi-tool-summaries": "pi-tool-summaries",
+        "pi-web-access": "pi-web-access",
         "siraben-overlay": "siraben-overlay"
       }
     },

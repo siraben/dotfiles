@@ -24,6 +24,24 @@
       url = "github:vanillagreencom/kendex";
       flake = false;
     };
+    pi-tool-summaries = {
+      url = "github:siraben/pi-tool-summaries";
+      flake = false;
+    };
+    # Published bundles preserve the existing runtime artifacts. Update these
+    # release URLs together with packages/*-package-lock.json and npmDepsHash.
+    pi-codex-goal = {
+      url = "https://registry.npmjs.org/pi-codex-goal/-/pi-codex-goal-0.6.0.tgz";
+      flake = false;
+    };
+    pi-web-access = {
+      url = "https://registry.npmjs.org/pi-web-access/-/pi-web-access-0.35.0.tgz";
+      flake = false;
+    };
+    context-mode = {
+      url = "https://registry.npmjs.org/context-mode/-/context-mode-1.0.169.tgz";
+      flake = false;
+    };
     mac-app-util = {
       url = "github:siraben/mac-app-util-py";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -151,6 +169,27 @@
               pkgs.git
             ];
           };
+        }
+      );
+
+      checks = nixpkgs.lib.genAttrs supportedSystems (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        {
+          pi-mcp-config =
+            pkgs.runCommand "pi-mcp-config-tests"
+              {
+                nativeBuildInputs = [ pkgs.python3 ];
+              }
+              ''
+                mkdir -p pi/modules pi/tests
+                cp ${./home-manager/.config/nixpkgs/pi/modules/write-mcp-config.py} pi/modules/write-mcp-config.py
+                cp ${./home-manager/.config/nixpkgs/pi/tests/test_mcp_config.py} pi/tests/test_mcp_config.py
+                python3 -B -m unittest discover -s pi/tests
+                touch "$out"
+              '';
         }
       );
 
