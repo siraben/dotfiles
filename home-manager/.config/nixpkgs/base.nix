@@ -20,8 +20,7 @@ let
       inputs.pi.overlays.default
       # Keep Pi extensions on mutually compatible versions pinned in this
       # repository while using Pi's upstream Nix package.
-      (import ./pi.nix { inherit inputs; })
-      (import ./cua-driver.nix)
+      (import ./pi/overlay.nix { inherit inputs; })
     ];
     config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
   };
@@ -31,7 +30,7 @@ let
   };
 in
 lib.recursiveUpdate (rec {
-  imports = [ ./pi-home.nix ];
+  imports = [ ./pi/modules ];
 
   nixpkgs = pkgsOptions;
   home.username = lib.mkDefault username;
@@ -81,15 +80,6 @@ lib.recursiveUpdate (rec {
     ".claude/skills/render-tex-pdf" = {
       force = true;
       source = ./skills/render-tex-pdf;
-    };
-    # pi has no hooks.json; global extensions are auto-discovered here.
-    ".pi/agent/extensions/block-expensive-scans.ts" = {
-      force = true;
-      source = ./pi-block-expensive-scans.ts;
-    };
-    ".pi/agent/extensions/codex-usage.ts" = {
-      force = true;
-      source = ./pi-codex-usage.ts;
     };
   } // lib.optionalAttrs isDarwin {
     "Library/Application Support/Code/User/settings.json" = {
