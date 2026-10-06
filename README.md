@@ -34,8 +34,6 @@ siraben@aarch64-linux-headless
 siraben@aarch64-linux-minimal
 ```
 
-Intel macOS and ARM Linux full profiles are not exported.
-
 ## Installation
 
 [Install Nix](https://nixos.org/download/) on macOS or Linux, then:
@@ -79,12 +77,6 @@ public configuration without copying it. Pass private modules through
 Pi can be extended without replacing its managed files: `siraben.pi.settings`
 recursively overlays `settings.json`, while `siraben.pi.providers` and
 `siraben.pi.mcpServers` populate `models.json` and `mcp.json` respectively.
-
-## NixOS Configurations
-
-| Host         | Arch           | Description                  |
-|--------------|----------------|------------------------------|
-| `server`     | x86_64-linux   | x86_64 server                |
 
 ## Notes
 
