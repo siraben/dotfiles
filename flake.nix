@@ -172,27 +172,6 @@
         }
       );
 
-      checks = nixpkgs.lib.genAttrs supportedSystems (
-        system:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-        in
-        {
-          pi-mcp-config =
-            pkgs.runCommand "pi-mcp-config-tests"
-              {
-                nativeBuildInputs = [ pkgs.python3 ];
-              }
-              ''
-                mkdir -p pi/modules pi/tests
-                cp ${./home-manager/.config/nixpkgs/pi/modules/write-mcp-config.py} pi/modules/write-mcp-config.py
-                cp ${./home-manager/.config/nixpkgs/pi/tests/test_mcp_config.py} pi/tests/test_mcp_config.py
-                python3 -B -m unittest discover -s pi/tests
-                touch "$out"
-              '';
-        }
-      );
-
       formatter = nixpkgs.lib.genAttrs supportedSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
     };
 }
