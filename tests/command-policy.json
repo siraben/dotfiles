@@ -1,0 +1,20 @@
+[
+  {"name":"project search","command":"find . -name foo","hook":"allow","pi":"allow"},
+  {"name":"known store path","command":"rg foo /nix/store/hash-package","hook":"allow","pi":"allow"},
+  {"name":"store scan","command":"find /nix/store -name foo","hook":"scan","pi":"scan"},
+  {"name":"root scan","command":"fd foo /","hook":"scan","pi":"scan"},
+  {"name":"nix scan","command":"rg foo /nix/","hook":"scan","pi":"scan"},
+  {"name":"wrapped scan","command":"sudo find /","hook":"scan","pi":"scan"},
+  {"name":"pipeline scan","command":"echo ok | rg foo /nix/store/","hook":"scan","pi":"scan"},
+  {"name":"separate command","command":"find .; echo /","hook":"allow","pi":"allow"},
+  {"name":"brew install","command":"brew install foo","hook":"brew","pi":"brew"},
+  {"name":"brew wrapped","command":"command brew upgrade foo","hook":"brew","pi":"brew"},
+  {"name":"brew shell","command":"bash -c \"brew reinstall foo\"","hook":"brew","pi":"brew"},
+  {"name":"brew bundle","command":"brew bundle","hook":"brew","pi":"brew"},
+  {"name":"brew read","command":"brew info foo","hook":"allow","pi":"allow"},
+  {"name":"nix read","command":"nix path-info /nix/store/hash-package","hook":"allow","pi":"allow"},
+  {"name":"quoted shell scan","command":"bash -c \"find /nix/store\"","hook":"scan","pi":"allow","note":"Existing parser difference preserved."},
+  {"name":"recursive grep","command":"grep -R foo /nix/store","hook":"allow","pi":"scan","note":"Existing parser difference preserved."},
+  {"name":"ripgrep alias","command":"ripgrep foo /nix/store","hook":"allow","pi":"scan","note":"Existing parser difference preserved."},
+  {"name":"scanner argument","command":"echo find /nix/store","hook":"scan","pi":"allow","note":"Existing parser difference preserved."}
+]
