@@ -103,25 +103,6 @@
 
       # NixOS system configurations
       nixosConfigurations = {
-        beelink = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./beelink/configuration.nix
-            ./beelink/hardware-configuration.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useUserPackages = true;
-              home-manager.users.${defaultUsername} = homeModule;
-              home-manager.extraSpecialArgs = {
-                username = defaultUsername;
-                inputs = allInputs;
-                profile = "headless";
-                timeZone = "Asia/Bangkok";
-              };
-            }
-          ];
-        };
-
         server = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
