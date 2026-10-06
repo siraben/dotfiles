@@ -51,10 +51,7 @@ jobs:
 
       - name: Evaluate every exported configuration
         run: |
-          nix eval --json .# --apply 'flake: {
-            home = builtins.mapAttrs (_: value: value.activationPackage.drvPath) (flake.homeConfigurations or {});
-            nixos = builtins.mapAttrs (_: value: value.config.system.build.toplevel.drvPath) (flake.nixosConfigurations or {});
-          }'
+          nix eval --impure --json --file scripts/evaluate-configurations.nix
           nix flake check --all-systems --no-build
 
       - name: Build native flake checks
