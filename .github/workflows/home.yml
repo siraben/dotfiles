@@ -5,7 +5,31 @@ on:
     branches: [master]
   pull_request:
 
+concurrency:
+  group: build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  quality:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 0
+      - uses: cachix/install-nix-action@v31.3.0
+      - name: Check workflows, shell scripts, and changed Nix formatting
+        env:
+          BASE_REVISION: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: >-
+          nix shell --inputs-from . nixpkgs#nixfmt nixpkgs#actionlint
+          nixpkgs#shellcheck --command bash scripts/check-quality.sh "$BASE_REVISION"
+      - name: Run regression tests
+        run: >-
+          nix shell --inputs-from . nixpkgs#nodejs_24 nixpkgs#python3
+          --command bash scripts/check-tests.sh
+
   build:
     strategy:
       fail-fast: false
@@ -27,6 +51,14 @@ jobs:
         with:
           name: siraben
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Evaluate every exported configuration
+        run: |
+          nix eval --impure --json --file scripts/evaluate-configurations.nix
+          nix flake check --all-systems --no-build
+
+      - name: Build native flake checks
+        run: nix flake check -L
 
       - name: Build home-manager flake configuration
         run: |

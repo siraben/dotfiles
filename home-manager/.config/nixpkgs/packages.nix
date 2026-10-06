@@ -1,4 +1,10 @@
-{ lib, pkgs, isDarwin, isLinux, profile }:
+{
+  lib,
+  pkgs,
+  isDarwin,
+  isLinux,
+  profile,
+}:
 let
   isMinimal = profile == "minimal";
   isFull = profile == "full";
@@ -7,15 +13,24 @@ let
   whenFull = lib.optionals isFull;
   whenHeadless = lib.optionals isHeadless;
   my-emacs = with pkgs; emacs.pkgs.withPackages (p: [ p.vterm ]);
-  wayland-packages = whenFull (with pkgs; [
-    firefox
-  ]);
-  linuxPackages = whenFull (with pkgs; [
-    keepassxc
-    kitty
-    vlc
-  ]) ++ wayland-packages ++ (with pkgs; [
-  ]);
+  wayland-packages = whenFull (
+    with pkgs;
+    [
+      firefox
+    ]
+  );
+  linuxPackages =
+    whenFull (
+      with pkgs;
+      [
+        keepassxc
+        kitty
+        vlc
+      ]
+    )
+    ++ wayland-packages
+    ++ (with pkgs; [
+    ]);
   darwinPackages = with pkgs; [
     # Prefer macOS core utilities, sed, and rsync for native flag and
     # metadata semantics.
@@ -37,52 +52,59 @@ let
     basedpyright
     ruff
   ];
-  sharedPackages = with pkgs; [
-    bash
-    curl
-    htop
-    vim
-    watch
-    wget
-    mosh
-    nixpkgs-review
-    gh
-    tea
-    ranger
-    croc
-  ] ++ (whenNotMinimal ([
-    # CLI tools (headless + full)
-    agent-deck
-    claude-code
-    codex
-    bat
-    borgbackup
-    gnumake
-    jq
-    just
-    nixfmt
-    nix-output-monitor
-    poppler-utils
-    ripgrep
-    sqlite
-    stow
-    tldr
-    tree
-    zip
-  ])) ++ (whenFull ([
-    # Development tools (full only)
-    (aspellWithDicts (d: [ d.en ]))
-    dejavu_fonts
-    ffmpeg
-    (pkgs.nerd-fonts.jetbrains-mono)
-    imagemagick
-    my-emacs
-    nodejs
-    (import ./python-packages.nix { inherit pkgs; })
-    # (import ./texlive-packages.nix { inherit pkgs; })
-    tree-sitter
-    typst
-    yt-dlp
-  ] ++ languageServers));
+  sharedPackages =
+    with pkgs;
+    [
+      bash
+      curl
+      htop
+      vim
+      watch
+      wget
+      mosh
+      nixpkgs-review
+      gh
+      tea
+      ranger
+      croc
+    ]
+    ++ (whenNotMinimal ([
+      # CLI tools (headless + full)
+      agent-deck
+      claude-code
+      codex
+      bat
+      borgbackup
+      gnumake
+      jq
+      just
+      nixfmt
+      nix-output-monitor
+      poppler-utils
+      ripgrep
+      sqlite
+      stow
+      tldr
+      tree
+      zip
+    ]))
+    ++ (whenFull (
+      [
+        # Development tools (full only)
+        (aspellWithDicts (d: [ d.en ]))
+        dejavu_fonts
+        ffmpeg
+        (pkgs.nerd-fonts.jetbrains-mono)
+        imagemagick
+        my-emacs
+        nodejs
+        (import ./python-packages.nix { inherit pkgs; })
+        # (import ./texlive-packages.nix { inherit pkgs; })
+        tree-sitter
+        typst
+        yt-dlp
+      ]
+      ++ languageServers
+    ));
 in
 sharedPackages ++ (lib.optionals isLinux linuxPackages) ++ (lib.optionals isDarwin darwinPackages)
