@@ -79,7 +79,6 @@ let
     my-emacs
     nodejs
     (import ./python-packages.nix { inherit pkgs; })
-    # (import ./texlive-packages.nix { inherit pkgs; })
     tree-sitter
     typst
     yt-dlp
