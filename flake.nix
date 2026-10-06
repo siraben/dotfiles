@@ -154,6 +154,16 @@
         }
       );
 
+      checks = nixpkgs.lib.genAttrs supportedSystems (
+        system:
+        import ./tests/mosh {
+          pkgs =
+            self.homeConfigurations."${configurationName}@${system}-${
+              if system == "aarch64-darwin" then "full" else "headless"
+            }".pkgs;
+        }
+      );
+
       formatter = nixpkgs.lib.genAttrs supportedSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
     };
 }
