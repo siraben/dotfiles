@@ -101,18 +101,6 @@
 
       lib.mkHomeConfiguration = mkHomeConfiguration;
 
-      # NixOS system configurations
-      nixosConfigurations = {
-        server = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./server/configuration.nix
-            ./server/hardware-configuration.nix
-          ];
-        };
-
-      };
-
       homeConfigurations =
         let
           darwinModules = [ mac-app-util.homeManagerModules.default ];
