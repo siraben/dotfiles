@@ -1,91 +1,35 @@
 # siraben's dotfiles
 
-Configuration for my macOS and Linux systems using
-[Nix](https://nixos.org/) and [Home
-Manager](https://github.com/nix-community/home-manager).
+macOS and Linux configuration using [Nix](https://nixos.org/) and
+[Home Manager](https://github.com/nix-community/home-manager).
 
-## Summary
+## Install
 
-- OS: NixOS and macOS
-- Package manager: Nix
-- Shell: `zsh` with [pure prompt](https://github.com/sindresorhus/pure)
-- WM on NixOS: wayland
-- Editor: Emacs, `tomorrow-night` theme, [straight.el](https://github.com/raxod502/straight.el)
-- Custom [Python environment](./home-manager/.config/nixpkgs/python-packages.nix)
+[Install Nix](https://nixos.org/download/), then:
 
-## Profiles
-
-Home configurations use `{arch}-{os}-{profile}` triple naming:
-
-| Profile    | Description                          | Packages                                                  |
-|------------|--------------------------------------|-----------------------------------------------------------|
-| `minimal`  | Bare essentials                      | bash, curl, htop, vim, wget, mosh, gh, ranger, croc, etc. |
-| `headless` | CLI tools for servers                | minimal + Pi, Agent Deck, Claude Code, Codex, bat, ripgrep, jq, etc.      |
-| `full`     | Everything including GUI and dev     | headless + Emacs, Node.js, Python, Typst; Firefox/Kitty on Linux      |
-
-Available configurations:
-
-```
-siraben@aarch64-darwin-full
-siraben@x86_64-linux-full
-siraben@x86_64-linux-headless
-siraben@x86_64-linux-minimal
-siraben@aarch64-linux-headless
-siraben@aarch64-linux-minimal
+```sh
+git clone git@github.com:siraben/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+./switch.sh
 ```
 
-## Installation
+On Linux, select a profile with `./switch.sh minimal`, `headless`, or `full`.
+Defaults are `full` on Apple Silicon/macOS and x86_64 Linux, and `headless` on
+ARM64 Linux.
 
-[Install Nix](https://nixos.org/download/) on macOS or Linux, then:
+| Profile | Includes | Platforms |
+| --- | --- | --- |
+| `minimal` | Essential shell tools | x86_64/ARM64 Linux |
+| `headless` | Minimal + Pi, Codex and other CLI development tools | x86_64/ARM64 Linux |
+| `full` | Headless + Emacs, GUI and development tools | Apple Silicon/macOS, x86_64 Linux |
 
-```shell-session
-$ git clone git@github.com:siraben/dotfiles.git ~/dotfiles
-$ cd ~/dotfiles && ./switch.sh
-```
+Flake outputs use `homeConfigurations."siraben@{arch}-{os}-{profile}"`, with
+`aarch64-darwin`, `x86_64-linux`, or `aarch64-linux` as the platform.
 
-`switch.sh` auto-detects arch and OS. On Linux, pass a profile:
+## Customize
 
-```shell-session
-$ ./switch.sh              # default (full on x86_64, headless on aarch64)
-$ ./switch.sh minimal
-$ ./switch.sh headless
-$ ./switch.sh full         # x86_64 Linux only
-```
-
-## Composition
-
-The flake exports `homeManagerModules.default` and
-`lib.mkHomeConfiguration` so a separate host or private flake can reuse the
-public configuration without copying it. Pass private modules through
-`extraModules` and keep the private flake's own lock file pinned:
-
-```nix
-{
-  inputs.dotfiles.url = "github:siraben/dotfiles";
-
-  outputs = { dotfiles, ... }: {
-    homeConfigurations.work = dotfiles.lib.mkHomeConfiguration {
-      system = "x86_64-linux";
-      profile = "headless";
-      username = "work-user";
-      extraModules = [ ./work.nix ];
-    };
-  };
-}
-```
-
-Pi can be extended without replacing its managed files: `siraben.pi.settings`
-recursively overlays `settings.json`, while `siraben.pi.providers` and
-`siraben.pi.mcpServers` populate `models.json` and `mcp.json` respectively.
-
-## Pi configuration
-
-Pi comes from its upstream Nix flake. Home Manager modules and extension package
-definitions live under [pi/](./home-manager/.config/nixpkgs/pi/README.md).
-All external Pi extension sources are flake inputs; published npm bundles retain
-explicit release URLs and their existing dependency locks. See that directory’s
-update notes before changing releases.
-
-## Notes
-
-Some configuration (e.g. Emacs) has deliberately not been Nixified so that it works independently. For some things like Emacs it assumes you have installed external dependencies such as fonts, interpreters and language servers for various programming languages.
+Import `homeManagerModules.default` (full), `.headless`, or `.minimal` into your
+own configuration, or call `lib.mkHomeConfiguration` with `system`, `profile`,
+`username` and `extraModules`. See [flake.nix](flake.nix) for these entry points
+and [Pi configuration](home-manager/.config/nixpkgs/pi/README.md) for agent settings
+and package updates. Emacs also uses externally installed fonts and language servers.
