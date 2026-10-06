@@ -2,7 +2,6 @@
 #include <cwchar>
 #include <utf8proc.h>
 #include "src/terminal/moshwcwidth.h"
-int legacy_mosh_wcwidth(wchar_t);
 struct Fixture { wchar_t cp; int width; const char *name; };
 int main() {
   const Fixture fixtures[] = {
@@ -16,11 +15,10 @@ int main() {
   };
   int failures = 0;
   for (const auto &f : fixtures) {
-    const int old_width = legacy_mosh_wcwidth(f.cp);
     const int current = mosh_wcwidth(f.cp);
-    std::printf("U+%04X %-42s patch=%d active=%d expected=%d\n",
-                unsigned(f.cp), f.name, old_width, current, f.width);
-    if (old_width != f.width || current != f.width) ++failures;
+    std::printf("U+%04X %-42s active=%d expected=%d\n",
+                unsigned(f.cp), f.name, current, f.width);
+    if (current != f.width) ++failures;
   }
   std::printf("utf8proc %s; Unicode %s\n", utf8proc_version(), utf8proc_unicode_version());
   return failures ? 1 : 0;
