@@ -80,7 +80,7 @@ in
         }
       ) cfg.settings;
     };
-    # Companion resources and the private MCP writer use Pi's default directory.
+    # Companion resources and the managed MCP file use Pi's default directory.
     assertions = [
       {
         assertion = config.programs.pi-coding-agent.configDir == "${config.home.homeDirectory}/.pi/agent";

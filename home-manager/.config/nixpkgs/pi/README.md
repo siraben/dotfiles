@@ -1,7 +1,7 @@
 # Pi configuration
 
 `../base.nix` imports `modules/` and adds `overlay.nix` after the official Pi
-overlay. The public `siraben.pi` options and package names are unchanged.
+overlay. Package names and compatibility entry points are preserved.
 
 ## Layout
 
@@ -9,8 +9,7 @@ overlay. The public `siraben.pi` options and package names are unchanged.
 | --- | --- |
 | `modules/default.nix` | Option declarations and module imports |
 | `modules/settings.nix` | Package selection, defaults, providers, theme, and subagent extension list |
-| `modules/mcp.nix` | MCP declarations and activation wiring |
-| `modules/write-mcp-config.py` | Codex conversion, merge order, private atomic JSON writes |
+| `modules/mcp.nix` | Explicit MCP declarations in a managed JSON file |
 | `modules/cua-driver.nix` | Optional macOS package, environment, and launchd service |
 | `modules/instructions.nix` | Managed background-work guidance |
 | `modules/extensions.nix` | Installation of local TypeScript extensions |
@@ -58,22 +57,19 @@ its existing fixed release derivation.
 
 Pi remains disabled by default for `minimal`. As before, the two local extension
 files are installed even in that profile. Settings recursively merge user
-options; declared MCP entries override imported Codex fields; Cua Driver remains
-opt-in on macOS. The existing disabled `computer-use` stub is preserved.
+options; explicit MCP entries override the default disabled `computer-use` stub
+and optional Cua declaration. Cua Driver remains opt-in on macOS.
 
-Run the extracted writer’s regression checks with Python 3.11 or newer
-(the configured Nix Python includes `tomllib`), without touching the real home:
-
-```bash
-python3 -m unittest discover -s home-manager/.config/nixpkgs/pi/tests
-```
-
-The same tests are exposed as `checks.<system>.pi-mcp-config` for all supported
-systems, so they also run as part of `nix flake check`. To run them independently:
-
-```bash
-nix build .#checks.x86_64-linux.pi-mcp-config --no-link
-```
+Home Manager owns `~/.pi/agent/mcp.json` as a forced, read-only store link.
+Only `siraben.pi.mcpServers` and the built-in declarations populate it. Codex's
+configuration is not read or synchronized. The `siraben.pi.importCodexMcp`
+option and importer checks have been removed; remove that option from callers.
+On the next activation the generated file replaces the previous mutable MCP
+file, so move any desired server declarations into `siraben.pi.mcpServers`
+first. Local edits to `mcp.json` are not preserved. Never put secret literals
+in these Nix declarations: use runtime environment references such as
+`${TOKEN}` or Pi's separate runtime credential storage. OAuth, sessions and
+caches remain unmanaged and outside the Nix store.
 
 Build the Linux headless Home Manager activation package without switching:
 
@@ -101,14 +97,14 @@ package instead of selecting Home Manager's default package.
 | Extra executable dependencies | Upstream `extraPackages` | Optional PATH wrapper; not used by defaults |
 | Extension packages and context-mode | Existing Nix derivations and native package paths | Same npm closures, adapter logic, autoload flags and subagent list |
 | Local extensions/theme | Companion `home.file` entries | Same targets; extensions remain present in minimal profiles |
-| MCP import and declarations | Companion activation writer | Same Codex conversion, shallow per-server override, disabled stub, runtime environment references |
-| Credentials and mutable state | Pi/runtime home | Imported credentials remain outside store; MCP JSON remains atomic and mode 0600 |
+| MCP declarations | Companion `home.file` | Explicit declarations, disabled stub and optional Cua server; no Codex import |
+| Credentials and mutable state | Pi/runtime home | Runtime credentials, OAuth, sessions and caches remain unmanaged; managed MCP JSON must contain no secret literals |
 | Cua Driver | Companion Darwin module | Same opt-in package, environment and launchd service |
 | Profiles and exported modules | Existing entry points | Same enable defaults and platform conditions |
 
 Settings, models, and instructions remain forced, immutable Home Manager links.
 Upstream JSON formatting/store names change, but decoded JSON and destination
-paths do not. MCP remains a mutable regular file. OAuth, sessions, and caches are
+paths do not. MCP JSON is also a forced, immutable link. OAuth, sessions, and caches are
 not managed by these modules. As before, declarative settings/provider/MCP
 options are public Nix data: use environment references or Pi runtime credential
 storage instead of putting secret literals in those options.
@@ -116,7 +112,7 @@ storage instead of putting secret literals in those options.
 Use `siraben.pi.settings` for existing overrides. Direct upstream settings use
 normal Home Manager merging (including list concatenation and scalar conflicts);
 use `lib.mkForce` for a conflicting upstream value. The companion resources and
-writer currently require the default `~/.pi/agent` directory; an assertion rejects
+MCP file currently require the default `~/.pi/agent` directory; an assertion rejects
 an upstream `configDir` override rather than allowing mismatched locations.
 Set `siraben.pi.enable = false` to disable the integrated configuration.
 
@@ -133,7 +129,7 @@ Home Manager configurations and an additional Darwin configuration enabling
 Cua Driver, replacing the package list, overriding a nested setting, and adding
 a model provider and MCP declaration. Compare decoded settings/models, global
 instruction text, resource source paths/targets/force flags, installed package
-sets, session environment, MCP activation command, and launchd configuration.
+sets, session environment, MCP configuration, and launchd configuration.
 
 Platform builds and regression results are recorded in PR #88. Builds do not
 activate a generation or touch running Pi sessions. A live authenticated MCP/Cua

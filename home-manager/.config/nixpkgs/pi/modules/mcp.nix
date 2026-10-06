@@ -19,15 +19,12 @@ let
     };
   }
   // cfg.mcpServers;
-  declared = pkgs.writeText "pi-mcp-declared.json" (builtins.toJSON declaredMcpServers);
-  writer = pkgs.writers.writePython3 "write-pi-mcp-config" { } (
-    builtins.readFile ./write-mcp-config.py
-  );
 in
 {
   config = lib.mkIf cfg.enable {
-    home.activation.writePiMcpConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      $DRY_RUN_CMD ${writer} ${declared} ${lib.boolToString cfg.importCodexMcp}
-    '';
+    home.file.".pi/agent/mcp.json" = {
+      force = true;
+      text = builtins.toJSON { mcpServers = declaredMcpServers; };
+    };
   };
 }
