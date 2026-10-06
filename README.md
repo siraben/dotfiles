@@ -5,14 +5,13 @@ Configuration for my macOS and Linux systems using
 Manager](https://github.com/nix-community/home-manager).
 
 ## Summary
+
 - OS: NixOS and macOS
 - Package manager: Nix
 - Shell: `zsh` with [pure prompt](https://github.com/sindresorhus/pure)
 - WM on NixOS: wayland
 - Editor: Emacs, `tomorrow-night` theme, [straight.el](https://github.com/raxod502/straight.el)
-- Custom package sets for
-  - [Haskell](./home-manager/.config/nixpkgs/haskell-packages.nix)
-  - [Python](./home-manager/.config/nixpkgs/python-packages.nix)
+- Custom [Python environment](./home-manager/.config/nixpkgs/python-packages.nix)
 
 ## Profiles
 
@@ -21,13 +20,12 @@ Home configurations use `{arch}-{os}-{profile}` triple naming:
 | Profile    | Description                          | Packages                                                  |
 |------------|--------------------------------------|-----------------------------------------------------------|
 | `minimal`  | Bare essentials                      | bash, curl, htop, vim, wget, mosh, gh, ranger, croc, etc. |
-| `headless` | CLI tools for servers                | minimal + claude-code, codex, bat, ripgrep, jq, etc.      |
-| `full`     | Everything including GUI and dev     | headless + emacs, kitty, firefox, haskell, rust, etc.      |
+| `headless` | CLI tools for servers                | minimal + Pi, Agent Deck, Claude Code, Codex, bat, ripgrep, jq, etc.      |
+| `full`     | Everything including GUI and dev     | headless + Emacs, Node.js, Python, Typst; Firefox/Kitty on Linux      |
 
 Available configurations:
 
 ```
-siraben@x86_64-darwin-full
 siraben@aarch64-darwin-full
 siraben@x86_64-linux-full
 siraben@x86_64-linux-headless
@@ -36,7 +34,10 @@ siraben@aarch64-linux-headless
 siraben@aarch64-linux-minimal
 ```
 
+Intel macOS and ARM Linux full profiles are not exported.
+
 ## Installation
+
 [Install Nix](https://nixos.org/download/) on macOS or Linux, then:
 
 ```shell-session
@@ -50,7 +51,7 @@ $ cd ~/dotfiles && ./switch.sh
 $ ./switch.sh              # default (full on x86_64, headless on aarch64)
 $ ./switch.sh minimal
 $ ./switch.sh headless
-$ ./switch.sh full
+$ ./switch.sh full         # x86_64 Linux only
 ```
 
 ## Composition
@@ -83,8 +84,8 @@ recursively overlays `settings.json`, while `siraben.pi.providers` and
 
 | Host         | Arch           | Description                  |
 |--------------|----------------|------------------------------|
-| `beelink`    | x86_64-linux   | Beelink Mini S12 Pro desktop |
 | `server`     | x86_64-linux   | x86_64 server                |
 
 ## Notes
+
 Some configuration (e.g. Emacs) has deliberately not been Nixified so that it works independently. For some things like Emacs it assumes you have installed external dependencies such as fonts, interpreters and language servers for various programming languages.
