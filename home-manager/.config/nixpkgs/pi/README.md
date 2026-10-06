@@ -118,9 +118,9 @@ Set `siraben.pi.enable = false` to disable the integrated configuration.
 
 The pinned Pi (`cd32f7725fdbddbaecdff5b1e68491563394e0ca`) documents native
 `mcp.json`, environment expansion, dynamic extension-registered servers and
-local package paths. This migration does not add/remove an MCP adapter or change
-MCP semantics. Extension source inputs still do not replace npm dependency
-closures.
+local package paths. MCP adapters and extension packages are unchanged; only
+configuration ownership and automatic Codex importing change here. Extension
+source inputs still do not replace npm dependency closures.
 
 ### Migration validation
 
