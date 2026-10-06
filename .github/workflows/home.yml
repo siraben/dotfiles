@@ -21,11 +21,10 @@ jobs:
         run: >-
           nix shell --inputs-from . nixpkgs#nixfmt nixpkgs#actionlint
           nixpkgs#shellcheck --command bash scripts/check-quality.sh "$BASE_REVISION"
-      - name: Run existing Pi usage regression tests
+      - name: Run regression tests
         run: >-
-          nix shell --inputs-from . nixpkgs#nodejs_24 --command node
-          --experimental-vm-modules --test
-          home-manager/.config/nixpkgs/test-pi-codex-usage.mjs
+          nix shell --inputs-from . nixpkgs#nodejs_24 nixpkgs#python3
+          --command bash scripts/check-tests.sh
 
   build:
     strategy:
