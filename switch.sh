@@ -5,7 +5,7 @@ set -euo pipefail
 # system Nix and the nixpkgs Nix used by Home Manager's activation script.
 export NIX_CONFIG="plugin-files ="
 
-if [[ "$(uname -s)" == Linux ]] && [[ -r /etc/profile.d/nix.sh ]]; then
+if [[ "$(uname -s)" == Linux ]] && ! command -v nix >/dev/null 2>&1 && [[ -r /etc/profile.d/nix.sh ]]; then
   # Ubuntu's zsh startup files do not source /etc/profile.d automatically.
   # Load the multi-user Nix environment so a fresh installation can bootstrap.
   # shellcheck source=/dev/null
