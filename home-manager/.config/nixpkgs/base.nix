@@ -82,6 +82,10 @@ lib.recursiveUpdate (rec {
       force = true;
       source = ./skills/render-tex-pdf;
     };
+    ".pi/agent/skills/render-tex-pdf" = {
+      force = true;
+      source = ./skills/render-tex-pdf;
+    };
     # pi has no hooks.json; global extensions are auto-discovered here.
     ".pi/agent/extensions/block-expensive-scans.ts" = {
       force = true;
