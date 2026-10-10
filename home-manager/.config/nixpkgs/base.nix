@@ -1,4 +1,4 @@
-{ lib, currentSystem, profile, inputs, username ? "siraben", timeZone ? "America/Los_Angeles", ... }:
+{ lib, pkgs, currentSystem, profile, inputs, username ? "siraben", timeZone ? "America/Los_Angeles", ... }:
 
 let
   inherit (lib.systems.elaborate { system = currentSystem; }) isLinux isDarwin;
@@ -25,14 +25,12 @@ let
     ];
     config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
   };
-  pkgs = import inputs.nixpkgs {
-    system = currentSystem;
-    inherit (pkgsOptions) overlays config;
-  };
 in
 lib.recursiveUpdate (rec {
   imports = [ ./pi-home.nix ];
 
+  # Use Home Manager's pkgs throughout so downstream overlays also apply to
+  # the packages and programs selected by this profile.
   nixpkgs = pkgsOptions;
   home.username = lib.mkDefault username;
   home.homeDirectory = lib.mkDefault (
