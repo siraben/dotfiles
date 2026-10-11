@@ -24,6 +24,10 @@
       url = "github:vanillagreencom/kendex";
       flake = false;
     };
+    pi-tool-summaries = {
+      url = "github:siraben/pi-tool-summaries";
+      flake = false;
+    };
     mac-app-util = {
       url = "github:siraben/mac-app-util-py";
       inputs.nixpkgs.follows = "nixpkgs";

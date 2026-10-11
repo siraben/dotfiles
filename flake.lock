@@ -281,6 +281,22 @@
         "type": "github"
       }
     },
+    "pi-tool-summaries": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791050089,
+        "narHash": "sha256-ZBdYqYUSt2NUSpqfy5vqciY6HMLA2tb9BmpCQISHVTI=",
+        "owner": "siraben",
+        "repo": "pi-tool-summaries",
+        "rev": "bccfb8e20403b3f435dfc2c3b561d727ec891ae7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "siraben",
+        "repo": "pi-tool-summaries",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
@@ -292,6 +308,7 @@
         "pi": "pi",
         "pi-better-harness": "pi-better-harness",
         "pi-subagents": "pi-subagents",
+        "pi-tool-summaries": "pi-tool-summaries",
         "siraben-overlay": "siraben-overlay"
       }
     },

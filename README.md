@@ -89,6 +89,19 @@ Names use `lib.getName` (without versions). The existing allowlist is retained;
 use `lib.mkForce [ ... ]` to replace it. This permits packages but does not install
 them.
 
+### Pi package updates
+
+GitHub extension sources are selected by `flake.lock`. For example:
+
+```sh
+nix flake update pi-tool-summaries
+```
+
+The summary extension's version follows its package manifest and source date;
+no separate source hash or derivation edit is needed. Versioned npm packages
+still require deliberate release updates, including dependency locks and hashes
+where applicable.
+
 ## Notes
 
 Some configuration (e.g. Emacs) has deliberately not been Nixified so that it works independently. For some things like Emacs it assumes you have installed external dependencies such as fonts, interpreters and language servers for various programming languages.

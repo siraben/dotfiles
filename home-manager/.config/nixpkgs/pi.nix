@@ -1,6 +1,13 @@
 { inputs }:
 final: _:
 let
+  summariesSrc = inputs.pi-tool-summaries;
+  summariesPackage = builtins.fromJSON (builtins.readFile "${summariesSrc}/package.json");
+  summariesDate =
+    with final.lib;
+    "${substring 0 4 summariesSrc.lastModifiedDate}-${substring 4 2 summariesSrc.lastModifiedDate}-${
+      substring 6 2 summariesSrc.lastModifiedDate
+    }";
   subagentsSrc = inputs.pi-subagents;
   subagentsPackage = builtins.fromJSON (builtins.readFile "${subagentsSrc}/package.json");
   subagentsPackageLock = builtins.fromJSON (builtins.readFile "${subagentsSrc}/package-lock.json");
@@ -12,20 +19,21 @@ let
     dependencies = subagentsBuildDependencies;
   };
   subagentsBuildPackageLock = subagentsPackageLock // {
-    packages = final.lib.filterAttrs (
-      name:
-      package:
-      !(package.dev or false)
-      || builtins.elem name [
-        "node_modules/typescript"
-        "node_modules/@types/node"
-        "node_modules/undici-types"
-      ]
-    ) subagentsPackageLock.packages // {
-      "" = removeAttrs subagentsPackageLock.packages."" [ "devDependencies" ] // {
-        dependencies = subagentsBuildDependencies;
+    packages =
+      final.lib.filterAttrs (
+        name: package:
+        !(package.dev or false)
+        || builtins.elem name [
+          "node_modules/typescript"
+          "node_modules/@types/node"
+          "node_modules/undici-types"
+        ]
+      ) subagentsPackageLock.packages
+      // {
+        "" = removeAttrs subagentsPackageLock.packages."" [ "devDependencies" ] // {
+          dependencies = subagentsBuildDependencies;
+        };
       };
-    };
   };
   subagentsBuildNodeModules = final.importNpmLock.buildNodeModules {
     package = subagentsBuildPackage;
@@ -99,14 +107,8 @@ in
   # TypeScript sources directly. Not published to npm or tagged.
   pi-tool-summaries = final.stdenvNoCC.mkDerivation {
     pname = "pi-tool-summaries";
-    version = "0.1.0-unstable-2026-10-03";
-
-    src = final.fetchFromGitHub {
-      owner = "siraben";
-      repo = "pi-tool-summaries";
-      rev = "bccfb8e20403b3f435dfc2c3b561d727ec891ae7";
-      hash = "sha256-ZBdYqYUSt2NUSpqfy5vqciY6HMLA2tb9BmpCQISHVTI=";
-    };
+    version = "${summariesPackage.version}-unstable-${summariesDate}";
+    src = summariesSrc;
 
     dontBuild = true;
 
