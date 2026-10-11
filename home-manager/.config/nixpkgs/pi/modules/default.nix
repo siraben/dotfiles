@@ -24,6 +24,48 @@
       default = { };
       description = "Pi settings merged recursively over the managed defaults";
     };
+    packages = lib.mkOption {
+      type = lib.types.listOf (
+        lib.types.either lib.types.str (
+          lib.types.submodule {
+            freeformType = lib.types.attrsOf lib.types.anything;
+            options = {
+              source = lib.mkOption {
+                type = lib.types.str;
+                description = "Pi package source or installed package directory";
+              };
+              autoload = lib.mkOption {
+                type = lib.types.bool;
+                default = true;
+                description = "Whether this package is loaded automatically";
+              };
+            };
+          }
+        )
+      );
+      default = [ ];
+      description = "Additional Pi packages appended to the configured package list";
+    };
+    extensions = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      description = "Additional extension paths appended to Pi's resource settings";
+    };
+    skills = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      description = "Additional skill paths appended to Pi's resource settings";
+    };
+    instructions = lib.mkOption {
+      type = lib.types.lines;
+      default = "";
+      description = "Additional global instructions appended to the bundled AGENTS.md";
+    };
+    subagentExtensions = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      description = "Additional standalone extensions explicitly shared with subagents";
+    };
     providers = lib.mkOption {
       type = lib.types.attrsOf lib.types.anything;
       default = { };

@@ -6,7 +6,7 @@
 }:
 let
   cfg = config.siraben.pi;
-  piPackages = [
+  bundledPackages = [
     "${pkgs.pi-better-background-tasks}/lib/node_modules/pi-better-background-tasks"
     "${pkgs.pi-subagents}/lib/node_modules/pi-subagents"
     "${pkgs.pi-codex-goal}/lib/node_modules/pi-codex-goal"
@@ -17,6 +17,8 @@ let
       autoload = false;
     }
   ];
+  # Raw settings can replace the bundled list; module contributions still append.
+  piPackages = (cfg.settings.packages or bundledPackages) ++ cfg.packages;
   piPackageSource = package: if builtins.isString package then package else package.source;
   subagentExtensions =
     map piPackageSource (
@@ -29,7 +31,8 @@ let
     )
     ++ map (name: "${config.home.homeDirectory}/${name}") (
       builtins.filter (lib.hasPrefix ".pi/agent/extensions/") (builtins.attrNames config.home.file)
-    );
+    )
+    ++ cfg.subagentExtensions;
 in
 {
   config = lib.mkIf cfg.enable {
@@ -54,31 +57,41 @@ in
       enable = true;
       package = pkgs.pi;
       models.providers = cfg.providers;
-      settings = lib.recursiveUpdate (
-        {
-          defaultModel = "gpt-5.6-sol";
-          defaultProvider = "openai-codex";
-          defaultThinkingLevel = "xhigh";
-          modelThinkingLevels = {
-            "openai-codex/gpt-5.6-sol" = "xhigh";
-          };
-          enableAnalytics = false;
-          enableInstallTelemetry = false;
-          lastChangelogVersion = pkgs.pi.version;
-          theme = "tomorrow-night-bright";
-          hideThinkingBlock = true;
-          followUpMode = "all";
-          toolSummaries = {
-            model = "openrouter/openai/gpt-6-luna";
-            reasoning = "off";
-          };
+      settings =
+        lib.recursiveUpdate (
+          {
+            defaultModel = "gpt-5.6-sol";
+            defaultProvider = "openai-codex";
+            defaultThinkingLevel = "xhigh";
+            modelThinkingLevels = {
+              "openai-codex/gpt-5.6-sol" = "xhigh";
+            };
+            enableAnalytics = false;
+            enableInstallTelemetry = false;
+            lastChangelogVersion = pkgs.pi.version;
+            theme = "tomorrow-night-bright";
+            hideThinkingBlock = true;
+            followUpMode = "all";
+            toolSummaries = {
+              model = "openrouter/openai/gpt-6-luna";
+              reasoning = "off";
+            };
+            packages = piPackages;
+            subagents.defaultExtensions = subagentExtensions;
+          }
+          // lib.optionalAttrs (lib.versionAtLeast pkgs.pi.version "1.0") {
+            quietStartup = "header";
+          }
+        ) cfg.settings
+        // {
           packages = piPackages;
-          subagents.defaultExtensions = subagentExtensions;
         }
-        // lib.optionalAttrs (lib.versionAtLeast pkgs.pi.version "1.0") {
-          quietStartup = "header";
+        // lib.optionalAttrs (cfg.extensions != [ ]) {
+          extensions = (cfg.settings.extensions or [ ]) ++ cfg.extensions;
         }
-      ) cfg.settings;
+        // lib.optionalAttrs (cfg.skills != [ ]) {
+          skills = (cfg.settings.skills or [ ]) ++ cfg.skills;
+        };
     };
   };
 }
