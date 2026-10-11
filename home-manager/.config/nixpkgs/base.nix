@@ -2,16 +2,6 @@
 
 let
   inherit (lib.systems.elaborate { system = currentSystem; }) isLinux isDarwin;
-  unfreePackages = [
-    "discord"
-    "slack"
-    "spotify"
-    "spotify-unwrapped"
-    "zoom"
-    "aspell-dict-en-science"
-    "claude-code"
-    "context-mode"
-  ];
   pkgsOptions = {
     overlays = [
       inputs.siraben-overlay.overlays.default
@@ -23,12 +13,10 @@ let
       (import ./pi.nix { inherit inputs; })
       (import ./cua-driver.nix)
     ];
-    config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
   };
 in
 lib.recursiveUpdate (rec {
-  imports = [ ./pi-home.nix ];
-
+  imports = [ ./pi-home.nix ./nixpkgs-policy.nix ];
   # Use Home Manager's pkgs throughout so downstream overlays also apply to
   # the packages and programs selected by this profile.
   nixpkgs = pkgsOptions;

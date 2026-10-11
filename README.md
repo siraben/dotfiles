@@ -78,6 +78,17 @@ Pi can be extended without replacing its managed files: `siraben.pi.settings`
 recursively overlays `settings.json`, while `siraben.pi.providers` and
 `siraben.pi.mcpServers` populate `models.json` and `mcp.json` respectively.
 
+Modules can extend the unfree package allowlist without changing package
+selection:
+
+```nix
+siraben.allowedUnfreePackages = [ "example-package" ];
+```
+
+Names use `lib.getName` (without versions). The existing allowlist is retained;
+use `lib.mkForce [ ... ]` to replace it. This permits packages but does not install
+them.
+
 ## Notes
 
 Some configuration (e.g. Emacs) has deliberately not been Nixified so that it works independently. For some things like Emacs it assumes you have installed external dependencies such as fonts, interpreters and language servers for various programming languages.
