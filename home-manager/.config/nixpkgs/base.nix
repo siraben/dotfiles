@@ -1,4 +1,4 @@
-{ lib, pkgs, currentSystem, profile, inputs, username ? "siraben", timeZone ? "America/Los_Angeles", ... }:
+{ lib, pkgs, currentSystem, profile, inputs, username ? "siraben", timeZone ? "America/New_York", ... }:
 
 let
   inherit (lib.systems.elaborate { system = currentSystem; }) isLinux isDarwin;
@@ -15,7 +15,7 @@ let
   };
 in
 lib.recursiveUpdate (rec {
-  imports = [ ./pi/modules ./nixpkgs-policy.nix ];
+  imports = [ ./pi/modules ./nixpkgs-policy.nix ./nix-platform.nix ];
   # Use Home Manager's pkgs throughout so downstream overlays also apply to
   # the packages and programs selected by this profile.
   nixpkgs = pkgsOptions;
@@ -27,7 +27,7 @@ lib.recursiveUpdate (rec {
 
   home.sessionVariables = {
     EDITOR = "emacsclient";
-    TZ = timeZone;
+    TZ = lib.mkDefault timeZone;
   } // (lib.optionalAttrs isDarwin {
     HOMEBREW_NO_AUTO_UPDATE = 1;
     HOMEBREW_NO_ANALYTICS = 1;
@@ -82,39 +82,6 @@ lib.recursiveUpdate (rec {
   programs = import ./programs.nix { inherit lib pkgs isDarwin isLinux profile; };
   fonts.fontconfig.enable = true;
   services = lib.optionalAttrs isLinux (import ./services.nix { inherit lib pkgs; });
-  # Determinate Nix owns the system installation and configuration on macOS.
-  # Enabling this module there puts upstream Nix in the activation PATH, which
-  # warns about Determinate-only settings such as eval-cores and lazy-trees.
-  nix.enable = !isDarwin;
-  nix.package = lib.mkDefault pkgs.nix;
-  nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
-    keep-derivations = true;
-    keep-outputs = true;
-    builders-use-substitutes = true;
-    plugin-files = "";
-    substituters = [
-      "https://cache.nixos.org"
-      "https://nix-community.cachix.org"
-      "https://siraben.cachix.org"
-    ];
-    trusted-public-keys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "siraben.cachix.org-1:/zSVUB18DWcjQF52VMh0v7MzjI+pdevnWOa01koPoYc="
-    ];
-  };
-  xdg.configFile."nix/nix.conf" = lib.mkIf isDarwin {
-    text = ''
-      builders-use-substitutes = true
-      experimental-features = nix-command flakes
-      keep-derivations = true
-      keep-outputs = true
-      plugin-files =
-      substituters = https://cache.nixos.org https://nix-community.cachix.org https://siraben.cachix.org
-      trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= siraben.cachix.org-1:/zSVUB18DWcjQF52VMh0v7MzjI+pdevnWOa01koPoYc=
-    '';
-  };
   home.stateVersion = "25.05";
   home.enableNixpkgsReleaseCheck = false;
 })
