@@ -17,7 +17,7 @@
       "zoom"
       "aspell-dict-en-science"
       "claude-code"
-      "context-mode"
+      "pi-context-mode"
     ];
     nixpkgs.config.allowUnfreePredicate =
       pkg: builtins.elem (lib.getName pkg) config.siraben.allowedUnfreePackages;
