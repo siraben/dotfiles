@@ -14,11 +14,6 @@
       description = "Whether to install and configure Pi";
     };
     enableCuaDriver = lib.mkEnableOption "the Cua Driver computer-use MCP server on macOS";
-    importCodexMcp = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Whether to import Codex MCP server declarations into Pi";
-    };
     settings = lib.mkOption {
       type = lib.types.attrsOf lib.types.anything;
       default = { };
@@ -32,7 +27,7 @@
     mcpServers = lib.mkOption {
       type = lib.types.attrsOf lib.types.anything;
       default = { };
-      description = "MCP servers merged into Pi's generated mcp.json";
+      description = "Explicit MCP servers written to Pi's managed mcp.json; use environment references for credentials";
     };
   };
 }
