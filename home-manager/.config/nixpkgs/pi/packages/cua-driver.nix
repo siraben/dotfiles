@@ -1,14 +1,20 @@
 # Preserve the notarized bundle verbatim; fixups would break its signature.
-{ pkgs }:
-pkgs.stdenvNoCC.mkDerivation rec {
+{
+  fetchurl,
+  lib,
+  stdenvNoCC,
+}:
+
+stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "cua-driver";
   version = "0.30.4";
 
-  src = pkgs.fetchurl {
-    url = "https://github.com/trycua/cua/releases/download/cua-driver-rs-v${version}/cua-driver-rs-${version}-darwin-universal.tar.gz";
+  src = fetchurl {
+    url = "https://github.com/trycua/cua/releases/download/cua-driver-rs-v${finalAttrs.version}/cua-driver-rs-${finalAttrs.version}-darwin-universal.tar.gz";
     hash = "sha256-nHWhhviTUvtSLcZ3kVdfjJ6AgaOHla8nBuED1B+nK+Q=";
   };
 
+  strictDeps = true;
   dontConfigure = true;
   dontBuild = true;
   dontFixup = true;
@@ -19,20 +25,20 @@ pkgs.stdenvNoCC.mkDerivation rec {
   installPhase = ''
     runHook preInstall
 
-    mkdir -p $out/bin $out/libexec
-    cp -R CuaDriver.app $out/libexec/
-    ln -s $out/libexec/CuaDriver.app/Contents/MacOS/cua-driver $out/bin/cua-driver
+    mkdir -p "$out/bin" "$out/libexec"
+    cp -R CuaDriver.app "$out/libexec/"
+    ln -s "$out/libexec/CuaDriver.app/Contents/MacOS/cua-driver" "$out/bin/cua-driver"
 
     runHook postInstall
   '';
 
-  meta = with pkgs.lib; {
+  meta = {
     description = "Background computer-use driver and MCP server for macOS";
     homepage = "https://github.com/trycua/cua/tree/main/libs/cua-driver";
-    changelog = "https://github.com/trycua/cua/releases/tag/cua-driver-rs-v${version}";
-    license = licenses.mit;
-    sourceProvenance = [ sourceTypes.binaryNativeCode ];
-    platforms = platforms.darwin;
+    changelog = "https://github.com/trycua/cua/releases/tag/cua-driver-rs-v${finalAttrs.version}";
+    license = lib.licenses.mit;
+    sourceProvenance = [ lib.sourceTypes.binaryNativeCode ];
+    platforms = lib.platforms.darwin;
     mainProgram = "cua-driver";
   };
-}
+})

@@ -72,9 +72,11 @@ public configuration without copying it. Pass private modules through
 }
 ```
 
-Pi can be extended without replacing its managed files: `siraben.pi.settings`
-recursively overlays `settings.json`, while `siraben.pi.providers` and
-`siraben.pi.mcpServers` populate `models.json` and `mcp.json` respectively.
+Pi can be extended without replacing its managed files. `siraben.pi.settings`
+recursively overlays `settings.json`; typed package, extension, skill, prompt,
+theme, instruction, provider, and MCP options compose additional resources.
+Subagent extension sharing is explicit and credentials remain runtime
+environment references rather than Nix values.
 
 Modules can extend the unfree package allowlist without changing package
 selection:
@@ -91,9 +93,9 @@ them.
 
 Pi comes from its upstream Nix flake. Home Manager modules and extension package
 definitions live under [pi/](./home-manager/.config/nixpkgs/pi/README.md).
-All external Pi extension sources are flake inputs; published npm bundles retain
-explicit release URLs and their existing dependency locks. See that directory’s
-update notes before changing releases.
+Extension sources use flake inputs or pinned npm release URLs and dependency
+locks. CI builds representative Linux headless and macOS full profiles. See the
+Pi directory's update notes before changing releases.
 
 ## Notes
 

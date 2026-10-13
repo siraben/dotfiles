@@ -1,24 +1,32 @@
-{ pkgs, inputs }:
-pkgs.stdenvNoCC.mkDerivation rec {
+{
+  buildPiExtension,
+  lib,
+  src,
+}:
+let
+  manifest = builtins.fromJSON (builtins.readFile "${src}/package.json");
+in
+buildPiExtension {
   pname = "pi-codex-goal";
-  version = (builtins.fromJSON (builtins.readFile "${src}/package.json")).version;
-
-  src = inputs.pi-codex-goal;
+  inherit (manifest) version;
+  inherit src;
 
   dontBuild = true;
 
   installPhase = ''
     runHook preInstall
 
-    mkdir -p "$out/lib/node_modules/pi-codex-goal"
-    cp -R . "$out/lib/node_modules/pi-codex-goal"
+    packageDir="$out/lib/node_modules/pi-codex-goal"
+    mkdir -p "$packageDir"
+    cp -R . "$packageDir"
 
     runHook postInstall
   '';
 
-  meta = with pkgs.lib; {
+  meta = {
     description = "Codex-style goal tracking and continuation for Pi";
     homepage = "https://github.com/fitchmultz/pi-codex-goal";
-    license = licenses.mit;
+    license = lib.licenses.mit;
+    platforms = lib.platforms.unix;
   };
 }

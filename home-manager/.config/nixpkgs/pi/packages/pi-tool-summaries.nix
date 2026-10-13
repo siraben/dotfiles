@@ -1,28 +1,37 @@
-{ pkgs, inputs }:
-pkgs.stdenvNoCC.mkDerivation {
+{
+  buildPiExtension,
+  lib,
+  src,
+}:
+let
+  manifest = builtins.fromJSON (builtins.readFile "${src}/package.json");
+  sourceDate = src.lastModifiedDate or "19700101000000";
+  date = "${builtins.substring 0 4 sourceDate}-${builtins.substring 4 2 sourceDate}-${
+    builtins.substring 6 2 sourceDate
+  }";
+in
+buildPiExtension {
   pname = "pi-tool-summaries";
-  version = "0.1.0-unstable-2026-10-12";
-
-  src = inputs.pi-tool-summaries;
+  version = "${manifest.version}-unstable-${date}";
+  inherit src;
 
   dontBuild = true;
 
-  # Install what the npm package would ship (package.json "files").
   installPhase = ''
     runHook preInstall
 
-    dir="$out/lib/node_modules/pi-tool-summaries"
-    mkdir -p "$dir"
-    mkdir -p "$dir/docs"
-    cp -R package.json README.md LICENSE src "$dir/"
-    cp docs/before-after.svg "$dir/docs/"
+    packageDir="$out/lib/node_modules/pi-tool-summaries"
+    mkdir -p "$packageDir/docs"
+    cp -R package.json README.md LICENSE src "$packageDir/"
+    cp docs/before-after.svg "$packageDir/docs/"
 
     runHook postInstall
   '';
 
-  meta = with pkgs.lib; {
+  meta = {
     description = "Plain-language summaries of Pi tool calls";
     homepage = "https://github.com/siraben/pi-tool-summaries";
-    license = licenses.mit;
+    license = lib.licenses.mit;
+    platforms = lib.platforms.unix;
   };
 }

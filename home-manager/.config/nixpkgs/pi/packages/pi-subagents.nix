@@ -1,44 +1,50 @@
-{ pkgs, inputs }:
+{
+  buildPiExtension,
+  importNpmLock,
+  lib,
+  nodejs_22,
+  pi,
+  src,
+}:
 let
-  subagentsSrc = inputs.pi-subagents;
-  subagentsPackage = builtins.fromJSON (builtins.readFile "${subagentsSrc}/package.json");
-  subagentsPackageLock = builtins.fromJSON (builtins.readFile "${subagentsSrc}/package-lock.json");
-  subagentsBuildDependencies = subagentsPackage.dependencies // {
-    inherit (subagentsPackage.devDependencies) typescript;
-    "@types/node" = subagentsPackage.devDependencies."@types/node";
+  package = builtins.fromJSON (builtins.readFile "${src}/package.json");
+  packageLock = builtins.fromJSON (builtins.readFile "${src}/package-lock.json");
+  buildDependencies = package.dependencies // {
+    inherit (package.devDependencies) typescript;
+    "@types/node" = package.devDependencies."@types/node";
   };
-  subagentsBuildPackage = removeAttrs subagentsPackage [ "devDependencies" ] // {
-    dependencies = subagentsBuildDependencies;
+  buildPackage = removeAttrs package [ "devDependencies" ] // {
+    dependencies = buildDependencies;
   };
-  subagentsBuildPackageLock = subagentsPackageLock // {
+  buildPackageLock = packageLock // {
     packages =
-      pkgs.lib.filterAttrs (
-        name: package:
-        !(package.dev or false)
+      lib.filterAttrs (
+        name: dependency:
+        !(dependency.dev or false)
         || builtins.elem name [
           "node_modules/typescript"
           "node_modules/@types/node"
           "node_modules/undici-types"
         ]
-      ) subagentsPackageLock.packages
+      ) packageLock.packages
       // {
-        "" = removeAttrs subagentsPackageLock.packages."" [ "devDependencies" ] // {
-          dependencies = subagentsBuildDependencies;
+        "" = removeAttrs packageLock.packages."" [ "devDependencies" ] // {
+          dependencies = buildDependencies;
         };
       };
   };
-  subagentsBuildNodeModules = pkgs.importNpmLock.buildNodeModules {
-    package = subagentsBuildPackage;
-    packageLock = subagentsBuildPackageLock;
-    nodejs = pkgs.nodejs;
+  buildNodeModules = importNpmLock.buildNodeModules {
+    package = buildPackage;
+    packageLock = buildPackageLock;
+    nodejs = nodejs_22;
   };
 in
-pkgs.stdenvNoCC.mkDerivation rec {
+buildPiExtension {
   pname = "pi-subagents";
-  version = subagentsPackage.version;
-  src = subagentsSrc;
+  inherit (package) version;
+  inherit src;
 
-  nativeBuildInputs = [ pkgs.nodejs ];
+  nativeBuildInputs = [ nodejs_22 ];
 
   postPatch = ''
     if grep -Fq 'steer: (text) => session.steer(text),' src/runs/shared/child-session.ts; then
@@ -53,38 +59,44 @@ pkgs.stdenvNoCC.mkDerivation rec {
   buildPhase = ''
     runHook preBuild
 
-    cp -R ${subagentsBuildNodeModules}/node_modules .
+    cp -R ${buildNodeModules}/node_modules .
     chmod -R u+w node_modules
     mkdir -p node_modules/@earendil-works
-    for package in pi-agent-core pi-ai pi-coding-agent pi-tui; do
-      ln -s ${pkgs.pi}/lib/pi/node_modules/@earendil-works/$package \
-        node_modules/@earendil-works/$package
+    for packageName in pi-agent-core pi-ai pi-coding-agent pi-tui; do
+      ln -s ${pi}/lib/pi/node_modules/@earendil-works/$packageName \
+        node_modules/@earendil-works/$packageName
     done
-    ln -s ${pkgs.pi}/lib/pi/node_modules/typebox node_modules/typebox
+    ln -s ${pi}/lib/pi/node_modules/typebox node_modules/typebox
     npm run build:pkg --offline --ignore-scripts
 
     runHook postBuild
   '';
 
-  # build:pkg writes the publishable package to dist-pkg. Install it with
-  # only its runtime dependencies, as `npm install pi-subagents` would.
   installPhase = ''
     runHook preInstall
 
-    rm -rf node_modules/.bin node_modules/@earendil-works node_modules/@types \
+    rm -rf node_modules/.bin node_modules/.package-lock.json \
+      node_modules/@earendil-works node_modules/@types \
       node_modules/typebox node_modules/typescript node_modules/undici-types
     find node_modules -mindepth 1 -maxdepth 1 -type d -empty -delete
     cp -R node_modules dist-pkg/node_modules
 
-    mkdir -p "$out/lib/node_modules/pi-subagents"
-    cp -R dist-pkg/. "$out/lib/node_modules/pi-subagents"
+    packageDir="$out/lib/node_modules/pi-subagents"
+    mkdir -p "$packageDir"
+    cp -R dist-pkg/. "$packageDir"
+    find "$packageDir" -type f -name '*.map' -delete
 
     runHook postInstall
   '';
 
-  meta = with pkgs.lib; {
+  postPiInstallCheck = ''
+    ${nodejs_22}/bin/node --check "$packageDir/index.js"
+  '';
+
+  meta = {
     description = "Subagent delegation and multi-agent workflows for Pi";
     homepage = "https://github.com/nicobailon/pi-subagents";
-    license = licenses.mit;
+    license = lib.licenses.mit;
+    platforms = lib.platforms.unix;
   };
 }
