@@ -15,7 +15,7 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@v20
       - name: Get current date
         id: date
-        run: echo "date=$(date -u +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+        run: echo "date=$(date -u +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@v27
         with:
