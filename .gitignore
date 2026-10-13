@@ -2,6 +2,7 @@
 *.elc
 *.log
 .DS_Store
+.direnv/
 .env
 nixos/hardware-configuration.nix
 result
