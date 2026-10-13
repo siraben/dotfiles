@@ -1,0 +1,10 @@
+--- a/src/shared-ssh-core/index.ts
++++ b/src/shared-ssh-core/index.ts
+@@ -531,2 +531,2 @@
+-    "status=running",
+-    `if test -f ${shellQuote(exitPath)}; then status=$(cat ${shellQuote(exitPath)}); elif ! tmux has-session -t ${shellQuote(sessionName)} 2>/dev/null; then status=missing; fi`,
++    "poll_state=running",
++    `if test -f ${shellQuote(exitPath)}; then poll_state=$(cat ${shellQuote(exitPath)}); elif ! tmux has-session -t ${shellQuote(sessionName)} 2>/dev/null; then poll_state=missing; fi`,
+@@ -537 +537 @@
+-    "reported_status=$status",
++    "reported_status=$poll_state",

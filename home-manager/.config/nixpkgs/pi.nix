@@ -137,6 +137,9 @@ in
     version = (builtins.fromJSON (builtins.readFile "${src}/package.json")).version;
     src = inputs.pi-better-harness + "/packages/pi-better-background-tasks";
 
+    # SSH polling uses the remote login shell; zsh reserves `status` as read-only.
+    patches = [ ./pi-better-background-tasks-zsh.patch ];
+
     dontBuild = true;
 
     installPhase = ''
