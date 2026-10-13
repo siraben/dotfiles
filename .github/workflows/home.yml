@@ -5,13 +5,22 @@ on:
     branches: [master]
   pull_request:
 
+concurrency:
+  group: home-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-24.04, macos-15]
+        include:
+          - os: ubuntu-24.04
+            configuration: siraben@x86_64-linux-headless
+          - os: macos-15
+            configuration: siraben@aarch64-darwin-full
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
 
     permissions:
       contents: read
@@ -28,17 +37,5 @@ jobs:
           name: siraben
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - name: Build home-manager flake configuration
-        run: |
-          set -euo pipefail
-          echo "OS: ${{ matrix.os }}"
-          if [[ "${{ matrix.os }}" == "ubuntu-24.04" ]]; then
-            echo "Building for Linux (siraben@x86_64-linux-headless)"
-            nix build .#homeConfigurations."siraben@x86_64-linux-headless".activationPackage -L
-          elif [[ "${{ matrix.os }}" == "macos-15" ]]; then
-            echo "Building for macOS (siraben@aarch64-darwin-full)"
-            nix build .#homeConfigurations."siraben@aarch64-darwin-full".activationPackage -L
-          else
-            echo "::error::Unsupported OS: ${{ matrix.os }}"
-            exit 1
-          fi
+      - name: Build Home Manager configuration
+        run: nix build '.#homeConfigurations."${{ matrix.configuration }}".activationPackage' -L
