@@ -20,7 +20,7 @@ Home configurations use `{arch}-{os}-{profile}` triple naming:
 | Profile    | Description                          | Packages                                                  |
 |------------|--------------------------------------|-----------------------------------------------------------|
 | `minimal`  | Bare essentials                      | bash, curl, htop, vim, wget, mosh, gh, ranger, croc, etc. |
-| `headless` | CLI-only tools                | minimal + Pi, Agent Deck, Claude Code, Codex, bat, ripgrep, jq, etc.      |
+| `headless` | CLI tools for servers                | minimal + Pi, Agent Deck, Claude Code, Codex, bat, ripgrep, jq, etc.      |
 | `full`     | Everything including GUI and dev     | headless + Emacs, Node.js, Python, Typst; Firefox/Kitty on Linux      |
 
 Available configurations:
@@ -44,7 +44,7 @@ $ cd ~/dotfiles && ./switch.sh
 `switch.sh` auto-detects arch and OS. On Linux, pass a profile:
 
 ```shell-session
-$ ./switch.sh              # default
+$ ./switch.sh              # default (full on x86_64, headless on aarch64)
 $ ./switch.sh minimal
 $ ./switch.sh headless
 $ ./switch.sh full         # x86_64 Linux only

@@ -26,18 +26,19 @@ ARCH=$(uname -m)
 
 case "$OS_TYPE" in
   Linux)
-    if [[ "$ARCH" != "x86_64" ]]; then
-      echo "::error:: Unsupported Linux architecture: $ARCH" >&2
-      exit 1
-    fi
-    NIX_ARCH=x86_64
+    NIX_ARCH=$([[ "$ARCH" == "aarch64" ]] && echo "aarch64" || echo "x86_64")
     PROFILE="${1:-}"
     case "$PROFILE" in
       minimal|headless|full)
         shift || true
         ;;
       *)
-        PROFILE="full"
+        # Default: aarch64 -> headless, x86_64 -> full
+        if [[ "$NIX_ARCH" == "aarch64" ]]; then
+          PROFILE="headless"
+        else
+          PROFILE="full"
+        fi
         ;;
     esac
     FLAKE_HOSTNAME="${NIX_ARCH}-linux-${PROFILE}"
