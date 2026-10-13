@@ -103,6 +103,12 @@ in
       set -g extended-keys on
       set -g extended-keys-format csi-u
 
+      # Let terminal-native notifications (including those from inactive tmux
+      # windows) reach the local terminal through SSH or Mosh. Codex and the
+      # patched Mosh client emit the required tmux DCS wrapper around
+      # Kitty-compatible OSC 9 notifications.
+      set -g allow-passthrough all
+
       # Quality-of-life
       set -g  focus-events on
       set -g  renumber-windows on

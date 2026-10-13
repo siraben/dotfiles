@@ -14,7 +14,13 @@ final: prev: {
   direnv = prev.direnv.overrideAttrs (_: { doCheck = false; doInstallCheck = false; });
   nix-direnv = prev.nix-direnv.overrideAttrs (_: { doCheck = false; doInstallCheck = false; });
 
-  mosh = inputs.mosh-unicode.packages.${prev.stdenv.hostPlatform.system}.default;
+  # Forward OSC 9 through Mosh's synchronized framebuffer and emit it from
+  # the client.
+  mosh = inputs.mosh-unicode.packages.${prev.stdenv.hostPlatform.system}.default.overrideAttrs (old: {
+    version = "${old.version}-osc9";
+    __intentionallyOverridingVersion = true;
+    patches = (old.patches or [ ]) ++ [ ./mosh-osc9-notifications.patch ];
+  });
 } // prev.lib.optionalAttrs prev.stdenv.hostPlatform.isDarwin {
   python3 = prev.python3.override {
     packageOverrides = pyFinal: pyPrev: {
