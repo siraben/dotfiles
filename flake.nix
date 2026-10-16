@@ -20,10 +20,6 @@
       url = "github:1aboveio/pi-better-harness";
       flake = false;
     };
-    kendex = {
-      url = "github:vanillagreencom/kendex";
-      flake = false;
-    };
     pi-tool-summaries = {
       url = "github:siraben/pi-tool-summaries";
       flake = false;

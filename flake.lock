@@ -125,22 +125,6 @@
         "type": "github"
       }
     },
-    "kendex": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1792176374,
-        "narHash": "sha256-jjDE8YTlH9xp4mS9G56bHCPpYSFUYQzKwz2szI6ntBk=",
-        "owner": "vanillagreencom",
-        "repo": "kendex",
-        "rev": "f7d8f37635bf5a5814398e3933598c2c0fddc249",
-        "type": "github"
-      },
-      "original": {
-        "owner": "vanillagreencom",
-        "repo": "kendex",
-        "type": "github"
-      }
-    },
     "llm-agents": {
       "inputs": {
         "bun2nix": "bun2nix",
@@ -340,7 +324,6 @@
       "inputs": {
         "context-mode": "context-mode",
         "home-manager": "home-manager",
-        "kendex": "kendex",
         "llm-agents": "llm-agents",
         "mac-app-util": "mac-app-util",
         "mosh-unicode": "mosh-unicode",

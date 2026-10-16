@@ -16,10 +16,6 @@ final: _: {
     pkgs = final;
     inherit inputs;
   };
-  pi-tool-renderer = import ./packages/pi-tool-renderer.nix {
-    pkgs = final;
-    inherit inputs;
-  };
   pi-web-access = import ./packages/pi-web-access.nix {
     pkgs = final;
     inherit inputs;
