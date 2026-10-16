@@ -1,7 +1,7 @@
 { pkgs, inputs }:
 pkgs.stdenvNoCC.mkDerivation {
   pname = "pi-tool-summaries";
-  version = "0.1.0-unstable-2026-10-03";
+  version = "0.1.0-unstable-2026-10-12";
 
   src = inputs.pi-tool-summaries;
 
