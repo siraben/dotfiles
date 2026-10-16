@@ -5,7 +5,7 @@ pkgs.buildNpmPackage rec {
 
   src = inputs.pi-web-access;
 
-  npmDepsHash = "sha256-/1K73mLU5O0/vfObOvaGz/97TVij14uknn8Q994joTw=";
+  npmDepsHash = "sha256-z34hqwPKL/aNGCD1A16B2y5HF7xNcVVVns5v43ldOTE=";
 
   npmFlags = [
     "--legacy-peer-deps"
