@@ -8,7 +8,7 @@ final: _: {
     pkgs = final;
     inherit inputs;
   };
-  pi-better-background-tasks = import ./packages/pi-better-background-tasks.nix {
+  pi-background-tasks = import ./packages/pi-background-tasks.nix {
     pkgs = final;
     inherit inputs;
   };

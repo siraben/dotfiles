@@ -7,7 +7,12 @@
 let
   cfg = config.siraben.pi;
   piPackages = [
-    "${pkgs.pi-better-background-tasks}/lib/node_modules/pi-better-background-tasks"
+    {
+      source = "${pkgs.pi-background-tasks}/lib/node_modules/pi-background-tasks";
+      # Pi filters narrow the package manifest, which lists the compiled
+      # entrypoints; skip its Anthropic attribution extension.
+      extensions = [ "dist/extensions/background-tasks.js" ];
+    }
     "${pkgs.pi-subagents}/lib/node_modules/pi-subagents"
     "${pkgs.pi-codex-goal}/lib/node_modules/pi-codex-goal"
     "${pkgs.pi-tool-summaries}/lib/node_modules/pi-tool-summaries"
@@ -23,7 +28,7 @@ let
       builtins.filter (
         package:
         (package.autoload or true)
-        && !(lib.hasInfix "-pi-better-background-tasks-" (piPackageSource package))
+        && !(lib.hasInfix "-pi-background-tasks-" (piPackageSource package))
         && !(lib.hasInfix "-pi-subagents-" (piPackageSource package))
       ) piPackages
     )
@@ -37,7 +42,11 @@ in
       pkgs.context-mode
     ];
     home.sessionVariables = {
-      PI_BETTER_BACKGROUND_TASKS_SHELL = lib.getExe pkgs.bash;
+      PI_BG_DISABLE_PI_TELEMETRY = "1";
+      PI_BG_DISABLE_UPDATE_CHECK = "1";
+      # Only process tasks; subagents cover delegation, so drop bg_delegate,
+      # fusion_*, bg_run_pi_attested, and bg_result from the tool surface.
+      PI_BG_FEATURES = "process,attribution";
       PI_SKIP_VERSION_CHECK = "1";
       PI_TELEMETRY = "0";
     };
