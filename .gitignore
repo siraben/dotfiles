@@ -7,6 +7,10 @@
 nixos/hardware-configuration.nix
 result
 
+# Generated agent and browser runtime artifacts
+.pi/tasks/
+.playwright-mcp/
+
 emacs/.emacs.d/.cache/
 emacs/.emacs.d/.dap-breakpoints
 emacs/.emacs.d/.lsp-session-v1
