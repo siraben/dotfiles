@@ -47,6 +47,7 @@ in
         source = ../themes/tomorrow-night-bright.json;
       };
     };
+    home.file."${config.programs.pi-coding-agent.configDir}/keybindings.json".force = true;
     # Keep the historical replacement behavior for files now owned upstream.
     home.file."${config.programs.pi-coding-agent.configDir}/settings.json".force = true;
     home.file."${config.programs.pi-coding-agent.configDir}/models.json".force = true;
@@ -54,6 +55,29 @@ in
       enable = true;
       package = pkgs.pi;
       models.providers = cfg.providers;
+      # Emacs-style keys: C-p/C-n move and browse history instead of cycling
+      # models, and C-g no longer opens the external editor (now M-e).
+      keybindings = {
+        "app.model.cycleForward" = [ ];
+        "app.model.cycleBackward" = [ ];
+        "tui.editor.cursorUp" = [
+          "up"
+          "ctrl+p"
+        ];
+        "tui.editor.cursorDown" = [
+          "down"
+          "ctrl+n"
+        ];
+        "tui.select.up" = [
+          "up"
+          "ctrl+p"
+        ];
+        "tui.select.down" = [
+          "down"
+          "ctrl+n"
+        ];
+        "app.editor.external" = [ "alt+e" ];
+      };
       settings = lib.recursiveUpdate (
         {
           defaultModel = "gpt-5.6-sol";
