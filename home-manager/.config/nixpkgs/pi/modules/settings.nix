@@ -91,10 +91,12 @@ in
           lastChangelogVersion = pkgs.pi.version;
           theme = "tomorrow-night-bright";
           hideThinkingBlock = true;
+          showCacheMissNotices = true;
           followUpMode = "all";
           toolSummaries = {
-            model = "openrouter/openai/gpt-6-luna";
+            model = "openrouter/anthropic/claude-haiku-5.5";
             reasoning = "off";
+            maxTokens = 1024;
           };
           packages = piPackages;
           subagents.defaultExtensions = subagentExtensions;
