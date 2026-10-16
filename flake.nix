@@ -16,10 +16,6 @@
       url = "github:nicobailon/pi-subagents";
       flake = false;
     };
-    pi-better-harness = {
-      url = "github:1aboveio/pi-better-harness";
-      flake = false;
-    };
     pi-tool-summaries = {
       url = "github:siraben/pi-tool-summaries";
       flake = false;

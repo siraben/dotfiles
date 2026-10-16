@@ -246,22 +246,6 @@
         "type": "github"
       }
     },
-    "pi-better-harness": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1792165914,
-        "narHash": "sha256-DoH75ie0fKroTzV4eSp/C43LCaySWxzPQ0WZ7GWsqPw=",
-        "owner": "1aboveio",
-        "repo": "pi-better-harness",
-        "rev": "23b8cb91e86bfda00bb4f356667ebc950e40a32b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "1aboveio",
-        "repo": "pi-better-harness",
-        "type": "github"
-      }
-    },
     "pi-codex-goal": {
       "flake": false,
       "locked": {
@@ -329,7 +313,6 @@
         "mosh-unicode": "mosh-unicode",
         "nixpkgs": "nixpkgs",
         "pi": "pi",
-        "pi-better-harness": "pi-better-harness",
         "pi-codex-goal": "pi-codex-goal",
         "pi-subagents": "pi-subagents",
         "pi-tool-summaries": "pi-tool-summaries",
