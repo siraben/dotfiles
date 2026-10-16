@@ -31,11 +31,11 @@
     # Published bundles preserve the existing runtime artifacts. Update these
     # release URLs together with packages/*-package-lock.json and npmDepsHash.
     pi-codex-goal = {
-      url = "https://registry.npmjs.org/pi-codex-goal/-/pi-codex-goal-0.6.0.tgz";
+      url = "https://registry.npmjs.org/pi-codex-goal/-/pi-codex-goal-0.6.1.tgz";
       flake = false;
     };
     pi-web-access = {
-      url = "https://registry.npmjs.org/pi-web-access/-/pi-web-access-0.35.0.tgz";
+      url = "https://registry.npmjs.org/pi-web-access/-/pi-web-access-0.41.0.tgz";
       flake = false;
     };
     context-mode = {
