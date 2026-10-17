@@ -18,6 +18,7 @@ GIT_INPUTS = ("pi", "pi-tool-summaries")
 # input name -> scoped attribute, derivation filename, keep dev dependencies
 NPM = {
     "pi-subagents": ("subagents", "pi-subagents", False),
+    "pi-btw": ("btw", "pi-btw", False),
     "pi-codex-goal": ("codex-goal", "pi-codex-goal", False),
     "pi-web-access": ("web-access", "pi-web-access", False),
     "context-mode": ("context-mode", "pi-context-mode", True),
@@ -211,6 +212,7 @@ def main():
             "background-tasks",
             "subagents",
             "tool-summaries",
+            "btw",
             "codex-goal",
             "web-access",
             "context-mode",

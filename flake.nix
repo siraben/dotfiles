@@ -20,6 +20,10 @@
       url = "github:siraben/pi-tool-summaries";
       flake = false;
     };
+    pi-btw = {
+      url = "https://registry.npmjs.org/pi-btw/-/pi-btw-0.8.0.tgz";
+      flake = false;
+    };
     # Published inputs provide runtime-ready bundles. Update release URLs
     # together with packages/*-package-lock.json.
     pi-codex-goal = {

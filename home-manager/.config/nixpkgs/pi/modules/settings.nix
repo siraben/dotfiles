@@ -24,6 +24,10 @@ let
       shareWithSubagents = false;
     }
     {
+      value = packagePath packages.btw;
+      shareWithSubagents = false;
+    }
+    {
       value = packagePath packages.codex-goal;
       shareWithSubagents = true;
     }
