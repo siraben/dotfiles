@@ -42,7 +42,7 @@ Run the bundled checker from the skill directory:
 scripts/compile_and_check.sh /absolute/path/to/report.tex
 ```
 
-The script compiles from the TeX file's directory, preferring an existing `tectonic`, then the nearest ancestor Nix flake, then `nix shell nixpkgs#tectonic`. It requires a nonempty PDF, rejects TeX/layout/reference warnings, checks PDF metadata, and verifies that text can be extracted. These checks prove build integrity, not visual or semantic diagram correctness.
+The script compiles from the TeX file's directory, preferring an existing `tectonic` and otherwise using `nix shell nixpkgs#tectonic`. It never enters a project flake automatically because its `shellHook` is project-controlled code. The script requires a nonempty PDF, rejects TeX/layout/reference warnings, checks PDF metadata, and verifies that text can be extracted. These checks prove build integrity, not visual or semantic diagram correctness.
 
 Fix every compilation error and warning instead of merely reporting it. Re-run the checker after each material layout change. Do not claim success from a stale PDF or a failed log.
 

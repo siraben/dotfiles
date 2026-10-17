@@ -33,27 +33,6 @@ run_tectonic() {
     return
   fi
 
-  search_dir=$source_dir
-  flake_root=
-  while [ "$search_dir" != "/" ]; do
-    if [ -f "$search_dir/flake.nix" ]; then
-      flake_root=$search_dir
-      break
-    fi
-    search_dir=$(dirname "$search_dir")
-  done
-
-  if [ -n "$flake_root" ] && command -v nix >/dev/null 2>&1; then
-    if nix develop "$flake_root" -c sh -c 'command -v tectonic >/dev/null 2>&1'; then
-      # The variables intentionally expand in the child shell.
-      # shellcheck disable=SC2016
-      TEX_PDF_SOURCE_DIR=$source_dir TEX_PDF_SOURCE_NAME=$source_name \
-        nix develop "$flake_root" -c sh -c \
-        'cd "$TEX_PDF_SOURCE_DIR" && tectonic --keep-logs "$TEX_PDF_SOURCE_NAME"'
-      return
-    fi
-  fi
-
   if command -v nix >/dev/null 2>&1; then
     # The variables intentionally expand in the child shell.
     # shellcheck disable=SC2016

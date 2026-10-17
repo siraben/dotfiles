@@ -2,6 +2,7 @@
 
 let
   inherit (lib.systems.elaborate { system = currentSystem; }) isLinux isDarwin;
+  editor = if profile == "full" then "emacsclient" else "vim";
   pkgsOptions = {
     overlays = [
       inputs.siraben-overlay.overlays.default
@@ -26,7 +27,8 @@ lib.recursiveUpdate (rec {
   home.packages = import ./packages.nix { inherit lib pkgs isDarwin isLinux profile; };
 
   home.sessionVariables = {
-    EDITOR = "emacsclient";
+    EDITOR = editor;
+    VISUAL = editor;
     TZ = lib.mkDefault timeZone;
   } // (lib.optionalAttrs isDarwin {
     HOMEBREW_NO_AUTO_UPDATE = 1;
