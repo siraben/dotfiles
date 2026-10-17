@@ -12,9 +12,14 @@ import re
 import subprocess
 import tarfile
 import tempfile
+import urllib.parse
 import urllib.request
 
 GIT_INPUTS = ("pi", "pi-tool-summaries")
+NPM_REGISTRIES = {
+    "npmjs": "https://registry.npmjs.org",
+    "yarnpkg": "https://registry.yarnpkg.com",
+}
 # input name -> scoped attribute, derivation filename, keep dev dependencies
 NPM = {
     "pi-subagents": ("subagents", "pi-subagents", False),
@@ -37,8 +42,8 @@ def run(*args, capture=False, **kwargs):
     ).stdout
 
 
-def npm_environment(directory):
-    """Use the public registry without inheriting user or project npm settings."""
+def npm_environment(directory, registry):
+    """Use the selected public registry without inheriting ambient npm settings."""
     env = {
         key: value
         for key, value in os.environ.items()
@@ -48,11 +53,36 @@ def npm_environment(directory):
         {
             "npm_config_cache": str(directory / "npm-cache"),
             "npm_config_globalconfig": str(directory / "global.npmrc"),
-            "npm_config_registry": "https://registry.npmjs.org/",
+            "npm_config_registry": registry + "/",
+            "npm_config_replace_registry_host": "always",
             "npm_config_userconfig": str(directory / "user.npmrc"),
         }
     )
     return env
+
+
+def normalize_package_lock(content, registry):
+    """Keep public registry URLs in a generated lock on the selected provider."""
+    lock = json.loads(content)
+    registry_hosts = {
+        urllib.parse.urlsplit(url).netloc for url in NPM_REGISTRIES.values()
+    }
+    target = urllib.parse.urlsplit(registry)
+    for package in lock.get("packages", {}).values():
+        if not isinstance(package, dict) or "resolved" not in package:
+            continue
+        resolved = urllib.parse.urlsplit(package["resolved"])
+        if resolved.netloc in registry_hosts:
+            package["resolved"] = urllib.parse.urlunsplit(
+                (
+                    target.scheme,
+                    target.netloc,
+                    resolved.path,
+                    resolved.query,
+                    resolved.fragment,
+                )
+            )
+    return json.dumps(lock, indent=2) + "\n"
 
 
 def replace_once(text, pattern, replacement):
@@ -66,11 +96,25 @@ def download(url):
         return response.read()
 
 
+def npm_tarball_url(registry, name, version):
+    archive_name = name.rsplit("/", 1)[-1]
+    return f"{registry}/{name}/-/{archive_name}-{version}.tgz"
+
+
+def npm_tarball_pattern(name, version_pattern):
+    registries = "|".join(re.escape(url) for url in NPM_REGISTRIES.values())
+    archive_name = name.rsplit("/", 1)[-1]
+    return (
+        rf"(?:{registries})/{re.escape(name)}/-/"
+        rf"{re.escape(archive_name)}-{version_pattern}\.tgz"
+    )
+
+
 def current_version(name, flake, recipe):
     pattern = (
         r'version = "([^"]+)";'
         if name == "pi-background-tasks"
-        else rf'https://registry\.npmjs\.org/{name}/-/{name}-([^"/]+)\.tgz'
+        else npm_tarball_pattern(name, r'([^"/]+)')
     )
     matches = re.findall(pattern, recipe if name == "pi-background-tasks" else flake)
     if len(matches) != 1:
@@ -85,6 +129,12 @@ def main():
         action="append",
         choices=(*GIT_INPUTS, *NPM),
         help="Update only this package/input; repeatable",
+    )
+    parser.add_argument(
+        "--registry",
+        choices=NPM_REGISTRIES,
+        default="npmjs",
+        help="Public npm registry provider used for metadata, tarballs, and locks",
     )
     parser.add_argument(
         "--keep-versions",
@@ -102,6 +152,7 @@ def main():
         help="Leave build validation to the caller (not recommended)",
     )
     args = parser.parse_args()
+    registry = NPM_REGISTRIES[args.registry]
     root = Path(run("git", "rev-parse", "--show-toplevel", capture=True).strip())
     base = root / "home-manager/.config/nixpkgs/pi"
     flake_path = root / "flake.nix"
@@ -143,9 +194,11 @@ def main():
             print(f"{name}: {version} OK")
             continue
         selector = version if args.keep_versions else "latest"
-        metadata = json.loads(download(f"https://registry.npmjs.org/{name}/{selector}"))
+        encoded_name = urllib.parse.quote(name, safe="@")
+        metadata = json.loads(download(f"{registry}/{encoded_name}/{selector}"))
         version = metadata["version"]
-        archive = download(metadata["dist"]["tarball"])
+        tarball_url = npm_tarball_url(registry, name, version)
+        archive = download(tarball_url)
         algorithm, digest = metadata["dist"]["integrity"].split("-", 1)
         if (
             base64.b64encode(hashlib.new(algorithm, archive).digest()).decode()
@@ -162,14 +215,19 @@ def main():
             )
             recipe = replace_once(
                 recipe,
+                npm_tarball_pattern(name, r'[^"/]+'),
+                tarball_url,
+            )
+            recipe = replace_once(
+                recipe,
                 r'    hash = "[^"]+";',
                 f'    hash = "{metadata["dist"]["integrity"]}";',
             )
         else:
             flake = replace_once(
                 flake,
-                rf'https://registry\.npmjs\.org/{name}/-/{name}-[^"/]+\.tgz',
-                metadata["dist"]["tarball"],
+                npm_tarball_pattern(name, r'[^"/]+'),
+                tarball_url,
             )
         if lock_path.exists():
             if not keep_dev:
@@ -188,10 +246,12 @@ def main():
                     "--no-audit",
                     "--no-fund",
                     cwd=tmp,
-                    env=npm_environment(tmp),
+                    env=npm_environment(tmp, registry),
                 )
                 generated = tmp / "package-lock.json"
-                changes[lock_path] = generated.read_text()
+                changes[lock_path] = normalize_package_lock(
+                    generated.read_text(), registry
+                )
         changes[recipe_path] = recipe
     if args.check:
         return
