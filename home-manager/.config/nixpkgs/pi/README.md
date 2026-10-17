@@ -79,9 +79,9 @@ scope.
 ## Packaging policy
 
 `pkgs.piPackages` is a `lib.makeScope` package set: `subagents`,
-`background-tasks`, `tool-summaries`, `codex-goal`, `web-access`, `context-mode`,
-and the companion `cua-driver`. Top-level aliases reference the same
-package derivations. Packages use the scope's `callPackage`; builders use
+`background-tasks`, `tool-summaries`, `btw`, `codex-goal`, `web-access`,
+`context-mode`, and the companion `cua-driver`. Top-level aliases reference the
+same package derivations. Packages use the scope's `callPackage`; builders use
 `lib.extendMkDerivation`.
 Each extension exposes `piPackageRoot` so consumers do not reconstruct its path.
 
@@ -115,8 +115,9 @@ maintained. Root dependency metadata is matched to the lock with a shared JSON
 transform, not per-package `sed` patches.
 
 Subagents installs its published JavaScript release with runtime dependencies
-only. Tool summaries is a source-only TypeScript package loaded by Pi directly.
-Context Mode uses package-specific native-addon cleanup and a CLI wrapper.
+only. Tool summaries and BTW are source-only TypeScript packages loaded by Pi
+directly. Context Mode uses package-specific native-addon cleanup and a CLI
+wrapper.
 
 `piPackages.context-mode` (also `pkgs.pi-context-mode`) includes the Pi adapter
 and is distinct from nixpkgs's MCP-server-only `context-mode`. The Pi package is

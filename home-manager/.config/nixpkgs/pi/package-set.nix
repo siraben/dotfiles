@@ -19,6 +19,7 @@ pkgs.lib.makeScope pkgs.newScope (self: {
   tool-summaries = self.callPackage ./packages/pi-tool-summaries.nix {
     src = inputs.pi-tool-summaries;
   };
+  btw = self.callPackage ./packages/pi-btw.nix { src = inputs.pi-btw; };
   background-tasks = self.callPackage ./packages/pi-background-tasks.nix { };
   codex-goal = self.callPackage ./packages/pi-codex-goal.nix { src = inputs.pi-codex-goal; };
   web-access = self.callPackage ./packages/pi-web-access.nix { src = inputs.pi-web-access; };

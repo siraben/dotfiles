@@ -246,6 +246,19 @@
         "type": "github"
       }
     },
+    "pi-btw": {
+      "flake": false,
+      "locked": {
+        "lastModified": 499162500,
+        "narHash": "sha256-rY16r38X528qPOrFq7Xtca8jn/RZuB1KjJJCYMNkL9w=",
+        "type": "tarball",
+        "url": "https://registry.npmjs.org/pi-btw/-/pi-btw-0.8.0.tgz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://registry.npmjs.org/pi-btw/-/pi-btw-0.8.0.tgz"
+      }
+    },
     "pi-codex-goal": {
       "flake": false,
       "locked": {
@@ -310,6 +323,7 @@
         "mosh-unicode": "mosh-unicode",
         "nixpkgs": "nixpkgs",
         "pi": "pi",
+        "pi-btw": "pi-btw",
         "pi-codex-goal": "pi-codex-goal",
         "pi-subagents": "pi-subagents",
         "pi-tool-summaries": "pi-tool-summaries",

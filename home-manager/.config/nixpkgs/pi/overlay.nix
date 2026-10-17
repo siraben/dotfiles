@@ -9,6 +9,7 @@ final: _prev: {
   inherit (final.piPackages) buildPiExtension buildPiNpmExtension cua-driver;
   pi-subagents = final.piPackages.subagents;
   pi-tool-summaries = final.piPackages.tool-summaries;
+  pi-btw = final.piPackages.btw;
   pi-background-tasks = final.piPackages.background-tasks;
   pi-codex-goal = final.piPackages.codex-goal;
   pi-web-access = final.piPackages.web-access;
