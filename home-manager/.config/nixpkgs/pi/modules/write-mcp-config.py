@@ -14,6 +14,9 @@ codex = home / ".codex" / "config.toml"
 if sys.argv[2] == "true" and codex.exists():
     codex_servers = tomllib.loads(codex.read_text()).get("mcp_servers", {})
     for name, entry in codex_servers.items():
+        # This Codex endpoint requires a signed client; it is not a Pi server.
+        if name == "computer-use":
+            continue
         server = {}
         if "url" in entry:
             server["url"] = entry["url"]
