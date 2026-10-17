@@ -1,2 +1,2 @@
-# Compatibility entry point for consumers of the original module path.
+# Pi Home Manager module entry point.
 import ./pi/modules

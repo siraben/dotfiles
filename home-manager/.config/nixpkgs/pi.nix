@@ -1,2 +1,2 @@
-# Compatibility entry point for consumers of the original overlay path.
+# Pi package overlay entry point.
 import ./pi/overlay.nix

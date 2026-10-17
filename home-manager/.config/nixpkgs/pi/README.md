@@ -14,11 +14,10 @@ profiles, including skills and standalone extensions.
 - `packages/`: one derivation per extension or companion executable.
 - `build-support.nix`: shared `buildPiExtension` builders and install checks.
 - `package-set.nix`: scoped packages and the Pi/Node runtime descriptor.
-- `overlay.nix`: exposes `piPackages` and compatibility aliases.
+- `overlay.nix`: exposes the scoped `piPackages` set and top-level aliases.
 - `themes/`: managed themes.
 
-Import `modules/` and `overlay.nix` directly; the former compatibility entry
-points have been removed.
+Import `modules/` and `overlay.nix` directly.
 
 ## Composition
 
@@ -53,17 +52,16 @@ deriving it from store-name substrings or every managed extension file.
 `settings` is a freeform JSON submodule with typed package and resource lists.
 Invalid entries are rejected by the Nix module system. Omitted or null resource
 lists leave defaults intact; `settings.packages = []` disables bundled packages.
-`settings.packages` replaces the bundled package list; `siraben.pi.packages`
-still appends. Likewise, standalone resource options append to matching raw
-settings arrays. A raw `settings.subagents.defaultExtensions` remains an
-explicit replacement.
+`settings.packages` replaces the bundled package list, and
+`siraben.pi.packages` appends to that list. Standalone resource options append
+to matching raw settings arrays. A raw `settings.subagents.defaultExtensions`
+replaces the generated list.
 
 ## MCP configuration and credentials
 
-`siraben.pi.mcpServers` declaratively generates `mcp.json`. Optional Cua Driver
-configuration is merged into that file. The Codex-only signed-client
-`computer-use` endpoint is omitted rather than emitted as an invalid placeholder.
-Pi no longer reads or translates mutable Codex configuration at activation time.
+`siraben.pi.mcpServers` declaratively generates `mcp.json`. Enabling Cua Driver
+on macOS adds its server definition. Entries in `siraben.pi.mcpServers` merge by
+name and can override that definition.
 
 Nix store files are readable by local users. Never put credential literals in
 Nix options. Refer to runtime environment variables instead:
@@ -75,14 +73,16 @@ siraben.pi.mcpServers.example = {
 };
 ```
 
-OAuth state, sessions, caches, and secret storage remain unmanaged.
+OAuth state, sessions, caches, and secret storage are outside this module's
+scope.
 
 ## Packaging policy
 
 `pkgs.piPackages` is a `lib.makeScope` package set: `subagents`,
 `background-tasks`, `tool-summaries`, `codex-goal`, `web-access`, `context-mode`,
-and the companion `cua-driver`. Existing top-level aliases remain compatible.
-Packages use the scope's `callPackage`; builders use `lib.extendMkDerivation`.
+and the companion `cua-driver`. Top-level aliases reference the same
+package derivations. Packages use the scope's `callPackage`; builders use
+`lib.extendMkDerivation`.
 Each extension exposes `piPackageRoot` so consumers do not reconstruct its path.
 
 `piPackages.runtime` is the single selection point for the host `package` and
@@ -114,19 +114,14 @@ perform the same manifest check and cleanup. All npm dependencies use
 maintained. Root dependency metadata is matched to the lock with a shared JSON
 transform, not per-package `sed` patches.
 
-Subagents uses the published JavaScript release at the same version as the
-previous source build. This removes the local TypeScript compatibility patch,
-compiler dependency filtering, SDK symlinks, and custom build/install phases.
-Tool summaries remains a source-only TypeScript package, loaded by Pi directly.
-Context Mode alone needs package-specific native-addon cleanup and a CLI wrapper.
+Subagents installs its published JavaScript release with runtime dependencies
+only. Tool summaries is a source-only TypeScript package loaded by Pi directly.
+Context Mode uses package-specific native-addon cleanup and a CLI wrapper.
 
-`piPackages.context-mode` (also `pkgs.pi-context-mode`) includes the Pi adapter;
-nixpkgs's MCP-server-only `context-mode` remains unshadowed. The Pi package is
-configured with `autoload = false`.
-Its native SQLite fallback is built for Pi's Node ABI, while normal operation
-uses Node's FTS5-enabled built-in SQLite.
-
-`pi-tool-renderer` and its unused `kendex` input were removed.
+`piPackages.context-mode` (also `pkgs.pi-context-mode`) includes the Pi adapter
+and is distinct from nixpkgs's MCP-server-only `context-mode`. The Pi package is
+configured with `autoload = false`. Its native SQLite fallback is built for Pi's
+Node ABI, while normal operation uses Node's FTS5-enabled built-in SQLite.
 
 ## Updating sources
 
@@ -140,15 +135,16 @@ nix run .#update-pi -- --check
 ```
 
 The default updates the Pi/core and Git extension inputs, selects npm `latest`
-releases, verifies tarball integrity, and regenerates managed dependency locks. It then evaluates the flake
-and builds the host plus every bundled extension on the current platform.
-It does not activate, commit, or push. Review upstream compatibility and the diff
-before committing; successfully resolving peer constraints is not proof of Pi
-API compatibility. Native builds on other platforms still belong in CI.
+releases, verifies tarball integrity, and regenerates managed dependency locks.
+It then evaluates the flake and builds the host plus every bundled extension on
+the current platform. It does not activate, commit, or push. Review upstream
+compatibility and the diff before committing; successfully resolving peer
+constraints is not proof of Pi API compatibility. CI covers native builds on
+other platforms.
 
 `--package` is repeatable. `--keep-versions` regenerates npm dependency locks
 without advancing package versions or Git inputs; transitive dependencies may
-still advance within their declared ranges. `--check` checks source/lock version
+advance within their declared ranges. `--check` checks source/lock version
 consistency offline without changing files. `--no-build` explicitly delegates
 validation to the caller. The updater prepares npm changes in temporary storage
 first, refuses dirty update targets, and leaves prepared changes available for
@@ -156,11 +152,11 @@ inspection if flake locking or build validation fails. It never rolls back
 unrelated working-tree changes.
 
 Published package manifests supply the lock inputs; lifecycle scripts are not
-executed during lock generation. Context Mode retains build dependencies;
-subagents, background tasks, and web access omit development dependencies, matching their
-package recipes. Pi peers are not installed by npm's legacy-peer resolver.
-Git source locks remain upstream-owned. This is deliberately a small updater
-for this collection, not a general Pi registry crawler.
+executed during lock generation. Context Mode includes build dependencies;
+subagents, background tasks, and web access omit development dependencies to
+match their package recipes. Pi peers are not installed by npm's legacy-peer resolver.
+Git source locks come from their upstream repositories. `update-pi` manages only
+this repository's package collection.
 
 The expensive-scan extension is a best-effort mistake-prevention guard, not a
 security sandbox. Dynamic shell expansion and arbitrary interpreters require an
