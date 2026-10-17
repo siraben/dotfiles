@@ -57,7 +57,8 @@ function isExpensiveRoot(token: string): boolean {
 /**
  * Tokenize enough shell syntax to identify simple pipeline/list commands while
  * preserving quoted `sh -c` payloads. Backtick substitutions are returned as
- * nested commands. Parentheses and `$()` naturally become separate segments.
+ * nested commands. Parentheses, braces, and `$()` naturally become separate
+ * segments.
  */
 function parseCommandLine(command: string): ParsedCommand {
 	const segments: string[][] = [];
@@ -129,7 +130,12 @@ function parseCommandLine(command: string): ParsedCommand {
 			pushSegment();
 			continue;
 		}
-		if (character === "(" || character === ")") {
+		if (
+			character === "(" ||
+			character === ")" ||
+			character === "{" ||
+			character === "}"
+		) {
 			pushSegment();
 			continue;
 		}

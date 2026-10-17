@@ -10,13 +10,35 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - name: Install Nix with Flakes support
+        uses: cachix/install-nix-action@v31.3.0
+      - name: Evaluate all flake outputs
+        run: nix flake check --all-systems --no-build -L
+      - name: Check Pi package pins
+        run: nix run .#update-pi -- --check
+
   build:
     strategy:
       fail-fast: false
       matrix:
         include:
           - os: ubuntu-24.04
+            configuration: siraben@x86_64-linux-minimal
+          - os: ubuntu-24.04
             configuration: siraben@x86_64-linux-headless
+          - os: ubuntu-24.04
+            configuration: siraben@x86_64-linux-full
+          - os: ubuntu-24.04-arm
+            configuration: siraben@aarch64-linux-minimal
+          - os: ubuntu-24.04-arm
+            configuration: siraben@aarch64-linux-headless
           - os: macos-15
             configuration: siraben@aarch64-darwin-full
     runs-on: ${{ matrix.os }}

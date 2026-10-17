@@ -11,6 +11,10 @@ buildPiNpmExtension rec {
     hash = "sha512-5dma6xvO7jeAimRaCNCzfe5y+b4bVBYPxnJ/0RnGS+mj6B6SzgA4FcORKuAtZaoGvC29dlyof3NtX7/QD4Ywew==";
   };
   npmLock = ./pi-background-tasks-package-lock.json;
+  postPiInstallCheck = ''
+    test -f "$packageDir/dist/extensions/background-tasks.js"
+    node --check "$packageDir/dist/extensions/background-tasks.js"
+  '';
   meta = {
     description = "Durable background tasks, delegated agents, and multi-model Fusion workflows for Pi";
     homepage = "https://pi.dev/packages/pi-background-tasks";

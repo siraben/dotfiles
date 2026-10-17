@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Resolve the flake relative to this script rather than the caller's directory.
+REPO_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+
 # Disable Nix plugins during activation to avoid ABI mismatches between the
-# system Nix and the nixpkgs Nix used by Home Manager's activation script.
-export NIX_CONFIG="plugin-files ="
+# system Nix and the nixpkgs Nix used by Home Manager's activation script,
+# while preserving the caller's other Nix settings.
+if [[ -n "${NIX_CONFIG:-}" ]]; then
+  export NIX_CONFIG="${NIX_CONFIG%$'\n'}"$'\n''plugin-files ='
+else
+  export NIX_CONFIG='plugin-files ='
+fi
 
 if [[ "$(uname -s)" == Linux ]] && ! command -v nix >/dev/null 2>&1 && [[ -r /etc/profile.d/nix.sh ]]; then
   # Ubuntu's zsh startup files do not source /etc/profile.d automatically.
@@ -54,10 +62,10 @@ if ! command -v home-manager >/dev/null 2>&1; then
     echo "::error:: Neither home-manager nor nix is available" >&2
     exit 1
   fi
-  exec nix develop --no-write-lock-file --command "$0" "$PROFILE" "$@"
+  exec nix develop "$REPO_DIR" --no-write-lock-file --command "$REPO_DIR/switch.sh" "$PROFILE" "$@"
 fi
 
 
 echo "Switching Home Manager configuration for siraben@$FLAKE_HOSTNAME..."
 # Pass along any remaining arguments (e.g., --show-trace, -v)
-home-manager switch --flake ".#siraben@$FLAKE_HOSTNAME" "$@"
+home-manager switch --flake "$REPO_DIR#siraben@$FLAKE_HOSTNAME" "$@"
