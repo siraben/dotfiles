@@ -7,18 +7,15 @@
 let
   cfg = config.siraben.pi;
   enableCuaDriver = cfg.enableCuaDriver && pkgs.stdenv.hostPlatform.isDarwin;
-  declaredMcpServers = {
-    # Codex's computer-use endpoint accepts only requests from signed clients.
-    computer-use.enabled = false;
-  }
-  // lib.optionalAttrs enableCuaDriver {
-    cua-driver = {
-      command = lib.getExe pkgs.cua-driver;
-      args = [ "mcp" ];
-      env = import ../cua-environment.nix;
-    };
-  }
-  // cfg.mcpServers;
+  declaredMcpServers =
+    lib.optionalAttrs enableCuaDriver {
+      cua-driver = {
+        command = lib.getExe pkgs.cua-driver;
+        args = [ "mcp" ];
+        env = import ../cua-environment.nix;
+      };
+    }
+    // cfg.mcpServers;
   mcpConfig = (pkgs.formats.json { }).generate "pi-mcp.json" {
     mcpServers = declaredMcpServers;
   };
