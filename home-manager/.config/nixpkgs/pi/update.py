@@ -6,6 +6,7 @@ import base64
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
 import re
 import subprocess
@@ -33,6 +34,24 @@ def run(*args, capture=False, **kwargs):
         stdout=subprocess.PIPE if capture else None,
         **kwargs,
     ).stdout
+
+
+def npm_environment(directory):
+    """Use the public registry without inheriting user or project npm settings."""
+    env = {
+        key: value
+        for key, value in os.environ.items()
+        if not key.lower().startswith("npm_config_")
+    }
+    env.update(
+        {
+            "npm_config_cache": str(directory / "npm-cache"),
+            "npm_config_globalconfig": str(directory / "global.npmrc"),
+            "npm_config_registry": "https://registry.npmjs.org/",
+            "npm_config_userconfig": str(directory / "user.npmrc"),
+        }
+    )
+    return env
 
 
 def replace_once(text, pattern, replacement):
@@ -168,6 +187,7 @@ def main():
                     "--no-audit",
                     "--no-fund",
                     cwd=tmp,
+                    env=npm_environment(tmp),
                 )
                 generated = tmp / "package-lock.json"
                 changes[lock_path] = generated.read_text()

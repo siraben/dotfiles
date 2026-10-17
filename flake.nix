@@ -68,6 +68,11 @@
         "aarch64-linux"
         "aarch64-darwin"
       ];
+      supportedProfiles = [
+        "minimal"
+        "headless"
+        "full"
+      ];
       homeModule = ./home-manager/.config/nixpkgs/home.nix;
       mkHomeModule =
         profile:
@@ -99,15 +104,18 @@
           extraModules ? [ ],
           extraSpecialArgs ? { },
         }:
-        home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${system};
-          extraSpecialArgs = {
-            inherit username profile timeZone;
-            inputs = allInputs;
-          }
-          // extraSpecialArgs;
-          modules = [ homeModule ] ++ extraModules;
-        };
+        if !builtins.elem profile supportedProfiles then
+          throw "Unsupported Home Manager profile `${profile}`; expected minimal, headless, or full"
+        else
+          home-manager.lib.homeManagerConfiguration {
+            pkgs = nixpkgs.legacyPackages.${system};
+            extraSpecialArgs = {
+              inherit username profile timeZone;
+              inputs = allInputs;
+            }
+            // extraSpecialArgs;
+            modules = [ homeModule ] ++ extraModules;
+          };
     in
     {
       # Public extension points for wrapper flakes and host-specific overlays.
