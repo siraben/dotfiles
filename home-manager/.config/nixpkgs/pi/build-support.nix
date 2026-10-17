@@ -1,7 +1,7 @@
 {
   buildNpmPackage,
   lib,
-  nodejs_22,
+  nodejs,
   stdenvNoCC,
 }:
 
@@ -22,14 +22,14 @@ let
       inherit doInstallCheck;
       strictDeps = true;
 
-      nativeInstallCheckInputs = nativeInstallCheckInputs ++ [ nodejs_22 ];
+      nativeInstallCheckInputs = nativeInstallCheckInputs ++ [ nodejs ];
 
       installCheckPhase = ''
         runHook preInstallCheck
 
         packageDir="$out/lib/node_modules/${packageName}"
         test -d "$packageDir"
-        ${nodejs_22}/bin/node - "$packageDir/package.json" <<'JS'
+        ${nodejs}/bin/node - "$packageDir/package.json" <<'JS'
           const manifest = require(process.argv[2]);
           const resources = ["extensions", "skills", "prompts", "themes"];
           if (!manifest.pi || !resources.some((name) => manifest.pi[name]?.length > 0)) {
@@ -43,10 +43,11 @@ let
 
       passthru = passthru // {
         piPackageName = packageName;
+        piPackageRoot = "${finalAttrs.finalPackage}/lib/node_modules/${packageName}";
       };
 
       meta = meta // {
-        platforms = meta.platforms or nodejs_22.meta.platforms;
+        platforms = meta.platforms or nodejs.meta.platforms;
       };
     };
 
@@ -63,7 +64,7 @@ in
   };
 
   buildPiNpmExtension = lib.extendMkDerivation {
-    constructDrv = buildNpmPackage.override { nodejs = nodejs_22; };
+    constructDrv = buildNpmPackage.override { inherit nodejs; };
     excludeDrvArgNames = extensionArgs;
     extendDrvArgs = extendPiExtension;
   };

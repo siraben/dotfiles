@@ -7,36 +7,37 @@
 let
   cfg = config.siraben.pi;
   configDir = config.programs.pi-coding-agent.configDir;
-  packagePath = package: "${package}/lib/node_modules/${package.piPackageName}";
+  packages = pkgs.piPackages;
+  packagePath = package: package.piPackageRoot;
 
   bundledPackages = [
     {
       value = {
-        source = "${pkgs.pi-background-tasks}/lib/node_modules/pi-background-tasks";
+        source = packagePath packages.background-tasks;
         # Exclude the separate Anthropic attribution entrypoint.
         extensions = [ "dist/extensions/background-tasks.js" ];
       };
       shareWithSubagents = false;
     }
     {
-      value = packagePath pkgs.pi-subagents;
+      value = packagePath packages.subagents;
       shareWithSubagents = false;
     }
     {
-      value = packagePath pkgs.pi-codex-goal;
+      value = packagePath packages.codex-goal;
       shareWithSubagents = true;
     }
     {
-      value = packagePath pkgs.pi-tool-summaries;
+      value = packagePath packages.tool-summaries;
       shareWithSubagents = true;
     }
     {
-      value = packagePath pkgs.pi-web-access;
+      value = packagePath packages.web-access;
       shareWithSubagents = true;
     }
     {
       value = {
-        source = packagePath pkgs.pi-context-mode;
+        source = packagePath packages.context-mode;
         autoload = false;
       };
       shareWithSubagents = false;
@@ -108,7 +109,7 @@ let
     };
     enableAnalytics = false;
     enableInstallTelemetry = false;
-    lastChangelogVersion = pkgs.pi.version;
+    lastChangelogVersion = packages.runtime.package.version;
     theme = "tomorrow-night-bright";
     hideThinkingBlock = true;
     showCacheMissNotices = true;
@@ -121,7 +122,7 @@ let
     packages = piPackages;
     subagents.defaultExtensions = defaultSubagentExtensions;
   }
-  // lib.optionalAttrs (lib.versionAtLeast pkgs.pi.version "1.0") {
+  // lib.optionalAttrs (lib.versionAtLeast packages.runtime.package.version "1.0") {
     quietStartup = "header";
   };
 
@@ -172,7 +173,7 @@ in
       }
     ];
 
-    home.packages = [ pkgs.pi-context-mode ];
+    home.packages = [ packages.context-mode ];
     home.sessionVariables = {
       PI_BG_DISABLE_PI_TELEMETRY = "1";
       PI_BG_DISABLE_UPDATE_CHECK = "1";
@@ -193,7 +194,7 @@ in
 
     programs.pi-coding-agent = {
       enable = true;
-      package = pkgs.pi;
+      package = packages.runtime.package;
       models.providers = cfg.providers;
       # Emacs-style navigation; use M-e for the external editor.
       keybindings = {
