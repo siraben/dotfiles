@@ -31,7 +31,14 @@ jobs:
       - name: Install Nix with Flakes support
         uses: cachix/install-nix-action@v31.3.0
 
-      - name: Configure Cachix
+      - name: Configure Cachix for pull requests
+        if: github.event_name == 'pull_request'
+        uses: cachix/cachix-action@v16
+        with:
+          name: siraben
+
+      - name: Configure Cachix for trusted pushes
+        if: github.event_name == 'push'
         uses: cachix/cachix-action@v16
         with:
           name: siraben
