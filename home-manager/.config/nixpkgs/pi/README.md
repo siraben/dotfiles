@@ -8,7 +8,9 @@ directory; settings, models and instructions are read-only.
 
 MCP servers are imported from Codex at activation and overridden by
 `siraben.pi.mcpServers`. Set `siraben.pi.importCodexMcp = false` to disable import.
-Generated `mcp.json` is a mutable, mode-0600 file outside the Nix store.
+The Codex-only signed-client `computer-use` endpoint is omitted, not emitted as
+an invalid disabled placeholder. Optional macOS Cua Driver configuration is
+unchanged. Generated `mcp.json` is a mutable, mode-0600 file outside the Nix store.
 Keep secret literals out of Nix options; use runtime environment references or
 Pi credential storage. OAuth, sessions and caches are unmanaged.
 
