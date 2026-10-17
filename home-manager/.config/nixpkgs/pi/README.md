@@ -13,7 +13,8 @@ profiles, including skills and standalone extensions.
 - `modules/`: Home Manager options and generated Pi configuration.
 - `packages/`: one derivation per extension or companion executable.
 - `build-support.nix`: shared `buildPiExtension` builders and install checks.
-- `overlay.nix`: a small `callPackage` registry.
+- `package-set.nix`: scoped packages and the Pi/Node/SDK runtime descriptor.
+- `overlay.nix`: exposes `piPackages` and compatibility aliases.
 - `themes/`: managed themes.
 
 Import `modules/` and `overlay.nix` directly; the former compatibility entry
@@ -75,15 +76,39 @@ OAuth state, sessions, caches, and secret storage remain unmanaged.
 
 ## Packaging policy
 
-Most packages use standard Nix arguments and are instantiated with `callPackage`.
-`pi-background-tasks` retains its published-bundle derivation and dependency lock.
-The shared `buildPiExtension` and `buildPiNpmExtension` helpers follow nixpkgs's
-`lib.extendMkDerivation` pattern. They select Node 22 and validate the installed Pi manifest; individual packages only add
-checks for their own runtime artifacts. Install phases retain published/runtime
-content rather than npm build worktrees.
+`pkgs.piPackages` is a `lib.makeScope` package set: `subagents`,
+`background-tasks`, `tool-summaries`, `codex-goal`, `web-access`, `context-mode`,
+and the companion `cua-driver`. Existing top-level aliases remain compatible.
+Packages use the scope's `callPackage`; builders use `lib.extendMkDerivation`.
+Each extension exposes `piPackageRoot` so consumers do not reconstruct its path.
 
-The local package attribute is `pi-context-mode`; nixpkgs's `context-mode`
-attribute remains unshadowed. Context Mode is configured with `autoload = false`.
+`piPackages.runtime` is the single selection point for the host `package`,
+`nodejs`, and `sdkRoot`. The default describes the official upstream Pi package
+and Node 22. The module uses that host and extension builds use that Node/SDK.
+When changing Pi distributions, override all three together; a standalone Bun
+binary does not necessarily provide an SDK tree. For example:
+
+```nix
+final: prev: {
+  piPackages = prev.piPackages.overrideScope (_self: _super: {
+    runtime = {
+      package = myPi;
+      nodejs = myPiNode;
+      sdkRoot = myPiSdkRoot;
+    };
+  });
+}
+```
+
+Builders validate the installed Pi manifest, with focused runtime checks where
+needed. Install phases retain published/runtime content rather than npm build
+worktrees. Background tasks uses `importNpmLock` and its checked-in integrity
+hashes instead of a second `npmDepsHash`. Subagents also uses `importNpmLock`;
+the other npm builds retain their existing cache hashes and native build paths.
+
+`piPackages.context-mode` (also `pkgs.pi-context-mode`) includes the Pi adapter;
+nixpkgs's MCP-server-only `context-mode` remains unshadowed. The Pi package is
+configured with `autoload = false`.
 Its native SQLite fallback is built for Pi's Node ABI, while normal operation
 uses Node's FTS5-enabled built-in SQLite.
 

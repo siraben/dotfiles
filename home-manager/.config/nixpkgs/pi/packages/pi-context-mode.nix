@@ -2,7 +2,7 @@
   buildPiNpmExtension,
   lib,
   makeBinaryWrapper,
-  nodejs_22,
+  nodejs,
   pkg-config,
   python3,
   src,
@@ -60,20 +60,20 @@ buildPiNpmExtension {
 
     find "$packageDir" -type f -name '*.map' -delete
 
-    makeWrapper ${nodejs_22}/bin/node "$out/bin/context-mode" \
+    makeWrapper ${nodejs}/bin/node "$out/bin/context-mode" \
       --add-flags "$packageDir/cli.bundle.mjs"
 
     runHook postInstall
   '';
 
   postPiInstallCheck = ''
-    ${nodejs_22}/bin/node -e \
+    ${nodejs}/bin/node -e \
       'require(process.argv[1]);' \
       "$packageDir/node_modules/better-sqlite3/build/Release/better_sqlite3.node"
 
     export HOME="$TMPDIR/home"
     mkdir -p "$HOME"
-    ${nodejs_22}/bin/node --input-type=module - "$packageDir" "$TMPDIR/session.db" <<'JS'
+    ${nodejs}/bin/node --input-type=module - "$packageDir" "$TMPDIR/session.db" <<'JS'
       const [packageDir, dbPath] = process.argv.slice(2);
       const { SessionDB } = await import(`file://''${packageDir}/build/session/db.js`);
       const db = new SessionDB({ dbPath });

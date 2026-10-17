@@ -2,8 +2,8 @@
   buildPiExtension,
   importNpmLock,
   lib,
-  nodejs_22,
-  pi,
+  nodejs,
+  runtime,
   src,
 }:
 let
@@ -36,7 +36,7 @@ let
   buildNodeModules = importNpmLock.buildNodeModules {
     package = buildPackage;
     packageLock = buildPackageLock;
-    nodejs = nodejs_22;
+    inherit nodejs;
   };
 in
 buildPiExtension {
@@ -44,7 +44,7 @@ buildPiExtension {
   inherit (package) version;
   inherit src;
 
-  nativeBuildInputs = [ nodejs_22 ];
+  nativeBuildInputs = [ nodejs ];
 
   postPatch = ''
     if grep -Fq 'steer: (text) => session.steer(text),' src/runs/shared/child-session.ts; then
@@ -63,10 +63,10 @@ buildPiExtension {
     chmod -R u+w node_modules
     mkdir -p node_modules/@earendil-works
     for packageName in pi-agent-core pi-ai pi-coding-agent pi-tui; do
-      ln -s ${pi}/lib/pi/node_modules/@earendil-works/$packageName \
+      ln -s ${runtime.sdkRoot}/@earendil-works/$packageName \
         node_modules/@earendil-works/$packageName
     done
-    ln -s ${pi}/lib/pi/node_modules/typebox node_modules/typebox
+    ln -s ${runtime.sdkRoot}/typebox node_modules/typebox
     npm run build:pkg --offline --ignore-scripts
 
     runHook postBuild
@@ -90,7 +90,7 @@ buildPiExtension {
   '';
 
   postPiInstallCheck = ''
-    ${nodejs_22}/bin/node --check "$packageDir/index.js"
+    ${nodejs}/bin/node --check "$packageDir/index.js"
   '';
 
   meta = {
