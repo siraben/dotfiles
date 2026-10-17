@@ -43,10 +43,12 @@ lib.recursiveUpdate (rec {
   };
 
   home.file = {
+    ".claude/hooks/block-find-nix-store.py".source = ./block-find-nix-store.py;
     ".claude/hooks/block-find-nix-store.sh" = {
       executable = true;
       source = ./block-find-nix-store.sh;
     };
+    ".codex/hooks/block-find-nix-store.py".source = ./block-find-nix-store.py;
     ".codex/hooks/block-find-nix-store.sh" = {
       executable = true;
       source = ./block-find-nix-store.sh;
