@@ -61,9 +61,9 @@ explicit replacement.
 ## MCP configuration and credentials
 
 `siraben.pi.mcpServers` declaratively generates `mcp.json`. Optional Cua Driver
-configuration and the disabled signed-client `computer-use` endpoint are merged
-into that file. Pi no longer reads or translates mutable Codex configuration at
-activation time.
+configuration is merged into that file. The Codex-only signed-client
+`computer-use` endpoint is omitted rather than emitted as an invalid placeholder.
+Pi no longer reads or translates mutable Codex configuration at activation time.
 
 Nix store files are readable by local users. Never put credential literals in
 Nix options. Refer to runtime environment variables instead:
