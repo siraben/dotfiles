@@ -7,46 +7,38 @@
 let
   jsonFormat = pkgs.formats.json { };
   pathString = lib.types.str;
-  packageEntry = lib.types.either pathString (
-    lib.types.submodule {
-      options = {
-        source = lib.mkOption {
-          type = pathString;
-          description = "Pi package source or installed package directory";
-        };
-        autoload = lib.mkOption {
-          type = lib.types.bool;
-          default = true;
-          description = "Whether Pi loads this package automatically";
-        };
-        extensions = lib.mkOption {
-          type = lib.types.nullOr (lib.types.listOf lib.types.str);
-          default = null;
-          description = "Optional extension resource filters passed to Pi";
-        };
-        skills = lib.mkOption {
-          type = lib.types.nullOr (lib.types.listOf lib.types.str);
-          default = null;
-          description = "Optional skill resource filters passed to Pi";
-        };
-        prompts = lib.mkOption {
-          type = lib.types.nullOr (lib.types.listOf lib.types.str);
-          default = null;
-          description = "Optional prompt resource filters passed to Pi";
-        };
-        themes = lib.mkOption {
-          type = lib.types.nullOr (lib.types.listOf lib.types.str);
-          default = null;
-          description = "Optional theme resource filters passed to Pi";
-        };
-        shareWithSubagents = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
-          description = "Whether to add this package explicitly to subagent extension defaults";
-        };
-      };
-    }
-  );
+  resourceNames = [
+    "extensions"
+    "skills"
+    "prompts"
+    "themes"
+  ];
+  packageOptions = {
+    source = lib.mkOption {
+      type = pathString;
+      description = "Pi package source or installed package directory";
+    };
+    autoload = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Whether Pi loads this package automatically";
+    };
+  }
+  // lib.genAttrs resourceNames resourceSetting;
+  packageEntry =
+    extraOptions:
+    lib.types.either pathString (
+      lib.types.submodule {
+        options = packageOptions // extraOptions;
+      }
+    );
+  resourceSetting =
+    name:
+    lib.mkOption {
+      type = lib.types.nullOr (lib.types.listOf pathString);
+      default = null;
+      description = "Optional upstream Pi ${name} list";
+    };
 in
 {
   imports = [
@@ -65,12 +57,46 @@ in
     };
     enableCuaDriver = lib.mkEnableOption "the Cua Driver computer-use MCP server on macOS";
     settings = lib.mkOption {
-      type = lib.types.attrsOf jsonFormat.type;
+      type = lib.types.submodule {
+        freeformType = jsonFormat.type;
+        options = lib.genAttrs resourceNames resourceSetting // {
+          packages = lib.mkOption {
+            type = lib.types.nullOr (lib.types.listOf (packageEntry { }));
+            default = null;
+            description = "Replacement package list; null or omission uses bundled packages, [] disables them";
+          };
+        };
+      };
       default = { };
+      # Remove only our optional sentinels, preserving null in arbitrary JSON
+      # settings and preserving the distinction between omission and [].
+      apply =
+        settings:
+        lib.mapAttrs
+          (
+            name: value:
+            if name == "packages" then
+              map (
+                package: if builtins.isString package then package else lib.filterAttrs (_: v: v != null) package
+              ) value
+            else
+              value
+          )
+          (
+            lib.filterAttrs (
+              name: value: !(builtins.elem name ([ "packages" ] ++ resourceNames) && value == null)
+            ) settings
+          );
       description = "Pi settings merged recursively over the managed defaults";
     };
     packages = lib.mkOption {
-      type = lib.types.listOf packageEntry;
+      type = lib.types.listOf (packageEntry {
+        shareWithSubagents = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = "Whether to add this package explicitly to subagent extension defaults";
+        };
+      });
       default = [ ];
       description = "Additional Pi packages appended to the configured package list";
     };

@@ -44,20 +44,8 @@ let
     }
   ];
 
-  packageSource =
-    package:
-    if builtins.isString package then
-      package
-    else if builtins.isAttrs package then
-      package.source or ""
-    else
-      "";
-  packageAutoload =
-    package: builtins.isString package || (builtins.isAttrs package && (package.autoload or true));
-  validPackage =
-    package:
-    builtins.isString package
-    || (builtins.isAttrs package && package ? source && builtins.isString package.source);
+  packageSource = package: if builtins.isString package then package else package.source;
+  packageAutoload = package: builtins.isString package || (package.autoload or true);
 
   configuredBasePackages = cfg.settings.packages or (map (package: package.value) bundledPackages);
   configuredAutoloadSources = map packageSource (
@@ -149,30 +137,6 @@ let
 in
 {
   config = lib.mkIf cfg.enable {
-    assertions = [
-      {
-        assertion =
-          builtins.isList configuredBasePackages && builtins.all validPackage configuredBasePackages;
-        message = "siraben.pi.settings.packages must be a list of strings or objects with a string source";
-      }
-      {
-        assertion = !(cfg.settings ? extensions) || builtins.isList cfg.settings.extensions;
-        message = "siraben.pi.settings.extensions must be a list when siraben.pi.extensions is used";
-      }
-      {
-        assertion = !(cfg.settings ? skills) || builtins.isList cfg.settings.skills;
-        message = "siraben.pi.settings.skills must be a list when siraben.pi.skills is used";
-      }
-      {
-        assertion = !(cfg.settings ? prompts) || builtins.isList cfg.settings.prompts;
-        message = "siraben.pi.settings.prompts must be a list when siraben.pi.prompts is used";
-      }
-      {
-        assertion = !(cfg.settings ? themes) || builtins.isList cfg.settings.themes;
-        message = "siraben.pi.settings.themes must be a list when siraben.pi.themes is used";
-      }
-    ];
-
     home.packages = [ packages.context-mode ];
     home.sessionVariables = {
       PI_BG_DISABLE_PI_TELEMETRY = "1";

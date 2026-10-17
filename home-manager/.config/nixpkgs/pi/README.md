@@ -50,6 +50,9 @@ is never written to Pi settings. Sharing defaults to false and inactive
 packages are never shared. This keeps subagent behavior explicit rather than
 deriving it from store-name substrings or every managed extension file.
 
+`settings` is a freeform JSON submodule with typed package and resource lists.
+Invalid entries are rejected by the Nix module system. Omitted or null resource
+lists leave defaults intact; `settings.packages = []` disables bundled packages.
 `settings.packages` replaces the bundled package list; `siraben.pi.packages`
 still appends. Likewise, standalone resource options append to matching raw
 settings arrays. A raw `settings.subagents.defaultExtensions` remains an
