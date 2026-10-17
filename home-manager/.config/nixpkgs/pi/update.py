@@ -12,10 +12,10 @@ import tarfile
 import tempfile
 import urllib.request
 
-GIT_INPUTS = ("pi", "pi-subagents", "pi-tool-summaries")
+GIT_INPUTS = ("pi", "pi-tool-summaries")
 # input name -> scoped attribute, derivation filename, keep dev dependencies
 NPM = {
-    "pi-codex-goal": ("codex-goal", "pi-codex-goal", False),
+    "pi-subagents": ("subagents", "pi-subagents", False),    "pi-codex-goal": ("codex-goal", "pi-codex-goal", False),
     "pi-web-access": ("web-access", "pi-web-access", False),
     "context-mode": ("context-mode", "pi-context-mode", True),
     "pi-background-tasks": ("background-tasks", "pi-background-tasks", False),
@@ -119,12 +119,6 @@ def main():
                     "--legacy-peer-deps", "--no-audit", "--no-fund", cwd=tmp)
                 generated = tmp / "package-lock.json"
                 changes[lock_path] = generated.read_text()
-                if "npmDepsHash =" in recipe:
-                    dependency_hash = run("prefetch-npm-deps", str(generated), capture=True).strip()
-                    if not re.fullmatch(r"sha256-[A-Za-z0-9+/]+=*", dependency_hash):
-                        raise ValueError(f"Unexpected prefetch output: {dependency_hash}")
-                    recipe = replace_once(recipe, r'  npmDepsHash = "[^"]+";',
-                                          f'  npmDepsHash = "{dependency_hash}";')
         changes[recipe_path] = recipe
     if args.check:
         return

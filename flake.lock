@@ -262,17 +262,14 @@
     "pi-subagents": {
       "flake": false,
       "locked": {
-        "lastModified": 1792138941,
-        "narHash": "sha256-8o04729reu4qRXtGeLF+v/kC5aXN5RJ5blMRlMsAur4=",
-        "owner": "nicobailon",
-        "repo": "pi-subagents",
-        "rev": "f8ada81303db6ee76ed22fee5605dc8a8d62a83a",
-        "type": "github"
+        "lastModified": 499162500,
+        "narHash": "sha256-kZeQ/5HwXi/SE27ufS9q36mFuweY8Ik8Aw6EJhQNnyo=",
+        "type": "tarball",
+        "url": "https://registry.npmjs.org/pi-subagents/-/pi-subagents-0.78.0.tgz"
       },
       "original": {
-        "owner": "nicobailon",
-        "repo": "pi-subagents",
-        "type": "github"
+        "type": "tarball",
+        "url": "https://registry.npmjs.org/pi-subagents/-/pi-subagents-0.78.0.tgz"
       }
     },
     "pi-tool-summaries": {
