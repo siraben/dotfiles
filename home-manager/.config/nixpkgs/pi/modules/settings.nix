@@ -89,11 +89,11 @@ in
       };
       settings = lib.recursiveUpdate (
         {
-          defaultModel = "gpt-5.6-sol";
+          defaultModel = "gpt-6.1-sol";
           defaultProvider = "openai-codex";
-          defaultThinkingLevel = "xhigh";
+          defaultThinkingLevel = "medium";
           modelThinkingLevels = {
-            "openai-codex/gpt-5.6-sol" = "xhigh";
+            "openai-codex/gpt-6.1-sol" = "medium";
           };
           enableAnalytics = false;
           enableInstallTelemetry = false;
