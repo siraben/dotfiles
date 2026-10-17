@@ -1,7 +1,7 @@
 {
   buildPiNpmExtension,
   lib,
-  nodejs_22,
+  nodejs,
   src,
 }:
 
@@ -45,7 +45,7 @@ buildPiNpmExtension {
   '';
 
   postPiInstallCheck = ''
-    ${nodejs_22}/bin/node --check "$packageDir/dist/index.js"
+    ${nodejs}/bin/node --check "$packageDir/dist/index.js"
   '';
 
   meta = {
