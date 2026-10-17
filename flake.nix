@@ -148,6 +148,33 @@
           };
         };
 
+      apps = nixpkgs.lib.genAttrs supportedSystems (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+          updater = pkgs.writeShellApplication {
+            name = "update-pi";
+            runtimeInputs = [
+              pkgs.git
+              pkgs.nix
+              pkgs.nodejs_22
+              pkgs.python3
+              pkgs.prefetch-npm-deps
+            ];
+            text = ''
+              exec python3 ${./home-manager/.config/nixpkgs/pi/update.py} "$@"
+            '';
+          };
+        in
+        {
+          update-pi = {
+            type = "app";
+            program = "${updater}/bin/update-pi";
+            meta.description = "Update Pi sources and npm locks, then validate the package set";
+          };
+        }
+      );
+
       devShells = nixpkgs.lib.genAttrs supportedSystems (
         system:
         let
