@@ -2,10 +2,8 @@
 let
   isMinimal = profile == "minimal";
   isFull = profile == "full";
-  isHeadless = profile == "headless";
   whenNotMinimal = lib.optionals (!isMinimal);
   whenFull = lib.optionals isFull;
-  whenHeadless = lib.optionals isHeadless;
   my-emacs = with pkgs; emacs.pkgs.withPackages (p: [ p.vterm ]);
   wayland-packages = whenFull (with pkgs; [
     firefox
@@ -14,8 +12,7 @@ let
     keepassxc
     kitty
     vlc
-  ]) ++ wayland-packages ++ (with pkgs; [
-  ]);
+  ]) ++ wayland-packages;
   darwinPackages = with pkgs; [
     # Prefer macOS core utilities, sed, and rsync for native flag and
     # metadata semantics.

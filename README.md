@@ -50,6 +50,13 @@ $ ./switch.sh headless
 $ ./switch.sh full         # x86_64 Linux only
 ```
 
+The full profile installs Emacs and GNU Stow. Link the tracked Emacs
+configuration after the first switch:
+
+```shell-session
+$ cd ~/dotfiles && stow --target "$HOME" emacs
+```
+
 ## Composition
 
 The flake exports `homeManagerModules.default` and
@@ -94,8 +101,9 @@ does not install them.
 Pi comes from its upstream Nix flake. Home Manager modules and extension package
 definitions live under [pi/](./home-manager/.config/nixpkgs/pi/README.md).
 Extension sources use flake inputs or pinned npm release URLs and dependency
-locks. CI builds representative Linux headless and macOS full profiles. See the
-Pi directory's update notes before changing releases.
+locks. CI evaluates all flake outputs, checks Pi package pins, and builds every
+advertised Home Manager configuration. See the Pi directory's update notes
+before changing releases.
 
 ## Notes
 

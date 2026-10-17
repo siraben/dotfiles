@@ -99,14 +99,17 @@ if scans_store_root(command):
 
 prefix = r"(^|[;&|`]|\$\()\s*"
 shell_wrapper = r"((/[^\s;&|]+/)?(zsh|bash|sh)\s+-[^\s]*c\s+[\"]?)?"
-brew_wrapper = r"((command|(/usr/bin/)?env)\s+)?"
+brew_wrapper = (
+    r"(((sudo|command|(/[^\s;&|]*/)?env)\s+)"
+    r"|([A-Za-z_][A-Za-z0-9_]*=[^\s;&|]+\s+))*"
+)
 action_end = r"([\s\"]|$)"
 brew_pattern = (
     prefix
     + shell_wrapper
     + brew_wrapper
     + r"([^\s;&|]+/)?brew\s+"
-    + r"((install|reinstall|upgrade)"
+    + r"((install|reinstall|upgrade|uninstall|remove)"
     + action_end
     + r"|bundle"
     + action_end
