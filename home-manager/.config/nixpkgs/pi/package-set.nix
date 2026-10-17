@@ -1,11 +1,10 @@
 { pkgs, inputs }:
 pkgs.lib.makeScope pkgs.newScope (self: {
-  # Keep the host, native-addon ABI, and SDK layout together. Consumers using
-  # another Pi distribution can replace this descriptor with overrideScope.
+  # Keep the host and native-addon ABI together. Published extensions resolve
+  # Pi peers through the host rather than linking its private installation tree.
   runtime = {
     package = pkgs.pi;
     nodejs = pkgs.nodejs_22;
-    sdkRoot = "${self.runtime.package}/lib/pi/node_modules";
   };
   nodejs = self.runtime.nodejs;
 

@@ -13,7 +13,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     pi-subagents = {
-      url = "github:nicobailon/pi-subagents";
+      url = "https://registry.npmjs.org/pi-subagents/-/pi-subagents-0.78.0.tgz";
       flake = false;
     };
     pi-tool-summaries = {
@@ -21,7 +21,7 @@
       flake = false;
     };
     # Published bundles preserve the existing runtime artifacts. Update these
-    # release URLs together with packages/*-package-lock.json and npmDepsHash.
+    # release URLs together with packages/*-package-lock.json.
     pi-codex-goal = {
       url = "https://registry.npmjs.org/pi-codex-goal/-/pi-codex-goal-0.6.1.tgz";
       flake = false;
@@ -149,7 +149,6 @@
               pkgs.nix
               pkgs.nodejs_22
               pkgs.python3
-              pkgs.prefetch-npm-deps
             ];
             text = ''
               exec python3 ${./home-manager/.config/nixpkgs/pi/update.py} "$@"
