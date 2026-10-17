@@ -89,14 +89,17 @@ When changing Pi distributions, override all three together; a standalone Bun
 binary does not necessarily provide an SDK tree. For example:
 
 ```nix
-final: prev: {
-  piPackages = prev.piPackages.overrideScope (_self: _super: {
-    runtime = {
-      package = myPi;
-      nodejs = myPiNode;
-      sdkRoot = myPiSdkRoot;
-    };
-  });
+{ lib, ... }: {
+  # Apply after the base module's overlay, which defines piPackages.
+  nixpkgs.overlays = lib.mkAfter [ (final: prev: {
+    piPackages = prev.piPackages.overrideScope (_self: _super: {
+      runtime = {
+        package = myPi;
+        nodejs = myPiNode;
+        sdkRoot = myPiSdkRoot;
+      };
+    });
+  }) ];
 }
 ```
 
