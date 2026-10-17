@@ -116,15 +116,38 @@ uses Node's FTS5-enabled built-in SQLite.
 
 ## Updating sources
 
-GitHub extension inputs advance through the flake lock:
+From this checkout, with update targets committed:
 
 ```console
-nix flake update pi-subagents pi-tool-summaries
+nix run .#update-pi
+nix run .#update-pi -- --package pi-background-tasks
+nix run .#update-pi -- --package pi-web-access --keep-versions
+nix run .#update-pi -- --check
 ```
 
-Published npm inputs (`context-mode`, `pi-codex-goal`, and `pi-web-access`) need
-an explicit URL update. Update the matching package lock and `npmDepsHash` for
-packages built with npm, then build the affected Home Manager profiles.
+The default updates the Pi/core and Git extension inputs, selects npm `latest`
+releases, verifies tarball integrity, regenerates managed dependency locks, and
+refreshes the two remaining `npmDepsHash` values. It then evaluates the flake
+and builds the host plus every bundled extension on the current platform.
+It does not activate, commit, or push. Review upstream compatibility and the diff
+before committing; successfully resolving peer constraints is not proof of Pi
+API compatibility. Native builds on other platforms still belong in CI.
+
+`--package` is repeatable. `--keep-versions` regenerates npm dependency locks
+without advancing package versions or Git inputs; transitive dependencies may
+still advance within their declared ranges. `--check` checks source/lock version
+consistency offline without changing files. `--no-build` explicitly delegates
+validation to the caller. The updater prepares npm changes in temporary storage
+first, refuses dirty update targets, and leaves prepared changes available for
+inspection if flake locking or build validation fails. It never rolls back
+unrelated working-tree changes.
+
+Published package manifests supply the lock inputs; lifecycle scripts are not
+executed during lock generation. Context Mode retains build dependencies;
+background tasks and web access omit development dependencies, matching their
+package recipes. Pi peers are not installed by npm's legacy-peer resolver.
+Git source locks remain upstream-owned. This is deliberately a small updater
+for this collection, not a general Pi registry crawler.
 
 The expensive-scan extension is a best-effort mistake-prevention guard, not a
 security sandbox. Dynamic shell expansion and arbitrary interpreters require an
