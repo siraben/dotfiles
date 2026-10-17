@@ -85,6 +85,8 @@ Each extension exposes `piPackageRoot` so consumers do not reconstruct its path.
 `piPackages.runtime` is the single selection point for the host `package` and
 `nodejs`. The default selects the official upstream Pi package and Node 22.
 The module uses that host and native extension dependencies use that Node ABI.
+The scope also instantiates nixpkgs's `importNpmLock` hook with the same Node
+headers and node-gyp; changing only the executable would not be sufficient.
 Published extensions resolve Pi peers through the host; no recipe links private
 SDK paths or compiles against an independently installed Pi. When changing Pi
 distributions, select the compatible runtime too. For example:

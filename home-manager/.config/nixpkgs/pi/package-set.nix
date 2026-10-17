@@ -7,6 +7,11 @@ pkgs.lib.makeScope pkgs.newScope (self: {
     nodejs = pkgs.nodejs_22;
   };
   nodejs = self.runtime.nodejs;
+  # importNpmLock's hook embeds Node headers and node-gyp at construction time;
+  # selecting Node only on buildNpmPackage would leave those on nixpkgs's default.
+  importNpmLock = pkgs.callPackage "${pkgs.path}/pkgs/build-support/node/import-npm-lock" {
+    callPackages = path: args: pkgs.callPackages path (args // { inherit (self) nodejs; });
+  };
 
   inherit (self.callPackage ./build-support.nix { }) buildPiExtension buildPiNpmExtension;
 
