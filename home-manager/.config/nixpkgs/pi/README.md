@@ -132,6 +132,7 @@ From this checkout, with update targets committed:
 nix run .#update-pi
 nix run .#update-pi -- --package pi-background-tasks
 nix run .#update-pi -- --package pi-web-access --keep-versions
+nix run .#update-pi -- --registry yarnpkg
 nix run .#update-pi -- --check
 ```
 
@@ -143,21 +144,24 @@ compatibility and the diff before committing; successfully resolving peer
 constraints is not proof of Pi API compatibility. CI covers native builds on
 other platforms.
 
-`--package` is repeatable. `--keep-versions` regenerates npm dependency locks
-without advancing package versions or Git inputs; transitive dependencies may
-advance within their declared ranges. `--check` checks source/lock version
-consistency offline without changing files. `--no-build` explicitly delegates
-validation to the caller. The updater prepares npm changes in temporary storage
-first, refuses dirty update targets, and leaves prepared changes available for
-inspection if flake locking or build validation fails. It never rolls back
-unrelated working-tree changes.
+`--package` is repeatable. `--registry` selects the allowlisted public npm
+provider used for metadata, source tarballs, and generated lock URLs; `npmjs` is
+the default and `yarnpkg` is also available. Ambient npm registry settings are
+ignored. `--keep-versions` regenerates npm dependency locks without advancing
+package versions or Git inputs; transitive dependencies may advance within
+their declared ranges. `--check` checks source/lock version consistency offline
+without changing files. `--no-build` explicitly delegates validation to the
+caller. The updater prepares npm changes in temporary storage first, refuses
+dirty update targets, and leaves prepared changes available for inspection if
+flake locking or build validation fails. It never rolls back unrelated
+working-tree changes.
 
 Published package manifests supply the lock inputs; lifecycle scripts are not
 executed during lock generation. Context Mode includes build dependencies;
 subagents, background tasks, and web access omit development dependencies to
-match their package recipes. Pi peers are not installed by npm's legacy-peer resolver.
-Git source locks come from their upstream repositories. `update-pi` manages only
-this repository's package collection.
+match their package recipes. Pi peers are not installed by npm's legacy-peer
+resolver. Git source locks come from their upstream repositories. `update-pi`
+manages only this repository's package collection.
 
 The expensive-scan extension is a best-effort mistake-prevention guard, not a
 security sandbox. Dynamic shell expansion and arbitrary interpreters require an
