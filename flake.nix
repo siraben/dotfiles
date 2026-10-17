@@ -77,9 +77,18 @@
           pkgs,
           ...
         }:
-        (import homeModule (args // { inherit profile; }))
+        (import homeModule (
+          args
+          // {
+            inherit profile;
+            inputs = allInputs;
+          }
+        ))
         // {
-          _module.args.profile = profile;
+          _module.args = {
+            inherit profile;
+            inputs = allInputs;
+          };
         };
       mkHomeConfiguration =
         {
