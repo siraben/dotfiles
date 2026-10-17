@@ -13,7 +13,7 @@ profiles, including skills and standalone extensions.
 - `modules/`: Home Manager options and generated Pi configuration.
 - `packages/`: one derivation per extension or companion executable.
 - `build-support.nix`: shared `buildPiExtension` builders and install checks.
-- `package-set.nix`: scoped packages and the Pi/Node/SDK runtime descriptor.
+- `package-set.nix`: scoped packages and the Pi/Node runtime descriptor.
 - `overlay.nix`: exposes `piPackages` and compatibility aliases.
 - `themes/`: managed themes.
 
@@ -82,11 +82,12 @@ and the companion `cua-driver`. Existing top-level aliases remain compatible.
 Packages use the scope's `callPackage`; builders use `lib.extendMkDerivation`.
 Each extension exposes `piPackageRoot` so consumers do not reconstruct its path.
 
-`piPackages.runtime` is the single selection point for the host `package`,
-`nodejs`, and `sdkRoot`. The default describes the official upstream Pi package
-and Node 22. The module uses that host and extension builds use that Node/SDK.
-When changing Pi distributions, override all three together; a standalone Bun
-binary does not necessarily provide an SDK tree. For example:
+`piPackages.runtime` is the single selection point for the host `package` and
+`nodejs`. The default selects the official upstream Pi package and Node 22.
+The module uses that host and native extension dependencies use that Node ABI.
+Published extensions resolve Pi peers through the host; no recipe links private
+SDK paths or compiles against an independently installed Pi. When changing Pi
+distributions, select the compatible runtime too. For example:
 
 ```nix
 { lib, ... }: {
@@ -96,18 +97,23 @@ binary does not necessarily provide an SDK tree. For example:
       runtime = {
         package = myPi;
         nodejs = myPiNode;
-        sdkRoot = myPiSdkRoot;
       };
     });
   }) ];
 }
 ```
 
-Builders validate the installed Pi manifest, with focused runtime checks where
-needed. Install phases retain published/runtime content rather than npm build
-worktrees. Background tasks uses `importNpmLock` and its checked-in integrity
-hashes instead of a second `npmDepsHash`. Subagents also uses `importNpmLock`;
-the other npm builds retain their existing cache hashes and native build paths.
+Both builders install the file set selected by `npm pack --ignore-scripts` and
+perform the same manifest check and cleanup. All npm dependencies use
+`importNpmLock` with checked-in integrity hashes; no second `npmDepsHash` is
+maintained. Root dependency metadata is matched to the lock with a shared JSON
+transform, not per-package `sed` patches.
+
+Subagents uses the published JavaScript release at the same version as the
+previous source build. This removes the local TypeScript compatibility patch,
+compiler dependency filtering, SDK symlinks, and custom build/install phases.
+Tool summaries remains a source-only TypeScript package, loaded by Pi directly.
+Context Mode alone needs package-specific native-addon cleanup and a CLI wrapper.
 
 `piPackages.context-mode` (also `pkgs.pi-context-mode`) includes the Pi adapter;
 nixpkgs's MCP-server-only `context-mode` remains unshadowed. The Pi package is
@@ -129,8 +135,7 @@ nix run .#update-pi -- --check
 ```
 
 The default updates the Pi/core and Git extension inputs, selects npm `latest`
-releases, verifies tarball integrity, regenerates managed dependency locks, and
-refreshes the two remaining `npmDepsHash` values. It then evaluates the flake
+releases, verifies tarball integrity, and regenerates managed dependency locks. It then evaluates the flake
 and builds the host plus every bundled extension on the current platform.
 It does not activate, commit, or push. Review upstream compatibility and the diff
 before committing; successfully resolving peer constraints is not proof of Pi
@@ -147,7 +152,7 @@ unrelated working-tree changes.
 
 Published package manifests supply the lock inputs; lifecycle scripts are not
 executed during lock generation. Context Mode retains build dependencies;
-background tasks and web access omit development dependencies, matching their
+subagents, background tasks, and web access omit development dependencies, matching their
 package recipes. Pi peers are not installed by npm's legacy-peer resolver.
 Git source locks remain upstream-owned. This is deliberately a small updater
 for this collection, not a general Pi registry crawler.

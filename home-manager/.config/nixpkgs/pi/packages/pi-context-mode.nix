@@ -10,16 +10,11 @@
 
 buildPiNpmExtension {
   pname = "pi-context-mode";
-  version = (builtins.fromJSON (builtins.readFile "${src}/package.json")).version;
   packageName = "context-mode";
 
   inherit src;
 
-  npmDepsHash = "sha256-OvXBWsGeDKGRyt71mLJJ6P03GQeGq9VTgHZQQ+8SK8s=";
-  npmFlags = [
-    "--legacy-peer-deps"
-    "--omit=dev"
-  ];
+  npmLock = ./context-mode-package-lock.json;
 
   nativeBuildInputs = [
     makeBinaryWrapper
@@ -27,28 +22,7 @@ buildPiNpmExtension {
     python3
   ];
 
-  postPatch = ''
-    cp ${./context-mode-package-lock.json} package-lock.json
-  '';
-
-  dontNpmBuild = true;
-
-  installPhase = ''
-    runHook preInstall
-
-    packageDir="$out/lib/node_modules/context-mode"
-    mkdir -p "$packageDir" "$out/bin"
-
-    # Install the same file set as the published npm package rather than the
-    # npm build worktree. Runtime dependencies are copied separately below.
-    tarball="$(npm_config_cache="$TMPDIR/npm-pack-cache" \
-      npm pack --ignore-scripts --silent --pack-destination "$TMPDIR")"
-    tar -xzf "$TMPDIR/$tarball" -C "$packageDir" --strip-components=1
-    cp -R node_modules "$packageDir/node_modules"
-    chmod -R u+w "$packageDir/node_modules"
-    rm -rf "$packageDir/node_modules/.bin" \
-      "$packageDir/node_modules/.package-lock.json"
-
+  postInstall = ''
     # better-sqlite3's node-gyp output embeds Python, npm dependency, Node
     # source, and compiler paths. Keep only the ABI-specific runtime addon.
     native="$packageDir/node_modules/better-sqlite3"
@@ -58,12 +32,9 @@ buildPiNpmExtension {
     mkdir -p "$native/build/Release"
     cp "$addon" "$native/build/Release/better_sqlite3.node"
 
-    find "$packageDir" -type f -name '*.map' -delete
-
+    mkdir -p "$out/bin"
     makeWrapper ${nodejs}/bin/node "$out/bin/context-mode" \
       --add-flags "$packageDir/cli.bundle.mjs"
-
-    runHook postInstall
   '';
 
   postPiInstallCheck = ''
@@ -87,6 +58,5 @@ buildPiNpmExtension {
     homepage = "https://github.com/mksglu/context-mode";
     license = lib.licenses.elastic20;
     mainProgram = "context-mode";
-    platforms = lib.platforms.unix;
   };
 }
