@@ -5,7 +5,7 @@ final: _prev: {
     inherit inputs;
   };
 
-  # Compatibility aliases; new consumers should use the scoped package set.
+  # Top-level aliases for the scoped packages.
   inherit (final.piPackages) buildPiExtension buildPiNpmExtension cua-driver;
   pi-subagents = final.piPackages.subagents;
   pi-tool-summaries = final.piPackages.tool-summaries;

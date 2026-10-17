@@ -85,9 +85,9 @@ selection:
 siraben.allowedUnfreePackages = [ "example-package" ];
 ```
 
-Names use `lib.getName` (without versions). The existing allowlist is retained;
-use `lib.mkForce [ ... ]` to replace it. This permits packages but does not install
-them.
+Names use `lib.getName` without versions. Module values append to the default
+allowlist; use `lib.mkForce [ ... ]` to replace it. This permits packages but
+does not install them.
 
 ## Pi configuration
 
@@ -99,4 +99,5 @@ Pi directory's update notes before changing releases.
 
 ## Notes
 
-Some configuration (e.g. Emacs) has deliberately not been Nixified so that it works independently. For some things like Emacs it assumes you have installed external dependencies such as fonts, interpreters and language servers for various programming languages.
+The Emacs configuration runs independently of Nix and expects its fonts,
+interpreters, and language servers to be available on `PATH`.

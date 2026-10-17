@@ -20,8 +20,8 @@
       url = "github:siraben/pi-tool-summaries";
       flake = false;
     };
-    # Published bundles preserve the existing runtime artifacts. Update these
-    # release URLs together with packages/*-package-lock.json.
+    # Published inputs provide runtime-ready bundles. Update release URLs
+    # together with packages/*-package-lock.json.
     pi-codex-goal = {
       url = "https://registry.npmjs.org/pi-codex-goal/-/pi-codex-goal-0.6.1.tgz";
       flake = false;
@@ -115,7 +115,7 @@
           darwinModules = [ mac-app-util.homeManagerModules.default ];
         in
         {
-          # Darwin (full only; current Nixpkgs no longer supports Intel macOS)
+          # Darwin (full profile on aarch64)
           "${configurationName}@aarch64-darwin-full" = mkHomeConfiguration {
             system = "aarch64-darwin";
             profile = "full";
