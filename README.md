@@ -61,6 +61,11 @@ $ cd ~/dotfiles && stow --target "$HOME" emacs
 
 ## Composition
 
+`home-manager/.config/nixpkgs/home.nix` imports the base configuration, which
+composes program, service, Pi, and Nix policy modules through Home Manager's
+`imports`. Files under `programs/` are standalone Home Manager modules; Kitty's
+module also imports its managed files and activation setup.
+
 The flake exports `homeManagerModules.default` and
 `lib.mkHomeConfiguration` so a separate host or private flake can reuse the
 public configuration without copying it. Pass private modules through
