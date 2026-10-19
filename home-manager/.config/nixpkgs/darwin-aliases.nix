@@ -1,4 +1,4 @@
-{}:
+{ }:
 
 {
   # useful command to run sequenced after a long command, `nix build; sd`
