@@ -1,11 +1,11 @@
 {
   lib,
   pkgs,
-  isDarwin,
-  isLinux,
+  ...
 }:
 
 let
+  inherit (pkgs.stdenv.hostPlatform) isDarwin isLinux;
   linuxShellExtra = ''
     # Every interactive shell prepends the active Home Manager and Nix profiles
     # so tmux sessions use the selected profile.
@@ -44,7 +44,7 @@ let
 in
 
 {
-  zsh = {
+  programs.zsh = {
     enable = true;
     oh-my-zsh = {
       enable = true;

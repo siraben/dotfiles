@@ -1,7 +1,5 @@
-{ }:
-
 {
-  direnv = {
+  programs.direnv = {
     enable = true;
     stdlib = ''
       : ''${XDG_CACHE_HOME:=$HOME/.cache}

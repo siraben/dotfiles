@@ -1,16 +1,15 @@
 {
   lib,
   pkgs,
-  currentSystem,
   profile,
   inputs,
-  username ? "siraben",
-  timeZone ? "America/New_York",
+  username,
+  timeZone,
   ...
 }:
 
 let
-  inherit (lib.systems.elaborate { system = currentSystem; }) isLinux isDarwin;
+  inherit (pkgs.stdenv.hostPlatform) isLinux isDarwin;
   editor = if profile == "full" then "emacsclient" else "vim";
   pkgsOptions = {
     overlays = [
@@ -24,11 +23,13 @@ let
     ];
   };
 in
-lib.recursiveUpdate (rec {
+{
   imports = [
     ./pi/modules
     ./nixpkgs-policy.nix
     ./nix-platform.nix
+    ./programs.nix
+    ./services.nix
   ];
   # Use Home Manager's pkgs throughout so downstream overlays also apply to
   # the packages and programs selected by this profile.
@@ -105,17 +106,7 @@ lib.recursiveUpdate (rec {
     '';
   };
 
-  programs = import ./programs.nix {
-    inherit
-      lib
-      pkgs
-      isDarwin
-      isLinux
-      profile
-      ;
-  };
   fonts.fontconfig.enable = true;
-  services = lib.optionalAttrs isLinux (import ./services.nix { inherit lib pkgs; });
   home.stateVersion = "25.05";
   home.enableNixpkgsReleaseCheck = false;
-}) (import ./programs/kitty-home.nix { inherit lib profile; })
+}

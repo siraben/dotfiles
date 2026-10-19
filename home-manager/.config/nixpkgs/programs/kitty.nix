@@ -1,14 +1,16 @@
 {
   pkgs,
-  isDarwin,
   profile,
+  ...
 }:
 
 {
-  kitty = {
+  imports = [ ./kitty-home.nix ];
+
+  programs.kitty = {
     enable = profile == "full";
     # Homebrew installs the macOS app; Home Manager manages these settings.
-    package = if isDarwin then null else pkgs.kitty;
+    package = if pkgs.stdenv.hostPlatform.isDarwin then null else pkgs.kitty;
     settings = {
       font_family = "JetBrainsMono Nerd Font";
       cursor_blink_interval = 0;

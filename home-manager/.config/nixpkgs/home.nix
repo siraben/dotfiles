@@ -1,11 +1,10 @@
-args@{
-  config,
-  lib,
-  pkgs,
-  profile ? "full",
-  ...
-}:
-let
-  currentSystem = pkgs.stdenv.hostPlatform.system;
-in
-import ./base.nix (args // { inherit profile currentSystem; })
+{ lib, ... }:
+{
+  imports = [ ./base.nix ];
+
+  _module.args = {
+    profile = lib.mkDefault "full";
+    username = lib.mkDefault "siraben";
+    timeZone = lib.mkDefault "America/New_York";
+  };
+}
