@@ -1,4 +1,13 @@
-{ lib, pkgs, currentSystem, profile, inputs, username ? "siraben", timeZone ? "America/New_York", ... }:
+{
+  lib,
+  pkgs,
+  currentSystem,
+  profile,
+  inputs,
+  username ? "siraben",
+  timeZone ? "America/New_York",
+  ...
+}:
 
 let
   inherit (lib.systems.elaborate { system = currentSystem; }) isLinux isDarwin;
@@ -16,21 +25,32 @@ let
   };
 in
 lib.recursiveUpdate (rec {
-  imports = [ ./pi/modules ./nixpkgs-policy.nix ./nix-platform.nix ];
+  imports = [
+    ./pi/modules
+    ./nixpkgs-policy.nix
+    ./nix-platform.nix
+  ];
   # Use Home Manager's pkgs throughout so downstream overlays also apply to
   # the packages and programs selected by this profile.
   nixpkgs = pkgsOptions;
   home.username = lib.mkDefault username;
-  home.homeDirectory = lib.mkDefault (
-    if isDarwin then "/Users/${username}" else "/home/${username}"
-  );
-  home.packages = import ./packages.nix { inherit lib pkgs isDarwin isLinux profile; };
+  home.homeDirectory = lib.mkDefault (if isDarwin then "/Users/${username}" else "/home/${username}");
+  home.packages = import ./packages.nix {
+    inherit
+      lib
+      pkgs
+      isDarwin
+      isLinux
+      profile
+      ;
+  };
 
   home.sessionVariables = {
     EDITOR = editor;
     VISUAL = editor;
     TZ = lib.mkDefault timeZone;
-  } // (lib.optionalAttrs isDarwin {
+  }
+  // (lib.optionalAttrs isDarwin {
     HOMEBREW_NO_AUTO_UPDATE = 1;
     HOMEBREW_NO_ANALYTICS = 1;
   });
@@ -71,22 +91,31 @@ lib.recursiveUpdate (rec {
       force = true;
       source = ./skills/render-tex-pdf;
     };
-  } // lib.optionalAttrs isDarwin {
+  }
+  // lib.optionalAttrs isDarwin {
     "Library/Application Support/Code/User/settings.json" = {
       force = true;
       source = ./vscode-settings.json;
     };
-  } // lib.optionalAttrs isLinux {
+  }
+  // lib.optionalAttrs isLinux {
     ".config/baloofilerc".text = ''
       [Basic Settings]
       Indexing-Enabled=false
     '';
   };
 
-  programs = import ./programs.nix { inherit lib pkgs isDarwin isLinux profile; };
+  programs = import ./programs.nix {
+    inherit
+      lib
+      pkgs
+      isDarwin
+      isLinux
+      profile
+      ;
+  };
   fonts.fontconfig.enable = true;
   services = lib.optionalAttrs isLinux (import ./services.nix { inherit lib pkgs; });
   home.stateVersion = "25.05";
   home.enableNixpkgsReleaseCheck = false;
-})
-(import ./programs/kitty-home.nix { inherit lib profile; })
+}) (import ./programs/kitty-home.nix { inherit lib profile; })

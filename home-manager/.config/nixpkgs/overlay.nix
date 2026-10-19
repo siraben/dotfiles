@@ -1,6 +1,7 @@
 { inputs }:
 
-final: prev: {
+final: prev:
+{
 
   # Apply the local tmux-window UI patch to Agent Deck from llm-agents.nix.
   agent-deck = prev.llm-agents.agent-deck.overrideAttrs (old: {
@@ -11,11 +12,18 @@ final: prev: {
 
   # NixOS/nix#15638 invalidates ad-hoc zsh/fish signatures during Darwin
   # Mach-O page-hash rewriting, so their check phases hang or receive SIGKILL.
-  direnv = prev.direnv.overrideAttrs (_: { doCheck = false; doInstallCheck = false; });
-  nix-direnv = prev.nix-direnv.overrideAttrs (_: { doCheck = false; doInstallCheck = false; });
+  direnv = prev.direnv.overrideAttrs (_: {
+    doCheck = false;
+    doInstallCheck = false;
+  });
+  nix-direnv = prev.nix-direnv.overrideAttrs (_: {
+    doCheck = false;
+    doInstallCheck = false;
+  });
 
   mosh = inputs.mosh-unicode.packages.${prev.stdenv.hostPlatform.system}.default;
-} // prev.lib.optionalAttrs prev.stdenv.hostPlatform.isDarwin {
+}
+// prev.lib.optionalAttrs prev.stdenv.hostPlatform.isDarwin {
   python3 = prev.python3.override {
     packageOverrides = pyFinal: pyPrev: {
       rapidfuzz = pyPrev.rapidfuzz.overridePythonAttrs (old: {
