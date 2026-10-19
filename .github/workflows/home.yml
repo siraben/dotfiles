@@ -19,6 +19,8 @@ jobs:
       - uses: actions/checkout@v4.2.2
       - name: Install Nix with Flakes support
         uses: cachix/install-nix-action@v31.3.0
+      - name: Check Nix formatting
+        run: git ls-files -z '*.nix' | xargs -0 nix fmt -- --check
       - name: Evaluate all flake outputs
         run: nix flake check --all-systems --no-build -L
       - name: Check Pi package pins
