@@ -78,27 +78,13 @@
         "full"
       ];
       homeModule = ./home-manager/.config/nixpkgs/home.nix;
-      mkHomeModule =
-        profile:
-        args@{
-          config,
-          lib,
-          pkgs,
-          ...
-        }:
-        (import homeModule (
-          args
-          // {
-            inherit profile;
-            inputs = allInputs;
-          }
-        ))
-        // {
-          _module.args = {
-            inherit profile;
-            inputs = allInputs;
-          };
+      mkHomeModule = profile: {
+        imports = [ homeModule ];
+        _module.args = {
+          inherit profile;
+          inputs = allInputs;
         };
+      };
       mkHomeConfiguration =
         {
           system,

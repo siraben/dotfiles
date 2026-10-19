@@ -1,25 +1,15 @@
 {
-  lib,
-  pkgs,
-  isDarwin,
-  isLinux,
-  profile,
-}:
+  imports = [
+    ./programs/git.nix
+    ./programs/tmux.nix
+    ./programs/kitty.nix
+    ./programs/zsh.nix
+    ./programs/direnv.nix
+  ];
 
-(import ./programs/git.nix { })
-// (import ./programs/tmux.nix { })
-// (import ./programs/kitty.nix { inherit pkgs isDarwin profile; })
-// (import ./programs/zsh.nix {
-  inherit
-    lib
-    pkgs
-    isDarwin
-    isLinux
-    ;
-})
-// (import ./programs/direnv.nix { })
-// {
-  gpg.enable = true;
-  autojump.enable = true;
-  mcfly.enable = true;
+  programs = {
+    gpg.enable = true;
+    autojump.enable = true;
+    mcfly.enable = true;
+  };
 }

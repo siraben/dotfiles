@@ -1,7 +1,7 @@
-{ lib, pkgs }:
+{ lib, pkgs, ... }:
 
 {
-  ssh-agent = {
-    enable = true;
+  config = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+    services.ssh-agent.enable = true;
   };
 }
