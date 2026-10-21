@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -24,6 +25,8 @@ in
     # fallback configuration applies the same settings without replacing it.
     nix.enable = lib.mkDefault (!isDarwin);
     nix.package = lib.mkDefault pkgs.nix;
+    # Ad-hoc `nix shell nixpkgs#...` uses the same source as this generation.
+    nix.registry.nixpkgs.flake = inputs.nixpkgs;
     nix.settings = {
       experimental-features = [
         "nix-command"
@@ -46,6 +49,16 @@ in
     };
     xdg.configFile."nix/nix.conf" = lib.mkIf (isDarwin && !config.nix.enable) {
       text = nixConf + config.nix.extraOptions;
+    };
+    # HM gates its registry file on nix.enable too. Generate it ourselves when
+    # Determinate owns Nix; the store-path reference also keeps nixpkgs GC-rooted.
+    xdg.configFile."nix/registry.json" = lib.mkIf (isDarwin && !config.nix.enable) {
+      source = (pkgs.formats.json { }).generate "registry.json" {
+        version = config.nix.registryVersion;
+        flakes = lib.mapAttrsToList (_: entry: {
+          inherit (entry) from to exact;
+        }) config.nix.registry;
+      };
     };
   };
 }
