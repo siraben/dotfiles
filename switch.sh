@@ -26,6 +26,7 @@ ARCH=$(uname -m)
 
 case "$OS_TYPE/$ARCH" in
   Linux/x86_64) NIX_ARCH=x86_64; DEFAULT_PROFILE=full ;;
+  Linux/aarch64) NIX_ARCH=aarch64; DEFAULT_PROFILE=headless ;;
   Darwin/arm64) NIX_ARCH=aarch64; DEFAULT_PROFILE=full ;;
   *)
     echo "::error:: Unsupported platform: $OS_TYPE/$ARCH" >&2
@@ -44,7 +45,7 @@ case "${1:-}" in
 esac
 
 case "$OS_TYPE/$NIX_ARCH/$PROFILE" in
-  Linux/x86_64/*|Darwin/aarch64/full) ;;
+  Linux/x86_64/*|Linux/aarch64/minimal|Linux/aarch64/headless|Darwin/aarch64/full) ;;
   *)
     echo "::error:: Unsupported profile $PROFILE for $OS_TYPE/$ARCH" >&2
     exit 1
