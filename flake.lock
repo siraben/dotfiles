@@ -276,13 +276,13 @@
       "flake": false,
       "locked": {
         "lastModified": 499162500,
-        "narHash": "sha256-kZeQ/5HwXi/SE27ufS9q36mFuweY8Ik8Aw6EJhQNnyo=",
+        "narHash": "sha256-K1vEhYqvq/REXXPcNxSZWzFfksvDhC+SETIqhBU9Hls=",
         "type": "tarball",
-        "url": "https://registry.npmjs.org/pi-subagents/-/pi-subagents-0.78.0.tgz"
+        "url": "https://registry.npmjs.org/pi-subagents/-/pi-subagents-0.82.1.tgz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://registry.npmjs.org/pi-subagents/-/pi-subagents-0.78.0.tgz"
+        "url": "https://registry.npmjs.org/pi-subagents/-/pi-subagents-0.82.1.tgz"
       }
     },
     "pi-tool-summaries": {
@@ -305,13 +305,13 @@
       "flake": false,
       "locked": {
         "lastModified": 499162500,
-        "narHash": "sha256-wVuOTsnck98AV1s4jKtlXkJeinWsfmibP4Col/HKIME=",
+        "narHash": "sha256-rx2JAqvbwlW2DKl9+Xq0gZ+FmmjQLXM536nJ9KuaBkI=",
         "type": "tarball",
-        "url": "https://registry.npmjs.org/pi-web-access/-/pi-web-access-0.41.0.tgz"
+        "url": "https://registry.npmjs.org/pi-web-access/-/pi-web-access-0.44.0.tgz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://registry.npmjs.org/pi-web-access/-/pi-web-access-0.41.0.tgz"
+        "url": "https://registry.npmjs.org/pi-web-access/-/pi-web-access-0.44.0.tgz"
       }
     },
     "root": {

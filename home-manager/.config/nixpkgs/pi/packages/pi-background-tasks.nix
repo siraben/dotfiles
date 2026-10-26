@@ -5,10 +5,10 @@
 }:
 buildPiNpmExtension rec {
   pname = "pi-background-tasks";
-  version = "2.6.9";
+  version = "2.6.10";
   src = fetchurl {
-    url = "https://registry.npmjs.org/pi-background-tasks/-/pi-background-tasks-${version}.tgz";
-    hash = "sha512-5dma6xvO7jeAimRaCNCzfe5y+b4bVBYPxnJ/0RnGS+mj6B6SzgA4FcORKuAtZaoGvC29dlyof3NtX7/QD4Ywew==";
+    url = "https://registry.npmjs.org/pi-background-tasks/-/pi-background-tasks-2.6.10.tgz";
+    hash = "sha512-ank/oCRst44FVCr4zwDvedzAxpf+Ttmm4XwB9SfKFJtvFWWX9T2YC+g2pWCdQnbGy/4X+BgoSr6YFCW+fWuhSw==";
   };
   npmLock = ./pi-background-tasks-package-lock.json;
   postPiInstallCheck = ''

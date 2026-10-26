@@ -13,7 +13,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     pi-subagents = {
-      url = "https://registry.npmjs.org/pi-subagents/-/pi-subagents-0.78.0.tgz";
+      url = "https://registry.npmjs.org/pi-subagents/-/pi-subagents-0.82.1.tgz";
       flake = false;
     };
     pi-tool-summaries = {
@@ -31,7 +31,7 @@
       flake = false;
     };
     pi-web-access = {
-      url = "https://registry.npmjs.org/pi-web-access/-/pi-web-access-0.41.0.tgz";
+      url = "https://registry.npmjs.org/pi-web-access/-/pi-web-access-0.44.0.tgz";
       flake = false;
     };
     context-mode = {
