@@ -25,6 +25,20 @@
 
 (use-package pyvenv)
 
+;; Analyze open files rather than eagerly checking the whole workspace.
+(setq-default eglot-workspace-configuration
+              '(:basedpyright.analysis (:diagnosticMode "openFilesOnly")))
+
+(defun siraben-python--limit-loose-file-analysis ()
+  "Avoid enumerating broad fallback directories for standalone files."
+  (unless (project-current nil)
+    (setq-local eglot-workspace-configuration
+                '(:basedpyright.analysis
+                  (:diagnosticMode "openFilesOnly" :exclude ["**"])))))
+
+(add-hook 'python-mode-hook #'siraben-python--limit-loose-file-analysis)
+(add-hook 'python-ts-mode-hook #'siraben-python--limit-loose-file-analysis)
+
 ;; Capability-driven Python LSP setup.
 ;;
 ;; Preferred stack: basedpyright (type checking) + ruff (lint / format)

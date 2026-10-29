@@ -78,6 +78,9 @@ PROGRAM is a string (or list of alternatives) accepted by
     (rust-ts-mode     . ("rust-analyzer"))
     (typescript-mode  . ("typescript-language-server" "tsserver"))
     (typescript-ts-mode . ("typescript-language-server" "tsserver"))
+    (tsx-ts-mode        . ("typescript-language-server" "tsserver"))
+    (js-mode           . ("typescript-language-server" "tsserver"))
+    (js-ts-mode        . ("typescript-language-server" "tsserver"))
     (kotlin-mode      . ("kotlin-language-server"))
     (c-mode           . ("clangd" "ccls"))
     (c++-mode         . ("clangd" "ccls"))
@@ -90,17 +93,52 @@ PROGRAM is a string (or list of alternatives) accepted by
 `siraben-eglot-ensure-if-server-available'.  The first installed
 binary in the list wins.")
 
+(defcustom siraben-eglot-idle-delay 0.5
+  "Idle seconds before automatically starting a language server."
+  :type 'number
+  :group 'tools)
+
+(defvar-local siraben-eglot--ensure-timer nil
+  "Pending idle timer for this buffer's automatic Eglot connection.")
+
+(defun siraben-eglot--cancel-ensure ()
+  "Cancel this buffer's pending automatic Eglot connection."
+  (when (timerp siraben-eglot--ensure-timer)
+    (cancel-timer siraben-eglot--ensure-timer))
+  (setq siraben-eglot--ensure-timer nil))
+
+(defun siraben-eglot--ensure-buffer (buffer)
+  "Start Eglot in BUFFER if it is still live and eligible."
+  (when (buffer-live-p buffer)
+    (with-current-buffer buffer
+      (setq siraben-eglot--ensure-timer nil)
+      (when (and buffer-file-name
+                 (not (file-remote-p buffer-file-name)))
+        ;; Apply the project environment before checking for its server.
+        (when (and (fboundp 'envrc-mode)
+                   (not (bound-and-true-p envrc-mode))
+                   (siraben-have-p "direnv"))
+          (envrc-mode 1)
+          (siraben-capabilities-refresh))
+        (when (siraben-have-p (cdr (assq major-mode siraben-lsp-servers)))
+          (require 'eglot)
+          (unless (eglot-managed-p)
+            (eglot-ensure)))))))
+
 (defun siraben-eglot-ensure-if-server-available ()
-  "Like `eglot-ensure', but no-op if no known LSP server is installed.
-Consult `siraben-lsp-servers' for the binaries to look for.  This is
-meant to be used in `MODE-hook' clauses where blindly calling
-`eglot-ensure' on a system without the server only pollutes the echo
-area with \"Searching for program: No such file or directory\" messages."
-  (let* ((servers (cdr (assq major-mode siraben-lsp-servers)))
-         (chosen  (siraben-have-p servers)))
-    (when chosen
-      (require 'eglot)
-      (eglot-ensure))))
+  "Defer automatic Eglot startup until idle and a server is available.
+Check executable availability in the callback so project environments
+can supply servers that are absent from the initial PATH."
+  (when (and buffer-file-name
+             (not (file-remote-p buffer-file-name))
+             (assq major-mode siraben-lsp-servers))
+    (siraben-eglot--cancel-ensure)
+    (add-hook 'kill-buffer-hook #'siraben-eglot--cancel-ensure nil t)
+    (add-hook 'change-major-mode-hook #'siraben-eglot--cancel-ensure nil t)
+    (setq siraben-eglot--ensure-timer
+          (run-with-idle-timer siraben-eglot-idle-delay nil
+                               #'siraben-eglot--ensure-buffer
+                               (current-buffer)))))
 
 ;; ---------------------------------------------------------------------------
 ;; Reporting

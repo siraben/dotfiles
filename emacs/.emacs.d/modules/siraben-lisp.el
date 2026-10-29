@@ -32,8 +32,7 @@
 	 (rainbow-delimiters-mode t)
 	 (aggressive-indent-mode  t)
 	 (show-paren-mode         t)
-	 (undo-tree-mode          t)
-	 (company-mode            t)))
+	 (undo-tree-mode          t)))
 
 (defvar siraben-lispy-mode-hooks
   '(clojure-mode-hook
@@ -46,9 +45,9 @@
   (add-hook hook #'siraben-enable-lisp-editing-modes))
 
 (use-package scheme
+  :straight nil
   :config
-  (setq scheme-program-name "guile")
-  :hook (scheme-mode . (lambda () (flycheck-mode -1))))
+  (setq scheme-program-name "guile"))
 
 (add-hook 'ielm-mode-hook #'siraben--setup-ielm)
 
@@ -59,7 +58,7 @@
   (paredit-mode 1)
   (aggressive-indent-mode -1))
 
-(add-hook 'emacs-lisp-mode-hook (lambda () (flycheck-mode 1)))
+(add-hook 'emacs-lisp-mode-hook #'flymake-mode)
 
 (use-package racket-mode
   :config

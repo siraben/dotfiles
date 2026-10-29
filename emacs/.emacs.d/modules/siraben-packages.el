@@ -141,10 +141,19 @@
   :hook (after-init . global-corfu-mode)
   :config
   (setq corfu-auto t
-        corfu-auto-prefix 1
-        corfu-auto-delay 0.2)
+        corfu-auto-prefix 2
+        corfu-auto-delay 0.35)
   (corfu-popupinfo-mode 1)
   (setq corfu-popupinfo-delay '(0.5 . 0.2)))
+
+;; Emacs versions without TTY child frames need an overlay renderer.
+(use-package corfu-terminal
+  :if (and (not (display-graphic-p))
+           (not (featurep 'tty-child-frames)))
+  :after corfu
+  :demand t
+  :config
+  (corfu-terminal-mode 1))
 
 (use-package which-key
   :diminish
@@ -159,7 +168,8 @@
       "Configure exec-path-from-shell for macOS."
       (exec-path-from-shell-initialize)
       (exec-path-from-shell-copy-envs
-       '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE" "COQPATH")))))
+       '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE" "COQPATH"))
+      (siraben-capabilities-refresh))))
 
 (use-package vertico
   :hook (after-init . vertico-mode))
@@ -254,21 +264,57 @@ falls back to plain ASCII separators so the mode-line stays readable."
 
 (use-package inheritenv)
 
+(defvar-local siraben-envrc--timer nil
+  "Pending idle timer for buffer-local environment setup.")
+
+(defun siraben--cancel-envrc ()
+  "Cancel this buffer's pending environment setup."
+  (when (timerp siraben-envrc--timer)
+    (cancel-timer siraben-envrc--timer))
+  (setq siraben-envrc--timer nil))
+
+(defun siraben--enable-envrc-buffer (buffer)
+  "Apply the project environment in BUFFER if it is still live."
+  (when (buffer-live-p buffer)
+    (with-current-buffer buffer
+      (setq siraben-envrc--timer nil)
+      (unless (or (minibufferp) (file-remote-p default-directory))
+        (require 'envrc)
+        (unless (bound-and-true-p envrc-mode)
+          (envrc-mode 1))))))
+
+(defun siraben--schedule-envrc ()
+  "Defer synchronous direnv work until Emacs is idle."
+  (when (and (not (minibufferp))
+             (not (file-remote-p default-directory))
+             (siraben-have-p "direnv")
+             (not (timerp siraben-envrc--timer)))
+    (add-hook 'kill-buffer-hook #'siraben--cancel-envrc nil t)
+    (add-hook 'change-major-mode-hook #'siraben--cancel-envrc nil t)
+    (setq siraben-envrc--timer
+          (run-with-idle-timer 0.2 nil #'siraben--enable-envrc-buffer
+                               (current-buffer)))))
+
+(defun siraben--setup-envrc ()
+  "Schedule project environments for existing and future buffers."
+  (add-hook 'after-change-major-mode-hook #'siraben--schedule-envrc)
+  (dolist (buffer (buffer-list))
+    (with-current-buffer buffer
+      (siraben--schedule-envrc))))
+
 (use-package envrc
-  ;; Only enable envrc-global-mode when direnv is actually installed;
-  ;; otherwise every buffer would log a warning about a missing binary.
-  :hook (after-init . (lambda ()
-                        (require 'siraben-capabilities)
-                        (when (siraben-have-p "direnv")
-                          (envrc-global-mode))))
+  :commands envrc-mode
+  :hook (after-init . siraben--setup-envrc)
   :config
-  ;; Ensure eglot inherits buffer-local env vars set by envrc,
-  ;; and restart the LSP server when the environment changes.
+  ;; Ensure Eglot inherits project-local environment variables.
+  (require 'inheritenv)
   (advice-add 'eglot--connect :around #'inheritenv-apply)
   (add-hook 'envrc-after-update-hook
             (lambda ()
-              (when (and (featurep 'eglot) (eglot-managed-p))
-                (eglot-reconnect (eglot-current-server))))))
+              (siraben-capabilities-refresh)
+              (if (and (featurep 'eglot) (eglot-managed-p))
+                  (eglot-reconnect (eglot-current-server))
+                (siraben-eglot-ensure-if-server-available)))))
 
 (use-package esup
   :commands (esup)
@@ -285,15 +331,14 @@ falls back to plain ASCII separators so the mode-line stays readable."
 (use-package graphviz-dot-mode)
 
 (use-package tree-sitter-langs
-  :defer 3
-  :demand
+  :defer 2
   :config
   (setq tree-sitter-load-path `(,(expand-file-name "~/.tree-sitter/bin"))))
 
 (use-package solidity-mode)
 
 (use-package tree-sitter
-  :demand
+  :defer 2
   :diminish "ts"
   :hook (tree-sitter-after-on . tree-sitter-hl-mode)
   :config
@@ -340,6 +385,15 @@ falls back to plain ASCII separators so the mode-line stays readable."
 
 (use-package boogie-friends)
 
+(defun siraben-eglot--skip-transient-file-watches
+    (register server method id &rest options)
+  "Skip recursive watches for loose files outside recognized projects.
+REGISTER, SERVER, METHOD, ID and OPTIONS follow `eglot-register-capability'."
+  (if (and (eq method 'workspace/didChangeWatchedFiles)
+           (eq (car-safe (eglot--project server)) 'transient))
+      (list t "Skipped recursive watches for transient project")
+    (apply register server method id options)))
+
 (use-package eglot
   :straight nil
   :commands (eglot eglot-ensure)
@@ -350,12 +404,35 @@ falls back to plain ASCII separators so the mode-line stays readable."
   ;; server binary for that language is installed.  See
   ;; `siraben-lsp-servers' / `siraben-eglot-ensure-if-server-available'.
   :hook ((python-mode . siraben-eglot-ensure-if-server-available)
+         (python-ts-mode . siraben-eglot-ensure-if-server-available)
          (rustic-mode . siraben-eglot-ensure-if-server-available)
+         (rust-mode . siraben-eglot-ensure-if-server-available)
+         (rust-ts-mode . siraben-eglot-ensure-if-server-available)
          (typescript-mode . siraben-eglot-ensure-if-server-available)
+         (typescript-ts-mode . siraben-eglot-ensure-if-server-available)
+         (tsx-ts-mode . siraben-eglot-ensure-if-server-available)
+         (js-mode . siraben-eglot-ensure-if-server-available)
+         (js-ts-mode . siraben-eglot-ensure-if-server-available)
          (kotlin-mode . siraben-eglot-ensure-if-server-available)
          (c-mode . siraben-eglot-ensure-if-server-available)
          (c++-mode . siraben-eglot-ensure-if-server-available)
-         (nix-mode . siraben-eglot-ensure-if-server-available)))
+         (c-ts-mode . siraben-eglot-ensure-if-server-available)
+         (c++-ts-mode . siraben-eglot-ensure-if-server-available)
+         (nix-mode . siraben-eglot-ensure-if-server-available)
+         (haskell-mode . siraben-eglot-ensure-if-server-available))
+  :config
+  (setq eglot-autoshutdown t
+        eglot-sync-connect nil
+        ;; Turn event logging back on temporarily when debugging servers.
+        eglot-events-buffer-config '(:size 0 :format short)
+        eldoc-idle-delay 0.75
+        flymake-no-changes-timeout 0.5)
+  ;; Keep the default watch limit for real projects: rejecting registration
+  ;; with an artificially low limit can cause some servers to exit.
+  (unless (advice-member-p #'siraben-eglot--skip-transient-file-watches
+                           'eglot-register-capability)
+    (advice-add 'eglot-register-capability :around
+                #'siraben-eglot--skip-transient-file-watches)))
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here

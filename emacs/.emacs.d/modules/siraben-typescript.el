@@ -30,5 +30,8 @@
          ("\\.tsx\\'" . typescript-mode)))
 
 
+;; JavaScript shares the TypeScript language server.
+(setq js-indent-level 2)
+
 (provide 'siraben-typescript)
 ;;; siraben-typescript.el ends here
