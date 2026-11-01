@@ -1,8 +1,7 @@
-diff --git a/internal/ui/home.go b/internal/ui/home.go
-index b85f810..57056d3 100644
---- a/internal/ui/home.go
-+++ b/internal/ui/home.go
-@@ -3498,46 +3497,0 @@ func (h *Home) rebuildFlatItemsAt(now time.Time) {
+diff --git a/internal/ui/home_flatitems.go b/internal/ui/home_flatitems.go
+--- a/internal/ui/home_flatitems.go
++++ b/internal/ui/home_flatitems.go
+@@ -679,46 +678,0 @@ func (h *Home) rebuildFlatItemsAt(now time.Time) {
 -	// Inject window items after sessions that have 2+ windows
 -	if len(h.flatItems) > 0 {
 -		expanded := make([]session.Item, 0, len(h.flatItems)+8)
@@ -16,7 +15,7 @@ index b85f810..57056d3 100644
 -			if tmuxSess == nil {
 -				continue
 -			}
--			wins := tmux.GetCachedWindows(tmuxSess.Name)
+-			wins := tmux.GetCachedWindows(tmuxSess.TmuxName())
 -			if len(wins) < 2 || h.windowsCollapsed[item.Session.ID] {
 -				continue
 -			}
