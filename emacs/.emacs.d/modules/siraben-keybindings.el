@@ -1,4 +1,4 @@
-;;; siraben-keybindings.el --- Customize global keybindings
+;;; siraben-keybindings.el --- Customize global keybindings -*- lexical-binding: t; -*-
 
 ;;; License:
 

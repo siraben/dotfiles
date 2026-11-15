@@ -1,4 +1,4 @@
-;;; siraben-prolog.el --- Prolog programming customizations.
+;;; siraben-prolog.el --- Prolog programming customizations. -*- lexical-binding: t; -*-
 
 ;;; License:
 

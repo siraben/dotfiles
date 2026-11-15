@@ -1,4 +1,4 @@
-;;; siraben-macos.el --- macOS-specific Emacs configuration
+;;; siraben-macos.el --- macOS-specific Emacs configuration -*- lexical-binding: t; -*-
 
 ;;; License:
 

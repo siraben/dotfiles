@@ -1,4 +1,4 @@
-;;; siraben-org.el --- Org Mode customizations
+;;; siraben-org.el --- Org Mode customizations -*- lexical-binding: t; -*-
 
 ;;; License:
 

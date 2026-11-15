@@ -1,4 +1,4 @@
-;;; siraben-nix.el --- Nix programming customizations.
+;;; siraben-nix.el --- Nix programming customizations. -*- lexical-binding: t; -*-
 
 ;;; License:
 

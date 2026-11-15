@@ -1,4 +1,4 @@
-;;; siraben-shell.el --- Configures Emacs Shell and Terminal modes.
+;;; siraben-shell.el --- Configures Emacs Shell and Terminal modes. -*- lexical-binding: t; -*-
 
 ;;; License:
 

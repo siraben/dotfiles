@@ -1,4 +1,4 @@
-;;; siraben-ui.el --- Configure Emacs visual appearance
+;;; siraben-ui.el --- Configure Emacs visual appearance -*- lexical-binding: t; -*-
 
 ;;; License:
 

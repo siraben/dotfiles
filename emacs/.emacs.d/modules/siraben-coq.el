@@ -1,4 +1,4 @@
-;;; siraben-coq.el --- Coq programming customizations.
+;;; siraben-coq.el --- Coq programming customizations. -*- lexical-binding: t; -*-
 
 ;;; License:
 

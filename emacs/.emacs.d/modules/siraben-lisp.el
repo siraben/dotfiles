@@ -1,4 +1,4 @@
-;;; siraben-lisp.el --- Configure Lisp-family editing support
+;;; siraben-lisp.el --- Configure Lisp-family editing support -*- lexical-binding: t; -*-
 
 ;;; License:
 ;; This program is free software: you can redistribute it and/or modify

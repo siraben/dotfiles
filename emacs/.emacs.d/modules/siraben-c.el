@@ -1,4 +1,4 @@
-;;; siraben-c.el --- Configure Emacs for C and C++ development
+;;; siraben-c.el --- Configure Emacs for C and C++ development -*- lexical-binding: t; -*-
 
 ;;; License:
 

@@ -1,4 +1,4 @@
-;;; early-init.el --- Configure Emacs before package and frame startup
+;;; early-init.el --- Configure Emacs before package and frame startup -*- lexical-binding: t; -*-
 
 ;;; License:
 

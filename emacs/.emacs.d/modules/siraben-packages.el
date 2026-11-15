@@ -1,4 +1,4 @@
-;;; siraben-packages.el --- Bootstrap and configure Emacs packages
+;;; siraben-packages.el --- Bootstrap and configure Emacs packages -*- lexical-binding: t; -*-
 
 ;;; License:
 

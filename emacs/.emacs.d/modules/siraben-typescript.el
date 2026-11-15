@@ -1,4 +1,4 @@
-;;; siraben-typescript.el --- Typescript programming customizations.
+;;; siraben-typescript.el --- Typescript programming customizations. -*- lexical-binding: t; -*-
 
 ;;; License:
 

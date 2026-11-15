@@ -1,4 +1,4 @@
-;;; siraben-ocaml.el --- Configure Emacs for OCaml development
+;;; siraben-ocaml.el --- Configure Emacs for OCaml development -*- lexical-binding: t; -*-
 
 ;;; License:
 

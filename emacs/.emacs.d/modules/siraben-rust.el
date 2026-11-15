@@ -1,4 +1,4 @@
-;;; siraben-rust.el --- Rust programming customizations.
+;;; siraben-rust.el --- Rust programming customizations. -*- lexical-binding: t; -*-
 
 ;;; License:
 

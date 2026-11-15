@@ -1,4 +1,4 @@
-;;; siraben-capabilities.el --- Capability detection for external tools
+;;; siraben-capabilities.el --- Capability detection for external tools -*- lexical-binding: t; -*-
 
 ;;; License:
 

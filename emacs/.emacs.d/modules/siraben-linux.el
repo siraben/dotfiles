@@ -1,4 +1,4 @@
-;;; siraben-linux.el --- This file runs when the host OS is gnu/linux.
+;;; siraben-linux.el --- This file runs when the host OS is gnu/linux. -*- lexical-binding: t; -*-
 
 ;;; License:
 

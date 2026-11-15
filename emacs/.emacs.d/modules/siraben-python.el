@@ -1,4 +1,4 @@
-;;; siraben-python.el --- Python programming customizations.
+;;; siraben-python.el --- Python programming customizations. -*- lexical-binding: t; -*-
 
 ;;; License:
 

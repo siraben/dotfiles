@@ -1,4 +1,4 @@
-;;; init.el --- Entry point for siraben's Emacs
+;;; init.el --- Entry point for siraben's Emacs -*- lexical-binding: t; -*-
 
 ;;; License:
 

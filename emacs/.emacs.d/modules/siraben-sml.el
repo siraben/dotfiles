@@ -1,4 +1,4 @@
-;;; siraben-sml.el --- Configure Standard ML editing support
+;;; siraben-sml.el --- Configure Standard ML editing support -*- lexical-binding: t; -*-
 
 ;;; License:
 ;; This program is free software: you can redistribute it and/or modify

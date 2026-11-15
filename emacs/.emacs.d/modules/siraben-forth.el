@@ -1,4 +1,4 @@
-;;; siraben-forth.el --- Configure Forth editing support
+;;; siraben-forth.el --- Configure Forth editing support -*- lexical-binding: t; -*-
 
 ;;; License:
 ;; This program is free software: you can redistribute it and/or modify

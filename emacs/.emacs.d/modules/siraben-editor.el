@@ -1,4 +1,4 @@
-;;; siraben-editor.el --- Configure general editing behavior
+;;; siraben-editor.el --- Configure general editing behavior -*- lexical-binding: t; -*-
 
 ;;; License:
 ;; This program is free software: you can redistribute it and/or modify

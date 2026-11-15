@@ -1,4 +1,4 @@
-;;; siraben-fonts.el --- Configure default fonts and resizing commands
+;;; siraben-fonts.el --- Configure default fonts and resizing commands -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 

@@ -1,4 +1,4 @@
-;;; siraben-programming.el --- Load programming language configuration
+;;; siraben-programming.el --- Load programming language configuration -*- lexical-binding: t; -*-
 
 ;;; License:
 
