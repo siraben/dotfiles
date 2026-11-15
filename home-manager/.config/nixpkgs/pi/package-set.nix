@@ -22,6 +22,7 @@ pkgs.lib.makeScope pkgs.newScope (self: {
   btw = self.callPackage ./packages/pi-btw.nix { src = inputs.pi-btw; };
   background-tasks = self.callPackage ./packages/pi-background-tasks.nix { };
   codex-goal = self.callPackage ./packages/pi-codex-goal.nix { src = inputs.pi-codex-goal; };
+  ralph-loop = self.callPackage ./packages/pi-ralph-loop.nix { src = inputs.pi-ralph-loop; };
   web-access = self.callPackage ./packages/pi-web-access.nix { src = inputs.pi-web-access; };
   context-mode = self.callPackage ./packages/pi-context-mode.nix { src = inputs.context-mode; };
   cua-driver = self.callPackage ./packages/cua-driver.nix { };

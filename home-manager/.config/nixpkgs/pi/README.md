@@ -79,7 +79,7 @@ scope.
 ## Packaging policy
 
 `pkgs.piPackages` is a `lib.makeScope` package set: `subagents`,
-`background-tasks`, `tool-summaries`, `btw`, `codex-goal`, `web-access`,
+`background-tasks`, `tool-summaries`, `btw`, `codex-goal`, `ralph-loop`, `web-access`,
 `context-mode`, and the companion `cua-driver`. Top-level aliases reference the
 same package derivations. Packages use the scope's `callPackage`; builders use
 `lib.extendMkDerivation`.
@@ -124,6 +124,21 @@ and is distinct from nixpkgs's MCP-server-only `context-mode`. The Pi package is
 configured with `autoload = false`. Its native SQLite fallback is built for Pi's
 Node ABI, while normal operation uses Node's FTS5-enabled built-in SQLite.
 
+## Ralph campaigns
+
+`@lnilluv/pi-ralph-loop` is bundled as `piPackages.ralph-loop` (alias
+`pkgs.pi-ralph-loop`) but is not shared with delegated subagents. It registers
+`/ralph`, `/ralph-draft`, `/ralph-status`, `/ralph-stop`, and `/ralph-cancel`;
+loading the extension does not start a campaign. Start with `/ralph-draft <task>`
+or `/ralph-scaffold --preset fix-tests <directory>` and review the task first.
+
+For unattended work, set bounded `max_iterations` and `timeout`, use
+`completion_gate: required` with a `completion_promise`, and mark post-edit
+verification commands `acceptance: true`. Include an `OPEN_QUESTIONS.md` policy
+with no unresolved P0/P1 items. Do not keep an active `/goal` continuation loop
+running in the parent while trialing a Ralph campaign. Ralph normally isolates
+its child extensions; do not assume the parent's local guards load in children.
+
 ## Updating sources
 
 From this checkout, with update targets committed:
@@ -158,7 +173,7 @@ working-tree changes.
 
 Published package manifests supply the lock inputs; lifecycle scripts are not
 executed during lock generation. Context Mode includes build dependencies;
-subagents, background tasks, and web access omit development dependencies to
+subagents, background tasks, Ralph, and web access omit development dependencies to
 match their package recipes. Pi peers are not installed by npm's legacy-peer
 resolver. Git source locks come from their upstream repositories. `update-pi`
 manages only this repository's package collection.

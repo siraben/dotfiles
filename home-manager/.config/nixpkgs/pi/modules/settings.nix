@@ -32,6 +32,10 @@ let
       shareWithSubagents = true;
     }
     {
+      value = packagePath packages.ralph-loop;
+      shareWithSubagents = false;
+    }
+    {
       value = packagePath packages.tool-summaries;
       shareWithSubagents = true;
     }

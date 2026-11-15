@@ -30,6 +30,10 @@
       url = "https://registry.npmjs.org/pi-codex-goal/-/pi-codex-goal-0.6.1.tgz";
       flake = false;
     };
+    pi-ralph-loop = {
+      url = "https://registry.npmjs.org/@lnilluv/pi-ralph-loop/-/pi-ralph-loop-2.1.2.tgz";
+      flake = false;
+    };
     pi-web-access = {
       url = "https://registry.npmjs.org/pi-web-access/-/pi-web-access-0.44.0.tgz";
       flake = false;

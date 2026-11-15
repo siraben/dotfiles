@@ -25,10 +25,14 @@ NPM = {
     "pi-subagents": ("subagents", "pi-subagents", False),
     "pi-btw": ("btw", "pi-btw", False),
     "pi-codex-goal": ("codex-goal", "pi-codex-goal", False),
+    "pi-ralph-loop": ("ralph-loop", "pi-ralph-loop", False),
     "pi-web-access": ("web-access", "pi-web-access", False),
     "context-mode": ("context-mode", "pi-context-mode", True),
     "pi-background-tasks": ("background-tasks", "pi-background-tasks", False),
 }
+
+# Flake input names need not match scoped npm package names.
+NPM_NAMES = {"pi-ralph-loop": "@lnilluv/pi-ralph-loop"}
 
 
 def run(*args, capture=False, **kwargs):
@@ -114,7 +118,7 @@ def current_version(name, flake, recipe):
     pattern = (
         r'version = "([^"]+)";'
         if name == "pi-background-tasks"
-        else npm_tarball_pattern(name, r'([^"/]+)')
+        else npm_tarball_pattern(NPM_NAMES.get(name, name), r'([^"/]+)')
     )
     matches = re.findall(pattern, recipe if name == "pi-background-tasks" else flake)
     if len(matches) != 1:
@@ -194,10 +198,11 @@ def main():
             print(f"{name}: {version} OK")
             continue
         selector = version if args.keep_versions else "latest"
-        encoded_name = urllib.parse.quote(name, safe="@")
+        package_name = NPM_NAMES.get(name, name)
+        encoded_name = urllib.parse.quote(package_name, safe="@")
         metadata = json.loads(download(f"{registry}/{encoded_name}/{selector}"))
         version = metadata["version"]
-        tarball_url = npm_tarball_url(registry, name, version)
+        tarball_url = npm_tarball_url(registry, package_name, version)
         archive = download(tarball_url)
         algorithm, digest = metadata["dist"]["integrity"].split("-", 1)
         if (
@@ -207,7 +212,7 @@ def main():
             raise ValueError(f"{name}: tarball integrity mismatch")
         with tarfile.open(fileobj=io.BytesIO(archive), mode="r:gz") as tar:
             manifest = json.load(tar.extractfile("package/package.json"))
-        if manifest["name"] != name or manifest["version"] != version:
+        if manifest["name"] != package_name or manifest["version"] != version:
             raise ValueError(f"{name}: tarball manifest mismatch")
         if name == "pi-background-tasks":
             recipe = replace_once(
@@ -226,7 +231,7 @@ def main():
         else:
             flake = replace_once(
                 flake,
-                npm_tarball_pattern(name, r'[^"/]+'),
+                npm_tarball_pattern(package_name, r'[^"/]+'),
                 tarball_url,
             )
         if lock_path.exists():
@@ -274,6 +279,7 @@ def main():
             "tool-summaries",
             "btw",
             "codex-goal",
+            "ralph-loop",
             "web-access",
             "context-mode",
         ]

@@ -12,6 +12,7 @@ final: _prev: {
   pi-btw = final.piPackages.btw;
   pi-background-tasks = final.piPackages.background-tasks;
   pi-codex-goal = final.piPackages.codex-goal;
+  pi-ralph-loop = final.piPackages.ralph-loop;
   pi-web-access = final.piPackages.web-access;
   pi-context-mode = final.piPackages.context-mode;
 }

@@ -272,6 +272,19 @@
         "url": "https://registry.npmjs.org/pi-codex-goal/-/pi-codex-goal-0.6.1.tgz"
       }
     },
+    "pi-ralph-loop": {
+      "flake": false,
+      "locked": {
+        "lastModified": 499162500,
+        "narHash": "sha256-NpJjZJxVdCaHGMx8+CMVUJGJ9umXNkLqbR9Ucec4pHI=",
+        "type": "tarball",
+        "url": "https://registry.npmjs.org/@lnilluv/pi-ralph-loop/-/pi-ralph-loop-2.1.2.tgz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://registry.npmjs.org/@lnilluv/pi-ralph-loop/-/pi-ralph-loop-2.1.2.tgz"
+      }
+    },
     "pi-subagents": {
       "flake": false,
       "locked": {
@@ -325,6 +338,7 @@
         "pi": "pi",
         "pi-btw": "pi-btw",
         "pi-codex-goal": "pi-codex-goal",
+        "pi-ralph-loop": "pi-ralph-loop",
         "pi-subagents": "pi-subagents",
         "pi-tool-summaries": "pi-tool-summaries",
         "pi-web-access": "pi-web-access",
