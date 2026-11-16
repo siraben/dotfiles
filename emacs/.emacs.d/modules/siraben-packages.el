@@ -157,9 +157,11 @@
   :config
   (defun siraben--setup-exec-path ()
     "Configure exec-path-from-shell for macOS."
+    ;; Import everything in one interactive login shell.  Non-interactive
+    ;; shells need not have the same environment as a terminal on macOS.
+    (dolist (variable '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE" "COQPATH"))
+      (add-to-list 'exec-path-from-shell-variables variable t))
     (exec-path-from-shell-initialize)
-    (exec-path-from-shell-copy-envs
-     '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE" "COQPATH"))
     (siraben-capabilities-refresh)))
 
 (use-package vertico
