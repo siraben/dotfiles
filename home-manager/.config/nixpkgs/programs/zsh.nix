@@ -44,6 +44,25 @@ in
 {
   programs.zsh = {
     enable = true;
+    envExtra = lib.optionalString isDarwin ''
+      # Non-interactive shells do not read /etc/zshrc's Nix setup.  The
+      # installer script is guarded, so inherited development paths survive.
+      if [[ -r /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]; then
+        . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+      fi
+      typeset -U path
+      path=($path "$HOME/.nix-profile/bin" /nix/var/nix/profiles/default/bin)
+      if [[ -o login ]]; then
+        # /etc/zprofile's path_helper will reorder PATH after .zshenv.
+        typeset -ga siraben_pre_login_path=($path)
+      fi
+    '';
+    profileExtra = lib.optionalString isDarwin ''
+      # Restore the incoming order, retaining paths discovered by path_helper.
+      # In particular, do not put global tools ahead of nix develop/direnv.
+      path=("''${siraben_pre_login_path[@]}" $path)
+      unset siraben_pre_login_path
+    '';
     oh-my-zsh = {
       enable = true;
       theme = lib.mkForce "";
@@ -69,10 +88,6 @@ in
     }
     // (lib.optionalAttrs isDarwin (import ../darwin-aliases.nix { }));
     initContent = lib.concatStringsSep "\n" [
-      # path_helper runs before this block, so prepend the Nix paths directly.
-      (lib.optionalString isDarwin ''
-        export PATH="$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH"
-      '')
       (lib.optionalString isLinux linuxShellExtra)
       sharedShellExtra
     ];
