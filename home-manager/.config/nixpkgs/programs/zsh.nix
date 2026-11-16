@@ -10,7 +10,6 @@ let
     # Every interactive shell prepends the active Home Manager and Nix profiles
     # so tmux sessions use the selected profile.
     export PATH="$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$HOME/.local/state/nix/profiles/home-manager/home-path/bin:$PATH"
-    export NIX_PATH=$HOME/.nix-defexpr/channels:$NIX_PATH
     export SSH_AUTH_SOCK="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/ssh-agent"
   '';
   sharedShellExtra = ''
