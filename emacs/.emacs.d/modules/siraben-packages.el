@@ -250,7 +250,7 @@ falls back to plain ASCII separators so the mode-line stays readable."
   (defun siraben--setup-latex ()
     "Configure LaTeX mode settings."
     (siraben-enable-writing-modes)
-    (setq TeX-command-extra-options "-shell-escape")
+    (setq TeX-command-extra-options "-no-shell-escape")
     (auto-fill-mode 1)
     (flyspell-mode 1)
     ;; Enable modern completion

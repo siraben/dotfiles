@@ -55,20 +55,15 @@
      (octave . t)
      (latex . t)))
   ;; I want to have source code syntax highlighting for LaTeX export as well.
-  (setq org-latex-listings 'minted)
-  (setq org-latex-packages-alist '(("" "minted")))
+  (setq org-latex-listings t)
+  (setq org-latex-packages-alist '(("" "listings")))
   (setq org-latex-pdf-process
-        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-  ;; These are code blocks that are "safe" to evaluate.
-  (defun siraben--org-confirm-babel-evaluate (lang body)
-    "Return t if LANG and BODY are safe to evaluate."
-    (not (or (string= lang "dot")
-             (string= lang "gnuplot")
-             (string= lang "octave"))))
-
-  (setq org-confirm-babel-evaluate #'siraben--org-confirm-babel-evaluate)
+        '("pdflatex -no-shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -no-shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -no-shell-escape -interaction nonstopmode -output-directory %o %f"))
+  ;; Execution is explicit; exporting untrusted documents must not run blocks.
+  (setq org-confirm-babel-evaluate t
+        org-export-use-babel nil)
   (setq org-modules '(org-mu4e
                       org-habit
                       org-crypt
