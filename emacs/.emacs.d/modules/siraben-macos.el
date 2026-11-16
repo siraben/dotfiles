@@ -24,13 +24,16 @@
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 (add-to-list 'default-frame-alist '(ns-appearance . dark))
 
-(defun siraben-macos-emoji-frame (&optional frame)
-  "Configure emoji only on graphical FRAME."
+(defun siraben-macos-setup-frame (&optional frame)
+  "Configure macOS appearance and emoji on graphical FRAME."
   (with-selected-frame (or frame (selected-frame))
     (when (display-graphic-p)
+      ;; The initial frame already exists when init.el sets frame defaults.
+      (modify-frame-parameters nil '((ns-transparent-titlebar . t)
+                                     (ns-appearance . dark)))
       (set-fontset-font t 'unicode "Apple Color Emoji" nil 'append))))
-(add-hook 'after-init-hook #'siraben-macos-emoji-frame)
-(add-hook 'after-make-frame-functions #'siraben-macos-emoji-frame)
+(add-hook 'after-init-hook #'siraben-macos-setup-frame)
+(add-hook 'after-make-frame-functions #'siraben-macos-setup-frame)
 
 (global-unset-key (kbd "s-t"))
 
