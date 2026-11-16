@@ -21,9 +21,9 @@
 ;;; Code:
 
 (use-package sml-mode
-  :hook ((sml-mode-hook inferior-sml-mode-hook) . (lambda ()
+  :hook ((sml-mode inferior-sml-mode) . (lambda ()
                                                     (paredit-mode -1)
-                                                    (electric-indent-mode -1))))
+                                                    (electric-indent-local-mode -1))))
 
 (use-package ob-sml)
 

@@ -63,7 +63,7 @@
 
 (add-hook 'c-mode-hook (lambda ()
                          (electric-pair-local-mode t)
-                         (electric-indent-mode t)
+                         (electric-indent-local-mode 1)
                          (siraben--maybe-enable-clang-format)
                          (setq-local prettify-symbols-alist c-prettify-symbols-alist)
                          (prettify-symbols-mode 1)

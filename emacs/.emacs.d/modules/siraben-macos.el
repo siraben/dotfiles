@@ -21,12 +21,16 @@
 
 ;;; Code:
 
-(setq system-uses-terminfo nil)
-
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 (add-to-list 'default-frame-alist '(ns-appearance . dark))
 
-(set-fontset-font t 'unicode "Apple Color Emoji" nil 'append)
+(defun siraben-macos-emoji-frame (&optional frame)
+  "Configure emoji only on graphical FRAME."
+  (with-selected-frame (or frame (selected-frame))
+    (when (display-graphic-p)
+      (set-fontset-font t 'unicode "Apple Color Emoji" nil 'append))))
+(add-hook 'after-init-hook #'siraben-macos-emoji-frame)
+(add-hook 'after-make-frame-functions #'siraben-macos-emoji-frame)
 
 (global-unset-key (kbd "s-t"))
 

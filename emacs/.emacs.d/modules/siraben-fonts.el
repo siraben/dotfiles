@@ -37,9 +37,7 @@
                    (find-font (font-spec :name name)))
                  candidates)))
 
-(defvar siraben-default-font
-  (or (siraben--first-available-font siraben-font-candidates)
-      "DejaVu Sans Mono")
+(defvar siraben-default-font nil
   "The default font type.  Auto-detected from `siraben-font-candidates'.")
 
 (defvar siraben-default-font-size
@@ -49,6 +47,9 @@
    ((eq system-type 'windows-nt) 10)
    (t 10))
   "The default font size.")
+
+(defvar siraben-current-font-size siraben-default-font-size
+  "Font size for the current editing session.")
 
 (defvar siraben-font-change-increment 1.1
   "The multipler to the font size when `siraben-increase-font-size' is invoked.")
@@ -99,7 +100,17 @@ font isn't installed."
                        siraben-font-change-increment))))
   (siraben-set-font-size))
 
-(add-hook 'after-init-hook 'siraben-reset-font-size)
+(defun siraben-font-setup-frame (&optional frame)
+  "Select an installed font for graphical FRAME, including daemon clients."
+  (with-selected-frame (or frame (selected-frame))
+    (when (display-graphic-p)
+      (unless siraben-default-font
+        (setq siraben-default-font
+              (siraben--first-available-font siraben-font-candidates)))
+      (siraben-set-font-size))))
+
+(add-hook 'after-init-hook #'siraben-font-setup-frame)
+(add-hook 'after-make-frame-functions #'siraben-font-setup-frame)
 
 (provide 'siraben-fonts)
 ;;; siraben-fonts.el ends here

@@ -21,19 +21,23 @@
 
 ;;; Code:
 
-(use-package flycheck-rust)
-
 (use-package rustic
   :mode ("\\.rs\\'" . rustic-mode)
+  :init
+  ;; Only the capability hook owns LSP startup and Flymake diagnostics.
+  (setq rustic-lsp-client 'eglot
+        rustic-lsp-setup-p nil
+        rustic-format-trigger nil)
   :config
   (require 'siraben-capabilities)
-  (setq rustic-lsp-client 'eglot)
   ;; Only auto-format on save when rustfmt is actually installed; otherwise
   ;; every save would error out on Windows / minimal systems.
-  (setq rust-format-on-save (and (siraben-have-p "rustfmt") t))
+  (add-hook 'rustic-mode-hook
+            (lambda ()
+              (setq-local rustic-format-trigger
+                          (when (siraben-have-p "rustfmt") 'on-save))))
   (defun siraben--rust-mode-setup ()
     "Configure Rust mode settings."
-    (flycheck-rust-setup)
     (local-set-key (kbd "s-b") 'recompile)
     (subword-mode 1))
   (add-hook 'rustic-mode-hook #'siraben--rust-mode-setup))

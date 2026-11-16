@@ -60,7 +60,7 @@
     (diminish 'abbrev-mode)))
 (use-package multiple-cursors
   :defer 3
-  :commands (mc/mark-previous-like-this mc/mark-next-like mc/edit-lines mc/mark-more-like-this mc/mark-all-like-this)
+  :commands (mc/mark-previous-like-this mc/mark-next-like-this mc/edit-lines mc/mark-more-like-this mc/mark-all-like-this)
   :bind (("C-<" . mc/mark-previous-like-this)
          ("C->" . mc/mark-next-like-this)
          ("C-S-c C-S-c" . mc/edit-lines)
@@ -86,14 +86,6 @@
   :bind
   (("C-x g" . magit-dispatch)
    ("M-L" . magit-blame))
-  :init
-  ;; Fix for xcbuild warning on macOS breaking git version detection
-  ;; See: https://github.com/NixOS/nixpkgs/issues/376958
-  ;; The xcbuild xcrun emits "warning: unhandled Platform key FamilyDisplayName"
-  ;; which breaks magit's strict regexp that expects output to start with "git version"
-  ;; Remove the start-of-string anchor so it matches anywhere in the output
-  (defconst magit--git-version-regexp
-    "git version \\([0-9]+\\(\\.[0-9]+\\)\\{1,2\\}\\)")
   :config
   ;; Don't show graph by default in log buffers
   (transient-remove-suffix 'magit-log "-g")
@@ -129,7 +121,7 @@
                 (lambda (filename) (concat filename ".gz"))))
 
   (setq undo-tree-history-directory-alist
-        `((".*" . ,temporary-file-directory))
+        `((".*" . ,(siraben-state-directory "undo")))
         undo-tree-auto-save-history t))
 
 (use-package aggressive-indent
@@ -138,7 +130,8 @@
 (use-package corfu
   :hook (after-init . global-corfu-mode)
   :config
-  (setq corfu-auto t
+  (setq global-corfu-modes '(not coq-mode)
+        corfu-auto t
         corfu-auto-prefix 2
         corfu-auto-delay 0.35)
   (corfu-popupinfo-mode 1)
@@ -146,8 +139,8 @@
 
 ;; Emacs versions without TTY child frames need an overlay renderer.
 (use-package corfu-terminal
-  :if (and (not (display-graphic-p))
-           (not (featurep 'tty-child-frames)))
+  :if (version< emacs-version "31")
+  :no-require t
   :after corfu
   :demand t
   :config
@@ -158,16 +151,16 @@
   :commands (which-key-mode)
   :hook (after-init . which-key-mode))
 
-(when (memq window-system '(mac ns))
-  (use-package exec-path-from-shell
-    :hook (after-init . siraben--setup-exec-path)
-    :config
-    (defun siraben--setup-exec-path ()
-      "Configure exec-path-from-shell for macOS."
-      (exec-path-from-shell-initialize)
-      (exec-path-from-shell-copy-envs
-       '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE" "COQPATH"))
-      (siraben-capabilities-refresh))))
+(use-package exec-path-from-shell
+  :if (eq system-type 'darwin)
+  :hook (after-init . siraben--setup-exec-path)
+  :config
+  (defun siraben--setup-exec-path ()
+    "Configure exec-path-from-shell for macOS."
+    (exec-path-from-shell-initialize)
+    (exec-path-from-shell-copy-envs
+     '("PATH" "NIX_PATH" "NIX_SSL_CERT_FILE" "COQPATH"))
+    (siraben-capabilities-refresh)))
 
 (use-package vertico
   :hook (after-init . vertico-mode))
@@ -248,13 +241,8 @@ falls back to plain ASCII separators so the mode-line stays readable."
   (defun siraben--setup-latex ()
     "Configure LaTeX mode settings."
     (siraben-enable-writing-modes)
-    (setq TeX-command-extra-options "-no-shell-escape")
-    (auto-fill-mode 1)
-    (flyspell-mode 1)
-    ;; Enable modern completion
-    (setq-local completion-at-point-functions
-                (append '(LaTeX-completion-at-point)
-                        completion-at-point-functions))))
+    (setq-local TeX-command-extra-options "-no-shell-escape")
+    (auto-fill-mode 1)))
 
 
 (use-package flycheck
@@ -328,49 +316,27 @@ falls back to plain ASCII separators so the mode-line stays readable."
 
 (use-package graphviz-dot-mode)
 
-(use-package tree-sitter-langs
-  :defer 2
-  :config
-  (setq tree-sitter-load-path `(,(expand-file-name "~/.tree-sitter/bin"))))
-
 (use-package solidity-mode)
 
-(use-package tree-sitter
-  :defer 2
-  :diminish "ts"
-  :hook (tree-sitter-after-on . tree-sitter-hl-mode)
-  :config
-  (setq tree-sitter-load-path `(,(expand-file-name "~/.tree-sitter/bin")))
-  (require 'tree-sitter-langs)
-  (global-tree-sitter-mode)
-  (setq tree-sitter-major-mode-language-alist
-        `((nix-mode . nix)
-          (markdown-mode . markdown)
-          (latex-mode . latex)
-          (yaml-mode . yaml)
-          (typescript-mode . tsx)
-          (conf-toml-mode . toml)
-          (graphviz-dot-mode . dot)
-          (makefile-bsdmake-mode . make)
-          (sml-mode . sml)
-          (solidity-mode . solidity)
-          (kotlin-mode . kotlin)
-          ,@tree-sitter-major-mode-language-alist))
-  ;; remove haskell-mode
-  (setq tree-sitter-major-mode-language-alist
-        (assq-delete-all 'haskell-mode tree-sitter-major-mode-language-alist))
-  )
+;; Native treesit modes are selected only when their grammars are installed.
+;; Do not download grammars or globally enable a second parser stack at startup.
 
+(defun siraben-vterm-available-p ()
+  "Return non-nil when the externally supplied vterm pair is available."
+  (and (locate-library "vterm") (require 'vterm-module nil t)))
 
-(use-package vterm
-  :straight nil
-  :if (require 'vterm-module nil t)
-  :config
-  (setq vterm-timer-delay nil))
+(defun siraben-open-vterm ()
+  "Open a terminal using the matched system vterm Lisp/native package."
+  (interactive)
+  (unless (siraben-vterm-available-p)
+    (user-error "Install the matched Emacs vterm Lisp/native package (Nix emacsPackages.vterm)"))
+  (require 'multi-vterm)
+  (multi-vterm))
 
 (use-package multi-vterm
-  :commands (multi-vterm)
-  :bind ("<f8>" . multi-vterm))
+  :no-require t
+  :commands multi-vterm)
+(global-set-key (kbd "<f8>") #'siraben-open-vterm)
 
 (use-package projectile
   :commands (projectile-mode)

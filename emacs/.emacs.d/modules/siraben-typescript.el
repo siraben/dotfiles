@@ -1,37 +1,25 @@
-;;; siraben-typescript.el --- Typescript programming customizations. -*- lexical-binding: t; -*-
-
-;;; License:
-
-;; This program is free software: you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; This program is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU General Public License for more details.
-
-;; You should have received a copy of the GNU General Public License
-;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;;; siraben-typescript.el --- TypeScript editing -*- lexical-binding: t; -*-
 
 ;;; Commentary:
-
-;; Configures packages and various modes for TypeScript programming.
+;; Prefer Emacs treesit with installed grammars; preserve the legacy fallback.
+;; Grammar installation is explicit, never a side effect of visiting a file.
 
 ;;; Code:
+(use-package typescript-mode)
 
-(use-package typescript-mode
-  :hook (typescript-mode . (lambda ()
-                             (setq typescript-indent-level 2)
-                             ;; (lsp-deferred)
-                             ))
-  :mode (("\\.ts\\'" . typescript-mode)
-         ("\\.tsx\\'" . typescript-mode)))
+(defun siraben-typescript-mode ()
+  "Select native TypeScript/TSX when its grammar is ready, else legacy mode."
+  (interactive)
+  (let* ((tsx (and buffer-file-name (string-match-p "\\.tsx\\'" buffer-file-name)))
+         (language (if tsx 'tsx 'typescript)))
+    (if (treesit-ready-p language t)
+        (if tsx (tsx-ts-mode) (typescript-ts-mode))
+      (typescript-mode))))
 
-
-;; JavaScript shares the TypeScript language server.
-(setq js-indent-level 2)
+(add-to-list 'auto-mode-alist '("\\.tsx?\\'" . siraben-typescript-mode))
+(setq typescript-indent-level 2
+      typescript-ts-mode-indent-offset 2
+      js-indent-level 2)
 
 (provide 'siraben-typescript)
 ;;; siraben-typescript.el ends here

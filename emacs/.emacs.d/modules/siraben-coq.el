@@ -31,15 +31,16 @@
   :commands company-coq-mode
   :bind ("C-M-h" . company-coq-toggle-definition-overlay)
   :config
-  (setq company-coq-live-on-the-edge t)
+  (setq company-coq-live-on-the-edge nil)
   (setq company-coq-disabled-features '(spinner)))
 
 (add-hook 'coq-mode-hook
           (lambda ()
             (siraben-prog-mode-defaults)
-            (company-coq-mode t)
+            (corfu-mode -1)
+            (company-coq-mode 1)
             (undo-tree-mode t)
-            (electric-indent-mode t)))
+            (electric-indent-local-mode 1)))
 
 
 (provide 'siraben-coq)

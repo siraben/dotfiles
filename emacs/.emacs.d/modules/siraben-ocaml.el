@@ -17,18 +17,12 @@
 
 ;;; Commentary:
 
-;; Configure tuareg and OCaml-specific Flycheck integration.
+;; Configure Tuareg with capability-driven Eglot diagnostics.
 
 ;;; Code:
 
-(use-package flycheck-ocaml)
 (use-package tuareg
-  :hook ((tuareg-mode .
-                      (lambda ()
-                        (add-function :before-while (local 'tree-sitter-hl-face-mapping-function)
-                                      (lambda (capture-name)
-                                        (not (string= capture-name "variable"))))))))
-
+  :hook (tuareg-mode . siraben-eglot-ensure-if-server-available))
 
 (provide 'siraben-ocaml)
 ;;; siraben-ocaml.el ends here

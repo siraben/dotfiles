@@ -25,7 +25,7 @@
 
 (defun siraben-prog-mode-defaults ()
   "Default programming mode hook, useful with any programming language."
-  (electric-pair-mode +1)
+  (electric-pair-local-mode +1)
   
   (set (make-local-variable 'comment-auto-fill-only-comments) t)
   

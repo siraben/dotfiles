@@ -39,11 +39,11 @@
 ;; Delete the selection with a keypress.
 (delete-selection-mode t)
 
-;; Store all backup and autosave files in the tmp dir.
+;; Keep recovery data persistent and private, rather than in shared /tmp.
 (setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
+      `((".*" . ,(siraben-state-directory "backups"))))
 (setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
+      `((".*" ,(siraben-state-directory "autosaves") t)))
 
 ;; Blinking parens are ugly.
 (setq blink-matching-paren nil)
@@ -55,16 +55,29 @@
   :config
   (setq flyspell-issue-message-flag nil))
 
+(require 'elec-pair)
+(require 'ispell)
+
+(defvar-local siraben-writing-pair-base-predicate nil
+  "Original buffer predicate before installing the writing policy.")
+
+(defun siraben-writing-pair-inhibit-p (char)
+  "Inhibit angle pairing for CHAR, otherwise preserve the original policy."
+  (or (eq char ?<)
+      (and siraben-writing-pair-base-predicate
+           (funcall siraben-writing-pair-base-predicate char))))
+
 (defun siraben-enable-writing-modes ()
   "Enable writing modes for writing prose.
 Enables auto-fill mode and spell checking."
   (interactive)
   (auto-fill-mode 1)
-  (flyspell-mode 1)
-  (electric-pair-mode 1)
-  (setq electric-pair-inhibit-predicate
-        `(lambda (c)
-           (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))
+  (when (executable-find ispell-program-name)
+    (flyspell-mode 1))
+  (electric-pair-local-mode 1)
+  (unless (eq electric-pair-inhibit-predicate #'siraben-writing-pair-inhibit-p)
+    (setq-local siraben-writing-pair-base-predicate electric-pair-inhibit-predicate)
+    (setq-local electric-pair-inhibit-predicate #'siraben-writing-pair-inhibit-p))
   (visual-line-mode 1))
 
 ;; This will be handled by the diminish package configuration
@@ -92,15 +105,10 @@ Enables auto-fill mode and spell checking."
 (setq ffap-machine-p-known 'reject)
 
 (use-package dashboard
-  :hook (after-init . siraben--setup-dashboard)
+  :hook (after-init . dashboard-open)
   :config
-  (defun siraben--setup-dashboard ()
-    "Configure dashboard startup screen."
-    (dashboard-mode)
-    (dashboard-refresh-buffer))
-  
-  (setq dashboard-set-footer nil
-        dashboard-startup-banner 'logo
+  (setq dashboard-startupify-list (remq 'dashboard-insert-footer dashboard-startupify-list))
+  (setq dashboard-startup-banner 'logo
         dashboard-items '((recents . 10))
         dashboard-center-content t)
   (dashboard-setup-startup-hook))
@@ -132,7 +140,7 @@ Enables auto-fill mode and spell checking."
 (setq auto-save-interval 100
       kept-new-versions 10
       kept-old-versions 0
-      backup-inhibited t
+      backup-inhibited nil
       delete-old-versions t)
 
 (setq recentf-max-saved-items 10000
@@ -148,10 +156,7 @@ Enables auto-fill mode and spell checking."
 (set-face-foreground 'show-paren-mismatch "#f00")
 (set-face-attribute 'show-paren-match nil :weight 'extra-bold)
 
-(use-package helm-swoop
-  :commands (helm-swoop-without-pre-input helm-swoop)
-  :bind
-  (("C-S-s" . helm-swoop)))
+(global-set-key (kbd "C-S-s") #'consult-line)
 
 (provide 'siraben-editor)
 ;;; siraben-editor.el ends here

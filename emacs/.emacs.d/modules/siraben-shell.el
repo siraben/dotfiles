@@ -21,7 +21,7 @@
 
 ;;; Code:
 
-(when-let ((n (executable-find "zsh")))
+(when-let* ((n (executable-find "zsh")))
   (setq-default shell-file-name n))
 
 (provide 'siraben-shell)
