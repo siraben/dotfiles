@@ -23,27 +23,19 @@
 ;;; Code:
 
 ;; Store original values for restoration
-(defvar siraben--file-name-handler-alist file-name-handler-alist)
 (defvar siraben--gc-cons-threshold (* 64 1024 1024))
 (defvar siraben--gc-cons-percentage 0.1)
 
-;; Maximize garbage collection threshold and disable file handlers during startup
-(setq file-name-handler-alist nil
-      gc-cons-threshold most-positive-fixnum
+;; Raise the collection threshold without disabling file handlers.
+(setq gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.8)
 
 ;; Restore settings after initialization
 (add-hook 'emacs-startup-hook
           (lambda ()
-            (setq file-name-handler-alist siraben--file-name-handler-alist
-                  gc-cons-threshold siraben--gc-cons-threshold
+            (setq gc-cons-threshold siraben--gc-cons-threshold
                   gc-cons-percentage siraben--gc-cons-percentage)
             (garbage-collect)) t)
-
-;; Suppress warnings during startup
-(setq byte-compile-warnings nil
-      native-comp-async-report-warnings-errors nil
-      warning-suppress-log-types '((comp) (bytecomp)))
 
 ;; Improve subprocess performance
 (setq read-process-output-max (* 1024 1024)) ; 1MB

@@ -20,6 +20,14 @@
 
 ;;; Code:
 
+(defun siraben-state-directory (name)
+  "Create and return a private persistent state directory named NAME."
+  (let ((directory (expand-file-name (concat "var/" name "/") user-emacs-directory)))
+    (make-directory directory t)
+    (set-file-modes (expand-file-name "var/" user-emacs-directory) #o700)
+    (set-file-modes directory #o700)
+    directory))
+
 (defun siraben-insert-time ()
   "Insert the date and time into the current buffer."
   (interactive)
@@ -46,7 +54,7 @@
           (prin1 symbol)
           (princ "\n")))))))
 
-(defun enable-me (&rest args)
+(defun enable-me (&rest _args)
   "Called when a disabled command is executed.
     Enable it and reexecute it."
   (put this-command 'disabled nil)

@@ -23,6 +23,13 @@
 ;;; Code:
 
 (use-package org
+  :init
+  ;; Install safety defaults before any Org buffer or export is created.
+  (setq org-confirm-babel-evaluate t
+        org-export-use-babel nil
+        org-modules '(org-habit org-crypt ol-bibtex ol-docview ol-gnus
+                      ol-info ol-irc ol-mhe ol-rmail)
+        org-export-backends '(ascii beamer html icalendar latex odt))
   :bind
   (("C-c c" . org-capture) ("C-c l" . org-store-link) ("C-c a" . org-agenda))
   :config
@@ -33,7 +40,7 @@
         org-startup-with-inline-images t
         org-startup-truncated t
         org-adapt-indentation nil
-        org-edit-src-content-indentation 0
+        org-src-content-indentation 0
         org-src-preserve-indentation nil
         org-agenda-diary-file nil
         org-habit-graph-column 50
@@ -47,41 +54,27 @@
    'org-babel-load-languages
    `((emacs-lisp . t)
      (gnuplot . t)
-     (,(if (version< emacs-version "26") 'sh 'shell) . t)
+     (shell . t)
      (calc . t)
      (python . t)
      (scheme . t)
      (dot . t)
      (octave . t)
      (latex . t)))
-  ;; I want to have source code syntax highlighting for LaTeX export as well.
-  (setq org-latex-listings t)
-  (setq org-latex-packages-alist '(("" "listings")))
-  (setq org-latex-pdf-process
+  ;; listings needs no external command execution.  TeX is explicitly denied
+  ;; shell execution even if the distribution enables restricted execution.
+  (require 'ox-latex)
+  (setq org-latex-src-block-backend 'listings
+        org-latex-packages-alist '(("" "listings") ("" "color"))
+        org-latex-pdf-process
         '("pdflatex -no-shell-escape -interaction nonstopmode -output-directory %o %f"
           "pdflatex -no-shell-escape -interaction nonstopmode -output-directory %o %f"
           "pdflatex -no-shell-escape -interaction nonstopmode -output-directory %o %f"))
-  ;; Execution is explicit; exporting untrusted documents must not run blocks.
-  (setq org-confirm-babel-evaluate t
-        org-export-use-babel nil)
-  (setq org-modules '(org-mu4e
-                      org-habit
-                      org-crypt
-                      org-bbdb
-                      org-bibtex
-                      org-docview
-                      org-gnus
-                      org-info
-                      org-irc
-                      org-mhe
-                      org-rmail))
-
-  (setq org-export-backends '(ascii beamer html icalendar latex odt))
   (setq org-list-allow-alphabetical t)
   (defvar org-electric-pairs '((?$ . ?$)))
   (defun siraben--org-add-electric-pairs ()
     "Add electric pairs for org mode."
-    (setq-local electric-pair-pairs (append electric-pair-pairs org-electric-pairs))
+    (setq-local electric-pair-pairs (delete-dups (append org-electric-pairs electric-pair-pairs)))
     (setq-local electric-pair-text-pairs electric-pair-pairs))
   (add-hook 'org-mode-hook #'siraben--org-add-electric-pairs)
 
