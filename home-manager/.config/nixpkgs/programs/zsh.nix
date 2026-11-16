@@ -7,9 +7,10 @@
 let
   inherit (pkgs.stdenv.hostPlatform) isDarwin isLinux;
   linuxShellExtra = ''
-    # Every interactive shell prepends the active Home Manager and Nix profiles
-    # so tmux sessions use the selected profile.
-    export PATH="$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$HOME/.local/state/nix/profiles/home-manager/home-path/bin:$PATH"
+    # Preserve development toolchains and NixOS's wrapper precedence.  Append
+    # any missing profile paths, using the unique array to avoid duplicates.
+    path=($path "$HOME/.nix-profile/bin" /nix/var/nix/profiles/default/bin
+          "$HOME/.local/state/nix/profiles/home-manager/home-path/bin")
   '';
   sharedShellExtra = ''
     # The remote host/session identifies mosh tabs without its verbose prefix.
