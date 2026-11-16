@@ -22,33 +22,31 @@
 
 ;;; Code:
 
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 6))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
+;; These defaults affect macro expansion, so establish them in both the
+;; compiler and runtime environments before expanding package declarations.
+(eval-and-compile
+  (require 'siraben-bootstrap)
+  ;; Emacs owns these libraries, including transitive dependencies.  Nix owns
+  ;; the matched vterm Lisp/native pair; straight must not build another copy.
+  (setq straight-recipe-overrides
+        '((nil (use-package :type built-in) (bind-key :type built-in)
+               (eglot :type built-in) (project :type built-in)
+               (seq :type built-in) (flymake :type built-in)
+               (which-key :type built-in) (editorconfig :type built-in)
+               (vterm :type built-in))))
+  (setq straight-use-package-by-default t
+        straight-vc-git-default-clone-depth 1)
+  (siraben-bootstrap)
+  (require 'use-package)
+  ;; Do not turn provisioning/load failures into apparently successful startup.
+  (setq use-package-expand-minimally t)
 
-;; Ensure `use-package' is installed.
-(straight-use-package 'use-package)
+  (setq use-package-compute-statistics t)
 
-(setq straight-use-package-by-default t
-      straight-vc-git-default-clone-depth 1)
-
-(require 'use-package)
-
-(setq use-package-compute-statistics t)
-
-;; Ensure that all packages are downloaded to their latest version,
-;; but also defer them to speed up init.
-(setq use-package-always-defer t)
-(setq use-package-verbose t)
+  ;; Straight manages updates normally; defer package loading by default.
+  (setq use-package-always-defer t)
+  (setq use-package-verbose t)
+)
 
 (use-package diminish
   :hook (after-init . siraben--setup-diminish)
