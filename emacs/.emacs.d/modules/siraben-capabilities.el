@@ -23,39 +23,26 @@
 ;; binary is installed and silently skip otherwise.
 ;;
 ;; Use:
-;;   (siraben-have-p "rust-analyzer")            ; cached boolean
+;;   (siraben-have-p "rust-analyzer")            ; buffer environment lookup
 ;;   (siraben-when-program "clang-format" ...)   ; eval body conditionally
 ;;   (siraben-eglot-ensure-if-server-available)  ; safe LSP hook
 ;;
-;; The cache is invalidated by `siraben-capabilities-refresh'.
+;; Lookups deliberately use the current buffer environment without a cache.
 
 ;;; Code:
 
 (require 'cl-lib)
 
-(defvar siraben-capabilities--cache (make-hash-table :test 'equal)
-  "Memoization table for `siraben-have-p'.")
-
 (defun siraben-capabilities-refresh ()
-  "Forget every cached executable lookup."
-  (interactive)
-  (clrhash siraben-capabilities--cache))
+  "Refresh capability reporting (lookups are uncached)."
+  (interactive))
 
 (defun siraben-have-p (program)
-  "Return non-nil when PROGRAM is on `exec-path' (cached).
-PROGRAM may be a string or a list of alternatives; for a list the
-first installed one is returned."
-  (cond
-   ((null program) nil)
-   ((listp program)
-    (cl-some #'siraben-have-p program))
-   (t
-    (let ((cached (gethash program siraben-capabilities--cache 'unset)))
-      (if (eq cached 'unset)
-          (let ((found (executable-find program)))
-            (puthash program found siraben-capabilities--cache)
-            found)
-        cached)))))
+  "Find PROGRAM in this buffer's `exec-path', without cross-project caching.
+PROGRAM may be a string or a list of alternatives."
+  (cond ((null program) nil)
+        ((listp program) (cl-some #'siraben-have-p program))
+        (t (executable-find program))))
 
 (defmacro siraben-when-program (program &rest body)
   "Evaluate BODY only if PROGRAM is installed.
@@ -69,29 +56,44 @@ PROGRAM is a string (or list of alternatives) accepted by
 ;; eglot helpers
 
 (defvar siraben-lsp-servers
-  '((python-mode      . ("basedpyright-langserver" "pyright-langserver"
-                         "pylsp" "jedi-language-server"))
-    (python-ts-mode   . ("basedpyright-langserver" "pyright-langserver"
-                         "pylsp" "jedi-language-server"))
-    (rustic-mode      . ("rust-analyzer"))
-    (rust-mode        . ("rust-analyzer"))
-    (rust-ts-mode     . ("rust-analyzer"))
-    (typescript-mode  . ("typescript-language-server" "tsserver"))
-    (typescript-ts-mode . ("typescript-language-server" "tsserver"))
-    (tsx-ts-mode        . ("typescript-language-server" "tsserver"))
-    (js-mode           . ("typescript-language-server" "tsserver"))
-    (js-ts-mode        . ("typescript-language-server" "tsserver"))
-    (kotlin-mode      . ("kotlin-language-server"))
-    (c-mode           . ("clangd" "ccls"))
-    (c++-mode         . ("clangd" "ccls"))
-    (c-ts-mode        . ("clangd" "ccls"))
-    (c++-ts-mode      . ("clangd" "ccls"))
-    (nix-mode         . ("nil" "nixd" "rnix-lsp"))
-    (haskell-mode     . ("haskell-language-server-wrapper"
-                         "haskell-language-server")))
-  "Alist of (MAJOR-MODE . LIST-OF-LSP-BINARIES) used by
-`siraben-eglot-ensure-if-server-available'.  The first installed
-binary in the list wins.")
+  '((python-mode . (("basedpyright-langserver" "--stdio") ("pyright-langserver" "--stdio") ("pylsp") ("jedi-language-server")))
+    (python-ts-mode . (("basedpyright-langserver" "--stdio") ("pyright-langserver" "--stdio") ("pylsp") ("jedi-language-server")))
+    (rustic-mode . (("rust-analyzer")))
+    (rust-mode . (("rust-analyzer")))
+    (rust-ts-mode . (("rust-analyzer")))
+    (typescript-mode . (("typescript-language-server" "--stdio")))
+    (typescript-ts-mode . (("typescript-language-server" "--stdio")))
+    (tsx-ts-mode . (("typescript-language-server" "--stdio")))
+    (js-mode . (("typescript-language-server" "--stdio")))
+    (js-ts-mode . (("typescript-language-server" "--stdio")))
+    (kotlin-mode . (("kotlin-language-server")))
+    (c-mode . (("clangd") ("ccls")))
+    (c++-mode . (("clangd") ("ccls")))
+    (c-ts-mode . (("clangd") ("ccls")))
+    (c++-ts-mode . (("clangd") ("ccls")))
+    (nix-mode . (("nil") ("nixd") ("rnix-lsp")))
+    (haskell-mode . (("haskell-language-server-wrapper" "--lsp") ("haskell-language-server" "--lsp")))
+    (tuareg-mode . (("ocamllsp"))))
+  "Mode to ordered LSP commands.  Eligibility and contacts share this registry.
+Bare tsserver is not an LSP server and is deliberately not an alternative.")
+
+(defun siraben-python-ruff-server-p ()
+  "Return non-nil if this environment's Ruff implements `ruff server'."
+  (when-let* ((ruff (siraben-have-p "ruff")))
+    (eq 0 (call-process ruff nil nil nil "server" "--help"))))
+
+(defun siraben-eglot-contact (&optional _interactive _project)
+  "Resolve an Eglot contact in the requesting buffer's environment."
+  (if (and (memq major-mode '(python-mode python-ts-mode))
+           (siraben-have-p "rass")
+           (siraben-have-p "basedpyright-langserver")
+           (siraben-python-ruff-server-p))
+      (list (siraben-have-p "rass") "--"
+            (siraben-have-p "basedpyright-langserver") "--stdio" "--"
+            (siraben-have-p "ruff") "server")
+    (cl-loop for command in (cdr (assq major-mode siraben-lsp-servers))
+             for executable = (siraben-have-p (car command))
+             when executable return (cons executable (cdr command)))))
 
 (defcustom siraben-eglot-idle-delay 0.5
   "Idle seconds before automatically starting a language server."
@@ -120,7 +122,7 @@ binary in the list wins.")
                    (siraben-have-p "direnv"))
           (envrc-mode 1)
           (siraben-capabilities-refresh))
-        (when (siraben-have-p (cdr (assq major-mode siraben-lsp-servers)))
+        (when (siraben-eglot-contact)
           (require 'eglot)
           (unless (eglot-managed-p)
             (eglot-ensure)))))))

@@ -304,9 +304,9 @@ falls back to plain ASCII separators so the mode-line stays readable."
   :commands envrc-mode
   :hook (after-init . siraben--setup-envrc)
   :config
-  ;; Ensure Eglot inherits project-local environment variables.
-  (require 'inheritenv)
-  (advice-add 'eglot--connect :around #'inheritenv-apply)
+  ;; Wrap public entry points rather than Eglot's private connection API.
+  (advice-add 'eglot :around #'inheritenv-apply)
+  (advice-add 'eglot-reconnect :around #'inheritenv-apply)
   (add-hook 'envrc-after-update-hook
             (lambda ()
               (siraben-capabilities-refresh)
@@ -383,13 +383,19 @@ falls back to plain ASCII separators so the mode-line stays readable."
 
 (use-package boogie-friends)
 
-(defun siraben-eglot--skip-transient-file-watches
-    (register server method id &rest options)
-  "Skip recursive watches for loose files outside recognized projects.
+(defvar siraben-eglot-transient-servers (make-hash-table :test 'eq :weakness 'key)
+  "Servers started outside recognized projects, without private Eglot slots.")
+
+(defun siraben-eglot-record-project (server)
+  "Record whether SERVER was initialized outside a recognized project."
+  (puthash server (not (project-current nil)) siraben-eglot-transient-servers))
+
+(defun siraben-eglot-skip-transient-watches (register server method id &rest options)
+  "Avoid recursive loose-file watches; delegate real project registrations.
 REGISTER, SERVER, METHOD, ID and OPTIONS follow `eglot-register-capability'."
   (if (and (eq method 'workspace/didChangeWatchedFiles)
-           (eq (car-safe (eglot--project server)) 'transient))
-      (list t "Skipped recursive watches for transient project")
+           (gethash server siraben-eglot-transient-servers))
+      (list t "Skipped recursive watches for standalone file")
     (apply register server method id options)))
 
 (use-package eglot
@@ -425,12 +431,12 @@ REGISTER, SERVER, METHOD, ID and OPTIONS follow `eglot-register-capability'."
         eglot-events-buffer-config '(:size 0 :format short)
         eldoc-idle-delay 0.75
         flymake-no-changes-timeout 0.5)
-  ;; Keep the default watch limit for real projects: rejecting registration
-  ;; with an artificially low limit can cause some servers to exit.
-  (unless (advice-member-p #'siraben-eglot--skip-transient-file-watches
-                           'eglot-register-capability)
-    (advice-add 'eglot-register-capability :around
-                #'siraben-eglot--skip-transient-file-watches)))
+  (add-hook 'eglot-server-initialized-hook #'siraben-eglot-record-project)
+  (advice-add 'eglot-register-capability :around #'siraben-eglot-skip-transient-watches)
+  ;; Contacts resolve in the requesting buffer, after envrc has run.
+  (dolist (entry siraben-lsp-servers)
+    (add-to-list 'eglot-server-programs
+                 (cons (car entry) #'siraben-eglot-contact))))
 
 (provide 'siraben-packages)
 ;;; siraben-packages.el ends here
