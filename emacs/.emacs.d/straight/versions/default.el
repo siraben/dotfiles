@@ -83,7 +83,7 @@
  ("sml-mode" . "c33659fd9b62fab436366f731daa4339691dd6bf")
  ("spaceline" . "086420d16e526c79b67fc1edec4c2ae1e699f372")
  ("spinner" . "fa117f0893788f3fe24673715a6b83bb34d238dd")
- ("straight.el" . "644ba036611d5952ec49f1a8abfb6851c19ac86a")
+ ("straight.el" . "64e19d65d35d47b7ac9099e42757d07008d07f19")
  ("transient" . "b4b5cc2624e156d7889b776a3855a3e46a227a05")
  ("treesit-auto" . "31466e4ccfd4f896ce3145c95c4c1f8b59d4bfdf")
  ("tuareg" . "f0cb55f2177f6fc978d98d018910fe5b1890fe0c")
