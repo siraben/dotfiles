@@ -97,11 +97,11 @@ let
     ++ cfg.subagentExtensions;
 
   managedDefaults = {
-    defaultModel = "gpt-6.1-sol";
+    defaultModel = "gpt-6.2-sol";
     defaultProvider = "openai-codex";
     defaultThinkingLevel = "medium";
     modelThinkingLevels = {
-      "openai-codex/gpt-6.1-sol" = "medium";
+      "openai-codex/gpt-6.2-sol" = "medium";
     };
     enableAnalytics = false;
     enableInstallTelemetry = false;
